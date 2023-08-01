@@ -79,3 +79,31 @@ pnpm run db:push
 ```bash
 pnpm run stripe:listen
 ```
+
+## Making Changes
+
+1. When you start working on a new feature, create a new branch.
+
+```bash
+git checkout -b new-branch-name
+```
+
+2. On that branch, make changes and commit as normal.
+
+```bash
+git add .
+```
+
+```bash
+git commit -m "I changed x"
+```
+
+3. Once you're ready to make a pull request, use git push and set remote as upstream
+
+```bash
+git push
+```
+
+```bash
+git push --set-upstream origin new-branch-name
+```
