@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     "Tailwind CSS",
     "Server Components",
     "Server Actions",
-    "Skateshop",
+    "Lollywest",
     "Skateboard",
     "Skateboarding",
     "Kickflip",

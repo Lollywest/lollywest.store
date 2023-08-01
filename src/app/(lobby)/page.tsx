@@ -49,34 +49,6 @@ export default async function IndexPage() {
     .groupBy(stores.id)
     .orderBy(desc(sql<number>`count(${products.id})`))
 
-  async function getGithubStars(): Promise<number | null> {
-    try {
-      const response = await fetch(
-        "https://api.github.com/repos/sadmann7/skateshop",
-        {
-          headers: {
-            Accept: "application/vnd.github+json",
-          },
-          next: {
-            revalidate: 60,
-          },
-        }
-      )
-
-      if (!response.ok) {
-        return null
-      }
-
-      const data = (await response.json()) as { stargazers_count: number }
-
-      return data.stargazers_count
-    } catch (error) {
-      return null
-    }
-  }
-
-  const githubStars = await getGithubStars()
-
   return (
     <Shell as="div" className="gap-12">
       <section
@@ -84,21 +56,11 @@ export default async function IndexPage() {
         aria-labelledby="hero-heading"
         className="mx-auto flex w-full max-w-[64rem] flex-col items-center justify-center gap-4 pb-8 pt-6 text-center md:pb-12 md:pt-10 lg:py-28"
       >
-        {githubStars ? (
-          <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
-            <Badge className="rounded-md px-3.5 py-1.5" variant="secondary">
-              <Icons.gitHub className="mr-2 h-3.5 w-3.5" aria-hidden="true" />
-              {githubStars} stars on GitHub
-              <span className="sr-only">GitHub</span>
-            </Badge>
-          </Link>
-        ) : null}
         <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
-          An e-commerce skateshop built with everything new in Next.js 13
+          Lollywest
         </h1>
         <Balance className="max-w-[46rem] text-lg text-muted-foreground sm:text-xl">
-          Buy and sell skateboarding products from independent brands and stores
-          around the world
+          A marketplace for creators and fans
         </Balance>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Link

@@ -14,10 +14,10 @@ const links = {
 }
 
 export const siteConfig = {
-  name: "Skateshop13",
+  name: "Lollywest",
   description:
-    "An open source e-commerce skateshop build with everything new in Next.js 13.",
-  url: "https://skateshop.sadmn.com",
+    "A marketplace for selling cards",
+  url: "https://www.lollywest.store/",
   ogImage: "https://skateshop.sadmn.com/opengraph-image.png",
   mainNav: [
     {
