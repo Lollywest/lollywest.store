@@ -31,11 +31,10 @@ export const metadata: Metadata = {
   ],
   authors: [
     {
-      name: "sadmann7",
-      url: "https://github.com/sadmann7",
+      name: "Lollywest",
     },
   ],
-  creator: "sadmann7",
+  creator: "lollywest",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
@@ -53,7 +52,6 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [`${siteConfig.url}/og.jpg`],
-    creator: "@sadmann7",
   },
   icons: {
     icon: "/favicon.ico",

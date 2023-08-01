@@ -32,12 +32,22 @@
 - [ ] Checkout with **Stripe Checkout**
 - [ ] Admin dashboard with stores, products, orders, subscriptions, and payments
 
+## Installation Prerequisites
+
+1. Install Nodejs
+   <https://nodejs.org/en/download>
+2. Install pnpm
+
+```bash
+npm install -g pnpm
+```
+
 ## Running Locally
 
 1. Clone the repository
 
 ```bash
-git clone
+git clone https://github.com/Lollywest/lollywest.store.git
 ```
 
 2. Install dependencies using pnpm
@@ -64,7 +74,7 @@ pnpm run dev
 pnpm run db:push
 ```
 
-6. Start the Stripe webhook listener
+6. Start the Stripe webhook listener (optional, needs stripe configuration)
 
 ```bash
 pnpm run stripe:listen
