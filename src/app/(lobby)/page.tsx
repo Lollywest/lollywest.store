@@ -60,7 +60,7 @@ export default async function IndexPage() {
           Lollywest
         </h1>
         <Balance className="max-w-[46rem] text-lg text-muted-foreground sm:text-xl">
-          A marketplace for creators and fans
+          A marketplace for creators and fans. Join now!
         </Balance>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Link
