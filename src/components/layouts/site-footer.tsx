@@ -56,7 +56,7 @@ export function SiteFooter() {
               </div>
             ))}
           </section>
-          <section
+          {/* <section
             id="newsletter"
             aria-labelledby="newsletter-heading"
             className="space-y-3"
@@ -65,7 +65,7 @@ export function SiteFooter() {
               Subscribe to our newsletter
             </h4>
             <SubscribeToNewsletterForm />
-          </section>
+          </section> */}
         </section>
         <section
           id="footer-bottom"

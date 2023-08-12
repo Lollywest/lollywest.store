@@ -21,157 +21,157 @@ export const sortOptions = [
 
 export const productCategories = [
   {
-    title: "skateboards",
+    title: "Featured",
     image: "/images/skateboard-one.webp",
     subcategories: [
+      // {
+      //   title: "All",
+      //   description: "The board itself.",
+      //   image: "/images/deck-one.webp",
+      //   slug: "decks",
+      // },
       {
-        title: "Decks",
-        description: "The board itself.",
-        image: "/images/deck-one.webp",
-        slug: "decks",
-      },
-      {
-        title: "Wheels",
-        description: "The wheels that go on the board.",
+        title: "Featured Wraps",
+        description: "Handpicked Featured Wraps",
         image: "/images/wheel-one.webp",
         slug: "wheels",
       },
       {
-        title: "Trucks",
-        description: "The trucks that go on the board.",
+        title: "Featured Decks",
+        description: "Best of the Best. Featured Decks",
         image: "/images/truck-one.webp",
-        slug: "trucks",
+        slug: "Featured Decks",
       },
       {
-        title: "Bearings",
-        description: "The bearings that go in the wheels.",
+        title: "Featured Sponsorships",
+        description: "Featured Sponsorships",
         image: "/images/bearing-one.webp",
         slug: "bearings",
       },
-      {
-        title: "Griptape",
-        description: "The griptape that goes on the board.",
-        image: "/images/griptape-one.webp",
-        slug: "griptape",
-      },
-      {
-        title: "Hardware",
-        description: "The hardware that goes on the board.",
-        image: "/images/hardware-one.webp",
-        slug: "hardware",
-      },
-      {
-        title: "Tools",
-        description: "The tools that go with the board.",
-        image: "/images/tool-one.webp",
-        slug: "tools",
-      },
+      // {
+      //   title: "Griptape",
+      //   description: "The griptape that goes on the board.",
+      //   image: "/images/griptape-one.webp",
+      //   slug: "griptape",
+      // },
+      // {
+      //   title: "Hardware",
+      //   description: "The hardware that goes on the board.",
+      //   image: "/images/hardware-one.webp",
+      //   slug: "hardware",
+      // },
+      // {
+      //   title: "Tools",
+      //   description: "The tools that go with the board.",
+      //   image: "/images/tool-one.webp",
+      //   slug: "tools",
+      // },
     ],
   },
   {
-    title: "clothing",
+    title: "Drop on Lollywest",
     image: "/images/clothing-one.webp",
     subcategories: [
       {
-        title: "T-shirts",
-        description: "Cool and comfy tees for effortless style.",
+        title: "Drop a Wrap",
+        description: "Want to get involved? Click here.",
         slug: "t-shirts",
       },
       {
-        title: "Hoodies",
-        description: "Cozy up in trendy hoodies.",
+        title: "What is a Wrap?",
+        description: "About our Wrap subscriptions",
         slug: "hoodies",
       },
       {
-        title: "Pants",
-        description: "Relaxed and stylish pants for everyday wear.",
+        title: "What is a Deck",
+        description: "Everything about Deck ownership",
         slug: "pants",
       },
       {
-        title: "Shorts",
-        description: "Stay cool with casual and comfortable shorts.",
+        title: "What is a Sponsor?",
+        description: "About our artist Sponsorships",
         slug: "shorts",
       },
       {
-        title: "Hats",
-        description: "Top off your look with stylish and laid-back hats.",
+        title: "Artist FAQ",
+        //description: "Top off your look with stylish and laid-back hats.",
         slug: "hats",
       },
     ],
   },
   {
-    title: "shoes",
+    title: "Leaderboards",
     image: "/images/shoe-one.webp",
     subcategories: [
       {
-        title: "Low Tops",
-        description: "Rad low tops shoes for a stylish low-profile look.",
+        title: "Top Sponsors (users)",
+        description: "Top fans by Sponsor Credits",
         slug: "low-tops",
       },
       {
-        title: "High Tops",
-        description: "Elevate your style with rad high top shoes.",
+        title: "Top Artists by Sponsors",
+        description: "Top artists by Sponsor Credits",
         slug: "high-tops",
       },
-      {
-        title: "Slip-ons",
-        description: "Effortless style with rad slip-on shoes.",
-        slug: "slip-ons",
-      },
-      {
-        title: "Pros",
-        description: "Performance-driven rad shoes for the pros.",
-        slug: "pros",
-      },
-      {
-        title: "Classics",
-        description: "Timeless style with rad classic shoes.",
-        slug: "classics",
-      },
+      // {
+      //   title: "Slip-ons",
+      //   description: "Effortless style with rad slip-on shoes.",
+      //   slug: "slip-ons",
+      // },
+      // {
+      //   title: "Pros",
+      //   description: "Performance-driven rad shoes for the pros.",
+      //   slug: "pros",
+      // },
+      // {
+      //   title: "Classics",
+      //   description: "Timeless style with rad classic shoes.",
+      //   slug: "classics",
+      // },
     ],
   },
   {
-    title: "accessories",
+    title: "About Us",
     image: "/images/backpack-one.webp",
     subcategories: [
       {
-        title: "Skate Tools",
+        title: "How it Works",
         description:
-          "Essential tools for maintaining your skateboard, all rad.",
+          "Want a look inside? Click here.",
         slug: "skate-tools",
       },
       {
-        title: "Bushings",
-        description: "Upgrade your ride with our rad selection of bushings.",
+        title: "About Lollywest",
+        description: "What is Lollywest?",
         slug: "bushings",
       },
       {
-        title: "Shock & Riser Pads",
+        title: "About our Products",
         description:
-          "Enhance your skateboard's performance with rad shock and riser pads.",
+          "Click here to learn more about the products we offer.",
         slug: "shock-riser-pads",
       },
       {
-        title: "Skate Rails",
+        title: "Buying Guide",
         description:
-          "Add creativity and style to your tricks with our rad skate rails.",
+          "Can't decide what's best? Let us help.",
         slug: "skate-rails",
       },
       {
-        title: "Wax",
-        description: "Keep your board gliding smoothly with our rad skate wax.",
+        title: "Our Values",
+        description: "Click here to learn what were all about",
         slug: "wax",
       },
-      {
-        title: "Socks",
-        description: "Keep your feet comfy and stylish with our rad socks.",
-        slug: "socks",
-      },
-      {
-        title: "Backpacks",
-        description: "Carry your gear in style with our rad backpacks.",
-        slug: "backpacks",
-      },
+      // {
+      //   title: "Socks",
+      //   description: "Keep your feet comfy and stylish with our rad socks.",
+      //   slug: "socks",
+      // },
+      // {
+      //   title: "Backpacks",
+      //   description: "Carry your gear in style with our rad backpacks.",
+      //   slug: "backpacks",
+      // },
     ],
   },
 ] satisfies {

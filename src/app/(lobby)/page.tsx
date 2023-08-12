@@ -49,6 +49,17 @@ export default async function IndexPage() {
     .groupBy(stores.id)
     .orderBy(desc(sql<number>`count(${products.id})`))
 
+    // const StyledTitle = styled.div`
+    //   font-size: 28px;
+    //   font-weight: 600;
+    //   color: white;
+    // `;
+
+    // const Title = (props: { title: string }) => (
+    //   <StyledTitle>{props.title}</StyledTitle>
+    // );
+
+
   return (
     <Shell as="div" className="gap-12">
       <section
@@ -60,7 +71,7 @@ export default async function IndexPage() {
           Lollywest
         </h1>
         <Balance className="max-w-[46rem] text-lg text-muted-foreground sm:text-xl">
-          A marketplace for creators and fans. Join now!
+          A marketplace for creators and fans. Join
         </Balance>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Link
@@ -86,7 +97,7 @@ export default async function IndexPage() {
           </Link>
         </div>
       </section>
-      <section
+      {/* <section
         id="categories"
         aria-labelledby="categories-heading"
         className="space-y-6 py-6 md:pt-10 lg:pt-24"
@@ -127,8 +138,8 @@ export default async function IndexPage() {
             </Link>
           ))}
         </div>
-      </section>
-      <section
+      </section> */}
+      {/* <section
         id="create-a-store-banner"
         aria-labelledby="create-a-store-banner-heading"
         className="grid place-items-center gap-6 rounded-lg border bg-card px-6 py-16 text-center text-card-foreground shadow-sm"
@@ -142,7 +153,7 @@ export default async function IndexPage() {
             <span className="sr-only">Create a store</span>
           </div>
         </Link>
-      </section>
+      </section> */}
       <section
         id="featured-products"
         aria-labelledby="featured-products-heading"
@@ -150,7 +161,7 @@ export default async function IndexPage() {
       >
         <div className="flex items-center">
           <h2 className="flex-1 text-2xl font-medium sm:text-3xl">
-            Featured products
+            Trending Now
           </h2>
           <Link href="/products">
             <div
@@ -176,7 +187,7 @@ export default async function IndexPage() {
         aria-labelledby="featured-stores-heading"
         className="space-y-6"
       >
-        <h2 className="text-2xl font-medium sm:text-3xl">Featured stores</h2>
+        <h2 className="text-2xl font-medium sm:text-3xl">Upcoming Drops</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {allStoresWithProductCount.map((store) => (
             <Card key={store.id} className="flex h-full flex-col">

@@ -24,19 +24,25 @@ export const siteConfig = {
       title: "Lobby",
       items: [
         {
-          title: "Products",
+          title: "Our Products",
           href: "/products",
-          description: "All the products we have to offer.",
+          description: "Check out our artists and Wraps.",
           items: [],
         },
         {
-          title: "Build a Board",
+          title: "Social Hour",
           href: "/build-a-board",
           description: "Build your own custom skateboard.",
           items: [],
         },
+        // {
+        //   title: "Connect (Discord)",
+        //   href: "/build-a-board",
+        //   description: "Build your own custom skateboard.",
+        //   items: [],
+        // },
         {
-          title: "Blog",
+          title: "News",
           href: "/blog",
           description: "Read our latest blog posts.",
           items: [],
@@ -63,56 +69,56 @@ export const siteConfig = {
   ] satisfies MainNavItem[],
   links,
   footerNav: [
-    {
-      title: "Credits",
-      items: [
-        {
-          title: "OneStopShop",
-          href: "https://onestopshop.jackblatch.com",
-          external: true,
-        },
-        {
-          title: "Acme Corp",
-          href: "https://acme-corp.jumr.dev",
-          external: true,
-        },
-        {
-          title: "craft.mxkaske.dev",
-          href: "https://craft.mxkaske.dev",
-          external: true,
-        },
-        {
-          title: "Taxonomy",
-          href: "https://tx.shadcn.com/",
-          external: true,
-        },
-        {
-          title: "shadcn/ui",
-          href: "https://ui.shadcn.com",
-          external: true,
-        },
-      ],
-    },
+    // {
+    //   title: "About our Products",
+    //   items: [
+    //     {
+    //       title: "Wraps",
+    //       href: "https://onestopshop.jackblatch.com",
+    //       external: true,
+    //     },
+    //     {
+    //       title: "Subscriptions",
+    //       href: "https://acme-corp.jumr.dev",
+    //       external: true,
+    //     },
+    //     {
+    //       title: "Artist Info",
+    //       href: "https://craft.mxkaske.dev",
+    //       external: true,
+    //     },
+    //     {
+    //       title: "User Info",
+    //       href: "https://tx.shadcn.com/",
+    //       external: true,
+    //     },
+    //     // {
+    //     //   title: "shadcn/ui",
+    //     //   href: "https://ui.shadcn.com",
+    //     //   external: true,
+    //     // },
+    //   ],
+    // },
     {
       title: "Help",
       items: [
         {
-          title: "About",
+          title: "Contact",
           href: "/about",
           external: false,
         },
         {
-          title: "Contact",
+          title: "Terms & Conditions",
           href: "/contact",
           external: false,
         },
         {
-          title: "Terms",
+          title: "Privacy",
           href: "/terms",
           external: false,
         },
         {
-          title: "Privacy",
+          title: "General FAQ",
           href: "/privacy",
           external: false,
         },
@@ -122,50 +128,50 @@ export const siteConfig = {
       title: "Social",
       items: [
         {
-          title: "Twitter",
+          title: "Discord",
           href: links.twitter,
           external: true,
         },
         {
-          title: "GitHub",
+          title: "Instagram",
           href: links.githubAccount,
           external: true,
         },
         {
-          title: "Discord",
+          title: "X (Twitter)",
           href: links.discord,
           external: true,
         },
-        {
-          title: "cal.com",
-          href: links.calDotCom,
-          external: true,
-        },
+        // {
+        //   title: "cal.com",
+        //   href: links.calDotCom,
+        //   external: true,
+        // },
       ],
     },
     {
-      title: "Lofi",
+      title: "Make Money with Us",
       items: [
         {
-          title: "beats to study to",
+          title: "Artist Applications",
           href: "https://www.youtube.com/watch?v=jfKfPfyJRdk",
           external: true,
         },
         {
-          title: "beats to chill to",
+          title: "For Managers & Labels",
           href: "https://www.youtube.com/watch?v=rUxyKA_-grg",
           external: true,
         },
         {
-          title: "a fresh start",
+          title: "Partner with Lollywest",
           href: "https://www.youtube.com/watch?v=rwionZbOryo",
           external: true,
         },
-        {
-          title: "coffee to go",
-          href: "https://www.youtube.com/watch?v=2gliGzb2_1I",
-          external: true,
-        },
+        // {
+        //   title: "coffee to go",
+        //   href: "https://www.youtube.com/watch?v=2gliGzb2_1I",
+        //   external: true,
+        // },
       ],
     },
   ] satisfies FooterItem[],

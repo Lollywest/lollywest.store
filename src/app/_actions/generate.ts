@@ -21,7 +21,7 @@ export async function generateProducts({
 
   const categories = productCategories.map((category) => category.title)
 
-  const category = faker.helpers.shuffle(categories)[0] ?? "skateboards"
+  const category = faker.helpers.shuffle(categories)[0] ?? "Featured"
 
   const subcategories = getSubcategories(category).map((s) => s.value)
   const subcategory = faker.helpers.shuffle(subcategories)[0] ?? "decks"
