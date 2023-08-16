@@ -1,4 +1,4 @@
-# [Lollywest]
+# Lollywest
 
 ## Installation Prerequisites
 
