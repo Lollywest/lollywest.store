@@ -1,58 +1,86 @@
-import React, { Component } from "react";
-import Slider from "react-slick";
+"use client"
 
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
+import React from "react"
+import Slider from "react-slick"
 
-export default class SimpleSlider extends Component {
-  render() {
-    const settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1
-    };
-    return (
-      <div>
-        <h1> Hello hel</h1>
-        <h2> Single Item</h2>
-        <Slider {...settings}>
-          <div>
-            <h3>1</h3>
-          </div>
-          <div>
-            <h3>2</h3>
-          </div>
-          <div>
-            <h3>3</h3>
-          </div>
-          <div>
-            <h3>4</h3>
-          </div>
-          <div>
-            <h3>5</h3>
-          </div>
-          <div>
-            <h3>6</h3>
-          </div>
-        </Slider>
-      </div>
-    );
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
+
+export default function SimpleSlider() {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
   }
+  return (
+    <Slider {...settings}>
+      <div>
+        <h3>1</h3>
+      </div>
+      <div>
+        <h3>2</h3>
+      </div>
+      <div>
+        <h3>3</h3>
+      </div>
+      <div>
+        <h3>4</h3>
+      </div>
+      <div>
+        <h3>5</h3>
+      </div>
+      <div>
+        <h3>6</h3>
+      </div>
+    </Slider>
+  )
 }
 
-
+// export default class SimpleSlider extends Component {
+//   render() {
+//     const settings = {
+//       dots: true,
+//       infinite: true,
+//       speed: 500,
+//       slidesToShow: 1,
+//       slidesToScroll: 1
+//     };
+//     return (
+//       <div>
+//         <h1> Hello hel</h1>
+//         <h2> Single Item</h2>
+//         <Slider {...settings}>
+//           <div>
+//             <h3>1</h3>
+//           </div>
+//           <div>
+//             <h3>2</h3>
+//           </div>
+//           <div>
+//             <h3>3</h3>
+//           </div>
+//           <div>
+//             <h3>4</h3>
+//           </div>
+//           <div>
+//             <h3>5</h3>
+//           </div>
+//           <div>
+//             <h3>6</h3>
+//           </div>
+//         </Slider>
+//       </div>
+//     );
+//   }
+// }
 
 //import React, { Component } from "react";
 // import * as React from "react"
 
 // import Slider from "react-slick";
 // import styled from 'styled-components';
-
-
-
-
 
 // //import * as React from "react";
 // import { cva, type VariantProps } from "class-variance-authority";
@@ -109,9 +137,6 @@ export default class SimpleSlider extends Component {
 // SimpleSlider.displayName = "SimpleSlider"
 
 // export { SimpleSlider, sliderVariants }
-
-
-
 
 // export default class SimpleSlider extends Component {
 //   render() {
@@ -197,7 +222,7 @@ export default class SimpleSlider extends Component {
 //       <Slider {...settings}>
 //         <div><h3>1</h3></div>
 //         <div><h3>2</h3></div>
-        
+
 //       </Slider>
 //     </div>
 //   );
