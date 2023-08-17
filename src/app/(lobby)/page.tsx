@@ -22,6 +22,10 @@ import { Icons } from "@/components/icons"
 import { ProductCard } from "@/components/product-card"
 import { Shell } from "@/components/shells/shell"
 
+import {sliderVariants}  from "@/components/ui/HomePageCarousel"
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+
 // Running out of edge function execution units on vercel free plan
 // export const runtime = "edge"
 
@@ -67,11 +71,21 @@ export default async function IndexPage() {
         aria-labelledby="hero-heading"
         className="mx-auto flex w-full max-w-[64rem] flex-col items-center justify-center gap-4 pb-8 pt-6 text-center md:pb-12 md:pt-10 lg:py-28"
       >
+        
+        {/* <div className="flex flex-wrap items-center justify-center gap-4">
+            className={cn(
+              sliderVariants({
+                dotPosition: "bottom",
+              })
+            )}
+        </div> */}
+
+
         <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
           Lollywest
         </h1>
         <Balance className="max-w-[46rem] text-lg text-muted-foreground sm:text-xl">
-          A marketplace for creators and fans. Join
+          A marketplace for creators and fans. Join Now!
         </Balance>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Link
