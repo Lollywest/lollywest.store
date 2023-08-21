@@ -72,9 +72,10 @@ export default async function IndexPage() {
         className="mx-auto flex w-full max-w-[64rem] flex-col items-center justify-center gap-4 pb-8 pt-6 text-center md:pb-12 md:pt-10 lg:py-28"
       >
         
-        <div className="flex flex-wrap items-center justify-center gap-4">
+        {/* <div className="flex flex-wrap items-center justify-center gap-4"> */}
+        {/* <div>
           <SimpleSlider />
-        </div>
+        </div> */}
 
 
         <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
@@ -85,16 +86,16 @@ export default async function IndexPage() {
         </Balance>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Link
-            href="/products"
+            href="/featured"
             className={cn(
               buttonVariants({
                 size: "lg",
               })
             )}
           >
-            Buy Now
+            Browse Now
           </Link>
-          <Link
+          {/* <Link
             href="/dashboard/stores"
             className={cn(
               buttonVariants({
@@ -104,7 +105,7 @@ export default async function IndexPage() {
             )}
           >
             Sell Now
-          </Link>
+          </Link> */}
         </div>
       </section>
       {/* <section
@@ -173,7 +174,7 @@ export default async function IndexPage() {
           <h2 className="flex-1 text-2xl font-medium sm:text-3xl">
             Trending Now
           </h2>
-          <Link href="/products">
+          {/* <Link href="/products">
             <div
               className={cn(
                 buttonVariants({
@@ -184,7 +185,7 @@ export default async function IndexPage() {
               View all
               <span className="sr-only">View all products</span>
             </div>
-          </Link>
+          </Link> */}
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {allProducts.map((product) => (

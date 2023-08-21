@@ -76,7 +76,7 @@ export default async function CategoryPage({
     <Shell>
       <Header
         title={toTitleCase(category)}
-        description={`Buy ${category} from the best stores`}
+        description={``}
         size="sm"
       />
       <Products

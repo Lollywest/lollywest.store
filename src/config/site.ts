@@ -16,7 +16,7 @@ const links = {
 export const siteConfig = {
   name: "Lollywest",
   description:
-    "A marketplace for selling cards",
+    "Changing how artists earn and fans engage",
   url: "https://www.lollywest.store/",
   ogImage: "https://skateshop.sadmn.com/opengraph-image.png",
   mainNav: [
@@ -25,14 +25,14 @@ export const siteConfig = {
       items: [
         {
           title: "Our Products",
-          href: "/products",
-          description: "Check out our artists and Wraps.",
+          href: "/featured",
+          description: "Check out our Artists and Wraps.",
           items: [],
         },
         {
           title: "Social Hour",
           href: "/build-a-board",
-          description: "Build your own custom skateboard.",
+          description: "Support your favorite Artists",
           items: [],
         },
         // {
@@ -52,12 +52,12 @@ export const siteConfig = {
     ...productCategories.map((category) => ({
       title: category.title,
       items: [
-        {
-          title: "All",
-          href: `/categories/${slugify(category.title)}`,
-          description: `All ${category.title}.`,
-          items: [],
-        },
+        // {
+        //   title: "All",
+        //   href: `/categories/${slugify(category.title)}`,
+        //   description: `All ${category.title}.`,
+        //   items: [],
+        // },
         ...category.subcategories.map((subcategory) => ({
           title: subcategory.title,
           href: `/categories/${slugify(category.title)}/${subcategory.slug}`,
@@ -68,6 +68,8 @@ export const siteConfig = {
     })),
   ] satisfies MainNavItem[],
   links,
+  
+
   footerNav: [
     // {
     //   title: "About our Products",

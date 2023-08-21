@@ -35,18 +35,21 @@ export const productCategories = [
         description: "Handpicked Featured Wraps",
         image: "/images/wheel-one.webp",
         slug: "wheels",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
       {
         title: "Featured Decks",
         description: "Best of the Best. Featured Decks",
         image: "/images/truck-one.webp",
         slug: "Featured Decks",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
       {
         title: "Featured Sponsorships",
         description: "Featured Sponsorships",
         image: "/images/bearing-one.webp",
         slug: "bearings",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
       // {
       //   title: "Griptape",
@@ -75,27 +78,32 @@ export const productCategories = [
       {
         title: "Drop a Wrap",
         description: "Want to get involved? Click here.",
-        slug: "t-shirts",
+        slug: "",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
       {
         title: "What is a Wrap?",
         description: "About our Wrap subscriptions",
         slug: "hoodies",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
       {
         title: "What is a Deck",
         description: "Everything about Deck ownership",
         slug: "pants",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
       {
         title: "What is a Sponsor?",
         description: "About our artist Sponsorships",
         slug: "shorts",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
       {
         title: "Artist FAQ",
         //description: "Top off your look with stylish and laid-back hats.",
         slug: "hats",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
     ],
   },
@@ -107,11 +115,13 @@ export const productCategories = [
         title: "Top Sponsors (users)",
         description: "Top fans by Sponsor Credits",
         slug: "low-tops",
+        href:"",
       },
       {
         title: "Top Artists by Sponsors",
         description: "Top artists by Sponsor Credits",
         slug: "high-tops",
+        href:"",
       },
       // {
       //   title: "Slip-ons",
@@ -139,28 +149,33 @@ export const productCategories = [
         description:
           "Want a look inside? Click here.",
         slug: "skate-tools",
+        href:"",
       },
       {
         title: "About Lollywest",
         description: "What is Lollywest?",
         slug: "bushings",
+        href:"",
       },
       {
         title: "About our Products",
         description:
           "Click here to learn more about the products we offer.",
         slug: "shock-riser-pads",
+        href:"",
       },
       {
         title: "Buying Guide",
         description:
           "Can't decide what's best? Let us help.",
         slug: "skate-rails",
+        href:"",
       },
       {
         title: "Our Values",
         description: "Click here to learn what were all about",
         slug: "wax",
+        href:"",
       },
       // {
       //   title: "Socks",
@@ -182,6 +197,7 @@ export const productCategories = [
     description?: string
     image?: string
     slug: string
+    href?: string
   }[]
 }[]
 

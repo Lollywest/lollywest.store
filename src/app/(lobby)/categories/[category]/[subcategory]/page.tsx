@@ -25,7 +25,7 @@ export function generateMetadata({ params }: SubcategoryPageProps) {
 
   return {
     title: toTitleCase(subcategory),
-    description: `Buy the best ${subcategory}`,
+    //description: `Buy the best ${subcategory}`,
   }
 }
 
@@ -73,7 +73,7 @@ export default async function SubcategoryPage({
     <Shell>
       <Header
         title={toTitleCase(unslugify(subcategory))}
-        description={`Buy the best ${unslugify(subcategory)}`}
+        //description={`Buy the best ${unslugify(subcategory)}`}
         size="sm"
       />
       <Products
