@@ -21,10 +21,7 @@ export async function generateProducts({
 
   const categories = productCategories.map((category) => category.title)
 
-  const category = faker.helpers.shuffle(categories)[0] ?? "skateboards"
-
-  const subcategories = getSubcategories(category).map((s) => s.value)
-  const subcategory = faker.helpers.shuffle(subcategories)[0] ?? "decks"
+  const category = faker.helpers.shuffle(categories)[0] ?? "deck"
 
   for (let i = 0; i < count; i++) {
     allProducts.push({
@@ -34,7 +31,6 @@ export async function generateProducts({
       price: faker.commerce.price(),
       rating: faker.number.float({ min: 0, max: 5, precision: 0.1 }),
       category,
-      subcategory,
       images: null,
       createdAt: faker.date.past(),
       inventory: faker.number.int({ min: 0, max: 100 }),

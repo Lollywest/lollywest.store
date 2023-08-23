@@ -11,11 +11,12 @@ export const productSchema = z.object({
       required_error: "Must be a valid category",
     })
     .default(products.category.enumValues[0]),
-  subcategory: z.string().optional().nullable(),
   price: z.string().regex(/^\d+(\.\d{1,2})?$/, {
     message: "Must be a valid price",
   }),
-  inventory: z.number(),
+  perks: z.string().optional(),
+  decksLeft: z.number().optional(),
+  artistId: z.number(),
   images: z
     .unknown()
     .refine((val) => {
@@ -34,18 +35,13 @@ export const filterProductsSchema = z.object({
 
 export const getProductSchema = z.object({
   id: z.number(),
-  storeId: z.number(),
+  artistId: z.number(),
 })
 
 export const getProductsSchema = z.object({
   limit: z.number().default(10),
   offset: z.number().default(0),
   categories: z
-    .string()
-    .regex(/^\d+.\d+$/)
-    .optional()
-    .nullable(),
-  subcategories: z
     .string()
     .regex(/^\d+.\d+$/)
     .optional()
@@ -60,7 +56,7 @@ export const getProductsSchema = z.object({
     .regex(/^\d+-\d+$/)
     .optional()
     .nullable(),
-  store_ids: z
+  artist_ids: z
     .string()
     .regex(/^\d+.\d+$/)
     .optional()
