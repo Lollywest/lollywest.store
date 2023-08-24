@@ -47,12 +47,14 @@ export async function getProductsAction( input: {category?: string} ) {
 }
 
 export async function addProductToWalletAction(input: { productID: number}) {
+    // users
     const user = await currentUser()
 
     if(!user) {
         throw new Error("Could not get user")
     }
 
+    // wallets
     const wallet = await db.query.wallets.findFirst({
         where: eq(wallets.userID, user.id)
     })
@@ -62,20 +64,39 @@ export async function addProductToWalletAction(input: { productID: number}) {
         throw new Error("Could not find wallet")
     }
 
-    let arr: number[]
     if(!wallet.products) {
-        arr = [ input.productID ]
+        wallet.products = [ input.productID ]
     } else {
-        arr = wallet.products
-        arr.push(input.productID)
+        wallet.products.push(input.productID)
     }
 
-    await db.update(wallets).set( {
-        id: wallet.id,
-        userID: wallet.userID,
-        products: arr,
-        orders: wallet.orders
-    } ).where(eq(wallets.userID, user.id))
+    // products
+
+    const product = await db.query.products.findFirst({
+        where: eq(products.id, input.productID)
+    })
+
+    if(!product) {
+        throw new Error("Product not found")
+    }
+
+    if(!product.owners) {
+        product.owners = [ parseInt(user.id) ]
+    } else {
+        product.owners.push(parseInt(user.id))
+    }
+
+    if(product.category == "deck") {
+        if(product.decksLeft > 0) {
+            product.decksLeft--
+        } else {
+            throw new Error("No decks left")
+        }
+    }
+
+    // update db
+    await db.update(wallets).set(wallet).where(eq(wallets.userID, user.id))
+    await db.update(products).set(product).where(eq(products.id, input.productID))
 
     // Revalidate Path ==================================
 }
@@ -95,22 +116,14 @@ export async function deleteProductFromWalletAction(input: { productID: number})
         throw new Error("Could not find wallet")
     }
 
-    let arr: number[]
     if(!wallet.products) {
-        arr = []
+        wallet.products = []
     } else {
-        arr = wallet.products
+        const idx = wallet.products.indexOf(input.productID)
+        if(idx > -1) {
+            wallet.products.splice(idx, 1)
+        }
     }
 
-    const idx = arr.indexOf(input.productID)
-    if(idx > -1) {
-        arr.splice(idx, 1)
-    }
-
-    await db.update(wallets).set( {
-        id: wallet.id,
-        userID: wallet.userID,
-        products: arr,
-        orders: wallet.orders
-    } ).where(eq(wallets.userID, user.id))
+    await db.update(wallets).set(wallet).where(eq(wallets.userID, user.id))
 }

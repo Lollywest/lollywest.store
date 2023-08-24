@@ -66,6 +66,15 @@ export const upcoming = mysqlTable("upcoming", {
   slug: text("slug")
 })
 
+export type Upcoming = InferModel<typeof upcoming>
+
+export const upcomingRelations = relations(upcoming, ({ one }) => ({
+  artist: one(artists, {
+    fields: [upcoming.artistID],
+    references: [artists.id]
+  }),
+}))
+
 export const artists = mysqlTable("artists", {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
