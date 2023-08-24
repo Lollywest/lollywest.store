@@ -30,6 +30,8 @@ export const products = mysqlTable("products", {
   price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
   decksLeft: int("decksLeft").notNull().default(0),
   createdAt: timestamp("createdAt").defaultNow(),
+  owners: json("owners").$type<number[] | null>().default(null),
+  slug: text("slug")
 })
 
 export type Product = InferModel<typeof products>
@@ -42,13 +44,35 @@ export const productsRelations = relations(products, ({ one, many }) => ({
   owners: many(wallets)
 }))
 
+//upcoming
+
+export const upcoming = mysqlTable("upcoming", {
+  id: serial("id").primaryKey(),
+  artistID: int("artistID").notNull(),
+  name: varchar("name", { length: 191 }).notNull(),
+  description: text("description"),
+  perks: json("perks").$type<string[] | null>().default(null),
+  images: json("images").$type<StoredFile[] | null>().default(null),
+  category: mysqlEnum("category", [
+    "deck",
+    "wrap",
+    "sponsorship",
+  ])
+    .notNull()
+    .default("sponsorship"),
+  price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
+  createdAt: timestamp("createdAt").defaultNow(),
+  releaseDate: timestamp("releaseDate").defaultNow(),
+  slug: text("slug")
+})
+
 export const artists = mysqlTable("artists", {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
     name: varchar("name", { length: 191 }).notNull(),
     description: text("description"),
     images: json("image").$type<StoredFile[] | null>().default(null),
-    products: json("products").$type<Int32Array | null>().default(null),
+    products: json("products").$type<number[] | null>().default(null),
     createdAt: timestamp("createdAt").defaultNow(),
     slug: text("slug")
 })
@@ -63,8 +87,8 @@ export const artistsRelations = relations(artists, ({ many }) => ({
 export const wallets = mysqlTable("wallet", {
     id: serial("id").primaryKey(),
     userID: varchar("userId", { length: 191 }).notNull(),
-    products: json("products").$type<Int32Array | null>().default(null),
-    orders: json("orders").$type<Int32Array | null>().default(null)
+    products: json("products").$type<number[] | null>().default(null),
+    orders: json("orders").$type<number[] | null>().default(null)
 })
 
 export type Wallet = InferModel<typeof wallets>

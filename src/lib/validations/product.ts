@@ -2,6 +2,7 @@ import { products } from "@/db/schema"
 import * as z from "zod"
 
 export const productSchema = z.object({
+  artistId: z.number(),
   name: z.string().min(1, {
     message: "Must be at least 1 character",
   }),
@@ -10,13 +11,21 @@ export const productSchema = z.object({
     .enum(products.category.enumValues, {
       required_error: "Must be a valid category",
     })
-    .default(products.category.enumValues[0]),
+    .default(products.category.enumValues[2]),
   price: z.string().regex(/^\d+(\.\d{1,2})?$/, {
     message: "Must be a valid price",
   }),
-  perks: z.string().optional(),
-  decksLeft: z.number().optional(),
-  artistId: z.number(),
+  perks: z
+    .unknown()
+    .refine((val) => {
+      if(!Array.isArray(val)) return false
+      if(val.some((perk) => !(perk instanceof String))) return false
+      return true
+    }, "Must be a string array")
+    .optional()
+    .nullable()
+    .default(null),
+  decksLeft: z.number().optional().default(0),
   images: z
     .unknown()
     .refine((val) => {
@@ -27,6 +36,16 @@ export const productSchema = z.object({
     .optional()
     .nullable()
     .default(null),
+  owners: z
+    .unknown()
+    .refine((val) => {
+      if(!Array.isArray(val)) return false
+      if(val.some((owner) => !(owner instanceof Number))) return false
+      return true
+    }, "Must be a number array")
+    .optional()
+    .nullable()
+    .default(null)
 })
 
 export const filterProductsSchema = z.object({

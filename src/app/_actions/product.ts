@@ -26,6 +26,7 @@ import type {
   getProductsSchema,
   productSchema,
 } from "@/lib/validations/product"
+import { S } from "drizzle-orm/query-promise.d-0dd411fc"
 
 export async function filterProductsAction(query: string) {
   if (query.length === 0) return null
@@ -134,6 +135,8 @@ export async function addProductAction(
   input: z.infer<typeof productSchema> & {
     artistId: number
     images: StoredFile[] | null
+    perks: string[] | null
+    owners: number[] | null
   }
 ) {
   const productWithSameName = await db.query.products.findFirst({
@@ -149,6 +152,8 @@ export async function addProductAction(
     ...input,
     artistID: input.artistId,
     images: input.images,
+    perks: input.perks,
+    owners: input.owners
   })
 
   revalidatePath(`/dashboard/stores/${input.artistId}/products.`)
@@ -159,6 +164,8 @@ export async function updateProductAction(
     storeId: number
     id: number
     images: StoredFile[] | null
+    perks: string[] | null
+    owners: number[] | null
   }
 ) {
   const product = await db.query.products.findFirst({
@@ -244,14 +251,13 @@ export async function getTrendingProductsAction(input: {limit?: number, days?: n
 
 // ask charlie ======================================================================
 export async function getAllOwnersAction( input: z.infer<typeof getProductSchema> ) {
-  const { users } = await db.transaction(async (tx) => {
-    const users = await tx
-      .select(wallets.userID)
-      .from(wallets)
-      .where( inArray(input.id, wallets.products) )
-
-    return users
+  const product = await db.query.products.findFirst({
+    where: eq(products.id, input.id)
   })
 
-  return users
+  if(!product) {
+    throw new Error("Product not found")
+  }
+
+  return product.owners
 }
