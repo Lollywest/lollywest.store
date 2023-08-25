@@ -66,19 +66,26 @@ export default async function IndexPage() {
 
   return (
     <Shell as="div" className="gap-12">
-      <section
+
+      {/* <section className="items-center justify-center "> */}
+      {/* <section className="mx-auto flex w-full max-w-[64rem] flex-col items-center justify-center gap-2 pb-2 pt-2 text-center md:pb-12 md:pt-10 lg:py-8"> */}
+      {/* <section className = "mx-auto flex w-full flex-col items-center justify-center  text-center overflow-hidden"> */}
+      <section className="mx-auto flex w-full flex-col items-center justify-center gap-2 text-center overflow-hidden rounded-lg">
+        <div  style={{ width: '100vw', height: '25vw' }}>
+          <SimpleSlider />
+        </div>
+      </section>
+      
+      {/* <section
         id="hero"
         aria-labelledby="hero-heading"
-        className="mx-auto flex w-full max-w-[64rem] flex-col items-center justify-center gap-4 pb-8 pt-6 text-center md:pb-12 md:pt-10 lg:py-28"
-      >
+        className="mx-auto flex w-full max-w-[64rem] flex-col items-center justify-center gap-4 pb-8 pt-6 text-center md:pb-12 md:pt-10 lg:py-8"
+      > */}
         
         {/* <div className="flex flex-wrap items-center justify-center gap-4"> */}
-        {/* <div>
-          <SimpleSlider />
-        </div> */}
+        
 
-
-        <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
+        {/* <h1 className="text-5xl font-bold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
           Lollywest
         </h1>
         <Balance className="max-w-[46rem] text-lg text-muted-foreground sm:text-xl">
@@ -94,7 +101,7 @@ export default async function IndexPage() {
             )}
           >
             Browse Now
-          </Link>
+          </Link> */}
           {/* <Link
             href="/dashboard/stores"
             className={cn(
@@ -106,8 +113,9 @@ export default async function IndexPage() {
           >
             Sell Now
           </Link> */}
-        </div>
-      </section>
+        {/* </div> */}
+        
+      {/* </section> */}
       {/* <section
         id="categories"
         aria-labelledby="categories-heading"
@@ -165,6 +173,7 @@ export default async function IndexPage() {
           </div>
         </Link>
       </section> */}
+      
       <section
         id="featured-products"
         aria-labelledby="featured-products-heading"

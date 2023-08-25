@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator"
 import { Header } from "@/components/header"
 import { Icons } from "@/components/icons"
 import { Shell } from "@/components/shells/shell"
+import SimpleSlider  from "@/components/HomePageCarousel"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -30,6 +31,13 @@ export default function BlogPage() {
         description="Top Artists and Fan Sponsors"
       />
       <Separator className="mb-2.5" />
+
+      {/* <div style={{ width: '100vw', height: '33vw' }}>
+        <SimpleSlider />
+      </div> */}
+
+
+      
       {/* <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {posts.map((post, i) => (
           <Link key={post.slug} href={post.slug}>

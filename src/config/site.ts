@@ -30,9 +30,9 @@ export const siteConfig = {
           items: [],
         },
         {
-          title: "Social Hour",
-          href: "/build-a-board",
-          description: "Support your favorite Artists",
+          title: "Drop a Wrap/Deck",
+          href: "/drop-on-lollywest",
+          description: "Want to get involved?",
           items: [],
         },
         // {
@@ -42,9 +42,9 @@ export const siteConfig = {
         //   items: [],
         // },
         {
-          title: "News",
-          href: "/blog",
-          description: "Read our latest blog posts.",
+          title: "About Us",
+          href: "/about-lollywest",
+          description: "All about Lollywest",
           items: [],
         },
       ],
@@ -106,23 +106,23 @@ export const siteConfig = {
       items: [
         {
           title: "Contact",
-          href: "/about",
-          external: false,
-        },
-        {
-          title: "Terms & Conditions",
           href: "/contact",
           external: false,
         },
         {
-          title: "Privacy",
+          title: "Terms & Conditions",
           href: "/terms",
           external: false,
         },
         {
-          title: "General FAQ",
+          title: "Privacy",
           href: "/privacy",
           external: false,
+        },
+        {
+          title: "General FAQ",
+          href: "https://www.lollywest.com/",
+          external: true,
         },
       ],
     },
@@ -156,18 +156,18 @@ export const siteConfig = {
       items: [
         {
           title: "Artist Applications",
-          href: "https://www.youtube.com/watch?v=jfKfPfyJRdk",
-          external: true,
+          href: "/drop-on-lollywest",
+          external: false,
         },
         {
           title: "For Managers & Labels",
-          href: "https://www.youtube.com/watch?v=rUxyKA_-grg",
-          external: true,
+          href: "/manager-form",
+          external: false,
         },
         {
           title: "Partner with Lollywest",
-          href: "https://www.youtube.com/watch?v=rwionZbOryo",
-          external: true,
+          href: "/partner-with-lollywest",
+          external: false,
         },
         // {
         //   title: "coffee to go",

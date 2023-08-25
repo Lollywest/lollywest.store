@@ -158,6 +158,7 @@ export const Icons = {
             <rect id="Rectangle" stroke="#000000" fill="#000000" x="65" y="44" width="73" height="52" rx="8"></rect>
         </g>
       </g>
+      
     </svg>
   ),
   nextjs: (props: LucideProps) => (

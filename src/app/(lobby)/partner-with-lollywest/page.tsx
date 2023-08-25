@@ -83,7 +83,7 @@ export const metadata: Metadata = {
 }
 
 // export default function BlogPage() {
-export default async function DropOnLollywest({
+export default async function ParnerWithLollywest({
   params,
 }: UpdateStorePageProps) {
   const storeId = Number(params.storeId)
@@ -145,8 +145,8 @@ export default async function DropOnLollywest({
   return (
     <Shell className="md:pb-10">
       <Header
-        title="Apply to Drop on Lollywest"
-        description="Learn how to get involved"
+        title="Partnerships with Lollywest"
+        description="Interested in a collaboration or partnership with Lollywest?"
       />
 
       
@@ -159,9 +159,9 @@ export default async function DropOnLollywest({
         aria-labelledby="update-store-heading"
       >
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Artist? Apply here</CardTitle>
+          <CardTitle className="text-2xl">Partnership Inquiry</CardTitle>
           <CardDescription>
-            Fill out the short form below and a member from our team will review it as soon as possible.
+            Fill out the form below and a member from our sales team will reach out with future steps
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -184,20 +184,20 @@ export default async function DropOnLollywest({
               />
             </fieldset>
             <fieldset className="grid gap-2.5">
-              <Label htmlFor="update-store-description">Preliminary Application</Label>
+              <Label htmlFor="update-store-description">Reason for Reaching Out</Label>
               <Textarea
                 id="update-store-description"
                 aria-describedby="update-store-description-description"
                 name="description"
                 minLength={3}
                 maxLength={1000}
-                placeholder="Type description of your music, fanbase, intrest in joining Lollywest, possibilities for wraps/decks, etc."
+                placeholder="Type the organization/venue/person you represent, intrest in collaboration or partnering with Lollywest, possible partnerships/collaborations etc."
                 //defaultValue={store.description ?? ""}
               />
             </fieldset>
             <div className="flex space-x-2">
               <LoadingButton>
-                Send Application
+                Send Inquiry
                 <span className="sr-only">Update store</span>
               </LoadingButton>
               {/* <LoadingButton
@@ -213,106 +213,7 @@ export default async function DropOnLollywest({
         </CardContent>
       </Card>
 
-      {/* <Card>
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Sign up</CardTitle>
-          <CardDescription>
-            Choose your preferred sign up method
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4">
-          <OAuthSignIn />
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or continue with
-              </span>
-            </div>
-          </div>
-          <SignUpForm />
-        </CardContent>
-        <CardFooter>
-          <div className="text-sm text-muted-foreground">
-            Already have an account?{" "}
-            <Link
-              aria-label="Sign in"
-              href="/signin"
-              className="text-primary underline-offset-4 transition-colors hover:underline"
-            >
-              Sign in
-            </Link>
-          </div>
-        </CardFooter>
-      </Card> */}
-
-      {/* <section
-            id="newsletter"
-            aria-labelledby="newsletter-heading"
-            className="space-y-3"
-          >
-            <h4 className="text-base font-medium">
-              Subscribe to our newsletter
-            </h4>
-            <SubscribeToNewsletterForm />
-          </section> */}
-
-
-      {/* <Accordion type="single" collapsible>
-        <AccordionItem value="item-1">
-          <AccordionTrigger>Who can Drop on Lollywest?</AccordionTrigger>
-          <AccordionContent>
-            Yes. It adheres to the WAI-ARIA design pattern.
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion> */}
-
-
-      {/* <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {posts.map((post, i) => (
-          <Link key={post.slug} href={post.slug}>
-            <article className="flex flex-col space-y-2.5">
-              <AspectRatio ratio={16 / 9}>
-                {post.image ? (
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    sizes="(min-width: 1024px) 384px, (min-width: 768px) 288px, (min-width: 640px) 224px, 100vw"
-                    className="rounded-lg object-cover"
-                    priority={i <= 1}
-                  />
-                ) : (
-                  <div
-                    aria-label="Placeholder"
-                    role="img"
-                    aria-roledescription="placeholder"
-                    className="flex h-full w-full items-center justify-center rounded-lg bg-secondary"
-                  >
-                    <Icons.placeholder
-                      className="h-9 w-9 text-muted-foreground"
-                      aria-hidden="true"
-                    />
-                  </div>
-                )}
-              </AspectRatio>
-              <h2 className="line-clamp-1 text-xl font-semibold">
-                {post.title}
-              </h2>
-              <p className="line-clamp-2 text-muted-foreground">
-                {post.description}
-              </p>
-              {/* {post.date ? (
-                <p className="text-sm text-muted-foreground">
-                  {formatDate(post.date)}
-                </p>
-              ) : null} */}
-            {/* </article>
-          </Link>
-        ))} */}
-      {/* </div> */} 
+      
     </Shell>
   )
 }

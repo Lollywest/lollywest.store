@@ -20,7 +20,9 @@ export default function SimpleSlider(){
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-   
+    // height: "50px",
+    // width: "50px"
+    arrows: false,
     }
   
   return (
@@ -28,31 +30,86 @@ export default function SimpleSlider(){
       //   <h2>Single Item </h2>
       <Slider {...settings}>
        
-        {/* <div>
+        
+
+        {/* <div  style={{ width: '100px', height: '100px' }}> */}
+        {/* <div style={{ width: '500px', height: '300px' }}> */}
+          <div className = "rounded-sm">
+            {/* <AspectRatio ratio={1}> */}
+              <Image
+                
+                //role="group"
+                //key={index}
+                //aria-roledescription="slide"
+                src="/images/splash.webp"
+                alt=""
+                //fill
+                width={6000}
+                height={4000}
+                //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                //className="object-cover"
+                //className="w-full max-w-screen-xl"
+                //className="m-0 p-0 w-full max-w-screen-xl"
+              />
+            {/* </AspectRatio> */}
+          </div>
+        {/* </div> */}
+        <div className = "overflow-hidden ">
+            <Image
+
+              src="/images/space.webp"
+              alt=""
+              //fill
+              width={3536}
+              height={2357}
+              //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+
+            />
           
-          <Image
-            src="/images/griptape-one.webp"
-            alt="A skateboarder doing a high drop"
-            //fill
-            className="absolute inset-0 object-cover"
-            priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            width = "50"
-            height = "50"
-          />
+        </div>
+        <div>
+        <div className = "overflow-hidden">
+            <Image
+
+              src="/images/waves.webp"
+              alt=""
+              //fill
+              width={6000}
+              height={4000}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              //overflow-hidden
+              
+            />
           
-        </div> */}
-        <div>
-          <h3>3</h3>
         </div>
-        <div>
-          <h3>4</h3>
         </div>
-        <div>
-          <h3>5</h3>
+        
+        <div className = "overflow-hidden">
+            <Image
+
+              src="/images/stairs.webp"
+              alt=""
+              //fill
+              width={4288}
+              height={2848}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+
+            />
+          
         </div>
-        <div>
-          <h3>6</h3>
+        
+        <div className = "overflow-hidden">
+            <Image
+
+              src="/images/audience.webp"
+              alt=""
+              //fill
+              width={5472}
+              height={3648}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              
+            />
+          
         </div>
       </Slider>
    

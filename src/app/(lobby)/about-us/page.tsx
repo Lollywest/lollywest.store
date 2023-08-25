@@ -12,7 +12,18 @@ import { Header } from "@/components/header"
 import { Icons } from "@/components/icons"
 import { Shell } from "@/components/shells/shell"
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
+interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  title: string
+  description?: string | null
+  size?: "default" | "sm"
+}
 export const metadata: Metadata = {
     metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
     title: "Blog",
@@ -31,6 +42,78 @@ export const metadata: Metadata = {
           description="What is Lollywest?"
         />
         <Separator className="mb-2.5" />
+
+        
+      
+   
+      <div className="about-us">
+        {/* <header>
+          <h1>About Us</h1>
+          <p>{description}</p>
+          <img src={image} alt={description} />
+          <p>Published on {date}</p>
+          <p>Authors: {authors.join(', ')}</p>
+        </header> */}
+
+        <section >
+          <h2 className = "line-clamp-1 text-3xl tracking-tight">Introduction to Lollywest</h2>
+          <div className = "line-clamp-2 text-muted-foreground">
+          Lollywest is a creative and fan-centric hub where artists unveil decks, wraps, and sponsorship opportunities to enhance financial support and deepen fan interaction. The Lollywest leaderboard prominently showcases top sponsors and artists, determined by the worth of their sponsorship credits. Each transaction generates sponsorship credits that can be utilized to qualify for the yearly Lollywest incentive payout.
+          </div>
+        </section>
+
+        <section>
+          <h2>What is skateboarding?</h2>
+          ... content goes here fghddfg
+          <blockquote>
+            I feel like skateboarding is as much of a sport as a lifestyle, and an art form, so there's so much that that transcends in terms of music, fashion, and entertainment.
+          </blockquote>
+        </section>
+
+      {/* ... Other sections can be added similarly ... */}
+
+        <footer>
+          <h2>References</h2>
+          <ul>
+            <li><a href="https://en.wikipedia.org/wiki/Skateboarding">Wikipedia on Skateboarding</a></li>
+            <li><a href="https://www.brainyquote.com/authors/tony-hawk-quotes">Tony Hawk Quotes</a></li>
+          </ul>
+        </footer>
+    </div>
+      {/* <Accordion type="single" collapsible className="w-full">
+        <AccordionItem value="item-1">
+          <AccordionTrigger>What is Lollywest?</AccordionTrigger>
+          <AccordionContent>
+            Blah Blah.........
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-2">
+          <AccordionTrigger>How it Works</AccordionTrigger>
+          <AccordionContent>
+            hmmmmm......
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-3">
+          <AccordionTrigger>About our Products</AccordionTrigger>
+          <AccordionContent>
+            Our products........
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-4">
+          <AccordionTrigger>Buying Guide</AccordionTrigger>
+          <AccordionContent>
+            Buy.........
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-5">
+          <AccordionTrigger>Our Values</AccordionTrigger>
+          <AccordionContent>
+            Our values........
+          </AccordionContent>
+        </AccordionItem>
+    </Accordion> */}
+
+       
         {/* <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {posts.map((post, i) => (
             <Link key={post.slug} href={post.slug}>

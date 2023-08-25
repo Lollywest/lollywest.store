@@ -192,6 +192,49 @@ export function MainNav({ items }: MainNavProps) {
 
           {items?.[0]?.items ? (
             <NavigationMenuItem>
+              <Link
+                      aria-label="Sponsor Artists"
+                      href="/sponsor-artists"
+                      // className="hidden items-center space-x-2 lg:flex"
+                      className="text-sm leading-tight text-muted-foreground"
+                    >
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sponsor Artists&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      {/* <span className="hidden font-bold lg:inline-block">
+                        Top Artists & Fans
+                      </span> */}
+                      
+                    </Link>
+              {/* <NavigationMenuTrigger className="h-auto">
+                Leaderboards
+              </NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+             
+                  <li className="row-span-3">
+                    <NavigationMenuLink >
+
+                    <Link
+                      aria-label="Leaderboards"
+                      href="/leaderboards"
+                      className="hidden items-center space-x-2 lg:flex"
+                    >
+                      <span className="hidden font-bold lg:inline-block">
+                        Top Artists & Fans
+                      </span>
+                      
+                    </Link>
+                  
+ 
+                    </NavigationMenuLink>
+                  </li>
+                 
+                </ul>
+              </NavigationMenuContent> */}
+            </NavigationMenuItem>
+          ) : null}
+
+          {/* {items?.[0]?.items ? (
+            <NavigationMenuItem>
 
                     <Link
                       aria-label="drop-on-lollywest"
@@ -199,12 +242,12 @@ export function MainNav({ items }: MainNavProps) {
                       //className="hidden items-center space-x-2 lg:flex"
                       className="text-sm leading-tight text-muted-foreground"
                     >
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Drop a Wrap&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Drop a Wrap&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
                       {/* <span className="hidden font-bold lg:inline-block">
                         Drop a Wrap
                       </span> */}
                       
-                    </Link> 
+                    {/* </Link>  */}
               {/* <NavigationMenuTrigger className="h-auto">
                 Drop on Lollywest
               </NavigationMenuTrigger>
@@ -230,25 +273,25 @@ export function MainNav({ items }: MainNavProps) {
                  
                 </ul>
               </NavigationMenuContent> */}
-            </NavigationMenuItem>
-          ) : null}
+            {/* </NavigationMenuItem>
+          ) : null} */}
 
-          {items?.[0]?.items ? (
+          {/* {items?.[0]?.items ? (
             
-            <NavigationMenuItem>
+            <NavigationMenuItem> */}
   
               {/* <NavigationMenuTrigger className="h-auto"> */}
-                <Link
+                {/* <Link
                         aria-label="about-us"
                         href="/about-us"
                         //className="hidden items-center space-x-2 lg:flex"
                         className="text-sm leading-tight text-muted-foreground"
                       >
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;About Us
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;About Us */}
                         {/* <span className="hidden font-bold lg:inline-block">
                           About Lollywest
                         </span> */}
-                      </Link>
+                      {/* </Link> */}
                 
               {/* </NavigationMenuTrigger> */}
               {/* <NavigationMenuContent>
@@ -274,8 +317,8 @@ export function MainNav({ items }: MainNavProps) {
                  
                 </ul>
               </NavigationMenuContent> */}
-            </NavigationMenuItem>
-          ) : null}
+            {/* </NavigationMenuItem>
+          ) : null} */}
 
 
 
