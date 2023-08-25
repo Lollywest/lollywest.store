@@ -72,17 +72,15 @@ export type CheckoutItem = z.infer<typeof checkoutItemSchema>
 export interface CartLineItem
   extends Pick<
     Product,
-    | "id"
-    | "name"
-    | "images"
-    | "category"
-    | "subcategory"
-    | "price"
-    | "inventory"
-    | "storeId"
+    "id" | 
+    "name" | 
+    "price" | 
+    "artistID" |
+    "images" | 
+    "category"
   > {
   quantity?: number
-  storeName: string | null
+  artistName: string | null
 }
 
 export interface SubscriptionPlan {

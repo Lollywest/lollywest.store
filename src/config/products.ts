@@ -21,7 +21,7 @@ export const sortOptions = [
 
 export const productCategories = [
   {
-    title: "Featured",
+    title: "deck",
     image: "/images/skateboard-one.webp",
     subcategories: [
       // {
@@ -72,7 +72,7 @@ export const productCategories = [
     ],
   },
   {
-    title: "Drop on Lollywest",
+    title: "wrap",
     image: "/images/clothing-one.webp",
     subcategories: [
       {
@@ -108,7 +108,7 @@ export const productCategories = [
     ],
   },
   {
-    title: "Leaderboards",
+    title: "sponsorhsip",
     image: "/images/shoe-one.webp",
     subcategories: [
       {
@@ -139,56 +139,7 @@ export const productCategories = [
       //   slug: "classics",
       // },
     ],
-  },
-  {
-    title: "About Us",
-    image: "/images/backpack-one.webp",
-    subcategories: [
-      {
-        title: "How it Works",
-        description:
-          "Want a look inside? Click here.",
-        slug: "skate-tools",
-        href:"",
-      },
-      {
-        title: "About Lollywest",
-        description: "What is Lollywest?",
-        slug: "bushings",
-        href:"",
-      },
-      {
-        title: "About our Products",
-        description:
-          "Click here to learn more about the products we offer.",
-        slug: "shock-riser-pads",
-        href:"",
-      },
-      {
-        title: "Buying Guide",
-        description:
-          "Can't decide what's best? Let us help.",
-        slug: "skate-rails",
-        href:"",
-      },
-      {
-        title: "Our Values",
-        description: "Click here to learn what were all about",
-        slug: "wax",
-        href:"",
-      },
-      // {
-      //   title: "Socks",
-      //   description: "Keep your feet comfy and stylish with our rad socks.",
-      //   slug: "socks",
-      // },
-      // {
-      //   title: "Backpacks",
-      //   description: "Carry your gear in style with our rad backpacks.",
-      //   slug: "backpacks",
-      // },
-    ],
-  },
+  }
 ] satisfies {
   title: Product["category"]
   image: string

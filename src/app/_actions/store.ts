@@ -2,57 +2,57 @@
 
 import { revalidatePath } from "next/cache"
 import { db } from "@/db"
-import { products, stores, type Store } from "@/db/schema"
+import { products, artists, type Artist } from "@/db/schema"
 import { and, asc, desc, eq, gt, lt, sql } from "drizzle-orm"
 import { type z } from "zod"
 
 import { slugify } from "@/lib/utils"
-import type { getStoreSchema, storeSchema } from "@/lib/validations/store"
+import type { getArtistSchema, artistSchema } from "@/lib/validations/artist"
 
 export async function getStoresAction(input: {
   limit?: number
   offset?: number
-  sort?: `${keyof Store | "productCount"}.${"asc" | "desc"}`
+  sort?: `${keyof Artist | "productCount"}.${"asc" | "desc"}`
   userId?: string
 }) {
   const limit = input.limit ?? 10
   const offset = input.offset ?? 0
   const [column, order] =
     (input.sort?.split("-") as [
-      keyof Store | undefined,
+      keyof Artist | undefined,
       "asc" | "desc" | undefined,
     ]) ?? []
 
   const { items, total } = await db.transaction(async (tx) => {
     const items = await tx
       .select({
-        id: stores.id,
-        name: stores.name,
+        id: artists.id,
+        name: artists.name,
         productCount: sql<number>`count(${products.id})`,
       })
-      .from(stores)
+      .from(artists)
       .limit(limit)
       .offset(offset)
-      .leftJoin(products, eq(stores.id, products.storeId))
-      .where(input.userId ? eq(stores.userId, input.userId) : undefined)
-      .groupBy(stores.id)
+      .leftJoin(products, eq(artists.id, products.artistID))
+      .where(input.userId ? eq(artists.userId, input.userId) : undefined)
+      .groupBy(artists.id)
       .orderBy(
         input.sort === "productCount.asc"
           ? asc(sql<number>`count(${products.id})`)
           : input.sort === "productCount.desc"
           ? desc(sql<number>`count(${products.id})`)
-          : column && column in stores
+          : column && column in artists
           ? order === "asc"
-            ? asc(stores[column])
-            : desc(stores[column])
-          : desc(stores.createdAt)
+            ? asc(artists[column])
+            : desc(artists[column])
+          : desc(artists.createdAt) //////not sure if needed =====================================
       )
 
     const total = await tx
       .select({
-        count: sql<number>`count(${stores.id})`,
+        count: sql<number>`count(${artists.id})`,
       })
-      .from(stores)
+      .from(artists)
 
     return {
       items,
@@ -66,18 +66,19 @@ export async function getStoresAction(input: {
   }
 }
 
-export async function addStoreAction(
-  input: z.infer<typeof storeSchema> & { userId: string }
+// not sure if we need this =================================
+export async function addArtistAction(
+  input: z.infer<typeof artistSchema> & { userId: string }
 ) {
-  const storeWithSameName = await db.query.stores.findFirst({
-    where: eq(stores.name, input.name),
+  const artistWithSameName = await db.query.artists.findFirst({
+    where: eq(artists.name, input.name),
   })
 
-  if (storeWithSameName) {
-    throw new Error("Store name already taken.")
+  if (artistWithSameName) {
+    throw new Error("Artist name already taken.")
   }
 
-  await db.insert(stores).values({
+  await db.insert(artists).values({
     name: input.name,
     description: input.description,
     userId: input.userId,
@@ -87,58 +88,58 @@ export async function addStoreAction(
   revalidatePath("/dashboard/stores")
 }
 
-export async function getNextStoreIdAction(
-  input: z.infer<typeof getStoreSchema>
+export async function getNextArtistIdAction(
+  input: z.infer<typeof getArtistSchema>
 ) {
   if (typeof input.id !== "number" || typeof input.userId !== "string") {
     throw new Error("Invalid input.")
   }
 
-  const nextStore = await db.query.stores.findFirst({
-    where: and(eq(stores.userId, input.userId), gt(stores.id, input.id)),
-    orderBy: asc(stores.id),
+  const nextArtist = await db.query.artists.findFirst({
+    where: and(eq(artists.userId, input.userId), gt(artists.id, input.id)),
+    orderBy: asc(artists.id),
   })
 
-  if (!nextStore) {
-    const firstStore = await db.query.stores.findFirst({
-      where: eq(stores.userId, input.userId),
-      orderBy: asc(stores.id),
+  if (!nextArtist) {
+    const firstArtist = await db.query.artists.findFirst({
+      where: eq(artists.userId, input.userId),
+      orderBy: asc(artists.id),
     })
 
-    if (!firstStore) {
-      throw new Error("Store not found.")
+    if (!firstArtist) {
+      throw new Error("Artist not found.")
     }
 
-    return firstStore.id
+    return firstArtist.id
   }
 
-  return nextStore.id
+  return nextArtist.id
 }
 
-export async function getPreviousStoreIdAction(
-  input: z.infer<typeof getStoreSchema>
+export async function getPreviousArtistIdAction(
+  input: z.infer<typeof getArtistSchema>
 ) {
   if (typeof input.id !== "number" || typeof input.userId !== "string") {
     throw new Error("Invalid input.")
   }
 
-  const previousStore = await db.query.stores.findFirst({
-    where: and(eq(stores.userId, input.userId), lt(stores.id, input.id)),
-    orderBy: desc(stores.id),
+  const previousArtist = await db.query.artists.findFirst({
+    where: and(eq(artists.userId, input.userId), lt(artists.id, input.id)),
+    orderBy: desc(artists.id),
   })
 
-  if (!previousStore) {
-    const lastStore = await db.query.stores.findFirst({
-      where: eq(stores.userId, input.userId),
-      orderBy: desc(stores.id),
+  if (!previousArtist) {
+    const lastArtist = await db.query.artists.findFirst({
+      where: eq(artists.userId, input.userId),
+      orderBy: desc(artists.id),
     })
 
-    if (!lastStore) {
-      throw new Error("Store not found.")
+    if (!lastArtist) {
+      throw new Error("Artist not found.")
     }
 
-    return lastStore.id
+    return lastArtist.id
   }
 
-  return previousStore.id
+  return previousArtist.id
 }
