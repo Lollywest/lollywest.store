@@ -24,48 +24,51 @@ export const productCategories = [
     title: "deck",
     image: "/images/skateboard-one.webp",
     subcategories: [
+      // {
+      //   title: "All",
+      //   description: "The board itself.",
+      //   image: "/images/deck-one.webp",
+      //   slug: "decks",
+      // },
       {
-        title: "Decks",
-        description: "The board itself.",
-        image: "/images/deck-one.webp",
-        slug: "decks",
-      },
-      {
-        title: "Wheels",
-        description: "The wheels that go on the board.",
+        title: "Featured Wraps",
+        description: "Handpicked Featured Wraps",
         image: "/images/wheel-one.webp",
         slug: "wheels",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
       {
-        title: "Trucks",
-        description: "The trucks that go on the board.",
+        title: "Featured Decks",
+        description: "Best of the Best. Featured Decks",
         image: "/images/truck-one.webp",
-        slug: "trucks",
+        slug: "Featured Decks",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
       {
-        title: "Bearings",
-        description: "The bearings that go in the wheels.",
+        title: "Featured Sponsorships",
+        description: "Featured Sponsorships",
         image: "/images/bearing-one.webp",
         slug: "bearings",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
-      {
-        title: "Griptape",
-        description: "The griptape that goes on the board.",
-        image: "/images/griptape-one.webp",
-        slug: "griptape",
-      },
-      {
-        title: "Hardware",
-        description: "The hardware that goes on the board.",
-        image: "/images/hardware-one.webp",
-        slug: "hardware",
-      },
-      {
-        title: "Tools",
-        description: "The tools that go with the board.",
-        image: "/images/tool-one.webp",
-        slug: "tools",
-      },
+      // {
+      //   title: "Griptape",
+      //   description: "The griptape that goes on the board.",
+      //   image: "/images/griptape-one.webp",
+      //   slug: "griptape",
+      // },
+      // {
+      //   title: "Hardware",
+      //   description: "The hardware that goes on the board.",
+      //   image: "/images/hardware-one.webp",
+      //   slug: "hardware",
+      // },
+      // {
+      //   title: "Tools",
+      //   description: "The tools that go with the board.",
+      //   image: "/images/tool-one.webp",
+      //   slug: "tools",
+      // },
     ],
   },
   {
@@ -73,29 +76,34 @@ export const productCategories = [
     image: "/images/clothing-one.webp",
     subcategories: [
       {
-        title: "T-shirts",
-        description: "Cool and comfy tees for effortless style.",
-        slug: "t-shirts",
+        title: "Drop a Wrap",
+        description: "Want to get involved? Click here.",
+        slug: "",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
       {
-        title: "Hoodies",
-        description: "Cozy up in trendy hoodies.",
+        title: "What is a Wrap?",
+        description: "About our Wrap subscriptions",
         slug: "hoodies",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
       {
-        title: "Pants",
-        description: "Relaxed and stylish pants for everyday wear.",
+        title: "What is a Deck",
+        description: "Everything about Deck ownership",
         slug: "pants",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
       {
-        title: "Shorts",
-        description: "Stay cool with casual and comfortable shorts.",
+        title: "What is a Sponsor?",
+        description: "About our artist Sponsorships",
         slug: "shorts",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
       {
-        title: "Hats",
-        description: "Top off your look with stylish and laid-back hats.",
+        title: "Artist FAQ",
+        //description: "Top off your look with stylish and laid-back hats.",
         slug: "hats",
+        href:"src/app/(lobby)/featured/page.tsx",
       },
     ],
   },
@@ -104,30 +112,32 @@ export const productCategories = [
     image: "/images/shoe-one.webp",
     subcategories: [
       {
-        title: "Low Tops",
-        description: "Rad low tops shoes for a stylish low-profile look.",
+        title: "Top Sponsors (users)",
+        description: "Top fans by Sponsor Credits",
         slug: "low-tops",
+        href:"",
       },
       {
-        title: "High Tops",
-        description: "Elevate your style with rad high top shoes.",
+        title: "Top Artists by Sponsors",
+        description: "Top artists by Sponsor Credits",
         slug: "high-tops",
+        href:"",
       },
-      {
-        title: "Slip-ons",
-        description: "Effortless style with rad slip-on shoes.",
-        slug: "slip-ons",
-      },
-      {
-        title: "Pros",
-        description: "Performance-driven rad shoes for the pros.",
-        slug: "pros",
-      },
-      {
-        title: "Classics",
-        description: "Timeless style with rad classic shoes.",
-        slug: "classics",
-      },
+      // {
+      //   title: "Slip-ons",
+      //   description: "Effortless style with rad slip-on shoes.",
+      //   slug: "slip-ons",
+      // },
+      // {
+      //   title: "Pros",
+      //   description: "Performance-driven rad shoes for the pros.",
+      //   slug: "pros",
+      // },
+      // {
+      //   title: "Classics",
+      //   description: "Timeless style with rad classic shoes.",
+      //   slug: "classics",
+      // },
     ],
   }
 ] satisfies {
@@ -138,6 +148,7 @@ export const productCategories = [
     description?: string
     image?: string
     slug: string
+    href?: string
   }[]
 }[]
 

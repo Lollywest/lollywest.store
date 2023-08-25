@@ -22,6 +22,10 @@ import { Icons } from "@/components/icons"
 import { ProductCard } from "@/components/product-card"
 import { Shell } from "@/components/shells/shell"
 
+import SimpleSlider  from "@/components/HomePageCarousel"
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+
 // Running out of edge function execution units on vercel free plan
 // export const runtime = "edge"
 
@@ -49,31 +53,56 @@ export default async function IndexPage() {
     .groupBy(stores.id)
     .orderBy(desc(sql<number>`count(${products.id})`))
 
+    // const StyledTitle = styled.div`
+    //   font-size: 28px;
+    //   font-weight: 600;
+    //   color: white;
+    // `;
+
+    // const Title = (props: { title: string }) => (
+    //   <StyledTitle>{props.title}</StyledTitle>
+    // );
+
+
   return (
     <Shell as="div" className="gap-12">
-      <section
+
+      {/* <section className="items-center justify-center "> */}
+      {/* <section className="mx-auto flex w-full max-w-[64rem] flex-col items-center justify-center gap-2 pb-2 pt-2 text-center md:pb-12 md:pt-10 lg:py-8"> */}
+      {/* <section className = "mx-auto flex w-full flex-col items-center justify-center  text-center overflow-hidden"> */}
+      <section className="mx-auto flex w-full flex-col items-center justify-center gap-2 text-center overflow-hidden rounded-lg">
+        <div  style={{ width: '100vw', height: '25vw' }}>
+          <SimpleSlider />
+        </div>
+      </section>
+      
+      {/* <section
         id="hero"
         aria-labelledby="hero-heading"
-        className="mx-auto flex w-full max-w-[64rem] flex-col items-center justify-center gap-4 pb-8 pt-6 text-center md:pb-12 md:pt-10 lg:py-28"
-      >
-        <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
+        className="mx-auto flex w-full max-w-[64rem] flex-col items-center justify-center gap-4 pb-8 pt-6 text-center md:pb-12 md:pt-10 lg:py-8"
+      > */}
+        
+        {/* <div className="flex flex-wrap items-center justify-center gap-4"> */}
+        
+
+        {/* <h1 className="text-5xl font-bold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
           Lollywest
         </h1>
         <Balance className="max-w-[46rem] text-lg text-muted-foreground sm:text-xl">
-          A marketplace for creators and fans. Join now!
+          A marketplace for creators and fans. Join Now!
         </Balance>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Link
-            href="/products"
+            href="/featured"
             className={cn(
               buttonVariants({
                 size: "lg",
               })
             )}
           >
-            Buy Now
-          </Link>
-          <Link
+            Browse Now
+          </Link> */}
+          {/* <Link
             href="/dashboard/stores"
             className={cn(
               buttonVariants({
@@ -83,10 +112,11 @@ export default async function IndexPage() {
             )}
           >
             Sell Now
-          </Link>
-        </div>
-      </section>
-      <section
+          </Link> */}
+        {/* </div> */}
+        
+      {/* </section> */}
+      {/* <section
         id="categories"
         aria-labelledby="categories-heading"
         className="space-y-6 py-6 md:pt-10 lg:pt-24"
@@ -127,8 +157,8 @@ export default async function IndexPage() {
             </Link>
           ))}
         </div>
-      </section>
-      <section
+      </section> */}
+      {/* <section
         id="create-a-store-banner"
         aria-labelledby="create-a-store-banner-heading"
         className="grid place-items-center gap-6 rounded-lg border bg-card px-6 py-16 text-center text-card-foreground shadow-sm"
@@ -142,7 +172,8 @@ export default async function IndexPage() {
             <span className="sr-only">Create a store</span>
           </div>
         </Link>
-      </section>
+      </section> */}
+      
       <section
         id="featured-products"
         aria-labelledby="featured-products-heading"
@@ -150,9 +181,9 @@ export default async function IndexPage() {
       >
         <div className="flex items-center">
           <h2 className="flex-1 text-2xl font-medium sm:text-3xl">
-            Featured products
+            Trending Now
           </h2>
-          <Link href="/products">
+          {/* <Link href="/products">
             <div
               className={cn(
                 buttonVariants({
@@ -163,7 +194,7 @@ export default async function IndexPage() {
               View all
               <span className="sr-only">View all products</span>
             </div>
-          </Link>
+          </Link> */}
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {allProducts.map((product) => (
@@ -176,7 +207,7 @@ export default async function IndexPage() {
         aria-labelledby="featured-stores-heading"
         className="space-y-6"
       >
-        <h2 className="text-2xl font-medium sm:text-3xl">Featured stores</h2>
+        <h2 className="text-2xl font-medium sm:text-3xl">Upcoming Drops</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {allStoresWithProductCount.map((store) => (
             <Card key={store.id} className="flex h-full flex-col">

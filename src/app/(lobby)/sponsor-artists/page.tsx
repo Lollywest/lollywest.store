@@ -1,6 +1,7 @@
-import { type Product } from "@/db/schema"
+import { type Metadata } from "next"
+import { products } from "@/db/schema"
+import { env } from "@/env.mjs"
 
-import { toTitleCase } from "@/lib/utils"
 import { Header } from "@/components/header"
 import { Products } from "@/components/products"
 import { Shell } from "@/components/shells/shell"
@@ -10,31 +11,26 @@ import { getStoresAction } from "@/app/_actions/store"
 // Running out of edge function execution units on vercel free plan
 // export const runtime = "edge"
 
-interface CategoryPageProps {
-  params: {
-    category: Product["category"]
-  }
+export const metadata: Metadata = {
+  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
+  title: "Products",
+  description: "Buy products from our stores",
+}
+
+interface ProductsPageProps {
   searchParams: {
     [key: string]: string | string[] | undefined
   }
 }
 
-export function generateMetadata({ params }: CategoryPageProps) {
-  return {
-    title: toTitleCase(params.category),
-    description: `Buy products from the ${params.category} category`,
-  }
-}
-
-export default async function CategoryPage({
-  params,
+export default async function ProductsPage({
   searchParams,
-}: CategoryPageProps) {
-  const { category } = params
+}: ProductsPageProps) {
   const {
     page,
     per_page,
     sort,
+    categories,
     subcategories,
     price_range,
     store_ids,
@@ -49,7 +45,7 @@ export default async function CategoryPage({
     limit,
     offset,
     sort: typeof sort === "string" ? sort : null,
-    categories: category,
+    categories: typeof categories === "string" ? categories : null,
     subcategories: typeof subcategories === "string" ? subcategories : null,
     price_range: typeof price_range === "string" ? price_range : null,
     store_ids: typeof store_ids === "string" ? store_ids : null,
@@ -75,14 +71,14 @@ export default async function CategoryPage({
   return (
     <Shell>
       <Header
-        title={toTitleCase(category)}
-        description={``}
+        title= "Artist Sponsorships"
+        description= "Support your favorite artist"
         size="sm"
       />
       <Products
         products={productsTransaction.items}
         pageCount={pageCount}
-        category={category}
+        categories={Object.values(products.category.enumValues)}
         stores={storesTransaction.items}
         storePageCount={storePageCount}
       />

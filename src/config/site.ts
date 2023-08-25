@@ -16,7 +16,7 @@ const links = {
 export const siteConfig = {
   name: "Lollywest",
   description:
-    "A marketplace for selling cards",
+    "Changing how artists earn and fans engage",
   url: "https://www.lollywest.store/",
   ogImage: "https://skateshop.sadmn.com/opengraph-image.png",
   mainNav: [
@@ -24,21 +24,27 @@ export const siteConfig = {
       title: "Lobby",
       items: [
         {
-          title: "Products",
-          href: "/products",
-          description: "All the products we have to offer.",
+          title: "Our Products",
+          href: "/featured",
+          description: "Check out our Artists and Wraps.",
           items: [],
         },
         {
-          title: "Build a Board",
-          href: "/build-a-board",
-          description: "Build your own custom skateboard.",
+          title: "Drop a Wrap/Deck",
+          href: "/drop-on-lollywest",
+          description: "Want to get involved?",
           items: [],
         },
+        // {
+        //   title: "Connect (Discord)",
+        //   href: "/build-a-board",
+        //   description: "Build your own custom skateboard.",
+        //   items: [],
+        // },
         {
-          title: "Blog",
-          href: "/blog",
-          description: "Read our latest blog posts.",
+          title: "About Us",
+          href: "/about-lollywest",
+          description: "All about Lollywest",
           items: [],
         },
       ],
@@ -46,12 +52,12 @@ export const siteConfig = {
     ...productCategories.map((category) => ({
       title: category.title,
       items: [
-        {
-          title: "All",
-          href: `/categories/${slugify(category.title)}`,
-          description: `All ${category.title}.`,
-          items: [],
-        },
+        // {
+        //   title: "All",
+        //   href: `/categories/${slugify(category.title)}`,
+        //   description: `All ${category.title}.`,
+        //   items: [],
+        // },
         ...category.subcategories.map((subcategory) => ({
           title: subcategory.title,
           href: `/categories/${slugify(category.title)}/${subcategory.slug}`,
@@ -62,52 +68,49 @@ export const siteConfig = {
     })),
   ] satisfies MainNavItem[],
   links,
+  
+
   footerNav: [
-    {
-      title: "Credits",
-      items: [
-        {
-          title: "OneStopShop",
-          href: "https://onestopshop.jackblatch.com",
-          external: true,
-        },
-        {
-          title: "Acme Corp",
-          href: "https://acme-corp.jumr.dev",
-          external: true,
-        },
-        {
-          title: "craft.mxkaske.dev",
-          href: "https://craft.mxkaske.dev",
-          external: true,
-        },
-        {
-          title: "Taxonomy",
-          href: "https://tx.shadcn.com/",
-          external: true,
-        },
-        {
-          title: "shadcn/ui",
-          href: "https://ui.shadcn.com",
-          external: true,
-        },
-      ],
-    },
+    // {
+    //   title: "About our Products",
+    //   items: [
+    //     {
+    //       title: "Wraps",
+    //       href: "https://onestopshop.jackblatch.com",
+    //       external: true,
+    //     },
+    //     {
+    //       title: "Subscriptions",
+    //       href: "https://acme-corp.jumr.dev",
+    //       external: true,
+    //     },
+    //     {
+    //       title: "Artist Info",
+    //       href: "https://craft.mxkaske.dev",
+    //       external: true,
+    //     },
+    //     {
+    //       title: "User Info",
+    //       href: "https://tx.shadcn.com/",
+    //       external: true,
+    //     },
+    //     // {
+    //     //   title: "shadcn/ui",
+    //     //   href: "https://ui.shadcn.com",
+    //     //   external: true,
+    //     // },
+    //   ],
+    // },
     {
       title: "Help",
       items: [
-        {
-          title: "About",
-          href: "/about",
-          external: false,
-        },
         {
           title: "Contact",
           href: "/contact",
           external: false,
         },
         {
-          title: "Terms",
+          title: "Terms & Conditions",
           href: "/terms",
           external: false,
         },
@@ -116,56 +119,61 @@ export const siteConfig = {
           href: "/privacy",
           external: false,
         },
+        {
+          title: "General FAQ",
+          href: "https://www.lollywest.com/",
+          external: true,
+        },
       ],
     },
     {
       title: "Social",
       items: [
         {
-          title: "Twitter",
+          title: "Discord",
           href: links.twitter,
           external: true,
         },
         {
-          title: "GitHub",
+          title: "Instagram",
           href: links.githubAccount,
           external: true,
         },
         {
-          title: "Discord",
+          title: "X (Twitter)",
           href: links.discord,
           external: true,
         },
-        {
-          title: "cal.com",
-          href: links.calDotCom,
-          external: true,
-        },
+        // {
+        //   title: "cal.com",
+        //   href: links.calDotCom,
+        //   external: true,
+        // },
       ],
     },
     {
-      title: "Lofi",
+      title: "Make Money with Us",
       items: [
         {
-          title: "beats to study to",
-          href: "https://www.youtube.com/watch?v=jfKfPfyJRdk",
-          external: true,
+          title: "Artist Applications",
+          href: "/drop-on-lollywest",
+          external: false,
         },
         {
-          title: "beats to chill to",
-          href: "https://www.youtube.com/watch?v=rUxyKA_-grg",
-          external: true,
+          title: "For Managers & Labels",
+          href: "/manager-form",
+          external: false,
         },
         {
-          title: "a fresh start",
-          href: "https://www.youtube.com/watch?v=rwionZbOryo",
-          external: true,
+          title: "Partner with Lollywest",
+          href: "/partner-with-lollywest",
+          external: false,
         },
-        {
-          title: "coffee to go",
-          href: "https://www.youtube.com/watch?v=2gliGzb2_1I",
-          external: true,
-        },
+        // {
+        //   title: "coffee to go",
+        //   href: "https://www.youtube.com/watch?v=2gliGzb2_1I",
+        //   external: true,
+        // },
       ],
     },
   ] satisfies FooterItem[],

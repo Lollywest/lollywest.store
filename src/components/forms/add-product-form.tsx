@@ -57,7 +57,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
   const form = useForm<Inputs>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      category: "skateboards",
+      category: "Featured",
     },
   })
 
