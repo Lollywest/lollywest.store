@@ -108,7 +108,7 @@ export const productCategories = [
     ],
   },
   {
-    title: "sponsorhsip",
+    title: "sponsorship",
     image: "/images/shoe-one.webp",
     subcategories: [
       {
