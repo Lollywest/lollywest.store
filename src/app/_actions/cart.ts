@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 import { db } from "@/db"
-import { carts, products, stores } from "@/db/schema"
+import { carts, products, artists } from "@/db/schema"
 import type { CartLineItem } from "@/types"
 import { eq, inArray } from "drizzle-orm"
 import { type z } from "zod"
@@ -35,14 +35,12 @@ export async function getCartAction(): Promise<CartLineItem[]> {
       name: products.name,
       images: products.images,
       category: products.category,
-      subcategory: products.subcategory,
       price: products.price,
-      inventory: products.inventory,
-      storeId: products.storeId,
-      storeName: stores.name,
+      artistID: products.artistID,
+      artistName: artists.name,
     })
     .from(products)
-    .leftJoin(stores, eq(stores.id, products.storeId))
+    .leftJoin(artists, eq(artists.id, products.artistID))
     .where(inArray(products.id, uniqueProductIds))
 
   const allCartLineItems = cartLineItems.map((item) => {

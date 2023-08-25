@@ -21,7 +21,7 @@ export const sortOptions = [
 
 export const productCategories = [
   {
-    title: "skateboards",
+    title: "deck",
     image: "/images/skateboard-one.webp",
     subcategories: [
       {
@@ -69,7 +69,7 @@ export const productCategories = [
     ],
   },
   {
-    title: "clothing",
+    title: "wrap",
     image: "/images/clothing-one.webp",
     subcategories: [
       {
@@ -100,7 +100,7 @@ export const productCategories = [
     ],
   },
   {
-    title: "shoes",
+    title: "sponsorhsip",
     image: "/images/shoe-one.webp",
     subcategories: [
       {
@@ -129,51 +129,7 @@ export const productCategories = [
         slug: "classics",
       },
     ],
-  },
-  {
-    title: "accessories",
-    image: "/images/backpack-one.webp",
-    subcategories: [
-      {
-        title: "Skate Tools",
-        description:
-          "Essential tools for maintaining your skateboard, all rad.",
-        slug: "skate-tools",
-      },
-      {
-        title: "Bushings",
-        description: "Upgrade your ride with our rad selection of bushings.",
-        slug: "bushings",
-      },
-      {
-        title: "Shock & Riser Pads",
-        description:
-          "Enhance your skateboard's performance with rad shock and riser pads.",
-        slug: "shock-riser-pads",
-      },
-      {
-        title: "Skate Rails",
-        description:
-          "Add creativity and style to your tricks with our rad skate rails.",
-        slug: "skate-rails",
-      },
-      {
-        title: "Wax",
-        description: "Keep your board gliding smoothly with our rad skate wax.",
-        slug: "wax",
-      },
-      {
-        title: "Socks",
-        description: "Keep your feet comfy and stylish with our rad socks.",
-        slug: "socks",
-      },
-      {
-        title: "Backpacks",
-        description: "Carry your gear in style with our rad backpacks.",
-        slug: "backpacks",
-      },
-    ],
-  },
+  }
 ] satisfies {
   title: Product["category"]
   image: string
