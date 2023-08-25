@@ -41,7 +41,10 @@ export const productsRelations = relations(products, ({ one, many }) => ({
     fields: [products.artistID],
     references: [artists.id]
   }),
-  owners: many(wallets)
+  // owners: many(wallets, {
+  //   fields: [products.owners],
+  //   references: [wallets.id]
+  // })
 }))
 
 //upcoming
@@ -89,7 +92,7 @@ export const artists = mysqlTable("artists", {
 export type Artist = InferModel<typeof artists>
 
 export const artistsRelations = relations(artists, ({ many }) => ({
-    products: many(products)
+    items: many(products)
 }))
 
 //wallet
@@ -103,8 +106,8 @@ export const wallets = mysqlTable("wallet", {
 export type Wallet = InferModel<typeof wallets>
 
 export const walletRelations = relations(wallets, ({ many }) => ({
-  products: many(products),
-  orders: many(orders)
+  // products: many(products),
+  wallets_orders: many(orders)
 }))
 
 export const payments = mysqlTable("payments", {
