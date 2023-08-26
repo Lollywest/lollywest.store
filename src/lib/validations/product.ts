@@ -40,7 +40,7 @@ export const productSchema = z.object({
     .unknown()
     .refine((val) => {
       if(!Array.isArray(val)) return false
-      if(val.some((owner) => !(owner instanceof Number))) return false
+      if(val.some((owner) => !(owner instanceof String))) return false
       return true
     }, "Must be a number array")
     .optional()

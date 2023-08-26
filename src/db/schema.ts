@@ -30,7 +30,7 @@ export const products = mysqlTable("products", {
   price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
   decksLeft: int("decksLeft").notNull().default(0),
   createdAt: timestamp("createdAt").defaultNow(),
-  owners: json("owners").$type<number[] | null>().default(null),
+  owners: json("owners").$type<string[] | null>().default(null),
   slug: text("slug")
 })
 

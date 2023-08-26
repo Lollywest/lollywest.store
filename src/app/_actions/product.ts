@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache"
 import { db } from "@/db"
 import { products, orders, wallets, type Product } from "@/db/schema"
 import type { StoredFile } from "@/types"
+import { clerkClient } from "@clerk/nextjs"
 import {
   and,
   asc,
@@ -136,7 +137,7 @@ export async function addProductAction(
     artistId: number
     images: StoredFile[] | null
     perks: string[] | null
-    owners: number[] | null
+    owners: string[] | null
   }
 ) {
   const productWithSameName = await db.query.products.findFirst({
@@ -165,7 +166,7 @@ export async function updateProductAction(
     id: number
     images: StoredFile[] | null
     perks: string[] | null
-    owners: number[] | null
+    owners: string[] | null
   }
 ) {
   const product = await db.query.products.findFirst({
@@ -258,5 +259,22 @@ export async function getAllOwnersAction( input: z.infer<typeof getProductSchema
     throw new Error("Product not found")
   }
 
-  return product.owners
+  if(!product.owners) {
+    return []
+  }
+
+  const owners = []
+
+  for(const owner of product.owners) {
+    const user = await clerkClient.users.getUser(owner)
+    if(user) {
+      owners.push({
+        id: user.id,
+        name: user.firstName + " " + user.lastName,
+        email: user.emailAddresses[0]
+      })
+    }
+  }
+
+  return owners
 }

@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/db"
-import { payments, stores } from "@/db/schema"
+import { payments, artists } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs"
 import { eq } from "drizzle-orm"
 import { type z } from "zod"
@@ -64,14 +64,14 @@ export async function manageSubscriptionAction(
 export async function checkStripeConnectionAction(
   input: z.infer<typeof createAccountLinkSchema>
 ) {
-  const store = await db.query.stores.findFirst({
-    where: eq(stores.id, input.storeId),
+  const store = await db.query.artists.findFirst({
+    where: eq(artists.id, input.artistId),
   })
 
   if (!store) return false
 
   const payment = await db.query.payments.findFirst({
-    where: eq(payments.storeId, input.storeId),
+    where: eq(payments.artistID, input.artistId),
   })
 
   if (!payment) return false
@@ -90,8 +90,8 @@ export async function createAccountLinkAction(
   input: z.infer<typeof createAccountLinkSchema>
 ) {
   //  Check if the store is already connected to Stripe
-  const store = await db.query.stores.findFirst({
-    where: eq(stores.id, input.storeId),
+  const store = await db.query.artists.findFirst({
+    where: eq(artists.id, input.artistId),
   })
 
   if (!store) {
@@ -101,7 +101,7 @@ export async function createAccountLinkAction(
   // TODO: Check if stripeAccountId is available on the store
 
   const payment = await db.query.payments.findFirst({
-    where: eq(payments.storeId, input.storeId),
+    where: eq(payments.artistID, input.artistId),
   })
 
   if (payment?.detailsSubmitted) {
@@ -123,7 +123,7 @@ export async function createAccountLinkAction(
     stripeAccountId = account.id
 
     await db.update(payments).set({
-      storeId: input.storeId,
+      artistID: input.artistId,
       stripeAccountId,
     })
   }

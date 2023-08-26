@@ -11,6 +11,6 @@ export const manageSubscriptionSchema = z.object({
 })
 
 export const createAccountLinkSchema = z.object({
-  storeId: z.number(),
+  artistId: z.number(),
   userId: z.string().optional(),
 })
