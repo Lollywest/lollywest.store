@@ -35,6 +35,8 @@ export const products = mysqlTable("products", {
 })
 
 export type Product = InferModel<typeof products>
+export type UpcomingProduct = InferModel<typeof upcoming>
+
 
 export const productsRelations = relations(products, ({ one, many }) => ({
   artist: one(artists, {
@@ -62,7 +64,8 @@ export const upcoming = mysqlTable("upcoming", {
     .default("sponsorship"),
   price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
   createdAt: timestamp("createdAt").defaultNow(),
-  releaseDate: timestamp("releaseDate").defaultNow(),
+  releaseDate: timestamp("releaseDate").defaultNow().notNull(),
+  
   slug: text("slug")
 })
 

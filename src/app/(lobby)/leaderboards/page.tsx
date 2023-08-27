@@ -32,7 +32,7 @@ export default function BlogPage() {
       />
       <Separator className="mb-2.5" />
 
-      {/* <div style={{ width: '100vw', height: '33vw' }}>
+      {/* <div style={{ width: '100vw', height: '25vw' }}>
         <SimpleSlider />
       </div> */}
 

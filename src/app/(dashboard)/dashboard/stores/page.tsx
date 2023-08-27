@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { db } from "@/db"
-import { stores } from "@/db/schema"
+import { artists } from "@/db/schema"
 import { env } from "@/env.mjs"
 import { currentUser } from "@clerk/nextjs"
 import dayjs from "dayjs"
@@ -42,8 +42,8 @@ export default async function StoresPage() {
     redirect("/signin")
   }
 
-  const userStores = await db.query.stores.findMany({
-    where: eq(stores.userId, user.id),
+  const userStores = await db.query.artists.findMany({
+    where: eq(artists.userId, user.id),
     with: {
       products: {
         columns: {

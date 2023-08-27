@@ -27,7 +27,7 @@ export function SiteFooter() {
               className="flex items-center space-x-2"
             >
               <Icons.logo className="h-6 w-6" aria-hidden="true" />
-              <span className="font-bold">{siteConfig.name}</span>
+              {/* <span className="font-bold">{siteConfig.name}</span> */}
             </Link>
           </section>
           <section

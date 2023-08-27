@@ -15,47 +15,51 @@ import { AspectRatio } from "@/components/ui/aspect-ratio"
 export default function SimpleSlider(){
   
     const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
-    speed: 500,
+    speed: 1000,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // height: "50px",
-    // width: "50px"
+    //style: { width: '100vw', height: '33vw' },
     arrows: false,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    cssEase: "linear"
     }
   
   return (
       // <div>
       //   <h2>Single Item </h2>
-      <Slider {...settings}>
+      <Slider  {...settings}>
        
         
 
         {/* <div  style={{ width: '100px', height: '100px' }}> */}
         {/* <div style={{ width: '500px', height: '300px' }}> */}
-          <div className = "rounded-sm">
+          {/* <div className = "overflow-hidden "> */}
+          <div >
             {/* <AspectRatio ratio={1}> */}
               <Image
                 
                 //role="group"
                 //key={index}
                 //aria-roledescription="slide"
-                src="/images/splash.webp"
+                src="/images/slide-pic.png"
                 alt=""
                 //fill
-                width={6000}
-                height={4000}
+                 width={1500}
+                 height={500}
                 //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                //className="object-cover"
+                className="rounded-lg"
                 //className="w-full max-w-screen-xl"
                 //className="m-0 p-0 w-full max-w-screen-xl"
               />
             {/* </AspectRatio> */}
           </div>
         {/* </div> */}
-        <div className = "overflow-hidden ">
-            <Image
+        {/* <div className = "overflow-hidden "> */}
+        <div>
+            {/* <Image
 
               src="/images/space.webp"
               alt=""
@@ -64,50 +68,80 @@ export default function SimpleSlider(){
               height={2357}
               //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 
+            /> */}
+          <Image
+
+            src="/images/slide-two.png"
+            alt=""
+            width={1500}
+            height={500}
+            className="rounded-lg"
+            //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
-          
         </div>
         <div>
-        <div className = "overflow-hidden">
+        {/* <div className = "overflow-hidden"> */}
             <Image
 
-              src="/images/waves.webp"
+              src="/images/slide-pic-8.png"
               alt=""
               //fill
-              width={6000}
-              height={4000}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              width={1500}
+              height={500}
+              className="rounded-lg"
+              //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               //overflow-hidden
               
             />
           
         </div>
-        </div>
-        
-        <div className = "overflow-hidden">
+        <div>
             <Image
-
-              src="/images/stairs.webp"
+              src="/images/slide-pic-4.png"
               alt=""
-              //fill
-              width={4288}
-              height={2848}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-
+              width={1500}
+              height={500}
+              className="rounded-lg"
             />
           
         </div>
-        
-        <div className = "overflow-hidden">
+        <div>
             <Image
-
-              src="/images/audience.webp"
+              src="/images/slide-five.png"
               alt=""
-              //fill
-              width={5472}
-              height={3648}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              
+              width={1500}
+              height={500}
+              className="rounded-lg"
+            />
+          
+        </div>
+        <div>
+            <Image
+              src="/images/slide-six.png"
+              alt=""
+              width={1500}
+              height={500}
+              className="rounded-lg"
+            />
+          
+        </div>
+        <div>
+            <Image
+              src="/images/slide-seven.png"
+              alt=""
+              width={1500}
+              height={500}
+              className="rounded-lg"
+            />
+          
+        </div>
+        <div>
+            <Image
+              src="/images/slide-pic-9.png"
+              alt=""
+              width={1500}
+              height={500}
+              className="rounded-lg"
             />
           
         </div>

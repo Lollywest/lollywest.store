@@ -1,5 +1,5 @@
 import { type Metadata } from "next"
-import { products } from "@/db/schema"
+import { products, artists } from "@/db/schema"
 import { env } from "@/env.mjs"
 
 import { Header } from "@/components/header"
@@ -33,7 +33,7 @@ export default async function ProductsPage({
     categories,
     subcategories,
     price_range,
-    store_ids,
+    artist_ids,
     store_page,
   } = searchParams
 
@@ -45,10 +45,10 @@ export default async function ProductsPage({
     limit,
     offset,
     sort: typeof sort === "string" ? sort : null,
-    categories: typeof categories === "string" ? categories : null,
-    subcategories: typeof subcategories === "string" ? subcategories : null,
+    categories: "sponsorship",
+    //subcategories: typeof subcategories === "string" ? subcategories : null,
     price_range: typeof price_range === "string" ? price_range : null,
-    store_ids: typeof store_ids === "string" ? store_ids : null,
+    artist_ids: typeof artist_ids === "string" ? artist_ids : null,
   })
 
   const pageCount = Math.ceil(productsTransaction.total / limit)
