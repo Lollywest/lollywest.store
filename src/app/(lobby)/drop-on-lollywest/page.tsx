@@ -30,7 +30,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 import { redirect } from "next/navigation"
 import { currentUser } from "@clerk/nextjs"
-import { products, stores } from "@/db/schema"
+import { products, artists } from "@/db/schema"
 
 
 import {
@@ -111,36 +111,36 @@ export default async function DropOnLollywest({
       // }
   
       await db
-        .update(stores)
+        .update(artists)
         .set({ name, description })
-        .where(eq(stores.id, storeId))
+        .where(eq(artists.id, storeId))
   
       revalidatePath(`/dashboard/stores/${storeId}`)
     }
   
-    async function deleteStore() {
-      "use server"
+    // async function deleteStore() {
+    //   "use server"
   
-      const store = await db.query.stores.findFirst({
-        where: eq(stores.id, storeId),
-        columns: {
-          id: true,
-        },
-      })
+    //   const store = await db.query.artists.findFirst({
+    //     where: eq(artists.id, storeId),
+    //     columns: {
+    //       id: true,
+    //     },
+    //   })
   
-      if (!store) {
-        throw new Error("Store not found")
-      }
+    //   if (!store) {
+    //     throw new Error("Store not found")
+    //   }
   
-      await db.delete(stores).where(eq(stores.id, storeId))
+    //   await db.delete(stores).where(eq(stores.id, storeId))
   
-      // Delete all products of this store
-      await db.delete(products).where(eq(products.storeId, storeId))
+    //   // Delete all products of this store
+    //   await db.delete(products).where(eq(products.storeId, storeId))
   
-      const path = "/dashboard/stores"
-      revalidatePath(path)
-      redirect(path)
-    }
+    //   const path = "/dashboard/stores"
+    //   revalidatePath(path)
+    //   redirect(path)
+    // }
 
   return (
     <Shell className="md:pb-10">

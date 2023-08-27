@@ -31,7 +31,7 @@ export function MainNav({ items }: MainNavProps) {
       >
         <Icons.logo className="h-6 w-6" aria-hidden="true" />
         <span className="hidden font-bold lg:inline-block">
-          {siteConfig.name}
+          {/* {siteConfig.name} */}
         </span>
       </Link>
       <NavigationMenu>

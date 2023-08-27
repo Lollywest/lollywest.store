@@ -3,7 +3,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { db } from "@/db"
 //import { products, stores } from "@/db/schema"
-import { products, artists } from "@/db/schema"
+import { upcoming, artists } from "@/db/schema"
 
 import { env } from "@/env.mjs"
 import { and, desc, eq, not } from "drizzle-orm"
@@ -18,30 +18,37 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { AddToCartForm } from "@/components/forms/add-to-cart-form"
 import { Breadcrumbs } from "@/components/pagers/breadcrumbs"
-import { ProductCard } from "@/components/product-card"
+import { UpcomingCard } from "@/components/upcoming-card"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
 import { Shell } from "@/components/shells/shell"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
-  title: "Product",
-  description: "Product description",
+  title: "Upcoming",
+  description: "Upcoming description",
 }
 
-interface ProductPageProps {
-  params: {
-    productId: string
+// interface ProductPageProps {
+//   params: {
+//     productId: string
+//   }
+// }
+
+interface UpcomingPageProps {
+    params: {
+      upcomingId: string
+    }
   }
-}
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  const productId = Number(params.productId)
+export default async function UpcomingProductPage({ params }: UpcomingPageProps) {
+    
+  const upcomingId = Number(params.upcomingId)
 
-  const product = await db.query.products.findFirst({
-    where: eq(products.id, productId),
+  const upcomingProducts = await db.query.upcoming.findFirst({
+    where: eq(upcoming.id, upcomingId),
   })
 
-  if (!product) {
+  if (!upcomingProducts) {
     notFound()
   }
 
@@ -50,15 +57,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
   //     id: true,
   //     name: true,
   //   },
-  //   where: eq(stores.id, product.storeId),
+  //   where: eq(stores.id, product.storeId)
   // })
 
-  const store = await db.query.artists.findFirst({
-    columns: {
-      id: true,
-      name: true,
+//   const store = await db.query.artists.findFirst({
+    const store = await db.query.upcoming.findFirst({    
+        columns: {
+        id: true,
+        name: true,
     },
-    where: eq(artists.id, product.artistID),
+    where: eq(artists.id, upcomingProducts.artistID),
   })
   
   const productsFromStore = store
@@ -76,12 +84,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
     // : []
     ? await db
     .select()
-    .from(products)
+    .from(upcoming)
     .limit(4)
     .where(
       and(
-        eq(products.artistID, product.artistID),
-        not(eq(products.id, productId))
+        eq(upcoming.artistID, upcomingProducts.artistID),
+        not(eq(upcoming.id, upcomingId))
       )
     )
     //.orderBy(desc(products.inventory))
@@ -93,23 +101,23 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <Breadcrumbs
         segments={[
           {
-            title: "Products",
-            href: "/products",
+            title: "Upcoming",
+            href: "/upcomingProducts",
           },
+        //   {
+        //     title: toTitleCase(upcomingProducts.category),
+        //     href: `/upcoming?category=${upcomingProducts.category}`,
+        //   },
           {
-            title: toTitleCase(product.category),
-            href: `/products?category=${product.category}`,
-          },
-          {
-            title: product.name,
-            href: `/product/${product.id}`,
+            title: upcomingProducts.name,
+            href: `/upcomingProducts/${upcomingProducts.id}`,
           },
         ]}
       />
       <div className="flex flex-col gap-8 md:flex-row md:gap-16">
         <ProductImageCarousel
           className="w-full md:w-1/2"
-          images={product.images ?? []}
+          images={upcomingProducts.images ?? []}
           options={{
             loop: true,
           }}
@@ -117,9 +125,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <Separator className="mt-4 md:hidden" />
         <div className="flex w-full flex-col gap-4 md:w-1/2">
           <div className="space-y-2">
-            <h2 className="line-clamp-1 text-2xl font-bold">{product.name}</h2>
+            <h2 className="line-clamp-1 text-2xl font-bold">{upcomingProducts.name}</h2>
             <p className="text-base text-muted-foreground">
-              {formatPrice(product.price)}
+              {/* {formatPrice(upcomingProducts.price)} */}
+              TBA...
             </p>
             {store ? (
               <Link
@@ -130,14 +139,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </Link>
             ) : null}
           </div>
-          <Separator className="my-1.5" />
-          <AddToCartForm productId={productId} />
+          {/* <Separator className="my-1.5" /> */}
+          {/* <AddToCartForm upcomingId={upcomingId} /> */}
           <Separator className="mt-5" />
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="description">
               <AccordionTrigger>Description</AccordionTrigger>
               <AccordionContent>
-                {product.description ??
+                {upcomingProducts.description ??
                   "No description is available for this product."}
               </AccordionContent>
             </AccordionItem>
@@ -151,10 +160,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </h2>
           <div className="overflow-x-auto pb-2 pt-6">
             <div className="flex w-fit gap-4">
-              {productsFromStore.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
+              {productsFromStore.map((upcomingProducts) => (
+                <UpcomingCard
+                  key={upcomingProducts.id}
+                  upcomingProducts={upcomingProducts}
                   className="min-w-[260px]"
                 />
               ))}

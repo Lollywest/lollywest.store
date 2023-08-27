@@ -3,10 +3,10 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { type Product } from "@/db/schema"
+import { type UpcomingProduct } from "@/db/schema"
 import { toast } from "sonner"
 
-import { cn, formatPrice, toTitleCase } from "@/lib/utils"
+import { cn, formatPrice , formatDate, toTitleCase } from "@/lib/utils"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
@@ -20,21 +20,22 @@ import {
 import { Icons } from "@/components/icons"
 import { addToCartAction } from "@/app/_actions/cart"
 
-interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  product: Product
+interface UpcomingCardProps extends React.HTMLAttributes<HTMLDivElement> {
+upcomingProducts: UpcomingProduct
   variant?: "default" | "switchable"
   isAddedToCart?: boolean
   onSwitch?: () => Promise<void>
 }
 
-export function ProductCard({
-  product,
+export function UpcomingCard({
+  upcomingProducts,
   variant = "default",
   isAddedToCart = false,
   onSwitch,
   className,
+  
   ...props
-}: ProductCardProps) {
+}: UpcomingCardProps) {
   const [isPending, startTransition] = React.useTransition()
 
   return (
@@ -43,17 +44,17 @@ export function ProductCard({
       {...props}
     >
       <Link
-        aria-label={`View ${product.name} details`}
-        href={`/product/${product.id}`}
+        aria-label={`View ${upcomingProducts.name} details`}
+        href={`/upcoming/${upcomingProducts.id}`}
       >
         <CardHeader className="border-b p-0">
-          <AspectRatio ratio={4 / 3}>
-            {product?.images?.length ? (
+          <AspectRatio ratio={7 / 3}>
+            {upcomingProducts?.images?.length ? (
               <Image
                 src={
-                  product.images[0]?.url ?? "/images/product-placeholder.webp"
+                    upcomingProducts.images[0]?.url ?? "/images/product-placeholder.webp"
                 }
-                alt={product.images[0]?.name ?? product.name}
+                alt={upcomingProducts.images[0]?.name ?? upcomingProducts.name}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 fill
                 className="object-cover"
@@ -76,18 +77,40 @@ export function ProductCard({
         </CardHeader>
       </Link>
       <Link
-        aria-label={`View ${product.name} details`}
-        href={`/product/${product.id}`}
+        aria-label={`View ${upcomingProducts.name} details`}
+        href={`/upcoming/${upcomingProducts.id}`}
       >
         <CardContent className="grid gap-2.5 p-4">
           <CardDescription className="line-clamp-2">
-            {toTitleCase(product.category)}
+            {toTitleCase(upcomingProducts.category)}
           </CardDescription>
-          <CardTitle className="line-clamp-1">{product.name}</CardTitle>
+          <CardTitle className="line-clamp-1">{upcomingProducts.name}</CardTitle>
           <CardDescription className="line-clamp-2">
-            {formatPrice(product.price)}
+            {/* {formatPrice(upcomingProducts.price)} */}
+            Releasing on: {formatDate(upcomingProducts.releaseDate)}
+            
           </CardDescription>
-          
+          <div className="space-y-2 text-sm text-muted-foreground">
+            {/* {plan.features.map((feature) => ( */}
+              {/* <div key={feature} className="flex items-center gap-2"> */}
+              <div className="flex items-center gap-2">
+                <Icons.check className="h-4 w-4" aria-hidden="true" />
+                <span>Feature</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icons.addCircle className="h-4 w-4" aria-hidden="true" />
+                <span>Feature 2</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icons.alarm className="h-4 w-4" aria-hidden="true" />
+                <span>Feature 3</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icons.dollarSign className="h-4 w-4" aria-hidden="true" />
+                <span>Feature 4</span>
+              </div>
+            {/* ))} */}
+          </div>
         </CardContent>
       </Link>
       <CardFooter className="p-4">
@@ -95,7 +118,7 @@ export function ProductCard({
           <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:justify-between">
             <Link
               aria-label="Preview product"
-              href={`/product-preview/${product.id}`}
+              href={`/upcoming/${upcomingProducts.id}`}
               className={buttonVariants({
                 variant: "outline",
                 size: "sm",
@@ -104,7 +127,8 @@ export function ProductCard({
             >
               Preview
             </Link>
-            <Button
+
+            {/* <Button
               aria-label="Add to cart"
               size="sm"
               className="h-8 w-full rounded-sm"
@@ -112,7 +136,7 @@ export function ProductCard({
                 startTransition(async () => {
                   try {
                     await addToCartAction({
-                      productId: product.id,
+                      upcomingId: upcoming.id,
                       quantity: 1,
                     })
                     toast.success("Added to cart.")
@@ -132,7 +156,7 @@ export function ProductCard({
                 />
               )}
               Add to cart
-            </Button>
+            </Button> */}
           </div>
         ) : (
           <Button

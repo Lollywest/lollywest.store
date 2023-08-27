@@ -12,7 +12,7 @@ import { Header } from "@/components/header"
 import { Icons } from "@/components/icons"
 import { Shell } from "@/components/shells/shell"
 
-import { type Product } from "@/db/schema"
+import { type Product, UpcomingProduct } from "@/db/schema"
 
 import { toTitleCase, unslugify } from "@/lib/utils"
 import { Products } from "@/components/products"
@@ -20,9 +20,10 @@ import { getProductsAction } from "@/app/_actions/product"
 import { getStoresAction } from "@/app/_actions/store"
 
 import { db } from "@/db"
-import { products, stores } from "@/db/schema"
+//import { products, stores } from "@/db/schema"
+import { products, upcoming} from "@/db/schema"
 import { desc, eq, sql } from "drizzle-orm"
-import Balance from "react-wrap-balancer"
+//mport Balance from "react-wrap-balancer"
 
 import { productCategories } from "@/config/products"
 import { siteConfig } from "@/config/site"
@@ -71,16 +72,16 @@ export default async function FeaturedPage() {
 
   const allStoresWithProductCount = await db
     .select({
-      id: stores.id,
-      name: stores.name,
-      description: stores.description,
+      // id: stores.id,
+      // name: stores.name,
+      // description: stores.description,
       productCount: sql<number>`count(${products.id})`,
     })
-    .from(stores)
-    .limit(4)
-    .leftJoin(products, eq(products.storeId, stores.id))
-    .groupBy(stores.id)
-    .orderBy(desc(sql<number>`count(${products.id})`))
+    // .from(stores)
+    // .limit(4)
+    // .leftJoin(products, eq(products.storeId, stores.id))
+    // .groupBy(stores.id)
+    //.orderBy(desc(sql<number>`count(${products.id})`))
 
   return (
     <Shell className="md:pb-10">
@@ -97,7 +98,7 @@ export default async function FeaturedPage() {
       >
         <div className="flex items-center">
           <h2 className="flex-1 text-2xl font-medium sm:text-3xl">
-            Our Favorites
+            Our Favorites Right Now
           </h2>
           {/* <Link href="/products">
             <div

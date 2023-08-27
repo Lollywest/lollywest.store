@@ -1,9 +1,11 @@
 import Image from "next/image"
 import Link from "next/link"
 import { db } from "@/db"
-import { products, stores } from "@/db/schema"
+//import { products, stores } from "@/db/schema"
+import { products, upcoming } from "@/db/schema"
+
 import { desc, eq, sql } from "drizzle-orm"
-import Balance from "react-wrap-balancer"
+//import Balance from "react-wrap-balancer"
 
 import { productCategories } from "@/config/products"
 import { siteConfig } from "@/config/site"
@@ -20,6 +22,7 @@ import {
 } from "@/components/ui/card"
 import { Icons } from "@/components/icons"
 import { ProductCard } from "@/components/product-card"
+import { UpcomingCard } from "@/components/upcoming-card"
 import { Shell } from "@/components/shells/shell"
 
 import SimpleSlider  from "@/components/HomePageCarousel"
@@ -40,18 +43,28 @@ export default async function IndexPage() {
     .limit(8)
     .orderBy(desc(products.createdAt))
 
-  const allStoresWithProductCount = await db
-    .select({
-      id: stores.id,
-      name: stores.name,
-      description: stores.description,
-      productCount: sql<number>`count(${products.id})`,
-    })
-    .from(stores)
-    .limit(4)
-    .leftJoin(products, eq(products.storeId, stores.id))
-    .groupBy(stores.id)
-    .orderBy(desc(sql<number>`count(${products.id})`))
+  const allUpcoming = await db
+  .select()
+  .from(upcoming)
+  .limit(4)
+  .orderBy(desc(upcoming.createdAt))
+
+  // const allStoresWithProductCount = await db
+  // const upcomingDrops = await db
+  //   .select()
+  //     // id: upcoming.id,
+  //     // artistID: upcoming.artistID,
+  //     // name: upcoming.name,
+  //     // description: upcoming.description,
+  //     // productCount: sql<number>`count(${products.id})`,
+  //     //productCount: sql<number>`count(${upcoming.id})`,
+    
+  //   .from(upcoming)
+  //   .limit(4)
+  //   .orderBy(desc(products.createdAt))
+    // .leftJoin(upcoming, eq(upcoming.artistID, upcoming.id))
+    // .groupBy(upcoming.artistID)
+    // .orderBy(desc(sql<number>`count(${upcoming.id})`))
 
     // const StyledTitle = styled.div`
     //   font-size: 28px;
@@ -70,10 +83,15 @@ export default async function IndexPage() {
       {/* <section className="items-center justify-center "> */}
       {/* <section className="mx-auto flex w-full max-w-[64rem] flex-col items-center justify-center gap-2 pb-2 pt-2 text-center md:pb-12 md:pt-10 lg:py-8"> */}
       {/* <section className = "mx-auto flex w-full flex-col items-center justify-center  text-center overflow-hidden"> */}
-      <section className="mx-auto flex w-full flex-col items-center justify-center gap-2 text-center overflow-hidden rounded-lg">
-        <div  style={{ width: '100vw', height: '25vw' }}>
-          <SimpleSlider />
-        </div>
+      {/* <section className="mx-auto flex w-full flex-col items-center justify-center gap-2 text-center overflow-hidden rounded-lg"> */}
+      <section className="mx-auto w-full justify-center overflow-hidden rounded-lg">  
+      {/* <div style={{ maxWidth: '1500px', maxHeight: '500px', width: '100vw', height: '33vw', position: 'relative' }}> */}
+        <div >
+         {/* <div style={{ width: '100vw', height: '33vw', position: 'relative' }}> */}
+          {/* <div  style={{ width: '1500px', height: '500px' }}> */}
+            <SimpleSlider />
+          </div>
+        {/* </div> */}
       </section>
       
       {/* <section
@@ -203,22 +221,33 @@ export default async function IndexPage() {
         </div>
       </section>
       <section
-        id="featured-stores"
-        aria-labelledby="featured-stores-heading"
+        id="upcoming-stores"
+        aria-labelledby="upcoming-stores-heading"
         className="space-y-6"
       >
+        <div className="flex items-center">
         <h2 className="text-2xl font-medium sm:text-3xl">Upcoming Drops</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {allStoresWithProductCount.map((store) => (
-            <Card key={store.id} className="flex h-full flex-col">
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+          {allUpcoming.map((upcomingProducts) => (
+            <UpcomingCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
+          ))}
+        </div>
+
+        {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {allUpcoming.map((upcomingDrops) => (
+            <Card key={upcomingDrops.id} className="flex h-full flex-col">
               <CardHeader className="flex-1">
-                <CardTitle className="line-clamp-1">{store.name}</CardTitle>
+                <CardTitle className="line-clamp-1">{upcomingDrops.name}</CardTitle>
                 <CardDescription className="line-clamp-2">
-                  {store.description}
+                  {upcomingDrops.description}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Link href={`/products?store_ids=${store.id}`}>
+                {/* <Link href={`/products?artist_ids=${upcomingDrops.id}`}> */}
+                {/* <Link href={`/upcoming?artist_ids=${upcomingDrops.id}`}> */}
+                {/* <Link href={`/upcoming?artistID=${upcomingDrops.id}`}>
                   <div
                     className={cn(
                       buttonVariants({
@@ -227,16 +256,18 @@ export default async function IndexPage() {
                       })
                     )}
                   >
-                    View products ({store.productCount})
-                    <span className="sr-only">{`${store.name} store products`}</span>
-                  </div>
+                    View */}
+                    {/* View Upcoming ({store.productCount})
+                    <span className="sr-only">{`${store.name} store products`}</span> */}
+                  {/* </div>
                 </Link>
               </CardContent>
             </Card>
           ))}
-        </div>
+        </div>  */}
+        
       </section>
-      <section
+      {/* <section
         id="random-subcategories"
         aria-labelledby="random-subcategories-heading"
         className="flex flex-wrap items-center justify-center gap-4 pb-4"
@@ -251,12 +282,13 @@ export default async function IndexPage() {
             }`}
           >
             <Badge variant="secondary" className="rounded px-3 py-1">
+            <Badge  className="rounded px-3 py-1"> 
               {subcategory.title}
             </Badge>
             <span className="sr-only">{subcategory.title}</span>
           </Link>
         ))}
-      </section>
+      </section> */}
     </Shell>
   )
 }
