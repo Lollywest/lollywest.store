@@ -64,7 +64,7 @@ export const upcoming = mysqlTable("upcoming", {
     .default("sponsorship"),
   price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
   createdAt: timestamp("createdAt").defaultNow(),
-  releaseDate: timestamp("releaseDate").defaultNow().notNull(),
+  releaseDate: timestamp("releaseDate").defaultNow(),
   
   slug: text("slug")
 })
