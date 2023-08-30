@@ -47,3 +47,9 @@ export const userPrivateMetadataSchema = z.object({
   stripeCustomerId: z.string().optional().nullable(),
   stripeCurrentPeriodEnd: z.string().optional().nullable(),
 })
+
+export const userNamePageSchema = z.object({
+  username: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+})

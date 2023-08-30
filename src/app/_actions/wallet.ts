@@ -2,22 +2,24 @@
 
 import { revalidatePath } from "next/cache"
 import { db } from "@/db"
-import { wallets, products} from "@/db/schema"
+import { wallets, products } from "@/db/schema"
 import {
-  and,
-  eq,
-  inArray,
+    and,
+    eq,
+    inArray,
 } from "drizzle-orm"
 import { currentUser } from "@clerk/nextjs"
+import { clerkClient } from "@clerk/nextjs"
+import { catchClerkError } from "@/lib/utils"
 
-export async function getProductsAction( input: {category?: string} ) {
-    if(input.category !== "deck" && input.category !== "wrap" && input.category !== "sponsorship") {
+export async function getProductsAction(input: { category?: string }) {
+    if (input.category !== "deck" && input.category !== "wrap" && input.category !== "sponsorship") {
         throw new Error("Invalid category: must be 'deck | wrap | sponsorship'")
     }
 
     const user = await currentUser()
 
-    if(!user) {
+    if (!user) {
         throw new Error("Could not get user")
     }
 
@@ -25,10 +27,10 @@ export async function getProductsAction( input: {category?: string} ) {
         where: eq(wallets.userID, user.id)
     })
 
-    if(!wallet) {
+    if (!wallet) {
         throw new Error("Could not find wallet")
     }
-    if(!wallet.products) {
+    if (!wallet.products) {
         return []
     }
 
@@ -36,21 +38,21 @@ export async function getProductsAction( input: {category?: string} ) {
         const items = await tx
             .select()
             .from(products)
-            .where( and( inArray(products.id, wallet.products!),
-                input?.category ? eq(products.category, input.category as "deck" | "wrap" | "sponsorship") : undefined 
-            ) )
-        
+            .where(and(inArray(products.id, wallet.products!),
+                input?.category ? eq(products.category, input.category as "deck" | "wrap" | "sponsorship") : undefined
+            ))
+
         return { items }
     })
 
     return items
 }
 
-export async function addProductToWalletAction(input: { productID: number}) {
+export async function addProductToWalletAction(input: { productID: number }) {
     // users
     const user = await currentUser()
 
-    if(!user) {
+    if (!user) {
         throw new Error("Could not get user")
     }
 
@@ -59,13 +61,13 @@ export async function addProductToWalletAction(input: { productID: number}) {
         where: eq(wallets.userID, user.id)
     })
 
-    if(!wallet) {
+    if (!wallet) {
         // Add new wallet? =================================
         throw new Error("Could not find wallet")
     }
 
-    if(!wallet.products) {
-        wallet.products = [ input.productID ]
+    if (!wallet.products) {
+        wallet.products = [input.productID]
     } else {
         wallet.products.push(input.productID)
     }
@@ -76,18 +78,18 @@ export async function addProductToWalletAction(input: { productID: number}) {
         where: eq(products.id, input.productID)
     })
 
-    if(!product) {
+    if (!product) {
         throw new Error("Product not found")
     }
 
-    if(!product.owners) {
-        product.owners = [ parseInt(user.id) ]
+    if (!product.owners) {
+        product.owners = [user.id]
     } else {
-        product.owners.push(parseInt(user.id))
+        product.owners.push(user.id)
     }
 
-    if(product.category == "deck") {
-        if(product.decksLeft > 0) {
+    if (product.category == "deck") {
+        if (product.decksLeft > 0) {
             product.decksLeft--
         } else {
             throw new Error("No decks left")
@@ -101,10 +103,10 @@ export async function addProductToWalletAction(input: { productID: number}) {
     // Revalidate Path ==================================
 }
 
-export async function deleteProductFromWalletAction(input: { productID: number}) {
+export async function deleteProductFromWalletAction(input: { productID: number }) {
     const user = await currentUser()
 
-    if(!user) {
+    if (!user) {
         throw new Error("Could not get user")
     }
 
@@ -112,18 +114,35 @@ export async function deleteProductFromWalletAction(input: { productID: number})
         where: eq(wallets.userID, user.id)
     })
 
-    if(!wallet) {
+    if (!wallet) {
         throw new Error("Could not find wallet")
     }
 
-    if(!wallet.products) {
+    if (!wallet.products) {
         wallet.products = []
     } else {
         const idx = wallet.products.indexOf(input.productID)
-        if(idx > -1) {
+        if (idx > -1) {
             wallet.products.splice(idx, 1)
         }
     }
 
     await db.update(wallets).set(wallet).where(eq(wallets.userID, user.id))
+}
+
+export async function updateUsernameAction(input: {
+    username: string,
+    firstName: string,
+    lastName: string,
+}) {
+    const curuser = await currentUser()
+    if (!curuser) {
+        throw new Error("user not found")
+    }
+
+    try {
+        const user = await clerkClient.users.updateUser(curuser.id, input)
+    } catch (err) {
+        catchClerkError(err)
+    }
 }

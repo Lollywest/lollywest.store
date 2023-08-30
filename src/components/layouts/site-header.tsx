@@ -85,7 +85,7 @@ export function SiteHeader({ user }: SiteHeaderProps) {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/dashboard/stores">
+                      <Link href="/dashboard/artist">
                         <Icons.terminal
                           className="mr-2 h-4 w-4"
                           aria-hidden="true"
