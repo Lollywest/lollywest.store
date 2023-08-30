@@ -5,34 +5,34 @@ import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-interface StoreTabsProps extends React.ComponentPropsWithoutRef<typeof Tabs> {
-  storeId: number
+interface ArtistTabsProps extends React.ComponentPropsWithoutRef<typeof Tabs> {
+  artistId: number
 }
 
-export function StoreTabs({ className, storeId, ...props }: StoreTabsProps) {
+export function ArtistTabs({ className, artistId, ...props }: ArtistTabsProps) {
   const router = useRouter()
   const pathname = usePathname()
 
   const tabs = [
     {
       title: "Store",
-      href: `/dashboard/stores/${storeId}`,
+      href: `/dashboard/artist/`,
     },
     {
       title: "Products",
-      href: `/dashboard/stores/${storeId}/products`,
+      href: `/dashboard/artist/products`,
     },
     {
       title: "Orders",
-      href: `/dashboard/stores/${storeId}/orders`,
+      href: `/dashboard/artist/orders`,
     },
     {
       title: "Payments",
-      href: `/dashboard/stores/${storeId}/payments`,
+      href: `/dashboard/artist/payments`,
     },
     {
       title: "Analytics",
-      href: `/dashboard/stores/${storeId}/analytics`,
+      href: `/dashboard/artist/analytics`,
     },
   ]
 

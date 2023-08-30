@@ -1,12 +1,13 @@
 import { type Metadata } from "next"
 import { notFound } from "next/navigation"
 import { db } from "@/db"
-import { products, stores, type Product } from "@/db/schema"
+import { products, artists, type Product } from "@/db/schema"
 import { env } from "@/env.mjs"
 import { and, asc, desc, eq, inArray, like, sql } from "drizzle-orm"
 
 import { GenerateButton } from "@/components/generate-button"
 import { ProductsTableShell } from "@/components/shells/products-table-shell"
+import { currentUser } from "@clerk/nextjs"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -15,33 +16,29 @@ export const metadata: Metadata = {
 }
 
 interface ProductsPageProps {
-  params: {
-    storeId: string
-  }
   searchParams: {
     [key: string]: string | string[] | undefined
   }
 }
 
 export default async function ProductsPage({
-  params,
   searchParams,
 }: ProductsPageProps) {
-  const storeId = Number(params.storeId)
+  const user = await currentUser()
 
-  const { page, per_page, sort, name, category } = searchParams
+  if(!user) {
+    throw new Error("user not found")
+  }
 
-  const store = await db.query.stores.findFirst({
-    where: eq(stores.id, storeId),
-    columns: {
-      id: true,
-      name: true,
-    },
+  const artist = await db.query.artists.findFirst({
+    where: eq(artists.userId, user.id)
   })
 
-  if (!store) {
-    notFound()
+  if (!artist) {
+    throw new Error("artist not found")
   }
+
+  const { page, per_page, sort, name, category } = searchParams
 
   // Number of items per page
   const limit = typeof per_page === "string" ? parseInt(per_page) : 10
@@ -67,15 +64,15 @@ export default async function ProductsPage({
       : []
 
   // Transaction is used to ensure both queries are executed in a single transaction
-  const { storeProducts, totalProducts } = await db.transaction(async (tx) => {
-    const storeProducts = await tx
+  const { artistProducts, totalProducts } = await db.transaction(async (tx) => {
+    const artistProducts = await tx
       .select()
       .from(products)
       .limit(limit)
       .offset(offset)
       .where(
         and(
-          eq(products.storeId, storeId),
+          eq(products.artistID, artist.id),
           // Filter by name
           typeof name === "string"
             ? like(products.name, `%${name}%`)
@@ -101,7 +98,7 @@ export default async function ProductsPage({
       .from(products)
       .where(
         and(
-          eq(products.storeId, storeId),
+          eq(products.artistID, artist.id),
           typeof name === "string"
             ? like(products.name, `%${name}%`)
             : undefined,
@@ -112,7 +109,7 @@ export default async function ProductsPage({
       )
 
     return {
-      storeProducts,
+      artistProducts,
       totalProducts: Number(totalProducts[0]?.count) ?? 0,
     }
   })
@@ -121,11 +118,11 @@ export default async function ProductsPage({
 
   return (
     <div className="space-y-2.5">
-      {env.NODE_ENV !== "production" && <GenerateButton storeId={storeId} />}
+      {env.NODE_ENV !== "production" && <GenerateButton storeId={artist.id} />}
       <ProductsTableShell
-        data={storeProducts}
+        data={artistProducts}
         pageCount={pageCount}
-        storeId={storeId}
+        storeId={artist.id}
       />
     </div>
   )

@@ -64,11 +64,11 @@ export async function manageSubscriptionAction(
 export async function checkStripeConnectionAction(
   input: z.infer<typeof createAccountLinkSchema>
 ) {
-  const store = await db.query.artists.findFirst({
+  const artist = await db.query.artists.findFirst({
     where: eq(artists.id, input.artistId),
   })
 
-  if (!store) return false
+  if (!artist) return false
 
   const payment = await db.query.payments.findFirst({
     where: eq(payments.artistID, input.artistId),

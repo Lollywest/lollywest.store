@@ -1,10 +1,11 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { db } from "@/db"
-import { stores } from "@/db/schema"
+import { artists } from "@/db/schema"
 import { env } from "@/env.mjs"
 import { eq } from "drizzle-orm"
 import { Activity, CreditCard, DollarSign, Users } from "lucide-react"
+import { currentUser } from "@clerk/nextjs"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
@@ -14,28 +15,22 @@ export const metadata: Metadata = {
   description: "Manage your payments",
 }
 
-interface PaymentsPageProps {
-  params: {
-    storeId: string
+export default async function PaymentsPage() {
+  const user = await currentUser()
+
+  if(!user) {
+    throw new Error("user not found")
   }
-}
 
-export default async function PaymentsPage({ params }: PaymentsPageProps) {
-  const storeId = Number(params.storeId)
-
-  const store = await db.query.stores.findFirst({
-    where: eq(stores.id, storeId),
-    columns: {
-      id: true,
-      name: true,
-      description: true,
-    },
+  const artist = await db.query.artists.findFirst({
+    where: eq(artists.userId, user.id)
   })
 
-  if (!store) {
-    notFound()
+  if (!artist) {
+    throw new Error("artist not found")
   }
 
+  // TODO ====================================================
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
