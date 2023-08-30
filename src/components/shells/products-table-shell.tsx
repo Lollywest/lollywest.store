@@ -26,13 +26,13 @@ import { deleteProductAction } from "@/app/_actions/product"
 interface ProductsTableShellProps {
   data: Product[]
   pageCount: number
-  storeId: number
+  artistId: number
 }
 
 export function ProductsTableShell({
   data,
   pageCount,
-  storeId,
+  artistId,
 }: ProductsTableShellProps) {
   const [isPending, startTransition] = React.useTransition()
   const [selectedRowIds, setSelectedRowIds] = React.useState<number[]>([])
@@ -140,7 +140,7 @@ export function ProductsTableShell({
             <DropdownMenuContent align="end" className="w-[160px]">
               <DropdownMenuItem asChild>
                 <Link
-                  href={`/dashboard/stores/${storeId}/products/${row.original.id}`}
+                  href={`/dashboard/artist/products/${row.original.id}`}
                 >
                   Edit
                 </Link>
@@ -157,7 +157,7 @@ export function ProductsTableShell({
                     toast.promise(
                       deleteProductAction({
                         id: row.original.id,
-                        storeId,
+                        artistId,
                       }),
                       {
                         loading: "Deleting...",
@@ -177,7 +177,7 @@ export function ProductsTableShell({
         ),
       },
     ],
-    [data, isPending, storeId]
+    [data, isPending, artistId]
   )
 
   function deleteSelectedRows() {
@@ -186,7 +186,7 @@ export function ProductsTableShell({
         selectedRowIds.map((id) =>
           deleteProductAction({
             id,
-            storeId,
+            artistId,
           })
         )
       ),
@@ -225,7 +225,7 @@ export function ProductsTableShell({
           title: "names",
         },
       ]}
-      newRowLink={`/dashboard/stores/${storeId}/products/new`}
+      newRowLink={`/dashboard/artist/products/new`}
       deleteRowsAction={() => void deleteSelectedRows()}
     />
   )

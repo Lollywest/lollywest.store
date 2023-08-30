@@ -122,7 +122,7 @@ export default async function ProductsPage({
       <ProductsTableShell
         data={artistProducts}
         pageCount={pageCount}
-        storeId={artist.id}
+        artistId={artist.id}
       />
     </div>
   )
