@@ -12,8 +12,8 @@ import { currentUser } from "@clerk/nextjs"
 import { clerkClient } from "@clerk/nextjs"
 import { catchClerkError } from "@/lib/utils"
 
-export async function getProductsAction(input: { category?: string }) {
-    if (input.category !== "deck" && input.category !== "wrap" && input.category !== "sponsorship") {
+export async function getProductsAction(input?: { category?: string }) {
+    if (input && input.category && input.category !== "deck" && input.category !== "wrap" && input.category !== "sponsorship") {
         throw new Error("Invalid category: must be 'deck | wrap | sponsorship'")
     }
 
@@ -23,14 +23,22 @@ export async function getProductsAction(input: { category?: string }) {
         throw new Error("Could not get user")
     }
 
-    const wallet = await db.query.wallets.findFirst({
+    let wallet = await db.query.wallets.findFirst({
         where: eq(wallets.userID, user.id)
     })
 
     if (!wallet) {
-        throw new Error("Could not find wallet")
+        await db.insert(wallets).values({
+            userID: user.id,
+            products: [],
+            orders: []
+        })
+
+        wallet = await db.query.wallets.findFirst({
+            where: eq(wallets.userID, user.id)
+        })
     }
-    if (!wallet.products) {
+    if (!wallet!.products || !wallet!.products.length) {
         return []
     }
 
@@ -38,7 +46,7 @@ export async function getProductsAction(input: { category?: string }) {
         const items = await tx
             .select()
             .from(products)
-            .where(and(inArray(products.id, wallet.products!),
+            .where(and(inArray(products.id, wallet!.products!),
                 input?.category ? eq(products.category, input.category as "deck" | "wrap" | "sponsorship") : undefined
             ))
 
