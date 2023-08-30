@@ -40,7 +40,7 @@ export default async function IndexPage() {
   const allProducts = await db
     .select()
     .from(products)
-    .limit(8)
+    .limit(4)
     .orderBy(desc(products.createdAt))
 
   const allUpcoming = await db
@@ -228,7 +228,7 @@ export default async function IndexPage() {
         <div className="flex items-center">
         <h2 className="text-2xl font-medium sm:text-3xl">Upcoming Drops</h2>
         </div>
-
+            
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {allUpcoming.map((upcomingProducts) => (
             <UpcomingCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />

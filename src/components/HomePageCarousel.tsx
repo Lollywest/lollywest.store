@@ -44,7 +44,7 @@ export default function SimpleSlider(){
                 //role="group"
                 //key={index}
                 //aria-roledescription="slide"
-                src="/images/slide-pic.png"
+                src="/images/background-1.webp"
                 alt=""
                 //fill
                  width={1500}
@@ -71,7 +71,7 @@ export default function SimpleSlider(){
             /> */}
           <Image
 
-            src="/images/slide-two.png"
+            src="/images/background-2.webp"
             alt=""
             width={1500}
             height={500}
@@ -83,7 +83,7 @@ export default function SimpleSlider(){
         {/* <div className = "overflow-hidden"> */}
             <Image
 
-              src="/images/slide-pic-8.png"
+              src="/images/background-3.webp"
               alt=""
               //fill
               width={1500}
@@ -97,7 +97,7 @@ export default function SimpleSlider(){
         </div>
         <div>
             <Image
-              src="/images/slide-pic-4.png"
+              src="/images/background-4.webp"
               alt=""
               width={1500}
               height={500}
@@ -107,7 +107,7 @@ export default function SimpleSlider(){
         </div>
         <div>
             <Image
-              src="/images/slide-five.png"
+              src="/images/background-5.webp"
               alt=""
               width={1500}
               height={500}
@@ -117,7 +117,7 @@ export default function SimpleSlider(){
         </div>
         <div>
             <Image
-              src="/images/slide-six.png"
+              src="/images/background-6.webp"
               alt=""
               width={1500}
               height={500}
@@ -137,7 +137,7 @@ export default function SimpleSlider(){
         </div>
         <div>
             <Image
-              src="/images/slide-pic-9.png"
+              src="/images/slide-seven.png"
               alt=""
               width={1500}
               height={500}

@@ -87,7 +87,7 @@ export function UpcomingCard({
           <CardTitle className="line-clamp-1">{upcomingProducts.name}</CardTitle>
           <CardDescription className="line-clamp-2">
             {/* {formatPrice(upcomingProducts.price)} */}
-            Releasing on: {formatDate(upcomingProducts.releaseDate)}
+            Releasing on: {formatDate(upcomingProducts.releaseDate!)}
             
           </CardDescription>
           <div className="space-y-2 text-sm text-muted-foreground">

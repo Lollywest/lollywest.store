@@ -53,7 +53,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   //   where: eq(stores.id, product.storeId),
   // })
 
-  const store = await db.query.artists.findFirst({
+  const artist = await db.query.artists.findFirst({
     columns: {
       id: true,
       name: true,
@@ -61,7 +61,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     where: eq(artists.id, product.artistID),
   })
   
-  const productsFromStore = store
+  const productsFromStore = artist
     // ? await db
     //     .select()
     //     .from(products)
@@ -121,12 +121,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <p className="text-base text-muted-foreground">
               {formatPrice(product.price)}
             </p>
-            {store ? (
+            {artist ? (
               <Link
-                href={`/products?store_ids=${store.id}`}
+                href={`/artist-products?artist_ids=${artist.id}`}
                 className="line-clamp-1 inline-block text-base text-muted-foreground hover:underline"
               >
-                {store.name}
+                {artist.name}
               </Link>
             ) : null}
           </div>
@@ -144,10 +144,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </Accordion>
         </div>
       </div>
-      {store && productsFromStore.length > 0 ? (
+      {artist && productsFromStore.length > 0 ? (
         <div className="overflow-hidden md:pt-6">
           <h2 className="line-clamp-1 flex-1 text-2xl font-bold">
-            More products from {store.name}
+            More products from {artist.name}
           </h2>
           <div className="overflow-x-auto pb-2 pt-6">
             <div className="flex w-fit gap-4">
