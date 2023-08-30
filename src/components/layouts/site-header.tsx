@@ -84,7 +84,7 @@ export function SiteHeader({ user }: SiteHeaderProps) {
                         <DropdownMenuShortcut>⇧⌘A</DropdownMenuShortcut>
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
+                    {user.publicMetadata.isArtist == "true" && <DropdownMenuItem asChild>
                       <Link href="/dashboard/artist">
                         <Icons.terminal
                           className="mr-2 h-4 w-4"
@@ -93,7 +93,7 @@ export function SiteHeader({ user }: SiteHeaderProps) {
                         Dashboard
                         <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
                       </Link>
-                    </DropdownMenuItem>
+                    </DropdownMenuItem>}
                     <DropdownMenuItem asChild disabled>
                       <Link href="/dashboard/settings">
                         <Icons.settings
