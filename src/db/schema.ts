@@ -186,6 +186,21 @@ export const addresses = mysqlTable("addresses", {
 
 export type Address = InferModel<typeof addresses>
 
+export const contacts = mysqlTable("contacts", {
+  id: serial("id").primaryKey(),
+  category: mysqlEnum("category", [
+    "artist",
+    "manager",
+    "partner",
+  ])
+    .notNull()
+    .default("artist"),
+  contactInfo: text("contactInfo"),
+  message: text("message")
+})
+
+export type Contact = InferModel<typeof contacts>
+
 //=================================== old schema ===================================
 
 // import type { CartItem, CheckoutItem, StoredFile } from "@/types"
