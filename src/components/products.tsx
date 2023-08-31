@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { type Product, type Store } from "@/db/schema"
+import { type Product, type Artist } from "@/db/schema"
 import type { Option } from "@/types"
 
 import { getSubcategories, sortOptions } from "@/config/products"
@@ -41,7 +41,7 @@ interface ProductsProps {
   pageCount: number
   category?: Product["category"]
   categories?: Product["category"][]
-  stores?: Pick<Store, "id" | "name">[]
+  artists?: Pick<Artist, "id" | "name">[]
   storePageCount?: number
 }
 
@@ -50,7 +50,7 @@ export function Products({
   pageCount,
   category,
   categories,
-  stores,
+  artists,
   storePageCount,
 }: ProductsProps) {
   const router = useRouter()
@@ -240,7 +240,7 @@ export function Products({
                   />
                 </div>
               ) : null}
-              {stores?.length ? (
+              {artists?.length ? (
                 <div className="space-y-3">
                   <div className="flex gap-2">
                     <h3 className="flex-1 text-sm font-medium tracking-wide text-foreground">
@@ -293,30 +293,30 @@ export function Products({
                   </div>
                   <ScrollArea className="h-96">
                     <div className="space-y-4">
-                      {stores.map((store) => (
+                      {artists.map((artist) => (
                         <div
-                          key={store.id}
+                          key={artist.id}
                           className="flex items-center space-x-2"
                         >
                           <Checkbox
-                            id={`store-${store.id}`}
-                            checked={storeIds?.includes(store.id) ?? false}
+                            id={`store-${artist.id}`}
+                            checked={storeIds?.includes(artist.id) ?? false}
                             onCheckedChange={(value) => {
                               if (value) {
-                                setStoreIds([...(storeIds ?? []), store.id])
+                                setStoreIds([...(storeIds ?? []), artist.id])
                               } else {
                                 setStoreIds(
-                                  storeIds?.filter((id) => id !== store.id) ??
+                                  storeIds?.filter((id) => id !== artist.id) ??
                                     null
                                 )
                               }
                             }}
                           />
                           <Label
-                            htmlFor={`store-${store.id}`}
+                            htmlFor={`artist-${artist.id}`}
                             className="line-clamp-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                           >
-                            {store.name}
+                            {artist.name}
                           </Label>
                         </div>
                       ))}
