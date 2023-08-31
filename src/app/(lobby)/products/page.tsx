@@ -31,7 +31,6 @@ export default async function ProductsPage({
     per_page,
     sort,
     categories,
-    subcategories,
     price_range,
     store_ids,
     store_page,
@@ -46,9 +45,8 @@ export default async function ProductsPage({
     offset,
     sort: typeof sort === "string" ? sort : null,
     categories: typeof categories === "string" ? categories : null,
-    subcategories: typeof subcategories === "string" ? subcategories : null,
     price_range: typeof price_range === "string" ? price_range : null,
-    store_ids: typeof store_ids === "string" ? store_ids : null,
+    artist_ids: typeof store_ids === "string" ? store_ids : null,
   })
 
   const pageCount = Math.ceil(productsTransaction.total / limit)
