@@ -248,14 +248,14 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
                 type="number"
                 inputMode="numeric"
                 placeholder="Type product inventory here."
-                {...form.register("inventory", {
+                {...form.register("decksLeft", {
                   valueAsNumber: true,
                 })}
-                defaultValue={product.inventory}
+                defaultValue={product.decksLeft}
               />
             </FormControl>
             <UncontrolledFormMessage
-              message={form.formState.errors.inventory?.message}
+              message={form.formState.errors.decksLeft?.message}
             />
           </FormItem>
         </div>
@@ -308,10 +308,10 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
             onClick={() => {
               startTransition(async () => {
                 await deleteProductAction({
-                  storeId: product.storeId,
+                  artistId: product.artistID,
                   id: product.id,
                 })
-                router.push(`/dashboard/stores/${product.storeId}/products`)
+                router.push(`/dashboard/stores/${product.artistID}/products`)
               })
             }}
             disabled={isPending}
