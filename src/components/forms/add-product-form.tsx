@@ -62,7 +62,6 @@ export function AddProductForm({ artistId }: AddProductFormProps) {
   })
 
   const previews = form.watch("images") as FileWithPreview[] | null
-  const subcategories = getSubcategories(form.watch("category"))
 
   function onSubmit(data: Inputs) {
     startTransition(async () => {
@@ -172,7 +171,7 @@ export function AddProductForm({ artistId }: AddProductFormProps) {
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="subcategory"
             render={({ field }) => (
@@ -200,7 +199,7 @@ export function AddProductForm({ artistId }: AddProductFormProps) {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
         </div>
         <div className="flex flex-col items-start gap-6 sm:flex-row">
           <FormItem className="w-full">
@@ -222,13 +221,13 @@ export function AddProductForm({ artistId }: AddProductFormProps) {
                 type="number"
                 inputMode="numeric"
                 placeholder="Type product inventory here."
-                {...form.register("inventory", {
+                {...form.register("decksLeft", {
                   valueAsNumber: true,
                 })}
               />
             </FormControl>
             <UncontrolledFormMessage
-              message={form.formState.errors.inventory?.message}
+              message={form.formState.errors.decksLeft?.message}
             />
           </FormItem>
         </div>
