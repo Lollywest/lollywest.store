@@ -161,7 +161,7 @@ export async function addProductAction(
 
 export async function updateProductAction(
   input: z.infer<typeof productSchema> & {
-    storeId: number
+    artistId: number
     id: number
     images: StoredFile[] | null
     perks: string[] | null
@@ -178,7 +178,7 @@ export async function updateProductAction(
 
   await db.update(products).set(input).where(eq(products.id, input.id))
 
-  revalidatePath(`/dashboard/stores/${input.storeId}/products/${input.id}`)
+  revalidatePath(`/dashboard/stores/${input.artistId}/products/${input.id}`)
 }
 // ================================================================
 

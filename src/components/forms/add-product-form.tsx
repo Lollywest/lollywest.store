@@ -40,14 +40,14 @@ import { addProductAction, checkProductAction } from "@/app/_actions/product"
 import type { OurFileRouter } from "@/app/api/uploadthing/core"
 
 interface AddProductFormProps {
-  storeId: number
+  artistId: number
 }
 
 type Inputs = z.infer<typeof productSchema>
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>()
 
-export function AddProductForm({ storeId }: AddProductFormProps) {
+export function AddProductForm({ artistId }: AddProductFormProps) {
   const [files, setFiles] = React.useState<FileWithPreview[] | null>(null)
 
   const [isPending, startTransition] = React.useTransition()
@@ -57,7 +57,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
   const form = useForm<Inputs>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      category: "Featured",
+      category: "sponsorship",
     },
   })
 
@@ -82,10 +82,15 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
             })
           : null
 
+        const owners : string[] = []
+        // TODO ===================
+        const perks : string[] = []
         await addProductAction({
           ...data,
-          storeId,
+          artistId,
           images,
+          perks,
+          owners
         })
 
         toast.success("Product added successfully.")

@@ -5,7 +5,6 @@ import { products, artists, type Product } from "@/db/schema"
 import { env } from "@/env.mjs"
 import { and, asc, desc, eq, inArray, like, sql } from "drizzle-orm"
 
-import { GenerateButton } from "@/components/generate-button"
 import { ProductsTableShell } from "@/components/shells/products-table-shell"
 import { currentUser } from "@clerk/nextjs"
 
@@ -118,7 +117,6 @@ export default async function ProductsPage({
 
   return (
     <div className="space-y-2.5">
-      {env.NODE_ENV !== "production" && <GenerateButton storeId={artist.id} />}
       <ProductsTableShell
         data={artistProducts}
         pageCount={pageCount}
