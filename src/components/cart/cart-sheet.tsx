@@ -95,11 +95,6 @@ export async function CartSheet() {
                               ).toFixed(2)
                             )}
                           </span>
-                          <span className="line-clamp-1 text-xs capitalize text-muted-foreground">
-                            {`${item.category} ${
-                              item.subcategory ? `/ ${item.subcategory}` : ""
-                            }`}
-                          </span>
                         </div>
                         <UpdateCart cartLineItem={item} />
                       </div>
