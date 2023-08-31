@@ -38,7 +38,7 @@ export type Product = InferModel<typeof products>
 export type UpcomingProduct = InferModel<typeof upcoming>
 
 
-export const productsRelations = relations(products, ({ one, many }) => ({
+export const productsRelations = relations(products, ({ one }) => ({
   artist: one(artists, {
     fields: [products.artistID],
     references: [artists.id]
