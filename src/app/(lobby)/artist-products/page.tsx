@@ -89,7 +89,7 @@ export default async function ProductsPage({
         products={productsTransaction.items}
         pageCount={pageCount}
         categories={Object.values(products.category.enumValues)}
-        stores={storesTransaction.items}
+        artists={storesTransaction.items}
         storePageCount={storePageCount}
       />
     </Shell>
