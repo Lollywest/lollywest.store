@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { db } from "@/db"
-import { products, orders, wallets, type Product } from "@/db/schema"
+import { products, orders, type Product } from "@/db/schema"
 import type { StoredFile } from "@/types"
 import { clerkClient } from "@clerk/nextjs"
 import {
@@ -27,7 +27,6 @@ import type {
   getProductsSchema,
   productSchema,
 } from "@/lib/validations/product"
-import { S } from "drizzle-orm/query-promise.d-0dd411fc"
 
 export async function filterProductsAction(query: string) {
   if (query.length === 0) return null
