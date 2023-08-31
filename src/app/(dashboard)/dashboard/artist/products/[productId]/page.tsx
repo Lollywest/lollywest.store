@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 
 interface UpdateProductPageProps {
   params: {
-    storeId: string
+    artistId: string
     productId: string
   }
 }
@@ -31,11 +31,11 @@ interface UpdateProductPageProps {
 export default async function UpdateProductPage({
   params,
 }: UpdateProductPageProps) {
-  const storeId = Number(params.storeId)
+  const artistId = Number(params.artistId)
   const productId = Number(params.productId)
 
   const product = await db.query.products.findFirst({
-    where: and(eq(products.id, productId), eq(products.storeId, storeId)),
+    where: and(eq(products.id, productId), eq(products.artistID, artistId)),
   })
 
   if (!product) {
