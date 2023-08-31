@@ -58,7 +58,7 @@ export default function DropOnLollywest() {
         <CardContent>
           <form
             // action={(() => {addContact})}
-            action={addContact}
+            action={() => addContact}
             className="grid w-full max-w-xl gap-5"
           >
             <fieldset className="grid gap-2.5">
