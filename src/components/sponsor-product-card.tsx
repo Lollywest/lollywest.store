@@ -20,7 +20,7 @@ import {
 import { Icons } from "@/components/icons"
 import { addToCartAction } from "@/app/_actions/cart"
 
-interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface SponsorProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   product: Product
   variant?: "default" | "switchable"
   isAddedToCart?: boolean
@@ -28,14 +28,14 @@ interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 
-export function ProductCard({
+export function SponsorProductCard({
   product,
   variant = "default",
   isAddedToCart = false,
   onSwitch,
   className,
   ...props
-}: ProductCardProps) {
+}: SponsorProductCardProps) {
   const [isPending, startTransition] = React.useTransition()
 
   
@@ -44,15 +44,16 @@ export function ProductCard({
 
   return (
     <Card
-      className={cn("h-full overflow-hidden rounded-sm", className)}
+      className={cn("h-full grid grid-rows-[1fr,auto] overflow-hidden rounded-3xl", className)}
       {...props}
     >
+      <div className="overflow-hidden">
       <Link
         aria-label={`View ${product.name} details`}
-        href={`/product/${product.id}`}
+        href={`/sponsorships/${product.id}`}
       >
         <CardHeader className="border-b p-0">
-          <AspectRatio ratio={4 / 3}>
+          <AspectRatio ratio={1/1}>
             {product?.images?.length ? (
               <Image
                 src={
@@ -80,9 +81,10 @@ export function ProductCard({
           </AspectRatio>
         </CardHeader>
       </Link>
+      {/* <div className="flex-1 overflow-hidden"> */}
       <Link
         aria-label={`View ${product.name} details`}
-        href={`/product/${product.id}`}
+        href={`/sponsorships/${product.id}`}
       >
         <CardContent className="grid gap-2.5 p-4">
           <CardDescription className="line-clamp-2">
@@ -94,50 +96,23 @@ export function ProductCard({
             {formatPrice(product.price)}
           </CardDescription>
           <div className="space-y-2 text-sm text-muted-foreground">
-            {/* {plan.features.map((feature) => ( */}
-              {/* <div key={feature} className="flex items-center gap-2"> */}
+            
               <div className="flex items-center gap-2">
                 {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
-                <span>Included Perks: </span>
+                <span>Included Perks: NONE.. TESTING</span>
                 {/* <span>{product.perks}</span> */}
                 {/* {toTitleCase(product.perks)} */}
               </div>
-              {/* <div className="flex items-center gap-2">
-                <Icons.addCircle className="h-4 w-4" aria-hidden="true" />
-                <span>Feature 2</span>
-              </div> */}
-              {/* <div className="flex items-center gap-2">
-                <Icons.alarm className="h-4 w-4" aria-hidden="true" />
-                <span>Feature 3</span>
-              </div> */}
-              {/* <div className="flex items-center gap-2">
-                <Icons.dollarSign className="h-4 w-4" aria-hidden="true" />
-                <span>Feature 3</span>
-              </div> */}
-              <div className="space-y-2 text-sm text-muted-foreground">
-                  {product.perks?.map((perks) => (
-                    <div key={perks} className="flex items-center gap-2">
-                      <Icons.addCircle className="h-4 w-4" aria-hidden="true" />
-                      <span>{perks}</span>
-                    </div>
-                  ))}
-                <div className="flex items-center gap-2">
-                    <Icons.chevronsRight className="h-4 w-4" aria-hidden="true" />
-                    <span>Click to see additional perks</span>
-                    {/* <Icons.chevronsLeft className="h-4 w-4" aria-hidden="true" /> */}
-                    
-                    {/* <Icons.view className="h-4 w-4" aria-hidden="true" /> */}
-                   
-                </div> 
-              </div>
-            {/* ))} */}
+              
+            
           </div>
         </CardContent>
       </Link>
+      </div>
       <CardFooter className="p-4">
         {variant === "default" ? (
           <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:justify-between">
-            <Link
+            {/* <Link
               aria-label="Preview product"
               href={`/product-preview/${product.id}`}
               className={buttonVariants({
@@ -147,7 +122,7 @@ export function ProductCard({
               })}
             >
               Preview
-            </Link>
+            </Link> */}
             <Button
               aria-label="Add to cart"
               size="sm"
@@ -175,7 +150,7 @@ export function ProductCard({
                   aria-hidden="true"
                 />
               )}
-              Add to cart
+              Sponsor this Artist
             </Button>
           </div>
         ) : (

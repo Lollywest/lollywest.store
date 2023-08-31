@@ -22,6 +22,11 @@ import {
 } from "@/components/ui/card"
 import { Icons } from "@/components/icons"
 import { ProductCard } from "@/components/product-card"
+
+import { SponsorProductCard } from "@/components/sponsor-product-card"
+import { WrapProductCard } from "@/components/wrap-product-card"
+
+
 import { UpcomingCard } from "@/components/upcoming-card"
 import { Shell } from "@/components/shells/shell"
 
@@ -201,7 +206,7 @@ export default async function IndexPage() {
           <h2 className="flex-1 text-2xl font-medium sm:text-3xl">
             Trending Now
           </h2>
-          {/* <Link href="/products">
+          <Link href="/featured">
             <div
               className={cn(
                 buttonVariants({
@@ -212,11 +217,22 @@ export default async function IndexPage() {
               View all
               <span className="sr-only">View all products</span>
             </div>
-          </Link> */}
+          </Link>
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {allProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            //<ProductCard key={product.id} product={product} />
+            product.category === "deck" ? (
+              <ProductCard key={product.id} product={product} />
+            ) : product.category === "wrap" ? (
+              <WrapProductCard key={product.id} product={product} />
+            ) : product.category === "sponsorship" ? (
+              <SponsorProductCard key={product.id} product={product} />
+            ) : (
+              <ProductCard key={product.id} product={product} />
+            )
+              
+          
           ))}
         </div>
       </section>
