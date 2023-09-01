@@ -1,7 +1,8 @@
 "use server"
 
+import { redirect } from "next/navigation"
 import { db } from "@/db"
-import { payments, artists } from "@/db/schema"
+import { artists, payments } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs"
 import { eq } from "drizzle-orm"
 import { type z } from "zod"
@@ -10,6 +11,7 @@ import { stripe } from "@/lib/stripe"
 import { absoluteUrl } from "@/lib/utils"
 import type {
   createAccountLinkSchema,
+  createCheckoutSessionSchema,
   manageSubscriptionSchema,
 } from "@/lib/validations/stripe"
 
@@ -59,6 +61,41 @@ export async function manageSubscriptionAction(
   return {
     url: stripeSession.url,
   }
+}
+
+export async function createCheckoutSessionAction(
+  input: z.infer<typeof createCheckoutSessionSchema>
+) {
+  const user = await clerkClient.users.getUser(input.userId)
+
+  if (!user) {
+    throw new Error("User not found.")
+  }
+
+  const billingUrl = absoluteUrl("/dashboard/billing")
+
+  // Check if any item has the category "wrap"
+  const isSubscription = input.items.some((item) => item.category === "wrap")
+  const mode = isSubscription ? "subscription" : "payment"
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: input.items.map((item) => ({
+      price: item.stripePriceId ? item.stripePriceId : undefined,
+      quantity: item.quantity,
+    })),
+    mode: mode,
+    success_url: billingUrl,
+    cancel_url: billingUrl,
+    metadata: {
+      userId: input.userId,
+      username: user.username,
+    },
+    billing_address_collection: "auto",
+    customer: input.stripeCustomerId ? input.stripeCustomerId : undefined,
+  })
+
+  return session
 }
 
 export async function checkStripeConnectionAction(

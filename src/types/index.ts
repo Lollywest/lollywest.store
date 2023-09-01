@@ -77,7 +77,8 @@ export interface CartLineItem
     "price" | 
     "artistID" |
     "images" | 
-    "category"
+    "category" |
+    "stripePriceId"
   > {
   quantity?: number
   artistName: string | null

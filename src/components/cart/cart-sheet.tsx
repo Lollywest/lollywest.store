@@ -1,6 +1,10 @@
+import * as React from "react"
 import Image from "next/image"
+import { redirect } from "next/navigation"
+import { currentUser } from "@clerk/nextjs"
 
 import { formatPrice } from "@/lib/utils"
+import { userPrivateMetadataSchema } from "@/lib/validations/auth"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -8,7 +12,6 @@ import { Separator } from "@/components/ui/separator"
 import {
   Sheet,
   SheetContent,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -17,8 +20,20 @@ import { UpdateCart } from "@/components/cart/update-cart"
 import { Icons } from "@/components/icons"
 import { getCartAction } from "@/app/_actions/cart"
 
+import { CheckoutForm } from "./checkout-form"
+
 export async function CartSheet() {
   const cartLineItems = await getCartAction()
+  const user = await currentUser()
+  if (!user) {
+    redirect("/signin")
+  }
+  const userPrivateMetadata = userPrivateMetadataSchema.parse(
+    user.privateMetadata
+  )
+  const stripeCustomerId = userPrivateMetadata.stripeCustomerId
+    ? userPrivateMetadata.stripeCustomerId
+    : undefined
 
   const itemCount = cartLineItems.reduce(
     (total, item) => total + Number(item.quantity),
@@ -96,9 +111,7 @@ export async function CartSheet() {
                             )}
                           </span>
                           <span className="line-clamp-1 text-xs capitalize text-muted-foreground">
-                            {`${item.category} ${
-                              item.subcategory ? `/ ${item.subcategory}` : ""
-                            }`}
+                            {`${item.category}`}
                           </span>
                         </div>
                         <UpdateCart cartLineItem={item} />
@@ -128,15 +141,11 @@ export async function CartSheet() {
                 <span className="flex-1">Total</span>
                 <span>{formatPrice(cartTotal.toFixed(2))}</span>
               </div>
-              <SheetFooter className="mt-1.5">
-                <Button
-                  aria-label="Proceed to checkout"
-                  size="sm"
-                  className="w-full"
-                >
-                  Proceed to Checkout
-                </Button>
-              </SheetFooter>
+              <CheckoutForm
+                userId={user.id}
+                stripeCustomerId={stripeCustomerId}
+                items={cartLineItems}
+              />
             </div>
           </>
         ) : (
