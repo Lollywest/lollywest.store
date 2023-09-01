@@ -18,7 +18,7 @@ const oauthProviders = [
   strategy: OAuthStrategy
 }[]
 
-export function OAuthSignIn() {
+export function OAuthSignUp() {
   const [isLoading, setIsLoading] = React.useState<OAuthStrategy | null>(null)
   const { signIn, isLoaded: signInLoaded } = useSignIn()
 
@@ -29,7 +29,7 @@ export function OAuthSignIn() {
       await signIn.authenticateWithRedirect({
         strategy: provider,
         redirectUrl: "/sso-callback",
-        redirectUrlComplete: "/",
+        redirectUrlComplete: "/username",
       })
     } catch (error) {
       setIsLoading(null)
