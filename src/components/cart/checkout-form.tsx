@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { Check } from "drizzle-orm/mysql-core"
 import { type z } from "zod"
 
 import { catchError } from "@/lib/utils"
@@ -18,10 +17,8 @@ export function CheckoutForm({
   stripeCustomerId,
   items,
 }: CheckoutFormProps) {
+  
   const [isPending, startTransition] = React.useTransition()
-  console.log("CheckoutForm: userId: ", userId)
-  console.log("CheckoutForm: stripeCustomerId: ", stripeCustomerId)
-  console.log("CheckoutForm: items: ", items)
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -57,7 +54,7 @@ export function CheckoutForm({
               aria-hidden="true"
             />
           )}
-          Proceed to Checkout
+          Checkout
         </Button>
       </SheetFooter>
     </form>

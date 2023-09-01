@@ -8,8 +8,6 @@ import { clerkClient } from "@clerk/nextjs"
 import { env } from "@/env.mjs"
 import { headers } from "next/headers"
 
-
-
 export async function POST(req: Request) {
   const body = await req.text()
   const signature = headers().get("Stripe-Signature") ?? ""
@@ -40,15 +38,8 @@ export async function POST(req: Request) {
   if (event.type === "checkout.session.completed") {
 
     const user = await clerkClient.users.getUser(session.metadata.userId)
-    console.log(user.id)    
-    console.log(user.username)
-    console.log(user.firstName + " " + user.lastName)
-    console.log(session.amount_total)
-    console.log(session.customer)
-    console.log("CARTID", session.metadata.cartId)
 
     // Create new order in DB
-
     await db.insert(orders).values({
       userId: user.id,
       username: user.username,
