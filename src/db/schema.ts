@@ -68,7 +68,7 @@ export const upcoming = mysqlTable("upcoming", {
   price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
   createdAt: timestamp("createdAt").defaultNow(),
   releaseDate: timestamp("releaseDate").defaultNow(),
-  
+  priceId: varchar("priceId", { length: 191 }).notNull().default(""),
   slug: text("slug")
 })
 

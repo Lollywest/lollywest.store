@@ -45,7 +45,8 @@ export const productSchema = z.object({
     }, "Must be a number array")
     .optional()
     .nullable()
-    .default(null)
+    .default(null),
+  priceId: z.string()
 })
 
 export const filterProductsSchema = z.object({
