@@ -1,7 +1,9 @@
 import { type Metadata } from "next"
 import Image from "next/image"
 import { env } from "@/env.mjs"
-
+import { db } from "@/db"
+import { orders } from "@/db/schema"
+import { sql, desc } from "drizzle-orm"
 import { Header } from "@/components/header"
 import { Shell } from "@/components/shells/shell"
 
@@ -64,6 +66,14 @@ export default function Leaderboard() {
       top_artist: "Jake Gusto",
     },
   ]
+  // const topUsers = await db.select({
+  //       userId: orders.userId,
+  //       total_credits: sql<number>`sum(${orders.price})`,
+  //       })
+  //       .from(orders)
+  //       .groupBy(orders.userId)
+  //       .orderBy(desc('total_credits'))
+  //       .all();
 
   return (
     <Shell className="md:pb-10">
@@ -78,12 +88,12 @@ export default function Leaderboard() {
               <p className="text-xl font-bold">{index + 1}</p>
             </div>
             <div className="flex w-3/12 items-center">
-              <div className="mr-2 w-5/12 space-y-1">
+              <div className="w-5/12 space-y-1">
                 <p className="truncate text-base font-medium leading-none">
                   {user.username || "Anonymous"}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {user.top_artist || "Anonymous"}
+                  {user.top_artist}
                 </p>
               </div>
               <div className="flex shrink-0 items-center">

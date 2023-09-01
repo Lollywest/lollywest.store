@@ -39,6 +39,7 @@ export default async function BillingPage() {
       ?.emailAddress ?? ""
 
   const subscriptionPlan = await getUserSubscriptionPlan(user.id)
+  
 
   return (
     <Shell variant="sidebar" as="div">
@@ -47,7 +48,7 @@ export default async function BillingPage() {
         description="Manage your billing and subscription"
         size="sm"
       />
-      <section
+      {/* <section
         id="billing-info"
         aria-labelledby="billing-info-heading"
         className="space-y-5"
@@ -140,7 +141,7 @@ export default async function BillingPage() {
             </Card>
           ))}
         </div>
-      </section>
+      </section> */}
     </Shell>
   )
 }
