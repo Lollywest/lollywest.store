@@ -28,7 +28,7 @@ export async function manageSubscriptionAction(
   }
 
   // If the user is already subscribed to a plan, we redirect them to the Stripe billing portal
-  if (input.isSubscribed && input.stripeCustomerId && input.isCurrentPlan) {
+  if (input.stripeCustomerId) {
     const stripeSession = await stripe.billingPortal.sessions.create({
       customer: input.stripeCustomerId,
       return_url: billingUrl,
@@ -37,29 +37,6 @@ export async function manageSubscriptionAction(
     return {
       url: stripeSession.url,
     }
-  }
-
-  // If the user is not subscribed to a plan, we create a Stripe Checkout session
-  const stripeSession = await stripe.checkout.sessions.create({
-    success_url: billingUrl,
-    cancel_url: billingUrl,
-    payment_method_types: ["card"],
-    mode: "subscription",
-    billing_address_collection: "auto",
-    customer_email: input.email,
-    line_items: [
-      {
-        price: input.stripePriceId,
-        quantity: 1,
-      },
-    ],
-    metadata: {
-      userId: input.userId,
-    },
-  })
-
-  return {
-    url: stripeSession.url,
   }
 }
 

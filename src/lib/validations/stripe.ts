@@ -3,12 +3,7 @@ import { cartLineItemSchema } from "@/lib/validations/cart"
 
 export const manageSubscriptionSchema = z.object({
   userId: z.string(),
-  email: z.string().email(),
-  stripePriceId: z.string(),
   stripeCustomerId: z.string().optional().nullable(),
-  stripeSubscriptionId: z.string().optional().nullable(),
-  isSubscribed: z.boolean(),
-  isCurrentPlan: z.boolean(),
 })
 
 export const createCheckoutSessionSchema = z.object({
