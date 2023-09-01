@@ -120,11 +120,11 @@ export const siteConfig = {
           href: "/privacy",
           external: false,
         },
-        {
-          title: "General FAQ",
-          href: "https://www.lollywest.com/",
-          external: true,
-        },
+        // {
+        //   title: "General FAQ",
+        //   href: "https://www.lollywest.com/",
+        //   external: true,
+        // },
       ],
     },
     {
