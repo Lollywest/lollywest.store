@@ -1,6 +1,6 @@
 "use server"
 
-import { redirect } from "next/navigation"
+import { cookies } from "next/headers"
 import { db } from "@/db"
 import { artists, payments } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs"
@@ -67,6 +67,7 @@ export async function createCheckoutSessionAction(
   input: z.infer<typeof createCheckoutSessionSchema>
 ) {
   const user = await clerkClient.users.getUser(input.userId)
+  const cartId = cookies().get("cartId")?.value
 
   if (!user) {
     throw new Error("User not found.")
@@ -90,6 +91,7 @@ export async function createCheckoutSessionAction(
     metadata: {
       userId: input.userId,
       username: user.username,
+      cartId: cartId ? cartId : null,
     },
     billing_address_collection: "auto",
     customer: input.stripeCustomerId ? input.stripeCustomerId : undefined,

@@ -45,6 +45,7 @@ export async function POST(req: Request) {
     console.log(user.firstName + " " + user.lastName)
     console.log(session.amount_total)
     console.log(session.customer)
+    console.log("CARTID", session.metadata.cartId)
 
     // Create new order in DB
 
@@ -56,13 +57,16 @@ export async function POST(req: Request) {
       price: session.amount_total?.toString(),
     })
 
-    // Close cart and clear items
-    await db
+    if (session.metadata.cartId) {
+      await db
       .update(carts)
       .set({
         items: [],
       })
-      .where(eq(carts.userId, user.id))
+      .where(eq(carts.id, session.metadata.cartId))
+    }
+    // Close cart and clear items
+    
   }
     // Update the users customer ID
     await clerkClient.users.updateUserMetadata(session?.metadata?.userId, {
