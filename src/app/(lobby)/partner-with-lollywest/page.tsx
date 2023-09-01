@@ -1,3 +1,6 @@
+"use client"
+
+import * as React from "react"
 import { type Metadata } from "next"
 import { env } from "@/env.mjs"
 
@@ -17,8 +20,21 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { LoadingButton } from "@/components/ui/loading-button"
 import { Textarea } from "@/components/ui/textarea"
+import { useForm } from "react-hook-form"
 
 import { addContactAction } from "@/app/_actions/contact"
+import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Button } from "@/components/ui/button"
+import { Icons } from "@/components/icons"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -26,15 +42,33 @@ export const metadata: Metadata = {
   description: "Explore the latest news and updates from the community",
 }
 
+export const formSchema = z.object({
+  contactInfo: z.string(),
+  message: z.string()
+})
+
+type Inputs = z.infer<typeof formSchema>
+
 export default function DropOnLollywest() {
+  const [isPending, startTransition] = React.useTransition()
 
-  async function addContact(fd: FormData) {
-    "use server"
+  const form = useForm<Inputs>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      contactInfo: "",
+      message: "",
+    },
+  })
 
-    const contactInfo = fd.get("contactInfo") as string
-    const message = fd.get("message") as string
+  async function addContact(data: Inputs) {
+    startTransition(async () => {
+      const contactInfo = data.contactInfo
+      const message = data.message
 
-    await addContactAction({category: "partner", contactInfo, message})
+      console.log("check")
+
+      await addContactAction({ category: "partner", contactInfo, message })
+    })
   }
 
   return (
@@ -50,270 +84,294 @@ export default function DropOnLollywest() {
         aria-labelledby="add-contact-heading"
       >
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Artist? Apply here</CardTitle>
+          <CardTitle className="text-2xl">Partnership Inquiry</CardTitle>
           <CardDescription>
-            Fill out the short form below and a member from our team will review it as soon as possible.
+            Fill out the form below and a member from our sales team will reach out with future steps
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form
-            // action={(() => {addContact})}
-            action={() => addContact}
-            className="grid w-full max-w-xl gap-5"
-          >
-            <fieldset className="grid gap-2.5">
-              <Label htmlFor="contact-info">Contact Info</Label>
-              <Input
-                id="contact-info"
-                aria-describedby="add-contact-info"
+          <Form {...form}>
+            <form
+              onSubmit={(...args) => void form.handleSubmit(addContact)(...args)}
+              className="grid w-full max-w-xl gap-5"
+            >
+              <FormField
+                control={form.control}
                 name="contactInfo"
-                required
-                minLength={3}
-                maxLength={50}
-                placeholder="Enter your email or phone number here."
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Contact Info</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="contact-info"
+                        aria-describedby="add-contact-info"
+                        required
+                        minLength={3}
+                        maxLength={50}
+                        placeholder="Enter your email or phone number here."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </fieldset>
-            <fieldset className="grid gap-2.5">
-              <Label htmlFor="contact-message">Partnership Inquiry</Label>
-              <Textarea
-                id="contact-message"
-                aria-describedby="contact-message-description"
+              <FormField
+                control={form.control}
                 name="message"
-                minLength={3}
-                maxLength={1000}
-                placeholder="Type the organization/venue/person you represent, intrest in collaboration or partnering with Lollywest, possible partnerships/collaborations etc."
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Reason for Reaching Out</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        id="contact-message"
+                        aria-describedby="contact-message-description"
+                        minLength={3}
+                        maxLength={1000}
+                        placeholder="Type the organization/venue/person you represent, intrest in collaboration or partnering with Lollywest, possible partnerships/collaborations etc."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </fieldset>
-            <div className="flex space-x-2">
-              <LoadingButton>
-                Send Inquiry
-                <span className="sr-only">Send Inquiry</span>
-              </LoadingButton>
-            </div>
-          </form>
+              <div className="flex space-x-2">
+                <Button disabled={isPending}>
+                  {isPending && (
+                    <Icons.spinner
+                      className="mr-2 h-4 w-4 animate-spin"
+                      aria-hidden="true"
+                    />
+                  )}
+                  Send Contact
+                  <span className="sr-only">Send Contact</span>
+                </Button>
+              </div>
+            </form>
+          </Form>
         </CardContent>
       </Card>
     </Shell>
   )
 }
 
+// // import { type Metadata } from "next"
+// // import Image from "next/image"
+// // import Link from "next/link"
+// // import { env } from "@/env.mjs"
+// // import { allPosts } from "contentlayer/generated"
+// // import dayjs from "dayjs"
 
-// import { type Metadata } from "next"
-// import Image from "next/image"
-// import Link from "next/link"
-// import { env } from "@/env.mjs"
-// import { allPosts } from "contentlayer/generated"
-// import dayjs from "dayjs"
+// // import { formatDate } from "@/lib/utils"
+// // import { AspectRatio } from "@/components/ui/aspect-ratio"
+// // import { Separator } from "@/components/ui/separator"
+// // import { Header } from "@/components/header"
+// // import { Icons } from "@/components/icons"
+// // import { Shell } from "@/components/shells/shell"
 
-// import { formatDate } from "@/lib/utils"
-// import { AspectRatio } from "@/components/ui/aspect-ratio"
-// import { Separator } from "@/components/ui/separator"
-// import { Header } from "@/components/header"
-// import { Icons } from "@/components/icons"
-// import { Shell } from "@/components/shells/shell"
+// // import { SubscribeToNewsletterForm } from "@/components/forms/subscribe-to-newsletter-form"
+// // import { AddProductForm } from "@/components/forms/add-product-form"
+// // import { SignUpForm } from "@/components/forms/signup-form"
 
-// import { SubscribeToNewsletterForm } from "@/components/forms/subscribe-to-newsletter-form"
-// import { AddProductForm } from "@/components/forms/add-product-form"
-// import { SignUpForm } from "@/components/forms/signup-form"
+// // import { siteConfig } from "@/config/site"
+// // import { cn } from "@/lib/utils"
+// // import {
+// //   Accordion,
+// //   AccordionContent,
+// //   AccordionItem,
+// //   AccordionTrigger,
+// // } from "@/components/ui/accordion"
+// // import { Button } from "@/components/ui/button"
+// // import { ScrollArea } from "@/components/ui/scroll-area"
+// // import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
-// import { siteConfig } from "@/config/site"
-// import { cn } from "@/lib/utils"
-// import {
-//   Accordion,
-//   AccordionContent,
-//   AccordionItem,
-//   AccordionTrigger,
-// } from "@/components/ui/accordion"
-// import { Button } from "@/components/ui/button"
-// import { ScrollArea } from "@/components/ui/scroll-area"
-// import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-
-// import { redirect } from "next/navigation"
-// import { currentUser } from "@clerk/nextjs"
-// import { products, stores } from "@/db/schema"
-
-
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardFooter,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card"
-// import { OAuthSignIn } from "@/components/auth/oauth-signin"
-// import { notFound } from "next/navigation"
-// import { db } from "@/db"
-// import { and, eq } from "drizzle-orm"
-
-// import { UpdateProductForm } from "@/components/forms/update-product-form"
-// import { ProductPager } from "@/components/pagers/product-pager"
-
-// import { revalidatePath } from "next/cache"
+// // import { redirect } from "next/navigation"
+// // import { currentUser } from "@clerk/nextjs"
+// // import { products, stores } from "@/db/schema"
 
 
+// // import {
+// //   Card,
+// //   CardContent,
+// //   CardDescription,
+// //   CardFooter,
+// //   CardHeader,
+// //   CardTitle,
+// // } from "@/components/ui/card"
+// // import { OAuthSignIn } from "@/components/auth/oauth-signin"
+// // import { notFound } from "next/navigation"
+// // import { db } from "@/db"
+// // import { and, eq } from "drizzle-orm"
 
-// import { buttonVariants } from "@/components/ui/button"
+// // import { UpdateProductForm } from "@/components/forms/update-product-form"
+// // import { ProductPager } from "@/components/pagers/product-pager"
 
-// import { Input } from "@/components/ui/input"
-// import { Label } from "@/components/ui/label"
-// import { LoadingButton } from "@/components/ui/loading-button"
-// import { Textarea } from "@/components/ui/textarea"
-// import { ConnectStoreToStripeButton } from "@/components/connect-store-to-stripe-button"
-// import { checkStripeConnectionAction } from "@/app/_actions/stripe"
+// // import { revalidatePath } from "next/cache"
 
 
-// interface UpdateProductPageProps {
-//   params: {
-//     storeId: string
-//     productId: string
-//   }
-// }
 
-// interface UpdateStorePageProps {
-//   params: {
-//     storeId: string
-//   }
-// }
+// // import { buttonVariants } from "@/components/ui/button"
 
-// export const metadata: Metadata = {
-//   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
-//   title: "Blog",
-//   description: "Explore the latest news and updates from the community",
-// }
+// // import { Input } from "@/components/ui/input"
+// // import { Label } from "@/components/ui/label"
+// // import { LoadingButton } from "@/components/ui/loading-button"
+// // import { Textarea } from "@/components/ui/textarea"
+// // import { ConnectStoreToStripeButton } from "@/components/connect-store-to-stripe-button"
+// // import { checkStripeConnectionAction } from "@/app/_actions/stripe"
 
-// // export default function BlogPage() {
-// export default async function ParnerWithLollywest({
-//   params,
-// }: UpdateStorePageProps) {
-//   const storeId = Number(params.storeId)
-//   const posts = allPosts
-//     .filter((post) => post.published)
-//     .sort((a, b) => dayjs(b.date).unix() - dayjs(a.date).unix())
+
+// // interface UpdateProductPageProps {
+// //   params: {
+// //     storeId: string
+// //     productId: string
+// //   }
+// // }
+
+// // interface UpdateStorePageProps {
+// //   params: {
+// //     storeId: string
+// //   }
+// // }
+
+// // export const metadata: Metadata = {
+// //   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
+// //   title: "Blog",
+// //   description: "Explore the latest news and updates from the community",
+// // }
+
+// // // export default function BlogPage() {
+// // export default async function ParnerWithLollywest({
+// //   params,
+// // }: UpdateStorePageProps) {
+// //   const storeId = Number(params.storeId)
+// //   const posts = allPosts
+// //     .filter((post) => post.published)
+// //     .sort((a, b) => dayjs(b.date).unix() - dayjs(a.date).unix())
 
 
     
-//     async function updateStore(fd: FormData) {
-//       "use server"
+// //     async function updateStore(fd: FormData) {
+// //       "use server"
   
-//       const name = fd.get("name") as string
-//       const description = fd.get("description") as string
+// //       const name = fd.get("name") as string
+// //       const description = fd.get("description") as string
   
-//       // const storeWithSameName = await db.query.stores.findFirst({
-//       //   where: and(eq(stores.name, name), not(eq(stores.id, storeId))),
-//       //   columns: {
-//       //     id: true,
-//       //   },
-//       // })
+// //       // const storeWithSameName = await db.query.stores.findFirst({
+// //       //   where: and(eq(stores.name, name), not(eq(stores.id, storeId))),
+// //       //   columns: {
+// //       //     id: true,
+// //       //   },
+// //       // })
   
-//       // if (storeWithSameName) {
-//       //   throw new Error("Store name already taken")
-//       // }
+// //       // if (storeWithSameName) {
+// //       //   throw new Error("Store name already taken")
+// //       // }
   
-//       await db
-//         .update(stores)
-//         .set({ name, description })
-//         .where(eq(stores.id, storeId))
+// //       await db
+// //         .update(stores)
+// //         .set({ name, description })
+// //         .where(eq(stores.id, storeId))
   
-//       revalidatePath(`/dashboard/stores/${storeId}`)
-//     }
+// //       revalidatePath(`/dashboard/stores/${storeId}`)
+// //     }
   
-//     async function deleteStore() {
-//       "use server"
+// //     async function deleteStore() {
+// //       "use server"
   
-//       const store = await db.query.stores.findFirst({
-//         where: eq(stores.id, storeId),
-//         columns: {
-//           id: true,
-//         },
-//       })
+// //       const store = await db.query.stores.findFirst({
+// //         where: eq(stores.id, storeId),
+// //         columns: {
+// //           id: true,
+// //         },
+// //       })
   
-//       if (!store) {
-//         throw new Error("Store not found")
-//       }
+// //       if (!store) {
+// //         throw new Error("Store not found")
+// //       }
   
-//       await db.delete(stores).where(eq(stores.id, storeId))
+// //       await db.delete(stores).where(eq(stores.id, storeId))
   
-//       // Delete all products of this store
-//       await db.delete(products).where(eq(products.storeId, storeId))
+// //       // Delete all products of this store
+// //       await db.delete(products).where(eq(products.storeId, storeId))
   
-//       const path = "/dashboard/stores"
-//       revalidatePath(path)
-//       redirect(path)
-//     }
+// //       const path = "/dashboard/stores"
+// //       revalidatePath(path)
+// //       redirect(path)
+// //     }
 
-//   return (
-//     <Shell className="md:pb-10">
-//       <Header
-//         title="Partnerships with Lollywest"
-//         description="Interested in a collaboration or partnership with Lollywest?"
-//       />
-
-      
-//       <Separator className="mb-2.5" />
-
-
-//       <Card
-//         as="section"
-//         id="update-store"
-//         aria-labelledby="update-store-heading"
-//       >
-//         <CardHeader className="space-y-1">
-//           <CardTitle className="text-2xl">Partnership Inquiry</CardTitle>
-//           <CardDescription>
-//             Fill out the form below and a member from our sales team will reach out with future steps
-//           </CardDescription>
-//         </CardHeader>
-//         <CardContent>
-//           <form
-//             // eslint-disable-next-line @typescript-eslint/no-misused-promises
-//             action={updateStore}
-//             className="grid w-full max-w-xl gap-5"
-//           >
-//             <fieldset className="grid gap-2.5">
-//               <Label htmlFor="update-store-name">Contact Info</Label>
-//               <Input
-//                 id="update-store-name"
-//                 aria-describedby="update-store-name-description"
-//                 name="name"
-//                 required
-//                 minLength={3}
-//                 maxLength={50}
-//                 placeholder="Enter your email or phone number here."
-//                 //defaultValue={store.name}
-//               />
-//             </fieldset>
-//             <fieldset className="grid gap-2.5">
-//               <Label htmlFor="update-store-description">Reason for Reaching Out</Label>
-//               <Textarea
-//                 id="update-store-description"
-//                 aria-describedby="update-store-description-description"
-//                 name="description"
-//                 minLength={3}
-//                 maxLength={1000}
-//                 placeholder="Type the organization/venue/person you represent, intrest in collaboration or partnering with Lollywest, possible partnerships/collaborations etc."
-//                 //defaultValue={store.description ?? ""}
-//               />
-//             </fieldset>
-//             <div className="flex space-x-2">
-//               <LoadingButton>
-//                 Send Inquiry
-//                 <span className="sr-only">Update store</span>
-//               </LoadingButton>
-//               {/* <LoadingButton
-//                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-//                 formAction={deleteStore}
-//                 variant="destructive"
-//               >
-//                 Delete Store
-//                 <span className="sr-only">Delete store</span>
-//               </LoadingButton> */}
-//             </div>
-//           </form>
-//         </CardContent>
-//       </Card>
+// //   return (
+// //     <Shell className="md:pb-10">
+// //       <Header
+// //         title="Partnerships with Lollywest"
+// //         description="Interested in a collaboration or partnership with Lollywest?"
+// //       />
 
       
-//     </Shell>
-//   )
-// }
+// //       <Separator className="mb-2.5" />
+
+
+// //       <Card
+// //         as="section"
+// //         id="update-store"
+// //         aria-labelledby="update-store-heading"
+// //       >
+// //         <CardHeader className="space-y-1">
+// //           <CardTitle className="text-2xl">Partnership Inquiry</CardTitle>
+// //           <CardDescription>
+// //             Fill out the form below and a member from our sales team will reach out with future steps
+// //           </CardDescription>
+// //         </CardHeader>
+// //         <CardContent>
+// //           <form
+// //             // eslint-disable-next-line @typescript-eslint/no-misused-promises
+// //             action={updateStore}
+// //             className="grid w-full max-w-xl gap-5"
+// //           >
+// //             <fieldset className="grid gap-2.5">
+// //               <Label htmlFor="update-store-name">Contact Info</Label>
+// //               <Input
+// //                 id="update-store-name"
+// //                 aria-describedby="update-store-name-description"
+// //                 name="name"
+// //                 required
+// //                 minLength={3}
+// //                 maxLength={50}
+// //                 placeholder="Enter your email or phone number here."
+// //                 //defaultValue={store.name}
+// //               />
+// //             </fieldset>
+// //             <fieldset className="grid gap-2.5">
+// //               <Label htmlFor="update-store-description">Reason for Reaching Out</Label>
+// //               <Textarea
+// //                 id="update-store-description"
+// //                 aria-describedby="update-store-description-description"
+// //                 name="description"
+// //                 minLength={3}
+// //                 maxLength={1000}
+// //                 placeholder="Type the organization/venue/person you represent, intrest in collaboration or partnering with Lollywest, possible partnerships/collaborations etc."
+// //                 //defaultValue={store.description ?? ""}
+// //               />
+// //             </fieldset>
+// //             <div className="flex space-x-2">
+// //               <LoadingButton>
+// //                 Send Inquiry
+// //                 <span className="sr-only">Update store</span>
+// //               </LoadingButton>
+// //               {/* <LoadingButton
+// //                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
+// //                 formAction={deleteStore}
+// //                 variant="destructive"
+// //               >
+// //                 Delete Store
+// //                 <span className="sr-only">Delete store</span>
+// //               </LoadingButton> */}
+// //             </div>
+// //           </form>
+// //         </CardContent>
+// //       </Card>
+
+      
+// //     </Shell>
+// //   )
+// // }
