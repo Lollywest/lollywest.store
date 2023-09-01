@@ -54,7 +54,7 @@ export async function POST(req: Request) {
       .set({
         items: [],
       })
-      .where(eq(carts.id, session.metadata.cartId))
+      .where(eq(carts.id, Number(session.metadata.cartId)))
     }
     // Close cart and clear items
     
