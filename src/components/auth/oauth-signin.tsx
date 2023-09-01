@@ -10,7 +10,6 @@ import { Icons } from "@/components/icons"
 
 const oauthProviders = [
   { name: "Google", strategy: "oauth_google", icon: "google" },
-  { name: "Facebook", strategy: "oauth_facebook", icon: "facebook" },
   { name: "Discord", strategy: "oauth_discord", icon: "discord" },
 ] satisfies {
   name: string
