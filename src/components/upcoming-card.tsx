@@ -97,7 +97,7 @@ export function UpcomingCard({
                 <Icons.check className="h-4 w-4" aria-hidden="true" />
                 <span>Feature</span>
               </div>
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <Icons.addCircle className="h-4 w-4" aria-hidden="true" />
                 <span>Feature 2</span>
               </div>
@@ -108,7 +108,7 @@ export function UpcomingCard({
               <div className="flex items-center gap-2">
                 <Icons.dollarSign className="h-4 w-4" aria-hidden="true" />
                 <span>Feature 4</span>
-              </div>
+              </div> */}
             {/* ))} */}
           </div>
         </CardContent>
