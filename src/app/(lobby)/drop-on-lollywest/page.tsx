@@ -1,3 +1,6 @@
+"use client"
+
+import * as React from "react"
 import { type Metadata } from "next"
 import { env } from "@/env.mjs"
 
@@ -17,8 +20,21 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { LoadingButton } from "@/components/ui/loading-button"
 import { Textarea } from "@/components/ui/textarea"
+import { useForm } from "react-hook-form"
 
 import { addContactAction } from "@/app/_actions/contact"
+import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Button } from "@/components/ui/button"
+import { Icons } from "@/components/icons"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -26,15 +42,33 @@ export const metadata: Metadata = {
   description: "Explore the latest news and updates from the community",
 }
 
+export const formSchema = z.object({
+  contactInfo: z.string(),
+  message: z.string()
+})
+
+type Inputs = z.infer<typeof formSchema>
+
 export default function DropOnLollywest() {
+  const [isPending, startTransition] = React.useTransition()
 
-  async function addContact(fd: FormData) {
-    "use server"
+  const form = useForm<Inputs>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      contactInfo: "",
+      message: "",
+    },
+  })
 
-    const contactInfo = fd.get("contactInfo") as string
-    const message = fd.get("message") as string
+  async function addContact(data: Inputs) {
+    startTransition(async () => {
+      const contactInfo = data.contactInfo
+      const message = data.message
 
-    await addContactAction({category: "artist", contactInfo, message})
+      console.log("check")
+
+      await addContactAction({ category: "artist", contactInfo, message })
+    })
   }
 
   return (
@@ -56,41 +90,66 @@ export default function DropOnLollywest() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form
-            // action={(() => {addContact})}
-            action={() => addContact}
-            className="grid w-full max-w-xl gap-5"
-          >
-            <fieldset className="grid gap-2.5">
-              <Label htmlFor="contact-info">Contact Info</Label>
-              <Input
-                id="contact-info"
-                aria-describedby="add-contact-info"
+          <Form {...form}>
+            <form
+              onSubmit={(...args) => void form.handleSubmit(addContact)(...args)}
+              className="grid w-full max-w-xl gap-5"
+            >
+              <FormField
+                control={form.control}
                 name="contactInfo"
-                required
-                minLength={3}
-                maxLength={50}
-                placeholder="Enter your email or phone number here."
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Contact Info</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="contact-info"
+                        aria-describedby="add-contact-info"
+                        required
+                        minLength={3}
+                        maxLength={50}
+                        placeholder="Enter your email or phone number here."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </fieldset>
-            <fieldset className="grid gap-2.5">
-              <Label htmlFor="contact-message">Preliminary Application</Label>
-              <Textarea
-                id="contact-message"
-                aria-describedby="contact-message-description"
+              <FormField
+                control={form.control}
                 name="message"
-                minLength={3}
-                maxLength={1000}
-                placeholder="Type description of your music, fanbase, intrest in joining Lollywest, possibilities for wraps/decks, etc."
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Preliminary Application</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        id="contact-message"
+                        aria-describedby="contact-message-description"
+                        minLength={3}
+                        maxLength={1000}
+                        placeholder="Type description of your music, fanbase, intrest in joining Lollywest, possibilities for wraps/decks, etc."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </fieldset>
-            <div className="flex space-x-2">
-              <LoadingButton>
-                Send Application
-                <span className="sr-only">Send Application</span>
-              </LoadingButton>
-            </div>
-          </form>
+              <div className="flex space-x-2">
+                <Button disabled={isPending}>
+                  {isPending && (
+                    <Icons.spinner
+                      className="mr-2 h-4 w-4 animate-spin"
+                      aria-hidden="true"
+                    />
+                  )}
+                  Send
+                  <span className="sr-only">Send</span>
+                </Button>
+              </div>
+            </form>
+          </Form>
         </CardContent>
       </Card>
     </Shell>
