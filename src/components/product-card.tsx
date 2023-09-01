@@ -6,7 +6,7 @@ import Link from "next/link"
 import { type Product } from "@/db/schema"
 import { toast } from "sonner"
 
-import { cn, formatPrice } from "@/lib/utils"
+import { cn, formatPrice, toTitleCase } from "@/lib/utils"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
@@ -27,6 +27,7 @@ interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   onSwitch?: () => Promise<void>
 }
 
+
 export function ProductCard({
   product,
   variant = "default",
@@ -36,6 +37,10 @@ export function ProductCard({
   ...props
 }: ProductCardProps) {
   const [isPending, startTransition] = React.useTransition()
+
+  
+
+  
 
   return (
     <Card
@@ -80,10 +85,53 @@ export function ProductCard({
         href={`/product/${product.id}`}
       >
         <CardContent className="grid gap-2.5 p-4">
+          <CardDescription className="line-clamp-2">
+            {/* {toTitleCase(product.category)} by {toTitleCase(product.name)} */}
+            {toTitleCase(product.category)}
+          </CardDescription>
           <CardTitle className="line-clamp-1">{product.name}</CardTitle>
           <CardDescription className="line-clamp-2">
             {formatPrice(product.price)}
           </CardDescription>
+          <div className="space-y-2 text-sm text-muted-foreground">
+            {/* {plan.features.map((feature) => ( */}
+              {/* <div key={feature} className="flex items-center gap-2"> */}
+              <div className="flex items-center gap-2">
+                {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
+                <span>Included Perks: </span>
+                {/* <span>{product.perks}</span> */}
+                {/* {toTitleCase(product.perks)} */}
+              </div>
+              {/* <div className="flex items-center gap-2">
+                <Icons.addCircle className="h-4 w-4" aria-hidden="true" />
+                <span>Feature 2</span>
+              </div> */}
+              {/* <div className="flex items-center gap-2">
+                <Icons.alarm className="h-4 w-4" aria-hidden="true" />
+                <span>Feature 3</span>
+              </div> */}
+              {/* <div className="flex items-center gap-2">
+                <Icons.dollarSign className="h-4 w-4" aria-hidden="true" />
+                <span>Feature 3</span>
+              </div> */}
+              <div className="space-y-2 text-sm text-muted-foreground">
+                  {product.perks?.map((perks) => (
+                    <div key={perks} className="flex items-center gap-2">
+                      <Icons.addCircle className="h-4 w-4" aria-hidden="true" />
+                      <span>{perks}</span>
+                    </div>
+                  ))}
+                <div className="flex items-center gap-2">
+                    <Icons.chevronsRight className="h-4 w-4" aria-hidden="true" />
+                    <span>Click to see additional perks</span>
+                    {/* <Icons.chevronsLeft className="h-4 w-4" aria-hidden="true" /> */}
+                    
+                    {/* <Icons.view className="h-4 w-4" aria-hidden="true" /> */}
+                   
+                </div> 
+              </div>
+            {/* ))} */}
+          </div>
         </CardContent>
       </Link>
       <CardFooter className="p-4">

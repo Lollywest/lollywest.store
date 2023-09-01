@@ -2,8 +2,9 @@
 
 import { revalidatePath } from "next/cache"
 import { db } from "@/db"
-import { products, type Product } from "@/db/schema"
+import { products, orders, type Product } from "@/db/schema"
 import type { StoredFile } from "@/types"
+import { clerkClient } from "@clerk/nextjs"
 import {
   and,
   asc,
@@ -17,6 +18,7 @@ import {
   lte,
   not,
   sql,
+  between
 } from "drizzle-orm"
 import { type z } from "zod"
 
@@ -63,8 +65,7 @@ export async function getProductsAction(
   const [minPrice, maxPrice] = input.price_range?.split("-") ?? []
   const categories =
     (input.categories?.split(".") as Product["category"][]) ?? []
-  const subcategories = input.subcategories?.split(".") ?? []
-  const storeIds = input.store_ids?.split(".").map(Number) ?? []
+  const artistIds = input.artist_ids?.split(".").map(Number) ?? []
 
   const { items, total } = await db.transaction(async (tx) => {
     const items = await tx
@@ -77,12 +78,9 @@ export async function getProductsAction(
           categories.length
             ? inArray(products.category, categories)
             : undefined,
-          subcategories.length
-            ? inArray(products.subcategory, subcategories)
-            : undefined,
           minPrice ? gte(products.price, minPrice) : undefined,
           maxPrice ? lte(products.price, maxPrice) : undefined,
-          storeIds.length ? inArray(products.storeId, storeIds) : undefined
+          artistIds.length ? inArray(products.artistID, artistIds) : undefined
         )
       )
       .orderBy(
@@ -103,12 +101,9 @@ export async function getProductsAction(
           categories.length
             ? inArray(products.category, categories)
             : undefined,
-          subcategories.length
-            ? inArray(products.subcategory, subcategories)
-            : undefined,
           minPrice ? gte(products.price, minPrice) : undefined,
           maxPrice ? lte(products.price, maxPrice) : undefined,
-          storeIds.length ? inArray(products.storeId, storeIds) : undefined
+          artistIds.length ? inArray(products.artistID, artistIds) : undefined
         )
       )
 
@@ -138,8 +133,10 @@ export async function checkProductAction(input: { name: string; id?: number }) {
 
 export async function addProductAction(
   input: z.infer<typeof productSchema> & {
-    storeId: number
+    artistId: number
     images: StoredFile[] | null
+    perks: string[] | null
+    owners: string[] | null
   }
 ) {
   const productWithSameName = await db.query.products.findFirst({
@@ -150,24 +147,29 @@ export async function addProductAction(
     throw new Error("Product name already taken.")
   }
 
+  //ask charlie ==================================================
   await db.insert(products).values({
     ...input,
-    storeId: input.storeId,
+    artistID: input.artistId,
     images: input.images,
+    perks: input.perks,
+    owners: input.owners
   })
 
-  revalidatePath(`/dashboard/stores/${input.storeId}/products.`)
+  revalidatePath(`/dashboard/stores/${input.artistId}/products.`)
 }
 
 export async function updateProductAction(
   input: z.infer<typeof productSchema> & {
-    storeId: number
+    artistId: number
     id: number
     images: StoredFile[] | null
+    perks: string[] | null
+    owners: string[] | null
   }
 ) {
   const product = await db.query.products.findFirst({
-    where: and(eq(products.id, input.id), eq(products.storeId, input.storeId)),
+    where: and(eq(products.id, input.id), eq(products.artistID, input.artistId)),
   })
 
   if (!product) {
@@ -176,27 +178,28 @@ export async function updateProductAction(
 
   await db.update(products).set(input).where(eq(products.id, input.id))
 
-  revalidatePath(`/dashboard/stores/${input.storeId}/products/${input.id}`)
+  revalidatePath(`/dashboard/stores/${input.artistId}/products/${input.id}`)
 }
+// ================================================================
 
 export async function deleteProductAction(
   input: z.infer<typeof getProductSchema>
 ) {
-  and(eq(products.id, input.id), eq(products.storeId, input.storeId)),
+  and(eq(products.id, input.id), eq(products.artistID, input.artistId)),
     await db
       .delete(products)
       .where(
-        and(eq(products.id, input.id), eq(products.storeId, input.storeId))
+        and(eq(products.id, input.id), eq(products.artistID, input.artistId))
       )
 
-  revalidatePath(`/dashboard/stores/${input.storeId}/products`)
+  revalidatePath(`/dashboard/stores/${input.artistId}/products`)
 }
 
 export async function getNextProductIdAction(
   input: z.infer<typeof getProductSchema>
 ) {
   const product = await db.query.products.findFirst({
-    where: and(eq(products.storeId, input.storeId), gt(products.id, input.id)),
+    where: and(eq(products.artistID, input.artistId), gt(products.id, input.id)),
     orderBy: asc(products.id),
   })
 
@@ -211,7 +214,7 @@ export async function getPreviousProductIdAction(
   input: z.infer<typeof getProductSchema>
 ) {
   const product = await db.query.products.findFirst({
-    where: and(eq(products.storeId, input.storeId), lt(products.id, input.id)),
+    where: and(eq(products.artistID, input.artistId), lt(products.id, input.id)),
     orderBy: desc(products.id),
   })
 
@@ -220,4 +223,57 @@ export async function getPreviousProductIdAction(
   }
 
   return product.id
+}
+
+// double check with charlie ======================================
+// export async function getTrendingProductsAction(input: {limit?: number, days?: number}) {
+//   const limit = input.limit ? input.limit : 10
+//   const days = input.days ? input.days : 7
+//   const start = new Date()
+//   start.setDate(start.getDate() - days)
+//   const end = new Date()
+
+//   const { items } = await db.transaction(async (tx) => {
+//     const items = await tx
+//       .select()
+//       .from(products)
+//       .limit(limit)
+//       .leftJoin(orders, eq(products.id, orders.productID))
+//       .where( between(orders.createdAt, start, end) )
+//       .groupBy(products.id)
+//       .orderBy( desc(sql<number>`count(${orders.id})`) )
+    
+//     return { items }
+//   })
+
+//   return items
+// }
+
+export async function getAllOwnersAction( input: { id: number } ) {
+  const product = await db.query.products.findFirst({
+    where: eq(products.id, input.id)
+  })
+
+  if(!product) {
+    throw new Error("Product not found")
+  }
+
+  if(!product.owners) {
+    return []
+  }
+
+  const owners = []
+
+  for(const owner of product.owners) {
+    const user = await clerkClient.users.getUser(owner)
+    if(user) {
+      owners.push({
+        id: user.id,
+        name: user.firstName + " " + user.lastName,
+        email: user.emailAddresses[0]
+      })
+    }
+  }
+
+  return owners
 }

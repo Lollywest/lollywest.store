@@ -1,6 +1,10 @@
+import * as React from "react"
 import Image from "next/image"
+import Link from "next/link"
+import { currentUser } from "@clerk/nextjs"
 
 import { formatPrice } from "@/lib/utils"
+import { userPrivateMetadataSchema } from "@/lib/validations/auth"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -17,9 +21,20 @@ import { UpdateCart } from "@/components/cart/update-cart"
 import { Icons } from "@/components/icons"
 import { getCartAction } from "@/app/_actions/cart"
 
+import { CheckoutForm } from "./checkout-form"
+
 export async function CartSheet() {
   const cartLineItems = await getCartAction()
+  const user = await currentUser()
 
+  let stripeCustomerId
+
+  if (user) {
+    const userPrivateMetadata = userPrivateMetadataSchema.parse(
+      user.privateMetadata
+    )
+    stripeCustomerId = userPrivateMetadata.stripeCustomerId || undefined
+  }
   const itemCount = cartLineItems.reduce(
     (total, item) => total + Number(item.quantity),
     0
@@ -29,6 +44,19 @@ export async function CartSheet() {
     (total, item) => total + Number(item.quantity) * Number(item.price),
     0
   )
+  const validItems = cartLineItems.filter(
+    (item) => item.stripePriceId !== null
+  ) as {
+    stripePriceId: string
+    id: number
+    name: string
+    images: string[] | null
+    category: "deck" | "wrap" | "sponsorship"
+    price: string
+    quantity: number
+    subcategory?: string | null
+    storeName?: string
+  }[]
 
   return (
     <Sheet>
@@ -96,9 +124,7 @@ export async function CartSheet() {
                             )}
                           </span>
                           <span className="line-clamp-1 text-xs capitalize text-muted-foreground">
-                            {`${item.category} ${
-                              item.subcategory ? `/ ${item.subcategory}` : ""
-                            }`}
+                            {`${item.category}`}
                           </span>
                         </div>
                         <UpdateCart cartLineItem={item} />
@@ -128,15 +154,25 @@ export async function CartSheet() {
                 <span className="flex-1">Total</span>
                 <span>{formatPrice(cartTotal.toFixed(2))}</span>
               </div>
-              <SheetFooter className="mt-1.5">
-                <Button
-                  aria-label="Proceed to checkout"
-                  size="sm"
-                  className="w-full"
-                >
-                  Proceed to Checkout
-                </Button>
-              </SheetFooter>
+              <div>
+                {user ? (
+                  <CheckoutForm
+                    userId={user.id}
+                    stripeCustomerId={stripeCustomerId}
+                    items={validItems}
+                  />
+                ) : (
+                  <SheetFooter className="mt-1.5">
+                    <Button
+                      aria-label="Proceed to checkout"
+                      size="sm"
+                      className="w-full"
+                    >
+                      <Link href="/signin"> Sign in to Buy </Link>
+                    </Button>
+                  </SheetFooter>
+                )}
+              </div>
             </div>
           </>
         ) : (

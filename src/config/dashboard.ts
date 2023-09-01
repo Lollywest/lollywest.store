@@ -13,8 +13,8 @@ export const dashboardConfig: DashboardConfig = {
       items: [],
     },
     {
-      title: "Stores",
-      href: "/dashboard/stores",
+      title: "Artist",
+      href: "/dashboard/artist",
       icon: "store",
       items: [],
     },
@@ -24,11 +24,11 @@ export const dashboardConfig: DashboardConfig = {
       icon: "billing",
       items: [],
     },
-    {
-      title: "Purchases",
-      href: "/dashboard/purchases",
-      icon: "dollarSign",
-      items: [],
-    },
+    // {
+    //   title: "Purchases",
+    //   href: "/dashboard/purchases",
+    //   icon: "dollarSign",
+    //   items: [],
+    // },
   ],
 }

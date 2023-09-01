@@ -7,8 +7,8 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import {
-  getNextStoreIdAction,
-  getPreviousStoreIdAction,
+  getNextArtistIdAction,
+  getPreviousArtistIdAction,
 } from "@/app/_actions/store"
 
 interface StorePagerProps {
@@ -28,7 +28,7 @@ export function StorePager({ storeId, userId }: StorePagerProps) {
         onClick={() => {
           startTransition(async () => {
             try {
-              const prevStoreId = await getPreviousStoreIdAction({
+              const prevStoreId = await getPreviousArtistIdAction({
                 id: storeId,
                 userId,
               })
@@ -51,7 +51,7 @@ export function StorePager({ storeId, userId }: StorePagerProps) {
         onClick={() => {
           startTransition(async () => {
             try {
-              const nextStoreId = await getNextStoreIdAction({
+              const nextStoreId = await getNextArtistIdAction({
                 id: storeId,
                 userId,
               })

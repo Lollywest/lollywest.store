@@ -120,6 +120,27 @@
       "when": 1688639476050,
       "tag": "0016_green_ultron",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "5",
+      "when": 1691801955983,
+      "tag": "0017_clear_red_skull",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "5",
+      "when": 1692930269895,
+      "tag": "0018_spotty_silver_surfer",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "5",
+      "when": 1693601052158,
+      "tag": "0019_mute_silver_sable",
+      "breakpoints": true
     }
   ]
 }

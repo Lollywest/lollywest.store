@@ -2,6 +2,7 @@ import { products } from "@/db/schema"
 import * as z from "zod"
 
 export const productSchema = z.object({
+  artistId: z.number(),
   name: z.string().min(1, {
     message: "Must be at least 1 character",
   }),
@@ -10,12 +11,21 @@ export const productSchema = z.object({
     .enum(products.category.enumValues, {
       required_error: "Must be a valid category",
     })
-    .default(products.category.enumValues[0]),
-  subcategory: z.string().optional().nullable(),
+    .default(products.category.enumValues[2]),
   price: z.string().regex(/^\d+(\.\d{1,2})?$/, {
     message: "Must be a valid price",
   }),
-  inventory: z.number(),
+  perks: z
+    .unknown()
+    .refine((val) => {
+      if(!Array.isArray(val)) return false
+      if(val.some((perk) => !(perk instanceof String))) return false
+      return true
+    }, "Must be a string array")
+    .optional()
+    .nullable()
+    .default(null),
+  decksLeft: z.number().optional().default(0),
   images: z
     .unknown()
     .refine((val) => {
@@ -26,6 +36,17 @@ export const productSchema = z.object({
     .optional()
     .nullable()
     .default(null),
+  owners: z
+    .unknown()
+    .refine((val) => {
+      if(!Array.isArray(val)) return false
+      if(val.some((owner) => !(owner instanceof String))) return false
+      return true
+    }, "Must be a number array")
+    .optional()
+    .nullable()
+    .default(null),
+  stripePriceId: z.string()
 })
 
 export const filterProductsSchema = z.object({
@@ -34,18 +55,13 @@ export const filterProductsSchema = z.object({
 
 export const getProductSchema = z.object({
   id: z.number(),
-  storeId: z.number(),
+  artistId: z.number(),
 })
 
 export const getProductsSchema = z.object({
   limit: z.number().default(10),
   offset: z.number().default(0),
   categories: z
-    .string()
-    .regex(/^\d+.\d+$/)
-    .optional()
-    .nullable(),
-  subcategories: z
     .string()
     .regex(/^\d+.\d+$/)
     .optional()
@@ -60,7 +76,7 @@ export const getProductsSchema = z.object({
     .regex(/^\d+-\d+$/)
     .optional()
     .nullable(),
-  store_ids: z
+  artist_ids: z
     .string()
     .regex(/^\d+.\d+$/)
     .optional()

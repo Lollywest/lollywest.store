@@ -8,11 +8,11 @@ import { Icons } from "@/components/icons"
 import { createAccountLinkAction } from "@/app/_actions/stripe"
 
 interface ConnectToStripeButtonProps {
-  storeId: number
+  artistId: number
 }
 
-export function ConnectStoreToStripeButton({
-  storeId,
+export function ConnectArtistToStripeButton({
+  artistId,
 }: ConnectToStripeButtonProps) {
   const [isPending, startTransaction] = React.useTransition()
 
@@ -21,7 +21,7 @@ export function ConnectStoreToStripeButton({
       onClick={() => {
         startTransaction(async () => {
           try {
-            const connection = await createAccountLinkAction({ storeId })
+            const connection = await createAccountLinkAction({ artistId })
             window.location.href = connection.url
           } catch (err) {
             catchError(err)

@@ -1,5 +1,5 @@
 "use client"
-
+// TODO =========================================================
 import * as React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
@@ -80,7 +80,6 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
     resolver: zodResolver(productSchema),
     defaultValues: {
       category: product.category,
-      subcategory: product.subcategory,
     },
   })
 
@@ -106,11 +105,14 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
             })
           : null
 
+        // TODO perks and owners ====================
         await updateProductAction({
           ...data,
-          storeId: product.storeId,
+          artistId: product.artistID,
           id: product.id,
           images: images ?? product.images,
+          perks: [],
+          owners: []
         })
 
         toast.success("Product updated successfully.")
@@ -193,7 +195,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="subcategory"
             render={({ field }) => (
@@ -221,7 +223,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
         </div>
         <div className="flex flex-col items-start gap-6 sm:flex-row">
           <FormItem className="w-full">
@@ -246,14 +248,14 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
                 type="number"
                 inputMode="numeric"
                 placeholder="Type product inventory here."
-                {...form.register("inventory", {
+                {...form.register("decksLeft", {
                   valueAsNumber: true,
                 })}
-                defaultValue={product.inventory}
+                defaultValue={product.decksLeft}
               />
             </FormControl>
             <UncontrolledFormMessage
-              message={form.formState.errors.inventory?.message}
+              message={form.formState.errors.decksLeft?.message}
             />
           </FormItem>
         </div>
@@ -306,10 +308,10 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
             onClick={() => {
               startTransition(async () => {
                 await deleteProductAction({
-                  storeId: product.storeId,
+                  artistId: product.artistID,
                   id: product.id,
                 })
-                router.push(`/dashboard/stores/${product.storeId}/products`)
+                router.push(`/dashboard/stores/${product.artistID}/products`)
               })
             }}
             disabled={isPending}

@@ -40,14 +40,14 @@ import { addProductAction, checkProductAction } from "@/app/_actions/product"
 import type { OurFileRouter } from "@/app/api/uploadthing/core"
 
 interface AddProductFormProps {
-  storeId: number
+  artistId: number
 }
 
 type Inputs = z.infer<typeof productSchema>
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>()
 
-export function AddProductForm({ storeId }: AddProductFormProps) {
+export function AddProductForm({ artistId }: AddProductFormProps) {
   const [files, setFiles] = React.useState<FileWithPreview[] | null>(null)
 
   const [isPending, startTransition] = React.useTransition()
@@ -57,12 +57,11 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
   const form = useForm<Inputs>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      category: "skateboards",
+      category: "sponsorship",
     },
   })
 
   const previews = form.watch("images") as FileWithPreview[] | null
-  const subcategories = getSubcategories(form.watch("category"))
 
   function onSubmit(data: Inputs) {
     startTransition(async () => {
@@ -82,10 +81,15 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
             })
           : null
 
+        const owners : string[] = []
+        // TODO ===================
+        const perks : string[] = []
         await addProductAction({
           ...data,
-          storeId,
+          artistId,
           images,
+          perks,
+          owners
         })
 
         toast.success("Product added successfully.")
@@ -167,7 +171,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="subcategory"
             render={({ field }) => (
@@ -195,7 +199,7 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
         </div>
         <div className="flex flex-col items-start gap-6 sm:flex-row">
           <FormItem className="w-full">
@@ -217,13 +221,13 @@ export function AddProductForm({ storeId }: AddProductFormProps) {
                 type="number"
                 inputMode="numeric"
                 placeholder="Type product inventory here."
-                {...form.register("inventory", {
+                {...form.register("decksLeft", {
                   valueAsNumber: true,
                 })}
               />
             </FormControl>
             <UncontrolledFormMessage
-              message={form.formState.errors.inventory?.message}
+              message={form.formState.errors.decksLeft?.message}
             />
           </FormItem>
         </div>

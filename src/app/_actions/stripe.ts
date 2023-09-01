@@ -1,7 +1,8 @@
 "use server"
 
+import { cookies } from "next/headers"
 import { db } from "@/db"
-import { payments, stores } from "@/db/schema"
+import { artists, payments } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs"
 import { eq } from "drizzle-orm"
 import { type z } from "zod"
@@ -10,6 +11,7 @@ import { stripe } from "@/lib/stripe"
 import { absoluteUrl } from "@/lib/utils"
 import type {
   createAccountLinkSchema,
+  createCheckoutSessionSchema,
   manageSubscriptionSchema,
 } from "@/lib/validations/stripe"
 
@@ -26,7 +28,7 @@ export async function manageSubscriptionAction(
   }
 
   // If the user is already subscribed to a plan, we redirect them to the Stripe billing portal
-  if (input.isSubscribed && input.stripeCustomerId && input.isCurrentPlan) {
+  if (input.stripeCustomerId) {
     const stripeSession = await stripe.billingPortal.sessions.create({
       customer: input.stripeCustomerId,
       return_url: billingUrl,
@@ -36,42 +38,56 @@ export async function manageSubscriptionAction(
       url: stripeSession.url,
     }
   }
+}
 
-  // If the user is not subscribed to a plan, we create a Stripe Checkout session
-  const stripeSession = await stripe.checkout.sessions.create({
+export async function createCheckoutSessionAction(
+  input: z.infer<typeof createCheckoutSessionSchema>
+) {
+  const user = await clerkClient.users.getUser(input.userId)
+  const cartId = cookies().get("cartId")?.value
+
+  if (!user) {
+    throw new Error("User not found.")
+  }
+
+  const billingUrl = absoluteUrl("/dashboard/billing")
+
+  // Check if any item has the category "wrap"
+  const isSubscription = input.items.some((item) => item.category === "wrap")
+  const mode = isSubscription ? "subscription" : "payment"
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: input.items.map((item) => ({
+      price: item.stripePriceId ? item.stripePriceId : undefined,
+      quantity: item.quantity,
+    })),
+    mode: mode,
     success_url: billingUrl,
     cancel_url: billingUrl,
-    payment_method_types: ["card"],
-    mode: "subscription",
-    billing_address_collection: "auto",
-    customer_email: input.email,
-    line_items: [
-      {
-        price: input.stripePriceId,
-        quantity: 1,
-      },
-    ],
     metadata: {
       userId: input.userId,
+      username: user.username,
+      cartId: cartId ? cartId : null,
     },
+    billing_address_collection: "auto",
+    customer: input.stripeCustomerId ? input.stripeCustomerId : undefined,
   })
 
-  return {
-    url: stripeSession.url,
-  }
+  return session
 }
 
 export async function checkStripeConnectionAction(
   input: z.infer<typeof createAccountLinkSchema>
 ) {
-  const store = await db.query.stores.findFirst({
-    where: eq(stores.id, input.storeId),
+  const artist = await db.query.artists.findFirst({
+    where: eq(artists.id, input.artistId),
   })
 
-  if (!store) return false
+  if (!artist) return false
 
   const payment = await db.query.payments.findFirst({
-    where: eq(payments.storeId, input.storeId),
+    where: eq(payments.artistID, input.artistId),
   })
 
   if (!payment) return false
@@ -90,8 +106,8 @@ export async function createAccountLinkAction(
   input: z.infer<typeof createAccountLinkSchema>
 ) {
   //  Check if the store is already connected to Stripe
-  const store = await db.query.stores.findFirst({
-    where: eq(stores.id, input.storeId),
+  const store = await db.query.artists.findFirst({
+    where: eq(artists.id, input.artistId),
   })
 
   if (!store) {
@@ -101,7 +117,7 @@ export async function createAccountLinkAction(
   // TODO: Check if stripeAccountId is available on the store
 
   const payment = await db.query.payments.findFirst({
-    where: eq(payments.storeId, input.storeId),
+    where: eq(payments.artistID, input.artistId),
   })
 
   if (payment?.detailsSubmitted) {
@@ -123,7 +139,7 @@ export async function createAccountLinkAction(
     stripeAccountId = account.id
 
     await db.update(payments).set({
-      storeId: input.storeId,
+      artistID: input.artistId,
       stripeAccountId,
     })
   }

@@ -27,7 +27,7 @@ export function SiteFooter() {
               className="flex items-center space-x-2"
             >
               <Icons.logo className="h-6 w-6" aria-hidden="true" />
-              <span className="font-bold">{siteConfig.name}</span>
+              {/* <span className="font-bold">{siteConfig.name}</span> */}
             </Link>
           </section>
           <section
@@ -56,7 +56,7 @@ export function SiteFooter() {
               </div>
             ))}
           </section>
-          <section
+          {/* <section
             id="newsletter"
             aria-labelledby="newsletter-heading"
             className="space-y-3"
@@ -65,7 +65,7 @@ export function SiteFooter() {
               Subscribe to our newsletter
             </h4>
             <SubscribeToNewsletterForm />
-          </section>
+          </section> */}
         </section>
         <section
           id="footer-bottom"
@@ -99,7 +99,7 @@ export function SiteFooter() {
                   })
                 )}
               >
-                <Icons.gitHub className="h-4 w-4" aria-hidden="true" />
+                {/* <Icons.gitHub className="h-4 w-4" aria-hidden="true" /> */}
                 <span className="sr-only">GitHub</span>
               </div>
             </Link>
