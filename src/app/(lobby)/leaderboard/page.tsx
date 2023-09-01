@@ -79,7 +79,7 @@ export default function Leaderboard() {
             </div>
             <div className="flex w-3/12 items-center">
               <div className="mr-2 w-1/2 space-y-1">
-                <p className="text-base font-medium leading-none">
+                <p className="truncate text-base font-medium leading-none">
                   {user.username || "Anonymous"}
                 </p>
                 <p className="text-sm text-muted-foreground">
