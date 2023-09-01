@@ -66,7 +66,7 @@ export const metadata: Metadata = {
           <h2>What is skateboarding?</h2>
           ... content goes here fghddfg
           <blockquote>
-            I feel like skateboarding is as much of a sport as a lifestyle, and an art form, so there's so much that that transcends in terms of music, fashion, and entertainment.
+            I feel like skateboarding is as much of a sport as a lifestyle, and an art form, so there&apos;s so much that that transcends in terms of music, fashion, and entertainment.
           </blockquote>
         </section>
 
