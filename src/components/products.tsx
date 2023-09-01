@@ -2,7 +2,8 @@
 
 import * as React from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { type Product, type Store } from "@/db/schema"
+// import { type Product, type Store } from "@/db/schema"
+import { type Product, type Artist } from "@/db/schema"
 import type { Option } from "@/types"
 
 import { getSubcategories, sortOptions } from "@/config/products"
@@ -35,13 +36,16 @@ import { Icons } from "@/components/icons"
 import { MultiSelect } from "@/components/multi-select"
 import { PaginationButton } from "@/components/pagers/pagination-button"
 import { ProductCard } from "@/components/product-card"
+import { SponsorProductCard } from "@/components/sponsor-product-card"
+import { WrapProductCard } from "@/components/wrap-product-card"
 
 interface ProductsProps {
   products: Product[]
   pageCount: number
   category?: Product["category"]
   categories?: Product["category"][]
-  stores?: Pick<Store, "id" | "name">[]
+  // stores?: Pick<Store, "id" | "name">[]
+  artists?: Pick<Artist, "id" | "name">[]
   storePageCount?: number
 }
 
@@ -50,7 +54,8 @@ export function Products({
   pageCount,
   category,
   categories,
-  stores,
+  // stores,
+  artists,
   storePageCount,
 }: ProductsProps) {
   const router = useRouter()
@@ -240,7 +245,7 @@ export function Products({
                   />
                 </div>
               ) : null}
-              {stores?.length ? (
+              {artists?.length ? (
                 <div className="space-y-3">
                   <div className="flex gap-2">
                     <h3 className="flex-1 text-sm font-medium tracking-wide text-foreground">
@@ -293,7 +298,7 @@ export function Products({
                   </div>
                   <ScrollArea className="h-96">
                     <div className="space-y-4">
-                      {stores.map((store) => (
+                      {artists.map((store) => (
                         <div
                           key={store.id}
                           className="flex items-center space-x-2"
@@ -395,10 +400,27 @@ export function Products({
           </p>
         </div>
       ) : null}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
+      </div> */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {products.map((product) => (
+            //<ProductCard key={product.id} product={product} />
+            product.category === "deck" ? (
+              <ProductCard key={product.id} product={product} />
+            ) : product.category === "wrap" ? (
+              <WrapProductCard key={product.id} product={product} />
+            ) : product.category === "sponsorship" ? (
+              <SponsorProductCard key={product.id} product={product} />
+            ) : (
+              <ProductCard key={product.id} product={product} />
+            )
+
+              
+          
+          ))}
       </div>
       {products.length ? (
         <PaginationButton

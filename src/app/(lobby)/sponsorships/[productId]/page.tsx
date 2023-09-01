@@ -136,10 +136,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="space-y-2 mt-4">
             <h2 className="line-clamp-1 text-xl">Sponsorship Credits:</h2>
             <p className="text-sm text-muted-foreground">
-              Credits are {formatPrice(product.price)} per 1 credit on day of sponsorship purchase.
+              {/* Credits are {formatPrice(product.price)} per 1 credit on day of sponsorship purchase. */}
+              Sponsorship Credits are $1.00 per 1 credit. 
             </p> 
             <p className="text-sm text-muted-foreground">
-              Sponsorship credits will multiply by XX.XX% each day/week after purchase. E.g., 1 credits will become 2 credits XX days after purchase, etc. 
+              {/* Sponsorship credits will multiply by XX.XX% each day/week after purchase. E.g., 1 credits will become 2 credits XX days after purchase, etc.  */}
+              Credits will be added to the associated purchasing account after purchase
             </p> 
             {/* <p className="text-sm text-muted-foreground">
               E.g. 1 credits will become 2 credits XX days after purchase. 
