@@ -226,28 +226,28 @@ export async function getPreviousProductIdAction(
 }
 
 // double check with charlie ======================================
-export async function getTrendingProductsAction(input: {limit?: number, days?: number}) {
-  const limit = input.limit ? input.limit : 10
-  const days = input.days ? input.days : 7
-  const start = new Date()
-  start.setDate(start.getDate() - days)
-  const end = new Date()
+// export async function getTrendingProductsAction(input: {limit?: number, days?: number}) {
+//   const limit = input.limit ? input.limit : 10
+//   const days = input.days ? input.days : 7
+//   const start = new Date()
+//   start.setDate(start.getDate() - days)
+//   const end = new Date()
 
-  const { items } = await db.transaction(async (tx) => {
-    const items = await tx
-      .select()
-      .from(products)
-      .limit(limit)
-      .leftJoin(orders, eq(products.id, orders.productID))
-      .where( between(orders.createdAt, start, end) )
-      .groupBy(products.id)
-      .orderBy( desc(sql<number>`count(${orders.id})`) )
+//   const { items } = await db.transaction(async (tx) => {
+//     const items = await tx
+//       .select()
+//       .from(products)
+//       .limit(limit)
+//       .leftJoin(orders, eq(products.id, orders.productID))
+//       .where( between(orders.createdAt, start, end) )
+//       .groupBy(products.id)
+//       .orderBy( desc(sql<number>`count(${orders.id})`) )
     
-    return { items }
-  })
+//     return { items }
+//   })
 
-  return items
-}
+//   return items
+// }
 
 export async function getAllOwnersAction( input: { id: number } ) {
   const product = await db.query.products.findFirst({
