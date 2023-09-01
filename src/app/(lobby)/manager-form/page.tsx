@@ -36,12 +36,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 
-export const metadata: Metadata = {
-  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
-  title: "Blog",
-  description: "Explore the latest news and updates from the community",
-}
-
 export const formSchema = z.object({
   contactInfo: z.string(),
   message: z.string()
