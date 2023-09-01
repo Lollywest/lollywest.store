@@ -35,7 +35,7 @@ export default async function UpdateProductPage({
   const productId = Number(params.productId)
 
   const product = await db.query.products.findFirst({
-    where: and(eq(products.id, productId), eq(products.artistId, storeId)),
+    where: and(eq(products.id, productId), eq(products.artistID, storeId)),
   })
 
   if (!product) {
