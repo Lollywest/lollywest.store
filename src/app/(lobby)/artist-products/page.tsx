@@ -107,6 +107,7 @@ export default async function ProductsPage({
               <Separator className="mt-4 w-3/5" />
               <div className=" text-lg font-medium w-3/5 text-muted-foreground">
                 {artist.description}</div>
+                <Separator className="mt-4 w-3/5" />
                 <div className="flex items-center gap-2 text-lg font-medium w-2/3 text-muted-foreground">
                 <Icons.users aria-hidden="true"/>Support and connect with {artist.name} below </div>
                 
@@ -123,7 +124,7 @@ export default async function ProductsPage({
         products={productsTransaction.items}
         pageCount={pageCount}
         categories={Object.values(products.category.enumValues)}
-        stores={storesTransaction.items}
+        artists={storesTransaction.items}
         storePageCount={storePageCount}
       />
     </Shell>

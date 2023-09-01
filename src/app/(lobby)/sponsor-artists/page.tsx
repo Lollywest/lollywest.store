@@ -7,6 +7,8 @@ import { Products } from "@/components/products"
 import { Shell } from "@/components/shells/shell"
 import { getProductsAction } from "@/app/_actions/product"
 import { getStoresAction } from "@/app/_actions/store"
+import { Icons } from "@/components/icons"
+import { Separator } from "@/components/ui/separator"
 
 // Running out of edge function execution units on vercel free plan
 // export const runtime = "edge"
@@ -70,16 +72,29 @@ export default async function ProductsPage({
 
   return (
     <Shell>
-      <Header
+      {/* <Header
         title= "Artist Sponsorships"
         description= "Support your favorite artist"
         size="sm"
-      />
+      /> */}
+      <div className=" tracking-tight">
+              <h1 className="line-clamp-1 text-3xl font-bold mb-6">
+                Artist Sponsorships                  
+              </h1> 
+              <Separator className="mt-2 mb-2 w-2/5" />
+              <div className="flex items-center gap-4 text-lg font-medium text-muted-foreground">
+                <Icons.heart aria-hidden="true"/>Show support for your favorite artists</div>
+              <div className="flex items-center space-y-10 gap-4 text-lg font-medium text-muted-foreground">
+                <Icons.badgeCheck aria-hidden="true"/>Get credit and be recognized </div>
+                <Separator className="mt-2 w-2/5" />
+      </div>
+      {/* <div className="flex items-center gap-2 text-lg font-medium w-2/3 text-muted-foreground"></div> */}
+      {/* <Icons.users aria-hidden="true"/>Support and connect with {artist.name} below </div> */}
       <Products
         products={productsTransaction.items}
         pageCount={pageCount}
         categories={Object.values(products.category.enumValues)}
-        stores={storesTransaction.items}
+        artists={storesTransaction.items}
         storePageCount={storePageCount}
       />
     </Shell>

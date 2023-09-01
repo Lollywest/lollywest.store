@@ -58,6 +58,9 @@ import {
   VolumeX,
   Wallet,
   X,
+  Heart,
+  BadgeCheck,
+
   type LucideIcon,
   type LucideProps,
 } from "lucide-react"
@@ -124,6 +127,8 @@ export const Icons = {
   clothing: Shirt,
   shoes: Footprints,
   accessories: HardHat,
+  heart: Heart,
+  badgeCheck: BadgeCheck,
   
   logo: (props: LucideProps) => (
     // <svg

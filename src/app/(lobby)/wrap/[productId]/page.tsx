@@ -8,7 +8,7 @@ import { products, artists } from "@/db/schema"
 import { env } from "@/env.mjs"
 import { and, desc, eq, not } from "drizzle-orm"
 
-import { formatPrice, toTitleCase } from "@/lib/utils"
+import { formatPrice, toTitleCase, truncateNoDots } from "@/lib/utils"
 import {
   Accordion,
   AccordionContent,
@@ -120,12 +120,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="space-y-2">
             <h2 className="line-clamp-1 text-2xl font-bold">{product.name}</h2>
             <p className="text-base text-muted-foreground">
-              {formatPrice(product.price)} (Includes 20 Sponsorship Credits) 
+              {formatPrice(product.price)}/Month   
+              {/* (Includes {Math.round(Number(product.price))} Free Credits/Mo.)  */}
+              <p className="text-base text-muted-foreground">
+              {/* {formatPrice(product.price)}/Month    */}
+              (Includes {Math.round(Number(product.price))} Free Credits/Mo.) 
+              
             </p>
+            </p>
+            
             {artist ? (
               <Link
                 href={`/artist-products?artist_ids=${artist.id}`}
-                className="line-clamp-1 inline-block text-base text-muted-foreground hover:underline"
+                // className="line-clamp-1 inline-block text-base text-muted-foreground hover:underline"
+                className="line-clamp-1 inline-block text-base hover:underline"
               >
                 {artist.name}
               </Link>

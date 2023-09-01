@@ -99,7 +99,7 @@ export function SponsorProductCard({
             
               <div className="flex items-center gap-2">
                 {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
-                <span>Included Perks: NONE.. TESTING</span>
+                {/* <span>Included Perks: NONE.. TESTING</span> */}
                 {/* <span>{product.perks}</span> */}
                 {/* {toTitleCase(product.perks)} */}
               </div>

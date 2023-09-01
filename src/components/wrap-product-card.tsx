@@ -99,7 +99,7 @@ export function WrapProductCard({
             
               <div className="flex items-center gap-2">
                 {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
-                <span>Neverending Perks</span>
+                <span>Recurring Perks:</span>
               </div>
               
               <div className="space-y-2 text-sm text-muted-foreground">

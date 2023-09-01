@@ -37,7 +37,8 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { ProductCard } from "@/components/product-card"
-
+import { SponsorProductCard } from "@/components/sponsor-product-card"
+import { WrapProductCard } from "@/components/wrap-product-card"
 
 interface SubcategoryPageProps {
   params: {
@@ -113,9 +114,24 @@ export default async function FeaturedPage() {
             </div>
           </Link> */}
         </div>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {allProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
+          ))}
+        </div> */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {allProducts.map((product) => (
+            //<ProductCard key={product.id} product={product} />
+            product.category === "deck" ? (
+              <ProductCard key={product.id} product={product} />
+            ) : product.category === "wrap" ? (
+              <WrapProductCard key={product.id} product={product} />
+            ) : product.category === "sponsorship" ? (
+              <SponsorProductCard key={product.id} product={product} />
+            ) : (
+              <ProductCard key={product.id} product={product} />
+            )
+
           ))}
         </div>
       </section>
