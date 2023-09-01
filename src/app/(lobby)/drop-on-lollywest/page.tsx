@@ -50,7 +50,7 @@ export default function DropOnLollywest() {
     },
   })
 
-  async function addContact(data: Inputs) {
+  function addContact(data: Inputs) {
     startTransition(async () => {
       const contactInfo = data.contactInfo
       const message = data.message
