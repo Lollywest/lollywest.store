@@ -14,7 +14,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     <div className="grid min-h-screen grid-cols-1 overflow-hidden md:grid-cols-3 lg:grid-cols-2">
       <AspectRatio ratio={16 / 9}>
         <Image
-          src="/images/auth-layout.webp"
+          src="/images/signin-pic.webp"
           alt="A skateboarder doing a high drop"
           fill
           className="absolute inset-0 object-cover"
