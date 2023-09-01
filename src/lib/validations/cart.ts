@@ -18,8 +18,7 @@ export const cartLineItemSchema = z.object({
   category: z.enum(products.category.enumValues),
   subcategory: z.string().optional().nullable(),
   price: z.string().regex(/^\d+(\.\d{1,2})?$/),
-  inventory: z.number().default(0),
-  storeId: z.number(),
+  stripePriceId: z.string(),
   storeName: z.string().optional().nullable(),
   quantity: z.number().min(0).default(1),
 })

@@ -9,21 +9,12 @@ import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { manageSubscriptionAction } from "@/app/_actions/stripe"
 
-type ManageStoreSubscriptionFormProps = z.infer<
-  typeof manageSubscriptionSchema
-> & {
-  isCurrentPlan: boolean
-}
+type ManageSubscriptionsFormProps = z.infer<typeof manageSubscriptionSchema>
 
-export function ManageStoreSubscriptionForm({
+export function ManageSubscriptionsForm({
   userId,
-  email,
-  isCurrentPlan,
-  isSubscribed,
   stripeCustomerId,
-  stripeSubscriptionId,
-  stripePriceId,
-}: ManageStoreSubscriptionFormProps) {
+}: ManageSubscriptionsFormProps) {
   const [isPending, startTransition] = React.useTransition()
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -32,13 +23,8 @@ export function ManageStoreSubscriptionForm({
     startTransition(async () => {
       try {
         const session = await manageSubscriptionAction({
-          email,
           userId,
-          isSubscribed,
-          isCurrentPlan,
           stripeCustomerId,
-          stripeSubscriptionId,
-          stripePriceId,
         })
         if (session) {
           window.location.href = session.url ?? "/dashboard/billing"
@@ -50,15 +36,21 @@ export function ManageStoreSubscriptionForm({
   }
 
   return (
-    <form className="w-full" onSubmit={(e) => onSubmit(e)}>
-      <Button className="w-full" disabled={isPending}>
+    <form
+      className="mt-4 flex w-full items-center justify-center"
+      onSubmit={(e) => onSubmit(e)}
+    >
+      <Button
+        className="flex h-14 w-1/2 items-center justify-center"
+        disabled={isPending}
+      >
         {isPending && (
           <Icons.spinner
-            className="mr-2 h-4 w-4 animate-spin"
+            className="mr-2 h-4 w-4 animate-spin text-xl"
             aria-hidden="true"
           />
         )}
-        {isCurrentPlan ? "Manage Subscription" : "Subscribe"}
+        Manage Billing
       </Button>
     </form>
   )

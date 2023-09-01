@@ -28,6 +28,7 @@ export const products = mysqlTable("products", {
     .notNull()
     .default("sponsorship"),
   price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
+  stripePriceId: varchar("stripePriceId", { length: 191 }),
   decksLeft: int("decksLeft").notNull().default(0),
   createdAt: timestamp("createdAt").defaultNow(),
   owners: json("owners").$type<string[] | null>().default(null),
@@ -39,7 +40,7 @@ export type Product = InferModel<typeof products>
 export type UpcomingProduct = InferModel<typeof upcoming>
 
 
-export const productsRelations = relations(products, ({ one, many }) => ({
+export const productsRelations = relations(products, ({ one }) => ({
   artist: one(artists, {
     fields: [products.artistID],
     references: [artists.id]
@@ -136,35 +137,20 @@ export const paymentsRelations = relations(payments, ({ one }) => ({
 export const orders = mysqlTable("orders", {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }),
-    walletID: int("walletID").notNull(),
-    artistID: int("artistID").notNull(),
-    productID: int("productID").notNull(),
+    username: varchar("username", { length: 191 }),
+    name: varchar("name", { length: 191 }),
+    customerId: varchar("customerId", { length: 191 }),
     price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
-    stripePaymentIntentId: varchar("stripePaymentIntentId", {
-      length: 191,
-    }).notNull(),
-    stripePaymentIntentStatus: varchar("stripePaymentIntentStatus", {
-      length: 191,
-    }).notNull(),
     createdAt: timestamp("createdAt").defaultNow(),
 })
   
 export type Order = InferModel<typeof orders>
 
-export const ordersRelations = relations(orders, ({ one }) => ({
-  product: one(products, {
-    fields: [orders.productID],
-    references: [products.id]
-  }),
-  wallet: one(wallets, {
-    fields: [orders.walletID],
-    references: [wallets.id]
-  })
-}))
 
 export const carts = mysqlTable("carts", {
   id: serial("id").primaryKey(),
   userId: varchar("userId", { length: 191 }),
+  checkoutSessionId: varchar("checkoutSessionId", { length: 191 }),
   paymentIntentId: varchar("paymentIntentId", { length: 191 }),
   clientSecret: varchar("clientSecret", { length: 191 }),
   items: json("items").$type<CartItem[] | null>().default(null),

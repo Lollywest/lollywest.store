@@ -6,7 +6,7 @@ import { db } from "@/db"
 import { products, artists } from "@/db/schema"
 
 import { env } from "@/env.mjs"
-import { and, desc, eq, not } from "drizzle-orm"
+import { and, eq, not } from "drizzle-orm"
 
 import { formatPrice, toTitleCase } from "@/lib/utils"
 import {
@@ -45,14 +45,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound()
   }
 
-  // const store = await db.query.stores.findFirst({
-  //   columns: {
-  //     id: true,
-  //     name: true,
-  //   },
-  //   where: eq(stores.id, product.storeId),
-  // })
-
   const artist = await db.query.artists.findFirst({
     columns: {
       id: true,
@@ -62,18 +54,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   })
   
   const productsFromStore = artist
-    // ? await db
-    //     .select()
-    //     .from(products)
-    //     .limit(4)
-    //     .where(
-    //       and(
-    //         eq(products.storeId, product.storeId),
-    //         not(eq(products.id, productId))
-    //       )
-    //     )
-    //     .orderBy(desc(products.inventory))
-    // : []
     ? await db
     .select()
     .from(products)
@@ -84,7 +64,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
         not(eq(products.id, productId))
       )
     )
-    //.orderBy(desc(products.inventory))
     : []
 
 
