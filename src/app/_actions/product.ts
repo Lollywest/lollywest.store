@@ -249,7 +249,7 @@ export async function getTrendingProductsAction(input: {limit?: number, days?: n
   return items
 }
 
-export async function getAllOwnersAction( input: z.infer<typeof getProductSchema> ) {
+export async function getAllOwnersAction( input: { id: number } ) {
   const product = await db.query.products.findFirst({
     where: eq(products.id, input.id)
   })

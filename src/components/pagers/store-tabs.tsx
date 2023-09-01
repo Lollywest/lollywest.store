@@ -22,18 +22,18 @@ export function ArtistTabs({ className, artistId, ...props }: ArtistTabsProps) {
       title: "Products",
       href: `/dashboard/artist/products`,
     },
-    {
-      title: "Orders",
-      href: `/dashboard/artist/orders`,
-    },
-    {
-      title: "Payments",
-      href: `/dashboard/artist/payments`,
-    },
-    {
-      title: "Analytics",
-      href: `/dashboard/artist/analytics`,
-    },
+    // {
+    //   title: "Orders",
+    //   href: `/dashboard/artist/orders`,
+    // },
+    // {
+    //   title: "Payments",
+    //   href: `/dashboard/artist/payments`,
+    // },
+    // {
+    //   title: "Analytics",
+    //   href: `/dashboard/artist/analytics`,
+    // },
   ]
 
   return (
