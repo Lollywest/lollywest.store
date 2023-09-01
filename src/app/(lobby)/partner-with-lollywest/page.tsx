@@ -35,19 +35,15 @@ import {
 } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
+import { contactSchema } from "@/lib/validations/contact"
 
-export const formSchema = z.object({
-  contactInfo: z.string(),
-  message: z.string()
-})
-
-type Inputs = z.infer<typeof formSchema>
+type Inputs = z.infer<typeof contactSchema>
 
 export default function DropOnLollywest() {
   const [isPending, startTransition] = React.useTransition()
 
   const form = useForm<Inputs>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(contactSchema),
     defaultValues: {
       contactInfo: "",
       message: "",
