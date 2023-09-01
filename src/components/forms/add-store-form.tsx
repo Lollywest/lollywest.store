@@ -8,7 +8,7 @@ import { toast } from "sonner"
 import type { z } from "zod"
 
 import { catchError } from "@/lib/utils"
-import { storeSchema } from "@/lib/validations/store"
+import { artistSchema } from "@/lib/validations/artist"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -21,13 +21,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Icons } from "@/components/icons"
-import { addStoreAction } from "@/app/_actions/store"
+import { addArtistAction } from "@/app/_actions/store"
 
 interface AddStoreFormProps {
   userId: string
 }
 
-type Inputs = z.infer<typeof storeSchema>
+type Inputs = z.infer<typeof artistSchema>
 
 export function AddStoreForm({ userId }: AddStoreFormProps) {
   const router = useRouter()
@@ -35,7 +35,7 @@ export function AddStoreForm({ userId }: AddStoreFormProps) {
 
   // react-hook-form
   const form = useForm<Inputs>({
-    resolver: zodResolver(storeSchema),
+    resolver: zodResolver(artistSchema),
     defaultValues: {
       name: "",
       description: "",
@@ -45,7 +45,7 @@ export function AddStoreForm({ userId }: AddStoreFormProps) {
   function onSubmit(data: Inputs) {
     startTransition(async () => {
       try {
-        await addStoreAction({ ...data, userId })
+        await addArtistAction({ ...data, userId })
 
         form.reset()
         toast.success("Store added successfully.")

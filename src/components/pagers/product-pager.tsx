@@ -30,10 +30,10 @@ export function ProductPager({ product }: ProductPagerProps) {
             try {
               const prevProductId = await getPreviousProductIdAction({
                 id: product.id,
-                storeId: product.storeId,
+                artistId: product.artistID,
               })
               router.push(
-                `/dashboard/stores/${product.storeId}/products/${prevProductId}`
+                `/dashboard/stores/${product.artistID}/products/${prevProductId}`
               )
             } catch (error) {
               error instanceof Error
@@ -55,10 +55,10 @@ export function ProductPager({ product }: ProductPagerProps) {
             try {
               const nextProductId = await getNextProductIdAction({
                 id: product.id,
-                storeId: product.storeId,
+                artistId: product.artistID,
               })
               router.push(
-                `/dashboard/stores/${product.storeId}/products/${nextProductId}`
+                `/dashboard/stores/${product.artistID}/products/${nextProductId}`
               )
             } catch (error) {
               error instanceof Error

@@ -71,13 +71,13 @@ export default async function FeaturedPage() {
   .limit(8)
   .orderBy(desc(products.createdAt))
 
-  const allStoresWithProductCount = await db
-    .select({
-      // id: stores.id,
-      // name: stores.name,
-      // description: stores.description,
-      productCount: sql<number>`count(${products.id})`,
-    })
+  // const allStoresWithProductCount = await db
+  //   .select({
+  //     // id: stores.id,
+  //     // name: stores.name,
+  //     // description: stores.description,
+  //     productCount: sql<number>`count(${products.id})`,
+  //   })
     // .from(stores)
     // .limit(4)
     // .leftJoin(products, eq(products.storeId, stores.id))
