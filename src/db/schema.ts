@@ -32,7 +32,6 @@ export const products = mysqlTable("products", {
   decksLeft: int("decksLeft").notNull().default(0),
   createdAt: timestamp("createdAt").defaultNow(),
   owners: json("owners").$type<string[] | null>().default(null),
-  stripePriceId: varchar("stripePriceId", { length: 191 }).notNull().default(""),
   slug: text("slug")
 })
 
