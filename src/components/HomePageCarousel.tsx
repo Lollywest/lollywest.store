@@ -44,11 +44,13 @@ export default function SimpleSlider(){
                 //role="group"
                 //key={index}
                 //aria-roledescription="slide"
-                src="/images/background-1.webp"
+                src="/images/mvpSlide-one.webp"
                 alt=""
                 //fill
-                 width={1500}
-                 height={500}
+                // width={1500}
+                // height={500}
+                width={3000}
+                height={1000}
                 //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="rounded-lg"
                 //className="w-full max-w-screen-xl"
@@ -56,6 +58,21 @@ export default function SimpleSlider(){
               />
             {/* </AspectRatio> */}
           </div>
+          {/* <div >
+            <AspectRatio ratio={3/1}>
+              <Image
+
+                src="/images/mvpSlide-one.webp"
+                alt=""
+                // fill
+                width={3000}
+                height={1000}
+                
+                className="rounded-lg"
+                
+              />
+            </AspectRatio>
+          </div> */}
         {/* </div> */}
         {/* <div className = "overflow-hidden "> */}
         <div>
@@ -71,10 +88,10 @@ export default function SimpleSlider(){
             /> */}
           <Image
 
-            src="/images/background-2.webp"
+            src="/images/mvpSlide-two.webp"
             alt=""
-            width={1500}
-            height={500}
+            width={3000}
+            height={1000}
             className="rounded-lg"
             //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
@@ -83,11 +100,11 @@ export default function SimpleSlider(){
         {/* <div className = "overflow-hidden"> */}
             <Image
 
-              src="/images/background-3.webp"
+              src="/images/mvpSlide-three.webp"
               alt=""
               //fill
-              width={1500}
-              height={500}
+              width={3000}
+              height={1000}
               className="rounded-lg"
               //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               //overflow-hidden
@@ -97,35 +114,47 @@ export default function SimpleSlider(){
         </div>
         <div>
             <Image
-              src="/images/background-4.webp"
+              src="/images/mvpSlide-four.webp"
               alt=""
-              width={1500}
-              height={500}
+              width={3000}
+              height={1000}
               className="rounded-lg"
             />
           
         </div>
-        <div>
+        {/* <div>
             <Image
-              src="/images/background-5.webp"
+              src="/images/mvpSlide-five.webp"
               alt=""
-              width={1500}
-              height={500}
+              width={3000}
+              height={1000}
               className="rounded-lg"
             />
           
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
+            <Image
+              src="/images/mvpSlide-six.webp"
+              alt=""
+              // width={1500}
+              // height={500}
+              width={3000}
+              height={1000}
+              className="rounded-lg"
+            />
+          
+        </div> */}
+        {/* <div>
             <Image
               src="/images/background-6.webp"
               alt=""
-              width={1500}
-              height={500}
+              width={3000}
+              height={1000}
               className="rounded-lg"
             />
           
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
             <Image
               src="/images/slide-seven.png"
               alt=""
@@ -134,17 +163,7 @@ export default function SimpleSlider(){
               className="rounded-lg"
             />
           
-        </div>
-        <div>
-            <Image
-              src="/images/slide-seven.png"
-              alt=""
-              width={1500}
-              height={500}
-              className="rounded-lg"
-            />
-          
-        </div>
+        </div> */}
       </Slider>
    
       )

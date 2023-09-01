@@ -34,12 +34,12 @@ export default async function DashboardLayout({
         icon: "billing",
         items: [],
       },
-      {
-        title: "Purchases",
-        href: "/dashboard/purchases",
-        icon: "dollarSign",
-        items: [],
-      },
+      // {
+      //   title: "Purchases",
+      //   href: "/dashboard/purchases",
+      //   icon: "dollarSign",
+      //   items: [],
+      // },
     ]
   }
 

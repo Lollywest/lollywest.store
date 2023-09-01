@@ -46,7 +46,7 @@ export const productSchema = z.object({
     .optional()
     .nullable()
     .default(null),
-  priceId: z.string()
+  stripePriceId: z.string()
 })
 
 export const filterProductsSchema = z.object({

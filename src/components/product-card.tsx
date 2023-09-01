@@ -40,6 +40,8 @@ export function ProductCard({
 
   
 
+  
+
   return (
     <Card
       className={cn("h-full overflow-hidden rounded-sm", className)}
@@ -95,20 +97,38 @@ export function ProductCard({
             {/* {plan.features.map((feature) => ( */}
               {/* <div key={feature} className="flex items-center gap-2"> */}
               <div className="flex items-center gap-2">
-                <Icons.check className="h-4 w-4" aria-hidden="true" />
-                <span>Feature</span>
+                {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
+                <span>Included Perks: </span>
+                {/* <span>{product.perks}</span> */}
+                {/* {toTitleCase(product.perks)} */}
               </div>
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <Icons.addCircle className="h-4 w-4" aria-hidden="true" />
                 <span>Feature 2</span>
-              </div>
+              </div> */}
               {/* <div className="flex items-center gap-2">
                 <Icons.alarm className="h-4 w-4" aria-hidden="true" />
                 <span>Feature 3</span>
               </div> */}
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <Icons.dollarSign className="h-4 w-4" aria-hidden="true" />
                 <span>Feature 3</span>
+              </div> */}
+              <div className="space-y-2 text-sm text-muted-foreground">
+                  {product.perks?.map((perks) => (
+                    <div key={perks} className="flex items-center gap-2">
+                      <Icons.addCircle className="h-4 w-4" aria-hidden="true" />
+                      <span>{perks}</span>
+                    </div>
+                  ))}
+                <div className="flex items-center gap-2">
+                    <Icons.chevronsRight className="h-4 w-4" aria-hidden="true" />
+                    <span>Click to see additional perks</span>
+                    {/* <Icons.chevronsLeft className="h-4 w-4" aria-hidden="true" /> */}
+                    
+                    {/* <Icons.view className="h-4 w-4" aria-hidden="true" /> */}
+                   
+                </div> 
               </div>
             {/* ))} */}
           </div>

@@ -150,12 +150,12 @@ export function MainNav({ items }: MainNavProps) {
           {items?.[0]?.items ? (
             <NavigationMenuItem>
               <Link
-                      aria-label="Leaderboards"
-                      href="/leaderboards"
+                      aria-label="Leaderboard"
+                      href="/leaderboard"
                       // className="hidden items-center space-x-2 lg:flex"
                       className="text-sm leading-tight text-muted-foreground"
                     >
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Leaderboards&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Leaderboard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       {/* <span className="hidden font-bold lg:inline-block">
                         Top Artists & Fans
                       </span> */}

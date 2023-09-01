@@ -83,7 +83,7 @@ export default async function UpdateStorePage() {
 
   return (
     <div className="space-y-6">
-      <Card
+      {/* <Card
         as="section"
         id="connect-store-to-stripe"
         aria-labelledby="connect-store-to-stripe-heading"
@@ -105,7 +105,7 @@ export default async function UpdateStorePage() {
             <ConnectArtistToStripeButton artistId={artistId} />
           )}
         </CardContent>
-      </Card>
+      </Card> */}
       <Card
         as="section"
         id="update-store"

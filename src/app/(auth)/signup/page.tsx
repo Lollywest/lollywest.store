@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { OAuthSignIn } from "@/components/auth/oauth-signin"
+import { OAuthSignUp } from "@/components/auth/oauth-signup"
 import { SignUpForm } from "@/components/forms/signup-form"
 import { Shell } from "@/components/shells/shell"
 
@@ -36,7 +36,7 @@ export default async function SignUpPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
-          <OAuthSignIn />
+          <OAuthSignUp />
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />

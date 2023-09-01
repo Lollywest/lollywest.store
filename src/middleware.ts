@@ -21,6 +21,16 @@ export default authMiddleware({
     "/terms(.*)",
     "/privacy(.*)",
     "/api(.*)",
+    "/leaderboard(.*)",
+    "/featured(.*)",
+    "/sponsor-artists(.*)",
+    "/sponsorships(.*)",
+    "/wrap(.*)",
+    "/drop-on-lollywest(.*)",
+    "/manager-form(.*)",
+    "/partner-with-lollywest(.*)",
+    "/artist-products(.*)",
+    "/upcoming(.*)",
   ],
   async afterAuth(auth, req) {
     if (auth.isPublicRoute) {

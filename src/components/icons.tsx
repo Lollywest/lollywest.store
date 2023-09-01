@@ -53,10 +53,14 @@ import {
   Twitter,
   UploadCloud,
   User,
+  Users,
   Volume2,
   VolumeX,
   Wallet,
   X,
+  Heart,
+  BadgeCheck,
+
   type LucideIcon,
   type LucideProps,
 } from "lucide-react"
@@ -104,6 +108,7 @@ export const Icons = {
   alarm: AlarmClock,
   calendar: CalendarDays,
   user: User,
+  users :Users,
   terminal: FileTerminal,
   settings: Settings,
   logout: LogOut,
@@ -122,6 +127,8 @@ export const Icons = {
   clothing: Shirt,
   shoes: Footprints,
   accessories: HardHat,
+  heart: Heart,
+  badgeCheck: BadgeCheck,
   
   logo: (props: LucideProps) => (
     // <svg

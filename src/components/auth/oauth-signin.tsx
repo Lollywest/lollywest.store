@@ -29,7 +29,7 @@ export function OAuthSignIn() {
       await signIn.authenticateWithRedirect({
         strategy: provider,
         redirectUrl: "/sso-callback",
-        redirectUrlComplete: "/username",
+        redirectUrlComplete: "/",
       })
     } catch (error) {
       setIsLoading(null)

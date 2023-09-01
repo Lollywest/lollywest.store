@@ -92,7 +92,7 @@ export function ProductImageCarousel({
       className={cn("flex flex-col gap-2", className)}
       {...props}
     >
-      <div ref={emblaRef} className="overflow-hidden">
+      <div ref={emblaRef} className="overflow-hidden rounded-xl">
         <div
           className="-ml-4 flex touch-pan-y"
           style={{
@@ -100,7 +100,7 @@ export function ProductImageCarousel({
           }}
         >
           {images.map((image, index) => (
-            <div className="relative min-w-0 flex-full pl-4" key={index}>
+            <div className="relative min-w-0 flex-full pl-4 " key={index}>
               <AspectRatio ratio={1}>
                 <Image
                   aria-label={`Slide ${index + 1} of ${images.length}`}
@@ -120,7 +120,7 @@ export function ProductImageCarousel({
         </div>
       </div>
       {images.length > 1 ? (
-        <div className="flex w-full items-center justify-center gap-2">
+        <div className="flex w-full items-center justify-center gap-2 ">
           <Button
             variant="outline"
             size="icon"
