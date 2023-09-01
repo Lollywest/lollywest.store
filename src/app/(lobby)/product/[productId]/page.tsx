@@ -21,7 +21,8 @@ import { Breadcrumbs } from "@/components/pagers/breadcrumbs"
 import { ProductCard } from "@/components/product-card"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
 import { Shell } from "@/components/shells/shell"
-
+import { WrapProductCard } from "@/components/wrap-product-card"
+import { SponsorProductCard } from "@/components/sponsor-product-card"
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   title: "Product",
@@ -131,11 +132,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="overflow-x-auto pb-2 pt-6">
             <div className="flex w-fit gap-4">
               {productsFromStore.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  className="min-w-[260px]"
-                />
+                product.category === "deck" ? (
+                  <ProductCard key={product.id} product={product} className="min-w-[260px]" />
+                ) : product.category === "wrap" ? (
+                  <WrapProductCard key={product.id} product={product} className="min-w-[260px]" />
+                ) : product.category === "sponsorship" ? (
+                  <SponsorProductCard key={product.id} product={product} className="min-w-[260px]" />
+                ) : (
+                  <ProductCard key={product.id} product={product} />
+                )
               ))}
             </div>
           </div>
