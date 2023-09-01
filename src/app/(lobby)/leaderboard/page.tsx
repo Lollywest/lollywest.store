@@ -1,9 +1,10 @@
 import { type Metadata } from "next"
 import Image from "next/image"
-import { env } from "@/env.mjs"
 import { db } from "@/db"
 import { orders } from "@/db/schema"
-import { sql, desc } from "drizzle-orm"
+import { env } from "@/env.mjs"
+import { desc, sql } from "drizzle-orm"
+
 import { Header } from "@/components/header"
 import { Shell } from "@/components/shells/shell"
 
@@ -13,68 +14,18 @@ export const metadata: Metadata = {
   description: "See the top users on Lollywest",
 }
 
-export default function Leaderboard() {
-  const topUsers = [
-    {
-      username: "@beatbaron",
-      sponsor_credits: 320,
-      top_artist: "Moise",
-    },
-    {
-      username: "@demon224",
-      sponsor_credits: 252,
-      top_artist: "Moise",
-    },
-    {
-      username: "@basslinebeemer",
-      sponsor_credits: 200,
-      top_artist: "Beemer",
-    },
-    {
-      username: "@aftergreensfanatic",
-      sponsor_credits: 178,
-      top_artist: "The Aftergreens",
-    },
-    {
-      username: "@thegr8gatsby",
-      sponsor_credits: 130,
-      top_artist: "Moise",
-    },
-    {
-      username: "@legend98",
-      sponsor_credits: 124,
-      top_artist: "The Aftergreens",
-    },
-    {
-      username: "@corey01",
-      sponsor_credits: 100,
-      top_artist: "Jake Gusto",
-    },
-    {
-      username: "@harkonnen",
-      sponsor_credits: 99,
-      top_artist: "The Aftergreens",
-    },
-    {
-      username: "@lilrockman",
-      sponsor_credits: 96,
-      top_artist: "Will Burke",
-    },
-    {
-      username: "@user1111",
-      sponsor_credits: 95,
-      top_artist: "Jake Gusto",
-    },
-  ]
-  // const topUsers = await db.select({
-  //       userId: orders.userId,
-  //       total_credits: sql<number>`sum(${orders.price})`,
-  //       })
-  //       .from(orders)
-  //       .groupBy(orders.userId)
-  //       .orderBy(desc('total_credits'))
-  //       .all();
-
+export default async function Leaderboard() {
+  // Need to allow this to work when people change their usernames!
+  const topUsers = await db
+    .select({
+      username: orders.username,
+      total_credits: sql<number>`sum(${orders.price})`.mapWith(Number),
+    })
+    .from(orders)
+    .groupBy(orders.username)
+    .orderBy(desc(sql`sum(${orders.price})`))
+    .limit(50)
+  
   return (
     <Shell className="md:pb-10">
       <div className="space-y-8">
@@ -84,17 +35,17 @@ export default function Leaderboard() {
         </div>
         {topUsers.map((user, index) => (
           <div key={index} className="flex justify-between">
-            <div className="w-1/12">
+            <div className="w-1/12 items-center">
               <p className="text-xl font-bold">{index + 1}</p>
             </div>
             <div className="flex w-3/12 items-center">
               <div className="w-5/12 space-y-1">
-                <p className="truncate text-base font-medium leading-none">
+                <p className="truncate text-lg font-medium leading-none">
                   {user.username || "Anonymous"}
                 </p>
-                <p className="text-sm text-muted-foreground">
+                {/* <p className="text-sm text-muted-foreground">
                   {user.top_artist}
-                </p>
+                </p> */}
               </div>
               <div className="flex shrink-0 items-center">
                 {/* Render the Star Icon for users in the top 50 */}
@@ -131,7 +82,7 @@ export default function Leaderboard() {
                     </g>
                   </svg>
                 )}
-                
+
                 {index === 0 && (
                   <svg
                     className="ml-2 h-14 w-14"
@@ -195,7 +146,7 @@ export default function Leaderboard() {
             </div>
             <div className="ml-auto flex w-3/12 items-center justify-end">
               <div className="mr-2 text-lg font-bold">
-                {user.sponsor_credits || "?"}
+                {user.total_credits || "?"}
               </div>
               <div>
                 <svg
