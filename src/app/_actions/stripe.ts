@@ -54,21 +54,39 @@ export async function createCheckoutSessionAction(
 
   // Check if any item has the category "wrap"
   const isSubscription = input.items.some((item) => item.category === "wrap")
-  const mode = isSubscription ? "subscription" : "payment"
 
-  const session = await stripe.checkout.sessions.create({
+  // Create a new Stripe Checkout session, with customer_creation: "always" mode = payment
+  const session = isSubscription ? await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: input.items.map((item) => ({
       price: item.stripePriceId ? item.stripePriceId : undefined,
       quantity: item.quantity,
     })),
-    mode: mode,
+    mode: "subscription",
     success_url: billingUrl,
     cancel_url: billingUrl,
     metadata: {
       userId: input.userId,
       username: user.username,
       cartId: cartId ? cartId : null,
+      email: user.emailAddresses[0] ? user.emailAddresses[0].emailAddress : null,
+    },
+    billing_address_collection: "auto",
+    customer: input.stripeCustomerId ? input.stripeCustomerId : undefined,
+  }) : await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: input.items.map((item) => ({
+      price: item.stripePriceId ? item.stripePriceId : undefined,
+      quantity: item.quantity,
+    })),
+    mode: "payment",
+    success_url: billingUrl,
+    cancel_url: billingUrl,
+    metadata: {
+      userId: input.userId,
+      username: user.username,
+      cartId: cartId ? cartId : null,
+      email: user.emailAddresses[0] ? user.emailAddresses[0].emailAddress : null,
     },
     billing_address_collection: "auto",
     customer_creation: "always",
