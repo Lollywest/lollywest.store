@@ -36,6 +36,7 @@ export async function POST(req: Request) {
   }
 
   if (event.type === "checkout.session.completed") {
+    console.log("1" + (session.customer as string))
 
     const user = await clerkClient.users.getUser(session.metadata.userId)
 
@@ -47,6 +48,8 @@ export async function POST(req: Request) {
       customerId: session.customer as string,
       price: session.amount_total?.toString(),
     })
+    
+    console.log("2" + (session.customer as string))
 
     if (session.metadata.cartId) {
       await db
@@ -62,7 +65,9 @@ export async function POST(req: Request) {
         stripeCustomerId: session.customer as string,
       },
     })
-    
+
+    console.log("3" + (session.customer as string))
+
     return new Response(null, { status: 200 })
   }
     // Update the users customer ID
