@@ -36,6 +36,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { contactSchema } from "@/lib/validations/contact"
+import { toast } from "sonner"
 
 type Inputs = z.infer<typeof contactSchema>
 
@@ -58,6 +59,8 @@ export default function DropOnLollywest() {
       console.log("check")
 
       await addContactAction({ category: "artist", contactInfo, message })
+
+      toast.success("Message Sent!")
     })
   }
 
