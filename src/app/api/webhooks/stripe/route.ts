@@ -57,14 +57,14 @@ export async function POST(req: Request) {
       .where(eq(carts.id, Number(session.metadata.cartId)))
     }
     // Close cart and clear items
-    
-  }
-    // Update the users customer ID
     await clerkClient.users.updateUserMetadata(session?.metadata?.userId, {
       privateMetadata: {
         stripeCustomerId: session.customer as string,
       },
     })
+    
     return new Response(null, { status: 200 })
   }
+    // Update the users customer ID
+}
 
