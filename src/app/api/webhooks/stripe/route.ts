@@ -32,6 +32,7 @@ export async function POST(req: Request) {
   const session = event.data.object as Stripe.Checkout.Session
 
   if (!session?.metadata?.userId) {
+    console.log("if stmt")
     return new Response(null, { status: 200 })
   }
 
