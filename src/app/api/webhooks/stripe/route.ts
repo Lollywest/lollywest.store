@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm"
 import { clerkClient } from "@clerk/nextjs"
 import { env } from "@/env.mjs"
 import { headers } from "next/headers"
+import { log } from "next-axiom"
 
 export async function POST(req: Request) {
   const body = await req.text()
@@ -37,11 +38,13 @@ export async function POST(req: Request) {
   }
 
   console.log("test log #1")
+  
 
   if (event.type === "checkout.session.completed") {
     console.log("test log")
     console.log("1" + (session.customer as string))
     console.log(typeof session.customer !== 'string' ? session.customer?.id : session.customer)
+    log.debug("processing stripe checkout.session.completed event")
 
     const user = await clerkClient.users.getUser(session.metadata.userId)
 
@@ -55,6 +58,9 @@ export async function POST(req: Request) {
     })
     
     console.log("2" + (session.customer as string))
+    if (session.customer) {
+      log.debug("Stripe Session.customer:", {sessionCustomer: session.customer})
+    }
 
     if (session.metadata.cartId) {
       await db
