@@ -33,18 +33,12 @@ export async function POST(req: Request) {
   const session = event.data.object as Stripe.Checkout.Session
 
   if (!session?.metadata?.userId) {
-    console.log("if stmt")
     return new Response(null, { status: 200 })
   }
 
-  console.log("test log #1")
   
 
   if (event.type === "checkout.session.completed") {
-    console.log("test log")
-    console.log("1" + (session.customer as string))
-    console.log(typeof session.customer !== 'string' ? session.customer?.id : session.customer)
-    log.debug("processing stripe checkout.session.completed event")
 
     const user = await clerkClient.users.getUser(session.metadata.userId)
 
@@ -56,13 +50,6 @@ export async function POST(req: Request) {
       customerId: typeof session.customer !== 'string' ? session.customer?.id : session.customer,
       price: session.amount_total?.toString(),
     })
-    
-    console.log("2" + (session.customer as string))
-    if (session.customer) {
-      log.debug("Stripe Session.customer:", {sessionCustomer: session.customer})
-    } else {
-      log.debug("Stripe Session.customer is null")
-    }
 
     if (session.metadata.cartId) {
       await db
@@ -79,10 +66,7 @@ export async function POST(req: Request) {
       },
     })
 
-    console.log("3" + (typeof session.customer !== 'string' ? session.customer?.id : session.customer))
-
     return new Response(null, { status: 200 })
   }
-    // Update the users customer ID
 }
 
