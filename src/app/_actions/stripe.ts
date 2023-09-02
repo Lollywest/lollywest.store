@@ -71,6 +71,7 @@ export async function createCheckoutSessionAction(
       cartId: cartId ? cartId : null,
     },
     billing_address_collection: "auto",
+    customer_creation: "always",
     customer: input.stripeCustomerId ? input.stripeCustomerId : undefined,
   })
 
