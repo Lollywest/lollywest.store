@@ -34,13 +34,40 @@ export default async function DashboardLayout({
         icon: "billing",
         items: [],
       },
-      // {
-      //   title: "Purchases",
-      //   href: "/dashboard/purchases",
-      //   icon: "dollarSign",
-      //   items: [],
-      // },
+      {
+        title: "Purchases",
+        href: "/dashboard/purchases",
+        icon: "dollarSign",
+        items: [],
+      },
     ]
+  }
+  if(user.privateMetadata.role === "admin") {
+    newitems = [{
+      title: "Account",
+      href: "/dashboard/account",
+      icon: "user",
+      items: [],
+    },
+    {
+      title: "Billing",
+      href: "/dashboard/billing",
+      icon: "billing",
+      items: [],
+    },
+    {
+      title: "Purchases",
+      href: "/dashboard/purchases",
+      icon: "dollarSign",
+      items: [],
+    },
+    {
+      title: "Add Product",
+      href: "/dashboard/admin",
+      icon: "view",
+      items: [],
+    }
+  ]
   }
 
   return (
