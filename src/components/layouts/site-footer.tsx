@@ -103,7 +103,7 @@ export function SiteFooter() {
                 <span className="sr-only">GitHub</span>
               </div>
             </Link> */}
-            {/* //<ThemeToggle /> */}
+            <ThemeToggle />
           </div>
         </section>
       </Shell>
