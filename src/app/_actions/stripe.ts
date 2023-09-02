@@ -55,24 +55,6 @@ export async function createCheckoutSessionAction(
   // Check if any item has the category "wrap"
   const isSubscription = input.items.some((item) => item.category === "wrap")
 
-  const commonSessionData = {
-    payment_method_types: ["card"],
-    line_items: input.items.map((item) => ({
-      price: item.stripePriceId ? item.stripePriceId : undefined,
-      quantity: item.quantity,
-    })),
-    success_url: billingUrl,
-    cancel_url: billingUrl,
-    metadata: {
-      userId: input.userId,
-      username: user.username,
-      cartId: cartId ? cartId : null,
-      email: user.emailAddresses[0]
-        ? user.emailAddresses[0].emailAddress
-        : null,
-    },
-  }
-
   if (isSubscription) {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
