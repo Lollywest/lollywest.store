@@ -39,8 +39,6 @@ export default authMiddleware({
     }
 
     const url = new URL(req.nextUrl.origin)
-    console.log("url", url)
-    console.log("auth", auth)
     if (!auth.userId) {
       //  If user tries to access a private route without being authenticated,
       //  redirect them to the sign in page
