@@ -7,7 +7,7 @@ import { userNamePageSchema } from "@/lib/validations/auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { z } from "zod"
 import { currentUser } from "@clerk/nextjs"
-import { updateUsernameAction } from "@/app/_actions/wallet"
+import { checkUsernameAction, updateUsernameAction } from "@/app/_actions/wallet"
 
 import {
     Form,
@@ -26,6 +26,18 @@ type Inputs = z.infer<typeof userNamePageSchema>
 export default function UsernamePage() {
     const router = useRouter()
     const [isPending, startTransition] = React.useTransition()
+    // const [isChecking, startCheck] = React.useTransition()
+
+    // startCheck(async () => {
+    //     const val = await checkUsernameAction()
+    //     if(val === "/signin") {
+    //         router.push("/signin")
+    //     }
+    
+    //     if(val === "/") {
+    //         router.push("/")
+    //     }
+    // })
 
     const form = useForm<Inputs>({
         resolver: zodResolver(userNamePageSchema),

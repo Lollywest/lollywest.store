@@ -154,3 +154,17 @@ export async function updateUsernameAction(input: {
         catchClerkError(err)
     }
 }
+
+export async function checkUsernameAction() {
+    const user = await currentUser()
+
+    if(!user) {
+        return("/signin")
+    }
+
+    if(!user.username) {
+        return("/username")
+    }
+
+    return("/")
+}
