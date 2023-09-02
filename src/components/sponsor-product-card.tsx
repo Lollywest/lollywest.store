@@ -89,20 +89,38 @@ export function SponsorProductCard({
         <CardContent className="grid gap-2.5 p-4">
           <CardDescription className="line-clamp-2">
             {/* {toTitleCase(product.category)} by {toTitleCase(product.name)} */}
-            {toTitleCase(product.category)}
+            Verified {toTitleCase(product.category)}
           </CardDescription>
           <CardTitle className="line-clamp-1">{product.name}</CardTitle>
-          <CardDescription className="line-clamp-2">
+          {/* <CardDescription className="line-clamp-2">
             {formatPrice(product.price)}
-          </CardDescription>
+          </CardDescription> */}
           <div className="space-y-2 text-sm text-muted-foreground">
             
+          <div className="space-y-2 text-sm text-muted-foreground">
+            
+            <div className="flex items-center gap-2">
+              {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
+              <span>Benefits:</span>
+            </div>
+            
+            <div className="space-y-2 text-sm text-muted-foreground">
+                {/* {product.perks?.slice(0,2).map((perks) => (
+                ))} */}
+                <div className="flex items-center gap-2">
+                    <Icons.check className="h-4 w-4" aria-hidden="true" />
+                    <span>Become a Verified Artist Sponsor</span>
+                  </div>
               <div className="flex items-center gap-2">
-                {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
-                {/* <span>Included Perks: NONE.. TESTING</span> */}
-                {/* <span>{product.perks}</span> */}
-                {/* {toTitleCase(product.perks)} */}
-              </div>
+                  <Icons.heart className="h-4 w-4" aria-hidden="true" />
+                  <span>Recieve Sponsorship Credits</span>
+                  {/* <Icons.chevronsLeft className="h-4 w-4" aria-hidden="true" /> */}
+                  
+                  {/* <Icons.view className="h-4 w-4" aria-hidden="true" /> */}
+                 
+              </div> 
+            </div>
+          </div>
               
             
           </div>

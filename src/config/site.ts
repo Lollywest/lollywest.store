@@ -15,7 +15,7 @@ const links = {
 }
 
 export const siteConfig = {
-  name: "Lollywest",
+  name: "",
   description:
     "Changing how artists earn and fans engage",
   url: "https://www.lollywest.store/",
