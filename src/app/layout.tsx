@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   ],
   creator: "lollywest",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
+    //{ media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
   openGraph: {
