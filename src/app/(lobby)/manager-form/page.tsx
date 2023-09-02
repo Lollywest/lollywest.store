@@ -1,9 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { type Metadata } from "next"
-import { env } from "@/env.mjs"
-
 import { Separator } from "@/components/ui/separator"
 import { Header } from "@/components/header"
 import { Shell } from "@/components/shells/shell"
@@ -17,8 +14,6 @@ import {
 } from "@/components/ui/card"
 
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { LoadingButton } from "@/components/ui/loading-button"
 import { Textarea } from "@/components/ui/textarea"
 import { useForm } from "react-hook-form"
 
@@ -36,6 +31,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { contactSchema } from "@/lib/validations/contact"
+import { toast } from "sonner"
 
 type Inputs = z.infer<typeof contactSchema>
 
@@ -58,6 +54,8 @@ export default function DropOnLollywest() {
       console.log("check")
 
       await addContactAction({ category: "manager", contactInfo, message })
+
+      toast.success("Message Sent!")
     })
   }
 
