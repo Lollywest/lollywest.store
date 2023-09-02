@@ -45,7 +45,7 @@ export async function POST(req: Request) {
       userId: user.id,
       username: user.username,
       name: user.firstName + " " + user.lastName,
-      customerId: session.customer as string,
+      customerId: typeof session.customer !== 'string' ? session.customer?.id : session.customer,
       price: session.amount_total?.toString(),
     })
     
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
     // Close cart and clear items
     await clerkClient.users.updateUserMetadata(session?.metadata?.userId, {
       privateMetadata: {
-        stripeCustomerId: session.customer as string,
+        stripeCustomerId: typeof session.customer !== 'string' ? session.customer?.id : session.customer,
       },
     })
 
