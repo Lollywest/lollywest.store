@@ -50,6 +50,12 @@ export async function createCheckoutSessionAction(
     throw new Error("User not found.")
   }
 
+  let prods : string = ""
+  for(const item of input.items) {
+    prods = prods + item.id + "." + item.quantity + " "
+  }
+  prods = prods.slice(0, -1)
+
   const billingUrl = absoluteUrl("/dashboard/billing")
 
   // Check if any item has the category "wrap"
@@ -70,6 +76,7 @@ export async function createCheckoutSessionAction(
       username: user.username,
       cartId: cartId ? cartId : null,
       email: user.emailAddresses[0] ? user.emailAddresses[0].emailAddress : null,
+      items: prods,
     },
     billing_address_collection: "auto",
     customer: input.stripeCustomerId ? input.stripeCustomerId : undefined,
@@ -87,6 +94,7 @@ export async function createCheckoutSessionAction(
       username: user.username,
       cartId: cartId ? cartId : null,
       email: user.emailAddresses[0] ? user.emailAddresses[0].emailAddress : null,
+      items: prods,
     },
     billing_address_collection: "auto",
     customer_creation: "always",
