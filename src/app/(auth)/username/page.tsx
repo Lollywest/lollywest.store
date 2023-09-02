@@ -23,19 +23,21 @@ import { Icons } from "@/components/icons"
 
 type Inputs = z.infer<typeof userNamePageSchema>
 
-const val = await checkUsernameAction()
-
 export default function UsernamePage() {
     const router = useRouter()
     const [isPending, startTransition] = React.useTransition()
+    // const [isChecking, startCheck] = React.useTransition()
 
-    if(val === "/signin") {
-        router.push("/signin")
-    }
-
-    if(val === "/") {
-        router.push("/")
-    }
+    // startCheck(async () => {
+    //     const val = await checkUsernameAction()
+    //     if(val === "/signin") {
+    //         router.push("/signin")
+    //     }
+    
+    //     if(val === "/") {
+    //         router.push("/")
+    //     }
+    // })
 
     const form = useForm<Inputs>({
         resolver: zodResolver(userNamePageSchema),
