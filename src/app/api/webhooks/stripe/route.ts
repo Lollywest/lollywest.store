@@ -60,6 +60,8 @@ export async function POST(req: Request) {
     console.log("2" + (session.customer as string))
     if (session.customer) {
       log.debug("Stripe Session.customer:", {sessionCustomer: session.customer})
+    } else {
+      log.debug("Stripe Session.customer is null")
     }
 
     if (session.metadata.cartId) {
