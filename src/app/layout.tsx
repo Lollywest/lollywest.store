@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { env } from "@/env.mjs"
 import { ClerkProvider } from "@clerk/nextjs"
+import { AxiomWebVitals } from 'next-axiom';
 
 import "@/styles/globals.css"
 
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <ClerkProvider>
         <html lang="en" suppressHydrationWarning>
           <head />
+          <AxiomWebVitals />
           <body
             className={cn(
               "min-h-screen bg-background font-sans antialiased",
