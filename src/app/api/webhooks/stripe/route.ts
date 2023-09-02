@@ -35,8 +35,12 @@ export async function POST(req: Request) {
     return new Response(null, { status: 200 })
   }
 
+  console.log("test log #1")
+
   if (event.type === "checkout.session.completed") {
+    console.log("test log")
     console.log("1" + (session.customer as string))
+    console.log(typeof session.customer !== 'string' ? session.customer?.id : session.customer)
 
     const user = await clerkClient.users.getUser(session.metadata.userId)
 
@@ -66,7 +70,7 @@ export async function POST(req: Request) {
       },
     })
 
-    console.log("3" + (session.customer as string))
+    console.log("3" + (typeof session.customer !== 'string' ? session.customer?.id : session.customer))
 
     return new Response(null, { status: 200 })
   }

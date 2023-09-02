@@ -60,6 +60,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     columns: {
       id: true,
       name: true,
+      description: true,
     },
     where: eq(artists.id, product.artistID),
   })
@@ -161,7 +162,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <AccordionItem value="description" >
               <AccordionTrigger>Sponsorship Description</AccordionTrigger>
               <AccordionContent>
-                {product.description ??
+                Sponsor {artist?.name}: {'\n'} 
+                {artist?.description ??
                   "No description is available for this product."}
               </AccordionContent>
             </AccordionItem>
@@ -174,7 +176,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <AccordionItem value="item-3">
                 <AccordionTrigger>What do sponsorship credits get me?</AccordionTrigger>
                 <AccordionContent>
-                    hmmmmm......
+                  Sponsorship credits elevate your ranking on our leaderboard, 
+                  unlock the ability to receive exclusive merchandise from artist collaborations with Lollywest,
+                  and grant you official sponsorship status with your favorite artist.
+                  
+                 
                 </AccordionContent>
                 </AccordionItem>
           </Accordion>

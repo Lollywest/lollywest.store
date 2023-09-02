@@ -40,7 +40,7 @@ export function UpcomingCard({
 
   return (
     <Card
-      className={cn("h-full overflow-hidden rounded-sm", className)}
+      className={cn("h-full overflow-hidden rounded-3xl", className)}
       {...props}
     >
       <Link
@@ -48,7 +48,7 @@ export function UpcomingCard({
         href={`/upcoming/${upcomingProducts.id}`}
       >
         <CardHeader className="border-b p-0">
-          <AspectRatio ratio={7 / 3}>
+          <AspectRatio ratio={1/1}>
             {upcomingProducts?.images?.length ? (
               <Image
                 src={
@@ -82,7 +82,7 @@ export function UpcomingCard({
       >
         <CardContent className="grid gap-2.5 p-4">
           <CardDescription className="line-clamp-2">
-            {toTitleCase(upcomingProducts.category)}
+            Upcoming {toTitleCase(upcomingProducts.category)}
           </CardDescription>
           <CardTitle className="line-clamp-1">{upcomingProducts.name}</CardTitle>
           <CardDescription className="line-clamp-2">
@@ -93,10 +93,10 @@ export function UpcomingCard({
           <div className="space-y-2 text-sm text-muted-foreground">
             {/* {plan.features.map((feature) => ( */}
               {/* <div key={feature} className="flex items-center gap-2"> */}
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <Icons.check className="h-4 w-4" aria-hidden="true" />
                 <span>Feature</span>
-              </div>
+              </div> */}
               {/* <div className="flex items-center gap-2">
                 <Icons.addCircle className="h-4 w-4" aria-hidden="true" />
                 <span>Feature 2</span>
