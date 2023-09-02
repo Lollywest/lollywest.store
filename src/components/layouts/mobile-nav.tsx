@@ -17,6 +17,16 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Icons } from "@/components/icons"
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu"
+
 
 interface MobileNavProps {
   mainNavItems?: MainNavItem[]
@@ -47,19 +57,27 @@ export function MobileNav({ mainNavItems, sidebarNavItems }: MobileNavProps) {
             onClick={() => setIsOpen(false)}
           >
             <Icons.logo className="mr-2 h-4 w-4" aria-hidden="true" />
-            <span className="font-bold">{siteConfig.name}</span>
+            {/* <span className="font-bold">{siteConfig.name}</span> */}
           </Link>
         </div>
+
+        
+
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="pl-1 pr-7">
             <Accordion type="single" collapsible className="w-full">
-              {mainNavItems?.map((item, index) => (
+              {mainNavItems?.slice(0,1).map((item, index) => (
                 <AccordionItem value={item.title} key={index}>
                   <AccordionTrigger className="text-sm capitalize">
                     {item.title}
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="flex flex-col space-y-2">
+
+
+                      
+
+
                       {item.items?.map((subItem, index) =>
                         subItem.href ? (
                           <MobileLink
@@ -84,7 +102,11 @@ export function MobileNav({ mainNavItems, sidebarNavItems }: MobileNavProps) {
                   </AccordionContent>
                 </AccordionItem>
               ))}
-              <AccordionItem value="sidebar">
+
+              
+                
+
+              {/* <AccordionItem value="sidebar">
                 <AccordionTrigger className="text-sm">
                   Sidebar Menu
                 </AccordionTrigger>
@@ -112,8 +134,50 @@ export function MobileNav({ mainNavItems, sidebarNavItems }: MobileNavProps) {
                     )}
                   </div>
                 </AccordionContent>
-              </AccordionItem>
+              </AccordionItem> */}
             </Accordion>
+              <div  className = " grid gap-6">
+                  <div className = " pt-8">
+                    <Link
+                          aria-label="Featured"
+                          href="/featured"
+                          className="text-sm leading-tight text-muted-foreground"
+                        >
+                          Featured
+                      </Link>
+                  </div>
+
+                  <div>
+                      <Link
+                              aria-label="Leaderboard"
+                              href="/leaderboard"
+                              // className="hidden items-center space-x-2 lg:flex"
+                              className="text-sm leading-tight text-muted-foreground"
+                            >
+                              Leaderboard
+                              {/* <span className="hidden font-bold lg:inline-block">
+                                Top Artists & Fans
+                              </span> */}
+                              
+                      </Link>
+                  </div>
+
+                  <div>
+                    <Link
+                        aria-label="Sponsor Artists"
+                        href="/sponsor-artists"
+                        // className="hidden items-center space-x-2 lg:flex"
+                        className="text-sm leading-tight text-muted-foreground"
+                      >
+                        Sponsor Artists
+                        {/* <span className="hidden font-bold lg:inline-block">
+                          Top Artists & Fans
+                        </span> */}
+                        
+                    </Link>
+                    </div>
+
+                </div>
           </div>
         </ScrollArea>
       </SheetContent>
