@@ -22,14 +22,16 @@ export async function getProductsAction(input?: { category?: string }) {
         throw new Error("Could not find user")
     }
 
-    const ids = await db.query.orders.findMany({
+    const userOrders = await db.query.orders.findMany({
         where: eq(orders.userId, user.id)
     })
 
     const arr = []
-    for(const item of ids) {
-        for(const row of item.products!) {
-            arr.push(row.id)
+    for(const order of userOrders) {
+        if(order.products) {
+            for(const row of order.products!) {
+                arr.push(row.id)
+            }
         }
     }
 

@@ -92,93 +92,111 @@ export function SponsorProductCard({
             <CardTitle className="line-clamp-1">{product.name}</CardTitle>
             {/* <CardDescription className="line-clamp-2">
             {formatPrice(product.price)}
-          </CardDescription> */}
+            </CardDescription> */}
             <div className="space-y-2 text-sm text-muted-foreground">
-              <div className="space-y-2 text-sm text-muted-foreground">
+
+              <div className="space-y-3 text-sm text-muted-foreground">
+
                 <div className="flex items-center gap-2">
                   {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
-                  <span>Benefits:</span>
+                  <span></span>
                 </div>
 
-                <div className="space-y-2 text-sm text-muted-foreground">
-                  {/* {product.perks?.slice(0,2).map((perks) => (
-                ))} */}
-                  <div className="flex items-center gap-2">
-                    <Icons.check className="h-4 w-4" aria-hidden="true" />
-                    <span>Become a Verified Artist Sponsor</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Icons.heart className="h-4 w-4" aria-hidden="true" />
-                    <span>Recieve Sponsorship Credits</span>
-                    {/* <Icons.chevronsLeft className="h-4 w-4" aria-hidden="true" /> */}
 
-                    {/* <Icons.view className="h-4 w-4" aria-hidden="true" /> */}
+                <div className="space-y-2 text-sm text-muted-foreground">
+                  <div className="space-y-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
+                      <Image
+                        className="h-5 w-5"
+                        src="/images/avatar/verified1.svg"
+                        width={800}
+                        height={800}
+                        alt="star"
+                      />
+                      <span>Become a Verified Artist Sponsor</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {/* <Icons.heart className="h-4 w-4" aria-hidden="true" /> */}
+                      <Image
+                        className="h-5 w-5"
+                        src="/images/avatar/heart-check.svg"
+                        width={800}
+                        height={800}
+                        alt="star"
+                      />
+                      <span>Recieve Sponsorship Credits</span>
+                      {/* <Icons.chevronsLeft className="h-4 w-4" aria-hidden="true" /> */}
+
+                      {/* <Icons.view className="h-4 w-4" aria-hidden="true" /> */}
+
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </CardContent>
         </Link>
-      </div>
-      <CardFooter className="p-4">
-        {variant === "default" ? (
-          <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:justify-between">
-            <Button
-              aria-label="Add to cart"
-              size="sm"
-              className="h-8 w-full rounded-sm"
-              onClick={() => {
-                startTransition(async () => {
-                  try {
-                    await addToCartAction({
-                      productId: product.id,
-                      quantity: 1,
-                    })
-                    toast.success("Added to cart.")
-                  } catch (error) {
-                    error instanceof Error
-                      ? toast.error(error.message)
-                      : toast.error("Something went wrong, please try again.")
-                  }
-                })
-              }}
-              disabled={isPending}
-            >
-              {isPending && (
-                <Icons.spinner
-                  className="mr-2 h-4 w-4 animate-spin"
-                  aria-hidden="true"
-                />
-              )}
-              Sponsor this Artist
-            </Button>
           </div>
-        ) : (
-          <Button
-            aria-label={isAddedToCart ? "Remove from cart" : "Add to cart"}
-            size="sm"
-            className="h-8 w-full rounded-sm"
-            onClick={() => {
-              startTransition(async () => {
-                await onSwitch?.()
-              })
-            }}
-            disabled={isPending}
-          >
-            {isPending ? (
-              <Icons.spinner
-                className="mr-2 h-4 w-4 animate-spin"
-                aria-hidden="true"
-              />
-            ) : isAddedToCart ? (
-              <Icons.check className="mr-2 h-4 w-4" aria-hidden="true" />
-            ) : (
-              <Icons.add className="mr-2 h-4 w-4" aria-hidden="true" />
-            )}
-            {isAddedToCart ? "Added" : "Add to cart"}
-          </Button>
-        )}
-      </CardFooter>
-    </Card>
-  )
+            <CardFooter className="p-4">
+              {variant === "default" ? (
+                <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:justify-between">
+                  <Button
+                    aria-label="Add to cart"
+                    size="sm"
+                    className="h-8 w-full rounded-sm"
+                    onClick={() => {
+                      startTransition(async () => {
+                        try {
+                          await addToCartAction({
+                            productId: product.id,
+                            quantity: 1,
+                          })
+                          toast.success("Added to cart.")
+                        } catch (error) {
+                          error instanceof Error
+                            ? toast.error(error.message)
+                            : toast.error("Something went wrong, please try again.")
+                        }
+                      })
+                    }}
+                    disabled={isPending}
+                  >
+                    {isPending && (
+                      <Icons.spinner
+                        className="mr-2 h-4 w-4 animate-spin"
+                        aria-hidden="true"
+                      />
+                    )}
+                    Sponsor this Artist
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  aria-label={isAddedToCart ? "Remove from cart" : "Add to cart"}
+                  size="sm"
+                  className="h-8 w-full rounded-sm"
+                  onClick={() => {
+                    startTransition(async () => {
+                      await onSwitch?.()
+                    })
+                  }}
+                  disabled={isPending}
+                >
+                  {isPending ? (
+                    <Icons.spinner
+                      className="mr-2 h-4 w-4 animate-spin"
+                      aria-hidden="true"
+                    />
+                  ) : isAddedToCart ? (
+                    <Icons.check className="mr-2 h-4 w-4" aria-hidden="true" />
+                  ) : (
+                    <Icons.add className="mr-2 h-4 w-4" aria-hidden="true" />
+                  )}
+                  {isAddedToCart ? "Added" : "Add to cart"}
+                </Button>
+              )}
+            </CardFooter>
+          </Card>
+          )
 }

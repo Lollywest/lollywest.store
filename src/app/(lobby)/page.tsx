@@ -15,6 +15,8 @@ import { WrapProductCard } from "@/components/wrap-product-card"
 
 
 import { UpcomingCard } from "@/components/upcoming-card"
+import { UpcomingDeckCard } from "@/components/upcoming-deck-card"
+
 import { Shell } from "@/components/shells/shell"
 
 import SimpleSlider  from "@/components/HomePageCarousel"
@@ -36,13 +38,14 @@ export default async function IndexPage() {
     .orderBy(desc(products.createdAt))
 
   const allUpcoming = await db
-  .select()
-  .from(upcoming)
-  .limit(4)
-  .orderBy(desc(upcoming.createdAt))
+    .select()
+    .from(upcoming)
+    .limit(4)
+    .orderBy(desc(upcoming.createdAt))
 
   return (
     <Shell as="div" className="gap-12">
+
       <section className="mx-auto w-full justify-center overflow-hidden rounded-lg">  
         <div >
             <SimpleSlider />
@@ -99,8 +102,17 @@ export default async function IndexPage() {
             
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {allUpcoming.map((upcomingProducts) => (
-            <UpcomingCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
-            
+            // <UpcomingCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
+            upcomingProducts.category === "deck" ? (
+              <UpcomingDeckCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
+            ) : upcomingProducts.category === "wrap" ? (
+              <UpcomingCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
+            ) : upcomingProducts.category === "sponsorship" ? (
+              <UpcomingCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
+            ) : (
+              <UpcomingCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
+            )
+
           ))}
         </div>
         

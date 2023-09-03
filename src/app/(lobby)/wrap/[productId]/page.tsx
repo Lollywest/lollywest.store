@@ -74,13 +74,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <Breadcrumbs
         segments={[
           {
-            title: "Products",
-            href: "/products",
+            title: "Featured",
+            href: "/featured",
           },
-          {
-            title: toTitleCase(product.category),
-            href: `/products?category=${product.category}`,
-          },
+          // {
+          //   title: toTitleCase(product.category),
+          //   href: `/products?category=${product.category}`,
+          // },
           {
             title: product.name,
             href: `/product/${product.id}`,
@@ -155,7 +155,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {artist && productsFromStore.length > 0 ? (
         <div className="overflow-hidden md:pt-6">
           <h2 className="line-clamp-1 flex-1 text-2xl font-bold">
-            More products from {artist.name}
+            More from {artist.name}
           </h2>
           <div className="overflow-x-auto pb-2 pt-6">
             <div className="flex w-fit gap-4">
