@@ -23,7 +23,7 @@ export function SiteFooter() {
               href="/"
               className="flex items-center space-x-2"
             >
-              <Icons.logo className="h-6 w-6" aria-hidden="true" />
+              <Icons.logo className="" aria-hidden="true" />
             </Link>
           </section>
           <section
