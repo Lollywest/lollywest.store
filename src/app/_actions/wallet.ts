@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { db } from "@/db"
-import { wallets, products } from "@/db/schema"
+import { wallets, products, orders } from "@/db/schema"
 import {
     and,
     eq,
@@ -19,41 +19,68 @@ export async function getProductsAction(input?: { category?: string }) {
 
     const user = await currentUser()
 
-    if (!user) {
-        throw new Error("Could not get user")
+    if(!user) {
+        throw new Error("Could not find user")
     }
 
-    let wallet = await db.query.wallets.findFirst({
-        where: eq(wallets.userID, user.id)
+    const ids = await db.query.orders.findMany({
+        where: eq(orders.userId, user.id)
     })
 
-    if (!wallet) {
-        await db.insert(wallets).values({
-            userID: user.id,
-            products: [],
-            orders: []
-        })
-
-        wallet = await db.query.wallets.findFirst({
-            where: eq(wallets.userID, user.id)
-        })
-    }
-    if (!wallet!.products || !wallet!.products.length) {
-        return []
+    const arr = []
+    for(const item of ids) {
+        for(const row of item.products!) {
+            arr.push(row.id)
+        }
     }
 
-    const { items } = await db.transaction(async (tx) => {
-        const items = await tx
-            .select()
-            .from(products)
-            .where(and(inArray(products.id, wallet!.products!),
-                input?.category ? eq(products.category, input.category as "deck" | "wrap" | "sponsorship") : undefined
-            ))
-
-        return { items }
+    const items = await db.query.products.findMany({
+        where: inArray(products.id, arr)
     })
 
     return items
+
+    // if (input && input.category && input.category !== "deck" && input.category !== "wrap" && input.category !== "sponsorship") {
+    //     throw new Error("Invalid category: must be 'deck | wrap | sponsorship'")
+    // }
+
+    // const user = await currentUser()
+
+    // if (!user) {
+    //     throw new Error("Could not get user")
+    // }
+
+    // let wallet = await db.query.wallets.findFirst({
+    //     where: eq(wallets.userID, user.id)
+    // })
+
+    // if (!wallet) {
+    //     await db.insert(wallets).values({
+    //         userID: user.id,
+    //         products: [],
+    //         orders: []
+    //     })
+
+    //     wallet = await db.query.wallets.findFirst({
+    //         where: eq(wallets.userID, user.id)
+    //     })
+    // }
+    // if (!wallet!.products || !wallet!.products.length) {
+    //     return []
+    // }
+
+    // const { items } = await db.transaction(async (tx) => {
+    //     const items = await tx
+    //         .select()
+    //         .from(products)
+    //         .where(and(inArray(products.id, wallet!.products!),
+    //             input?.category ? eq(products.category, input.category as "deck" | "wrap" | "sponsorship") : undefined
+    //         ))
+
+    //     return { items }
+    // })
+
+    // return items
 }
 
 export async function addProductToWalletAction(input: { productID: number }) {
