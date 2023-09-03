@@ -81,6 +81,7 @@ const sendSlackNotification = async (message: string) => {
   const body = JSON.stringify({ text: message })
   const response = await fetch(webhook, {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body,
   })
   return response
