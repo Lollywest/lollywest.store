@@ -52,7 +52,7 @@ export async function createCheckoutSessionAction(
 
   let prods : string = ""
   for(const item of input.items) {
-    prods = prods + item.id + "." + item.quantity + " "
+    prods = prods + String(item.id) + "." + String(item.quantity) + " "
   }
   prods = prods.slice(0, -1)
 

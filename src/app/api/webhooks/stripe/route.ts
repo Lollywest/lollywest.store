@@ -80,11 +80,11 @@ export async function POST(req: Request) {
     })
 
     // Send Slack notification
-    // const customerId = typeof session.customer !== 'string' ? session.customer?.id : session.customer;
-    // const userId = session.metadata.userId;
-    // const email = session.metadata.email;
-    // const message = `Checkout session completed! Customer ID: ${customerId}, User ID: ${userId}, Email: ${email}`;
-    // await sendSlackNotification(message);
+    const customerId = typeof session.customer !== 'string' ? session.customer?.id : session.customer;
+    const userId = session.metadata.userId;
+    const email = session.metadata.email;
+    const message = `Checkout session completed! Customer ID: ${customerId}, User ID: ${userId}, Email: ${email}`;
+    await sendSlackNotification(message);
 
     return new Response(null, { status: 200 })
   }
