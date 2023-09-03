@@ -25,7 +25,7 @@ export const siteConfig = {
       title: "Lobby",
       items: [
         {
-          title: "Our Products",
+          title: "Our Offerings",
           href: "/featured",
           description: "Check out our Artists and Wraps.",
           items: [],

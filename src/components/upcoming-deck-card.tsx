@@ -4,8 +4,9 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { type UpcomingProduct } from "@/db/schema"
+import { toast } from "sonner"
 
-import { cn , formatDate, toTitleCase } from "@/lib/utils"
+import { cn, formatPrice , formatDate, toTitleCase } from "@/lib/utils"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
@@ -17,15 +18,16 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Icons } from "@/components/icons"
+import { addToCartAction } from "@/app/_actions/cart"
 
-interface UpcomingCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface UpcomingDeckCardProps extends React.HTMLAttributes<HTMLDivElement> {
 upcomingProducts: UpcomingProduct
   variant?: "default" | "switchable"
   isAddedToCart?: boolean
   onSwitch?: () => Promise<void>
 }
 
-export function UpcomingCard({
+export function UpcomingDeckCard({
   upcomingProducts,
   variant = "default",
   isAddedToCart = false,
@@ -33,7 +35,7 @@ export function UpcomingCard({
   className,
   
   ...props
-}: UpcomingCardProps) {
+}: UpcomingDeckCardProps) {
   const [isPending, startTransition] = React.useTransition()
 
   return (
@@ -80,7 +82,7 @@ export function UpcomingCard({
       > */}
         <CardContent className="grid gap-2.5 p-4">
           <CardDescription className="line-clamp-2">
-            Upcoming {toTitleCase(upcomingProducts.category)}
+            {toTitleCase(upcomingProducts.category)}
           </CardDescription>
           <CardTitle className="line-clamp-1">{upcomingProducts.name}</CardTitle>
           <CardDescription className="line-clamp-2 font-bold">
@@ -88,83 +90,41 @@ export function UpcomingCard({
             {/* Releasing on: {formatDate(upcomingProducts.releaseDate!)} */}
             Coming soon...
           </CardDescription>
-          
+          <CardDescription className="line-clamp-2">
+            {/* {formatPrice(upcomingProducts.price)} */}
+            <div  className="flex items-center gap-2">
+              {/* <Icons.star className="h-4 w-4" aria-hidden="true" /> */}
+                <Image
+                  className="h-5 w-5"
+                  src="/images/avatar/diamond1.svg"
+                  width={800}
+                  height={800}
+                  alt="star"
+                />
+              <span>Small quantitiy release</span>
+            </div>
+          </CardDescription>
+          <CardDescription className="line-clamp-2">
+            {/* {formatPrice(upcomingProducts.price)} */}
+            <div  className="flex items-center gap-2">
+              {/* <Icons.star className="h-4 w-4" aria-hidden="true" /> */}
+                <Image
+                  className="h-5 w-5"
+                  src="/images/avatar/diamond1.svg"
+                  width={800}
+                  height={800}
+                  alt="star"
+                />
+              <span>Top-Tier Exclusive Perks </span>
+            </div>
+          </CardDescription>
+
+                  
           <div className="space-y-2 text-sm text-muted-foreground">
+          
           </div>
         </CardContent>
-      {/* </Link> */}
-      {/* <CardFooter className="p-4">
-        {variant === "default" ? (
-          <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:justify-between"> */}
-            {/* <Link
-              aria-label="Preview product"
-              href={`/upcoming/${upcomingProducts.id}`}
-              className={buttonVariants({
-                variant: "outline",
-                size: "sm",
-                className: "h-8 w-full rounded-sm",
-              })}
-            >
-              Preview
-            </Link> */}
-
-            {/* <Button
-              aria-label="Add to cart"
-              size="sm"
-              className="h-8 w-full rounded-sm"
-              onClick={() => {
-                startTransition(async () => {
-                  try {
-                    await addToCartAction({
-                      upcomingId: upcoming.id,
-                      quantity: 1,
-                    })
-                    toast.success("Added to cart.")
-                  } catch (error) {
-                    error instanceof Error
-                      ? toast.error(error.message)
-                      : toast.error("Something went wrong, please try again.")
-                  }
-                })
-              }}
-              disabled={isPending}
-            >
-              {isPending && (
-                <Icons.spinner
-                  className="mr-2 h-4 w-4 animate-spin"
-                  aria-hidden="true"
-                />
-              )}
-              Add to cart
-            </Button> */}
-          {/* </div>
-
-        ) : (
-          <Button
-            aria-label={isAddedToCart ? "Remove from cart" : "Add to cart"}
-            size="sm"
-            className="h-8 w-full rounded-sm"
-            onClick={() => {
-              startTransition(async () => {
-                await onSwitch?.()
-              })
-            }}
-            disabled={isPending}
-          >
-            {isPending ? (
-              <Icons.spinner
-                className="mr-2 h-4 w-4 animate-spin"
-                aria-hidden="true"
-              />
-            ) : isAddedToCart ? (
-              <Icons.check className="mr-2 h-4 w-4" aria-hidden="true" />
-            ) : (
-              <Icons.add className="mr-2 h-4 w-4" aria-hidden="true" />
-            )}
-            {isAddedToCart ? "Added" : "Add to cart"}
-          </Button>
-        )}
-      </CardFooter> */}
+     
     </Card>
   )
 }
