@@ -80,23 +80,24 @@ export async function POST(req: Request) {
     })
 
     // Send Slack notification
-    const customerId = typeof session.customer !== 'string' ? session.customer?.id : session.customer;
-    const userId = session.metadata.userId;
-    const email = session.metadata.email;
-    const message = `Checkout session completed! Customer ID: ${customerId}, User ID: ${userId}, Email: ${email}`;
-    await sendSlackNotification(message);
+    // const customerId = typeof session.customer !== 'string' ? session.customer?.id : session.customer;
+    // const userId = session.metadata.userId;
+    // const email = session.metadata.email;
+    // const message = `Checkout session completed! Customer ID: ${customerId}, User ID: ${userId}, Email: ${email}`;
+    // await sendSlackNotification(message);
 
     return new Response(null, { status: 200 })
   }
 }
 
-const sendSlackNotification = async (message: string) => { 
-  const webhook = env.SLACK_WEBHOOK_URL
-  const body = JSON.stringify({ text: message })
-  const response = await fetch(webhook, {
-    method: "POST",
-    body,
-  })
-  return response
-}
+// const sendSlackNotification = async (message: string) => { 
+//   const webhook = env.SLACK_WEBHOOK_URL
+//   const body = JSON.stringify({ text: message })
+//   const response = await fetch(webhook, {
+//     method: "POST",
+//     body,
+//   })
+//   return response
+// }
+
 //ignore this comment, its just so I can recommit to get a new preview
