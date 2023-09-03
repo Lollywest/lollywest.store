@@ -35,6 +35,10 @@ export async function getProductsAction(input?: { category?: string }) {
         }
     }
 
+    if(!arr.length) {
+        return []
+    }
+
     const items = await db.query.products.findMany({
         where: inArray(products.id, arr)
     })
