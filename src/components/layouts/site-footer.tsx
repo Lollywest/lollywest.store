@@ -58,9 +58,6 @@ export function SiteFooter() {
           aria-labelledby="footer-bottom-heading"
           className="flex items-center space-x-4"
         >
-          <div className="flex items-center space-x-1">
-            <ThemeToggle />
-          </div>
         </section>
       </Shell>
     </footer>
