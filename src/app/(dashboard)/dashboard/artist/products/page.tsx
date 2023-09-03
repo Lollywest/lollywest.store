@@ -2,7 +2,7 @@
 import { Shell } from "@/components/shells/shell"
 import { ArtistProductCard } from "@/components/artist-product-card"
 import { db } from "@/db"
-import { artists, products } from "@/db/schema"
+import { artists, products, type Product } from "@/db/schema"
 import { currentUser } from "@clerk/nextjs"
 import { eq, inArray } from "drizzle-orm"
 
@@ -16,13 +16,16 @@ export default async function ProductsPage() {
     where: eq(artists.userId, user.id)
   })
 
-  if(!artist || !artist.products) {
+  if(!artist) {
     throw new Error("artist not found")
   }
 
-  const allProducts = await db.query.products.findMany({
-    where: inArray(products.id, artist.products!)
-  })
+  let allProducts : Product[] = []
+  if(artist.products) {
+    allProducts = await db.query.products.findMany({
+      where: inArray(products.id, artist.products)
+    })
+  }
 
   return (
     <Shell as="div" className="gap-12">
