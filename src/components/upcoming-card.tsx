@@ -43,10 +43,10 @@ export function UpcomingCard({
       className={cn("h-full overflow-hidden rounded-3xl", className)}
       {...props}
     >
-      <Link
+      {/* <Link
         aria-label={`View ${upcomingProducts.name} details`}
         href={`/upcoming/${upcomingProducts.id}`}
-      >
+      > */}
         <CardHeader className="border-b p-0">
           <AspectRatio ratio={1/1}>
             {upcomingProducts?.images?.length ? (
@@ -75,21 +75,22 @@ export function UpcomingCard({
             )}
           </AspectRatio>
         </CardHeader>
-      </Link>
-      <Link
+      {/* </Link> */}
+      {/* <Link
         aria-label={`View ${upcomingProducts.name} details`}
         href={`/upcoming/${upcomingProducts.id}`}
-      >
+      > */}
         <CardContent className="grid gap-2.5 p-4">
           <CardDescription className="line-clamp-2">
             Upcoming {toTitleCase(upcomingProducts.category)}
           </CardDescription>
           <CardTitle className="line-clamp-1">{upcomingProducts.name}</CardTitle>
-          <CardDescription className="line-clamp-2">
+          <CardDescription className="line-clamp-2 font-bold">
             {/* {formatPrice(upcomingProducts.price)} */}
-            Releasing on: {formatDate(upcomingProducts.releaseDate!)}
-            
+            {/* Releasing on: {formatDate(upcomingProducts.releaseDate!)} */}
+            Coming soon...
           </CardDescription>
+          
           <div className="space-y-2 text-sm text-muted-foreground">
             {/* {plan.features.map((feature) => ( */}
               {/* <div key={feature} className="flex items-center gap-2"> */}
@@ -112,11 +113,11 @@ export function UpcomingCard({
             {/* ))} */}
           </div>
         </CardContent>
-      </Link>
-      <CardFooter className="p-4">
+      {/* </Link> */}
+      {/* <CardFooter className="p-4">
         {variant === "default" ? (
-          <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:justify-between">
-            <Link
+          <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:justify-between"> */}
+            {/* <Link
               aria-label="Preview product"
               href={`/upcoming/${upcomingProducts.id}`}
               className={buttonVariants({
@@ -126,7 +127,7 @@ export function UpcomingCard({
               })}
             >
               Preview
-            </Link>
+            </Link> */}
 
             {/* <Button
               aria-label="Add to cart"
@@ -157,7 +158,7 @@ export function UpcomingCard({
               )}
               Add to cart
             </Button> */}
-          </div>
+          {/* </div>
         ) : (
           <Button
             aria-label={isAddedToCart ? "Remove from cart" : "Add to cart"}
@@ -183,7 +184,7 @@ export function UpcomingCard({
             {isAddedToCart ? "Added" : "Add to cart"}
           </Button>
         )}
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   )
 }

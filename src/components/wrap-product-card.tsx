@@ -97,24 +97,29 @@ export function WrapProductCard({
           </CardDescription>
           <div className="space-y-2 text-sm text-muted-foreground">
             
-              <div className="flex items-center gap-2">
+              <div className="flex items-center font-bold gap-2">
                 {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
-                <span>Recurring Perks:</span>
+                <span >Recurring Perks:</span>
               </div>
               
               <div className="space-y-2 text-sm text-muted-foreground">
                   {product.perks?.slice(0,2).map((perks) => (
                     <div key={perks} className="flex items-center gap-2">
-                      <Icons.star className="h-4 w-4" aria-hidden="true" />
+                      {/* <Icons.star className="h-4 w-4" aria-hidden="true" /> */}
+                      <Image
+                        className="h-5 w-5"
+                        src="/images/avatar/badge-ribbon.svg"
+                        width={800}
+                        height={800}
+                        alt="star"
+                      />
                       <span>{perks}</span>
                     </div>
                   ))}
                 <div className="flex items-center gap-2">
                     <Icons.chevronsRight className="h-4 w-4" aria-hidden="true" />
                     <span>Click to see all perks</span>
-                    {/* <Icons.chevronsLeft className="h-4 w-4" aria-hidden="true" /> */}
-                    
-                    {/* <Icons.view className="h-4 w-4" aria-hidden="true" /> */}
+                   
                    
                 </div> 
               </div>

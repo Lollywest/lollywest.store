@@ -28,6 +28,8 @@ import { WrapProductCard } from "@/components/wrap-product-card"
 
 
 import { UpcomingCard } from "@/components/upcoming-card"
+import { UpcomingDeckCard } from "@/components/upcoming-deck-card"
+
 import { Shell } from "@/components/shells/shell"
 
 import SimpleSlider  from "@/components/HomePageCarousel"
@@ -49,10 +51,10 @@ export default async function IndexPage() {
     .orderBy(desc(products.createdAt))
 
   const allUpcoming = await db
-  .select()
-  .from(upcoming)
-  .limit(4)
-  .orderBy(desc(upcoming.createdAt))
+    .select()
+    .from(upcoming)
+    .limit(4)
+    .orderBy(desc(upcoming.createdAt))
 
   // const allStoresWithProductCount = await db
   // const upcomingDrops = await db
@@ -89,7 +91,7 @@ export default async function IndexPage() {
       {/* <section className="mx-auto flex w-full max-w-[64rem] flex-col items-center justify-center gap-2 pb-2 pt-2 text-center md:pb-12 md:pt-10 lg:py-8"> */}
       {/* <section className = "mx-auto flex w-full flex-col items-center justify-center  text-center overflow-hidden"> */}
       {/* <section className="mx-auto flex w-full flex-col items-center justify-center gap-2 text-center overflow-hidden rounded-lg"> */}
-      <section className="mx-auto w-full justify-center overflow-hidden rounded-lg">  
+      <section className="mx-auto w-full   justify-center overflow-hidden rounded-lg">  
       {/* <div style={{ maxWidth: '1500px', maxHeight: '500px', width: '100vw', height: '33vw', position: 'relative' }}> */}
         <div >
          {/* <div style={{ width: '100vw', height: '33vw', position: 'relative' }}> */}
@@ -247,8 +249,17 @@ export default async function IndexPage() {
             
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {allUpcoming.map((upcomingProducts) => (
-            <UpcomingCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
-            
+            // <UpcomingCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
+            upcomingProducts.category === "deck" ? (
+              <UpcomingDeckCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
+            ) : upcomingProducts.category === "wrap" ? (
+              <UpcomingCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
+            ) : upcomingProducts.category === "sponsorship" ? (
+              <UpcomingCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
+            ) : (
+              <UpcomingCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
+            )
+
           ))}
         </div>
 

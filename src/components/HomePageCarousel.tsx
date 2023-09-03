@@ -11,7 +11,6 @@ import Image from "next/image"
 import Link from "next/link"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 
-
 export default function SimpleSlider(){
   
     const settings = {
@@ -44,13 +43,14 @@ export default function SimpleSlider(){
                 //role="group"
                 //key={index}
                 //aria-roledescription="slide"
-                src="/images/mvpSlide-one.webp"
+                // src="/images/mvp-slide-1.webp"
+                src="/images/first-pic.png"
                 alt=""
                 //fill
                 // width={1500}
                 // height={500}
-                width={3000}
-                height={1000}
+                width={2000}
+                height={500}
                 //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="rounded-lg"
                 //className="w-full max-w-screen-xl"
@@ -86,25 +86,31 @@ export default function SimpleSlider(){
               //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 
             /> */}
-          <Image
+            {/* <AspectRatio ratio={3/1}>  */}
+              <Image
 
-            src="/images/mvpSlide-two.webp"
-            alt=""
-            width={3000}
-            height={1000}
-            className="rounded-lg"
-            //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
+                // src="/images/mvp-slide-2.webp"
+                src="/images/1.png"
+
+                alt=""
+                width={2000}
+                height={500}
+                // fill
+                className="rounded-lg"
+                //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+            {/* </AspectRatio>  */}
         </div>
+        
         <div>
         {/* <div className = "overflow-hidden"> */}
             <Image
 
-              src="/images/mvpSlide-three.webp"
+              src="/images/3.png"
               alt=""
               //fill
-              width={3000}
-              height={1000}
+              width={2000}
+              height={500}
               className="rounded-lg"
               //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               //overflow-hidden
@@ -114,10 +120,10 @@ export default function SimpleSlider(){
         </div>
         <div>
             <Image
-              src="/images/mvpSlide-four.webp"
+              src="/images/4.png"
               alt=""
-              width={3000}
-              height={1000}
+              width={2000}
+              height={500}
               className="rounded-lg"
             />
           

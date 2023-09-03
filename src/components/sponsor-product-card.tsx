@@ -97,22 +97,36 @@ export function SponsorProductCard({
           </CardDescription> */}
           <div className="space-y-2 text-sm text-muted-foreground">
             
-          <div className="space-y-2 text-sm text-muted-foreground">
+          <div className="space-y-3 text-sm text-muted-foreground">
             
             <div className="flex items-center gap-2">
               {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
-              <span>Benefits:</span>
+              <span></span>
             </div>
             
             <div className="space-y-2 text-sm text-muted-foreground">
                 {/* {product.perks?.slice(0,2).map((perks) => (
                 ))} */}
                 <div className="flex items-center gap-2">
-                    <Icons.check className="h-4 w-4" aria-hidden="true" />
+                    {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
+                    <Image
+                        className="h-5 w-5"
+                        src="/images/avatar/verified1.svg"
+                        width={800}
+                        height={800}
+                        alt="star"
+                      />
                     <span>Become a Verified Artist Sponsor</span>
                   </div>
               <div className="flex items-center gap-2">
-                  <Icons.heart className="h-4 w-4" aria-hidden="true" />
+                  {/* <Icons.heart className="h-4 w-4" aria-hidden="true" /> */}
+                  <Image
+                        className="h-5 w-5"
+                        src="/images/avatar/heart-check.svg"
+                        width={800}
+                        height={800}
+                        alt="star"
+                      />
                   <span>Recieve Sponsorship Credits</span>
                   {/* <Icons.chevronsLeft className="h-4 w-4" aria-hidden="true" /> */}
                   

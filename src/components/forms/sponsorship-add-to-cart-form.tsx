@@ -34,7 +34,7 @@ export function SponsorAddToCartForm({ productId }: AddToCartFromProps) {
   const form = useForm<Inputs>({
     resolver: zodResolver(updateCartItemSchema),
     defaultValues: {
-      quantity: 1,
+      quantity: 2,
     },
   })
 
@@ -56,7 +56,7 @@ export function SponsorAddToCartForm({ productId }: AddToCartFromProps) {
     <Form {...form}>
       <form
         // className="grid gap-4 sm:max-w-[240px]"
-        className="grid gap-4 sm:max-w-[480px]"
+        className="grid gap-4 sm:max-w-[600px]"
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
         {/* <div className="flex justify-between items-center"> */}
@@ -70,10 +70,10 @@ export function SponsorAddToCartForm({ productId }: AddToCartFromProps) {
                 <FormControl>
                     <Input
                     type="number"
-                    
+                    placeholder="Enter here (Min. 2)"
                     inputMode="numeric"
-                    min={0}
-                    {...field}
+                    min={2}
+                    // {...field}
                     onChange={(e) => {
                         const value = e.target.value
                         const parsedValue = parseInt(value, 10)
