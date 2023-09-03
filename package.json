@@ -50,6 +50,7 @@
     "@tanstack/react-table": "^8.9.3",
     "@types/styled-components": "^5.1.26",
     "@uploadthing/react": "^5.2.0",
+    "@vercel/analytics": "^1.0.2",
     "@vercel/og": "^0.5.9",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { env } from "@/env.mjs"
 import { ClerkProvider } from "@clerk/nextjs"
 import { AxiomWebVitals } from 'next-axiom';
+import { Analytics } from '@vercel/analytics/react';
 
 import "@/styles/globals.css"
 
@@ -81,6 +82,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               {children}
               <TailwindIndicator />
             </Providers>
+            <Analytics />
             <Toaster />
           </body>
         </html>
