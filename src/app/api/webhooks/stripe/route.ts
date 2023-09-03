@@ -2,7 +2,7 @@ import type Stripe from "stripe"
 
 import { stripe } from "@/lib/stripe"
 import { db } from "@/db"
-import { carts, orders } from "@/db/schema"
+import { carts, orders, products } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { clerkClient } from "@clerk/nextjs"
 import { env } from "@/env.mjs"
@@ -51,7 +51,20 @@ export async function POST(req: Request) {
         quantity: Number(arr[1])
       }
       items.push(row)
+
+      const prod = await db.query.products.findFirst({
+        where: eq(products.id, row.id)
+      })
+      if(prod) {
+        if(prod.owners) {
+          prod.owners.push(user.id)
+        } else {
+          prod.owners = [ user.id ]
+        }
+        await db.update(products).set(prod).where(eq(products.id, prod.id))
+      }
     }
+
 
 
     // Create new order in DB
