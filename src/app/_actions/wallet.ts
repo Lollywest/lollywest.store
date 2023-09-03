@@ -39,6 +39,10 @@ export async function getProductsAction(input?: { category?: string }) {
         where: inArray(products.id, arr)
     })
 
+    if(!items) {
+        return []
+    }
+
     return items
 
     // if (input && input.category && input.category !== "deck" && input.category !== "wrap" && input.category !== "sponsorship") {
