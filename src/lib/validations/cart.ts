@@ -34,3 +34,8 @@ export const deleteCartItemsSchema = z.object({
 export const updateCartItemSchema = z.object({
   quantity: z.number().min(0).default(1),
 })
+
+export const stripeItemSchema = z.object({
+  id: z.number(),
+  quantity: z.number()
+})

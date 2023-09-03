@@ -11,7 +11,6 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { type z } from "zod"
 
-import { getSubcategories } from "@/config/products"
 import { catchError, isArrayOfFile } from "@/lib/utils"
 import { productSchema } from "@/lib/validations/product"
 import { Button } from "@/components/ui/button"
@@ -84,7 +83,6 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
   })
 
   const previews = form.watch("images") as FileWithPreview[] | null
-  const subcategories = getSubcategories(form.watch("category"))
 
   function onSubmit(data: Inputs) {
     startTransition(async () => {

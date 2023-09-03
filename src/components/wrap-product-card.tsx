@@ -27,7 +27,6 @@ interface WrapProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   onSwitch?: () => Promise<void>
 }
 
-
 export function WrapProductCard({
   product,
   variant = "default",
@@ -38,89 +37,86 @@ export function WrapProductCard({
 }: WrapProductCardProps) {
   const [isPending, startTransition] = React.useTransition()
 
-  
-
-  
-
   return (
     <Card
-      className={cn("h-full grid grid-rows-[1fr,auto] overflow-hidden rounded-3xl", className)}
+      className={cn(
+        "grid h-full grid-rows-[1fr,auto] overflow-hidden rounded-3xl",
+        className
+      )}
       {...props}
     >
       <div className="overflow-hidden">
-      <Link
-        aria-label={`View ${product.name} details`}
-        href={`/wrap/${product.id}`}
-      >
-        <CardHeader className="border-b p-0">
-          <AspectRatio ratio={1/1}>
-            {product?.images?.length ? (
-              <Image
-                src={
-                  product.images[0]?.url ?? "/images/product-placeholder.webp"
-                }
-                alt={product.images[0]?.name ?? product.name}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                fill
-                className="object-cover"
-                loading="lazy"
-              />
-            ) : (
-              <div
-                aria-label="Placeholder"
-                role="img"
-                aria-roledescription="placeholder"
-                className="flex h-full w-full items-center justify-center bg-secondary"
-              >
-                <Icons.placeholder
-                  className="h-9 w-9 text-muted-foreground"
-                  aria-hidden="true"
+        <Link
+          aria-label={`View ${product.name} details`}
+          href={`/wrap/${product.id}`}
+        >
+          <CardHeader className="border-b p-0">
+            <AspectRatio ratio={1 / 1}>
+              {product?.images?.length ? (
+                <Image
+                  src={
+                    product.images[0]?.url ?? "/images/product-placeholder.webp"
+                  }
+                  alt={product.images[0]?.name ?? product.name}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  fill
+                  className="object-cover"
+                  loading="lazy"
                 />
-              </div>
-            )}
-          </AspectRatio>
-        </CardHeader>
-      </Link>
-      {/* <div className="flex-1 overflow-hidden"> */}
-      <Link
-        aria-label={`View ${product.name} details`}
-        href={`/wrap/${product.id}`}
-      >
-        <CardContent className="grid gap-2.5 p-4">
-          <CardDescription className="line-clamp-2">
-            {/* {toTitleCase(product.category)} by {toTitleCase(product.name)} */}
-            {toTitleCase(product.category)}
-          </CardDescription>
-          <CardTitle className="line-clamp-1">{product.name}</CardTitle>
-          <CardDescription className="line-clamp-2">
-            {formatPrice(product.price)}
-          </CardDescription>
-          <div className="space-y-2 text-sm text-muted-foreground">
-            
+              ) : (
+                <div
+                  aria-label="Placeholder"
+                  role="img"
+                  aria-roledescription="placeholder"
+                  className="flex h-full w-full items-center justify-center bg-secondary"
+                >
+                  <Icons.placeholder
+                    className="h-9 w-9 text-muted-foreground"
+                    aria-hidden="true"
+                  />
+                </div>
+              )}
+            </AspectRatio>
+          </CardHeader>
+        </Link>
+        {/* <div className="flex-1 overflow-hidden"> */}
+        <Link
+          aria-label={`View ${product.name} details`}
+          href={`/wrap/${product.id}`}
+        >
+          <CardContent className="grid gap-2.5 p-4">
+            <CardDescription className="line-clamp-2">
+              {/* {toTitleCase(product.category)} by {toTitleCase(product.name)} */}
+              {toTitleCase(product.category)}
+            </CardDescription>
+            <CardTitle className="line-clamp-1">{product.name}</CardTitle>
+            <CardDescription className="line-clamp-2">
+              {formatPrice(product.price)}
+            </CardDescription>
+            <div className="space-y-2 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
                 <span>Recurring Perks:</span>
               </div>
-              
+
               <div className="space-y-2 text-sm text-muted-foreground">
-                  {product.perks?.slice(0,2).map((perks) => (
-                    <div key={perks} className="flex items-center gap-2">
-                      <Icons.star className="h-4 w-4" aria-hidden="true" />
-                      <span>{perks}</span>
-                    </div>
-                  ))}
+                {product.perks?.slice(0, 2).map((perks) => (
+                  <div key={perks} className="flex items-center gap-2">
+                    <Icons.star className="h-4 w-4" aria-hidden="true" />
+                    <span>{perks}</span>
+                  </div>
+                ))}
                 <div className="flex items-center gap-2">
-                    <Icons.chevronsRight className="h-4 w-4" aria-hidden="true" />
-                    <span>Click to see all perks</span>
-                    {/* <Icons.chevronsLeft className="h-4 w-4" aria-hidden="true" /> */}
-                    
-                    {/* <Icons.view className="h-4 w-4" aria-hidden="true" /> */}
-                   
-                </div> 
+                  <Icons.chevronsRight className="h-4 w-4" aria-hidden="true" />
+                  <span>Click to see all perks</span>
+                  {/* <Icons.chevronsLeft className="h-4 w-4" aria-hidden="true" /> */}
+
+                  {/* <Icons.view className="h-4 w-4" aria-hidden="true" /> */}
+                </div>
               </div>
-          </div>
-        </CardContent>
-      </Link>
+            </div>
+          </CardContent>
+        </Link>
       </div>
       <CardFooter className="p-4">
         {variant === "default" ? (
