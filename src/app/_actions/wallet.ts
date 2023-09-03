@@ -1,6 +1,5 @@
 "use server"
 
-import { revalidatePath } from "next/cache"
 import { db } from "@/db"
 import { wallets, products } from "@/db/schema"
 import {
@@ -149,7 +148,7 @@ export async function updateUsernameAction(input: {
     }
 
     try {
-        const user = await clerkClient.users.updateUser(curuser.id, input)
+        await clerkClient.users.updateUser(curuser.id, input)
     } catch (err) {
         catchClerkError(err)
     }

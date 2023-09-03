@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { notFound } from "next/navigation"
 import { db } from "@/db"
 import { artists } from "@/db/schema"
 import { env } from "@/env.mjs"

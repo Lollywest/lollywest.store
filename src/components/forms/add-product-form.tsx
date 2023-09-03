@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { type z } from "zod"
 
-import { getSubcategories } from "@/config/products"
 import { catchError, isArrayOfFile } from "@/lib/utils"
 import { productSchema } from "@/lib/validations/product"
 import { Button } from "@/components/ui/button"
@@ -171,35 +170,6 @@ export function AddProductForm({ artistId }: AddProductFormProps) {
               </FormItem>
             )}
           />
-          {/* <FormField
-            control={form.control}
-            name="subcategory"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Subcategory</FormLabel>
-                <FormControl>
-                  <Select
-                    value={field.value?.toString()}
-                    onValueChange={field.onChange}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a subcategory" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {subcategories.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
         </div>
         <div className="flex flex-col items-start gap-6 sm:flex-row">
           <FormItem className="w-full">

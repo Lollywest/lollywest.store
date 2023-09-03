@@ -9,7 +9,7 @@ interface ArtistTabsProps extends React.ComponentPropsWithoutRef<typeof Tabs> {
   artistId: number
 }
 
-export function ArtistTabs({ className, artistId, ...props }: ArtistTabsProps) {
+export function ArtistTabs({ className, ...props }: ArtistTabsProps) {
   const router = useRouter()
   const pathname = usePathname()
 
@@ -22,18 +22,6 @@ export function ArtistTabs({ className, artistId, ...props }: ArtistTabsProps) {
       title: "Products",
       href: `/dashboard/artist/products`,
     },
-    // {
-    //   title: "Orders",
-    //   href: `/dashboard/artist/orders`,
-    // },
-    // {
-    //   title: "Payments",
-    //   href: `/dashboard/artist/payments`,
-    // },
-    // {
-    //   title: "Analytics",
-    //   href: `/dashboard/artist/analytics`,
-    // },
   ]
 
   return (
