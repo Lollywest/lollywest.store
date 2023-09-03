@@ -90,14 +90,13 @@ export async function POST(req: Request) {
   }
 }
 
-// const sendSlackNotification = async (message: string) => { 
-//   const webhook = env.SLACK_WEBHOOK_URL
-//   const body = JSON.stringify({ text: message })
-//   const response = await fetch(webhook, {
-//     method: "POST",
-//     body,
-//   })
-//   return response
-// }
-
-//ignore this comment, its just so I can recommit to get a new preview
+const sendSlackNotification = async (message: string) => { 
+  const webhook = env.SLACK_WEBHOOK_URL
+  const body = JSON.stringify({ text: message })
+  const response = await fetch(webhook, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body,
+  })
+  return response
+}

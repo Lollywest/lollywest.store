@@ -61,47 +61,55 @@ export async function createCheckoutSessionAction(
   // Check if any item has the category "wrap"
   const isSubscription = input.items.some((item) => item.category === "wrap")
 
-  // Create a new Stripe Checkout session, with customer_creation: "always" mode = payment
-  const session = isSubscription ? await stripe.checkout.sessions.create({
-    payment_method_types: ["card"],
-    line_items: input.items.map((item) => ({
-      price: item.stripePriceId ? item.stripePriceId : undefined,
-      quantity: item.quantity,
-    })),
-    mode: "subscription",
-    success_url: billingUrl,
-    cancel_url: billingUrl,
-    metadata: {
-      userId: input.userId,
-      username: user.username,
-      cartId: cartId ? cartId : null,
-      email: user.emailAddresses[0] ? user.emailAddresses[0].emailAddress : null,
-      items: prods,
-    },
-    billing_address_collection: "auto",
-    customer: input.stripeCustomerId ? input.stripeCustomerId : undefined,
-  }) : await stripe.checkout.sessions.create({
-    payment_method_types: ["card"],
-    line_items: input.items.map((item) => ({
-      price: item.stripePriceId ? item.stripePriceId : undefined,
-      quantity: item.quantity,
-    })),
-    mode: "payment",
-    success_url: billingUrl,
-    cancel_url: billingUrl,
-    metadata: {
-      userId: input.userId,
-      username: user.username,
-      cartId: cartId ? cartId : null,
-      email: user.emailAddresses[0] ? user.emailAddresses[0].emailAddress : null,
-      items: prods,
-    },
-    billing_address_collection: "auto",
-    customer_creation: "always",
-    customer: input.stripeCustomerId ? input.stripeCustomerId : undefined,
-  })
-
-  return session
+  if (isSubscription) {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: input.items.map((item) => ({
+        price: item.stripePriceId ? item.stripePriceId : undefined,
+        quantity: item.quantity,
+      })),
+      success_url: billingUrl,
+      cancel_url: billingUrl,
+      metadata: {
+        userId: input.userId,
+        username: user.username,
+        cartId: cartId ? cartId : null,
+        email: user.emailAddresses[0]
+          ? user.emailAddresses[0].emailAddress
+          : null,
+        items: prods
+      },
+      mode: "subscription",
+      customer: input.stripeCustomerId ? input.stripeCustomerId : undefined,
+      billing_address_collection: "auto",
+    })
+    return session
+  } else {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: input.items.map((item) => ({
+        price: item.stripePriceId ? item.stripePriceId : undefined,
+        quantity: item.quantity,
+      })),
+      success_url: billingUrl,
+      cancel_url: billingUrl,
+      metadata: {
+        userId: input.userId,
+        username: user.username,
+        cartId: cartId ? cartId : null,
+        email: user.emailAddresses[0]
+          ? user.emailAddresses[0].emailAddress
+          : null,
+        items: prods
+        
+      },
+      mode: "payment",
+      ...(input.stripeCustomerId
+        ? { customer: input.stripeCustomerId }
+        : { customer_creation: "always" }),
+    })
+    return session
+  }
 }
 
 export async function checkStripeConnectionAction(
