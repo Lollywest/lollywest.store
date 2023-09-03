@@ -1,4 +1,4 @@
-import { notFound, redirect } from "next/navigation"
+import { redirect } from "next/navigation"
 import { db } from "@/db"
 import { artists } from "@/db/schema"
 import { currentUser } from "@clerk/nextjs"

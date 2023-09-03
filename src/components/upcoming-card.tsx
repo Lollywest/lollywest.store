@@ -4,9 +4,8 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { type UpcomingProduct } from "@/db/schema"
-import { toast } from "sonner"
 
-import { cn, formatPrice , formatDate, toTitleCase } from "@/lib/utils"
+import { cn , formatDate, toTitleCase } from "@/lib/utils"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
@@ -18,7 +17,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Icons } from "@/components/icons"
-import { addToCartAction } from "@/app/_actions/cart"
 
 interface UpcomingCardProps extends React.HTMLAttributes<HTMLDivElement> {
 upcomingProducts: UpcomingProduct
@@ -92,25 +90,6 @@ export function UpcomingCard({
           </CardDescription>
           
           <div className="space-y-2 text-sm text-muted-foreground">
-            {/* {plan.features.map((feature) => ( */}
-              {/* <div key={feature} className="flex items-center gap-2"> */}
-              {/* <div className="flex items-center gap-2">
-                <Icons.check className="h-4 w-4" aria-hidden="true" />
-                <span>Feature</span>
-              </div> */}
-              {/* <div className="flex items-center gap-2">
-                <Icons.addCircle className="h-4 w-4" aria-hidden="true" />
-                <span>Feature 2</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Icons.alarm className="h-4 w-4" aria-hidden="true" />
-                <span>Feature 3</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Icons.dollarSign className="h-4 w-4" aria-hidden="true" />
-                <span>Feature 4</span>
-              </div> */}
-            {/* ))} */}
           </div>
         </CardContent>
       {/* </Link> */}
@@ -159,6 +138,7 @@ export function UpcomingCard({
               Add to cart
             </Button> */}
           {/* </div>
+
         ) : (
           <Button
             aria-label={isAddedToCart ? "Remove from cart" : "Add to cart"}

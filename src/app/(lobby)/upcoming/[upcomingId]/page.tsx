@@ -6,9 +6,8 @@ import { db } from "@/db"
 import { upcoming, artists } from "@/db/schema"
 
 import { env } from "@/env.mjs"
-import { and, desc, eq, not } from "drizzle-orm"
+import { and, eq, not } from "drizzle-orm"
 
-import { formatPrice, toTitleCase } from "@/lib/utils"
 import {
   Accordion,
   AccordionContent,
@@ -16,7 +15,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Separator } from "@/components/ui/separator"
-import { AddToCartForm } from "@/components/forms/add-to-cart-form"
 import { Breadcrumbs } from "@/components/pagers/breadcrumbs"
 import { UpcomingCard } from "@/components/upcoming-card"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
@@ -27,13 +25,6 @@ export const metadata: Metadata = {
   title: "Upcoming",
   description: "Upcoming description",
 }
-
-
-// interface ProductPageProps {
-//   params: {
-//     productId: string
-//   }
-// }
 
 interface UpcomingPageProps {
     params: {
@@ -53,15 +44,6 @@ export default async function UpcomingProductPage({ params }: UpcomingPageProps)
     notFound()
   }
 
-  // const store = await db.query.stores.findFirst({
-  //   columns: {
-  //     id: true,
-  //     name: true,
-  //   },
-  //   where: eq(stores.id, product.storeId)
-  // })
-
-//   const store = await db.query.artists.findFirst({
     const artist = await db.query.artists.findFirst({    
         columns: {
         id: true,
@@ -73,18 +55,6 @@ export default async function UpcomingProductPage({ params }: UpcomingPageProps)
 
   
   const productsFromStore = artist
-    // ? await db
-    //     .select()
-    //     .from(products)
-    //     .limit(4)
-    //     .where(
-    //       and(
-    //         eq(products.storeId, product.storeId),
-    //         not(eq(products.id, productId))
-    //       )
-    //     )
-    //     .orderBy(desc(products.inventory))
-    // : []
     ? await db
     .select()
     .from(upcoming)
@@ -95,7 +65,6 @@ export default async function UpcomingProductPage({ params }: UpcomingPageProps)
         not(eq(upcoming.id, upcomingId))
       )
     )
-    //.orderBy(desc(products.inventory))
     : []
 
 
@@ -107,10 +76,6 @@ export default async function UpcomingProductPage({ params }: UpcomingPageProps)
             title: "Upcoming",
             href: "/upcomingProducts",
           },
-        //   {
-        //     title: toTitleCase(upcomingProducts.category),
-        //     href: `/upcoming?category=${upcomingProducts.category}`,
-        //   },
           {
             title: upcomingProducts.name,
             href: `/upcomingProducts/${upcomingProducts.id}`,

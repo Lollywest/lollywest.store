@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm"
 import { clerkClient } from "@clerk/nextjs"
 import { env } from "@/env.mjs"
 import { headers } from "next/headers"
+import { StripeItem } from "@/types"
 
 export async function POST(req: Request) {
   const body = await req.text()
@@ -35,14 +36,23 @@ export async function POST(req: Request) {
     return new Response(null, { status: 200 })
   }
 
-  console.log("test log #1")
+  
 
   if (event.type === "checkout.session.completed") {
-    console.log("test log")
-    console.log("1" + (session.customer as string))
-    console.log(typeof session.customer !== 'string' ? session.customer?.id : session.customer)
 
     const user = await clerkClient.users.getUser(session.metadata.userId)
+
+    const prods = session.metadata.items
+    const items = []
+    for(const item of prods!.split(" ")) {
+      const arr = item.split(".")
+      const row : StripeItem = {
+        id: Number(arr[0]),
+        quantity: Number(arr[1])
+      }
+      items.push(row)
+    }
+
 
     // Create new order in DB
     await db.insert(orders).values({
@@ -51,9 +61,8 @@ export async function POST(req: Request) {
       name: user.firstName + " " + user.lastName,
       customerId: typeof session.customer !== 'string' ? session.customer?.id : session.customer,
       price: session.amount_total?.toString(),
+      products: items,
     })
-    
-    console.log("2" + (session.customer as string))
 
     if (session.metadata.cartId) {
       await db
@@ -70,10 +79,24 @@ export async function POST(req: Request) {
       },
     })
 
-    console.log("3" + (typeof session.customer !== 'string' ? session.customer?.id : session.customer))
+    // Send Slack notification
+    const customerId = typeof session.customer !== 'string' ? session.customer?.id : session.customer;
+    const userId = session.metadata.userId;
+    const email = session.metadata.email;
+    const message = `Checkout session completed! Customer ID: ${customerId}, User ID: ${userId}, Email: ${email}`;
+    await sendSlackNotification(message);
 
     return new Response(null, { status: 200 })
   }
-    // Update the users customer ID
 }
 
+const sendSlackNotification = async (message: string) => { 
+  const webhook = env.SLACK_WEBHOOK_URL
+  const body = JSON.stringify({ text: message })
+  const response = await fetch(webhook, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body,
+  })
+  return response
+}

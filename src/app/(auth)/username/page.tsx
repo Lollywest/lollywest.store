@@ -6,8 +6,7 @@ import { useForm } from "react-hook-form"
 import { userNamePageSchema } from "@/lib/validations/auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { z } from "zod"
-import { currentUser } from "@clerk/nextjs"
-import { checkUsernameAction, updateUsernameAction } from "@/app/_actions/wallet"
+import { updateUsernameAction } from "@/app/_actions/wallet"
 
 import {
     Form,

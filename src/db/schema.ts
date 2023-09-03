@@ -1,4 +1,4 @@
-import type { StoredFile, CartItem } from "@/types"
+import type { StoredFile, CartItem, StripeItem } from "@/types"
 import { relations, type InferModel } from "drizzle-orm"
 import {
   boolean,
@@ -141,6 +141,7 @@ export const orders = mysqlTable("orders", {
     customerId: varchar("customerId", { length: 191 }),
     price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
     createdAt: timestamp("createdAt").defaultNow(),
+    products: json("products").$type<StripeItem[] | null>().default(null)
 })
   
 export type Order = InferModel<typeof orders>

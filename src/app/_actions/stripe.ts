@@ -50,31 +50,66 @@ export async function createCheckoutSessionAction(
     throw new Error("User not found.")
   }
 
+  let prods : string = ""
+  for(const item of input.items) {
+    prods = prods + String(item.id) + "." + String(item.quantity) + " "
+  }
+  prods = prods.slice(0, -1)
+
   const billingUrl = absoluteUrl("/dashboard/billing")
 
   // Check if any item has the category "wrap"
   const isSubscription = input.items.some((item) => item.category === "wrap")
-  const mode = isSubscription ? "subscription" : "payment"
 
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ["card"],
-    line_items: input.items.map((item) => ({
-      price: item.stripePriceId ? item.stripePriceId : undefined,
-      quantity: item.quantity,
-    })),
-    mode: mode,
-    success_url: billingUrl,
-    cancel_url: billingUrl,
-    metadata: {
-      userId: input.userId,
-      username: user.username,
-      cartId: cartId ? cartId : null,
-    },
-    billing_address_collection: "auto",
-    customer: input.stripeCustomerId ? input.stripeCustomerId : undefined,
-  })
-
-  return session
+  if (isSubscription) {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: input.items.map((item) => ({
+        price: item.stripePriceId ? item.stripePriceId : undefined,
+        quantity: item.quantity,
+      })),
+      success_url: billingUrl,
+      cancel_url: billingUrl,
+      metadata: {
+        userId: input.userId,
+        username: user.username,
+        cartId: cartId ? cartId : null,
+        email: user.emailAddresses[0]
+          ? user.emailAddresses[0].emailAddress
+          : null,
+        items: prods
+      },
+      mode: "subscription",
+      customer: input.stripeCustomerId ? input.stripeCustomerId : undefined,
+      billing_address_collection: "auto",
+    })
+    return session
+  } else {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: input.items.map((item) => ({
+        price: item.stripePriceId ? item.stripePriceId : undefined,
+        quantity: item.quantity,
+      })),
+      success_url: billingUrl,
+      cancel_url: billingUrl,
+      metadata: {
+        userId: input.userId,
+        username: user.username,
+        cartId: cartId ? cartId : null,
+        email: user.emailAddresses[0]
+          ? user.emailAddresses[0].emailAddress
+          : null,
+        items: prods
+        
+      },
+      mode: "payment",
+      ...(input.stripeCustomerId
+        ? { customer: input.stripeCustomerId }
+        : { customer_creation: "always" }),
+    })
+    return session
+  }
 }
 
 export async function checkStripeConnectionAction(

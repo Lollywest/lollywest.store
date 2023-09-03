@@ -3,7 +3,7 @@ import { type FileWithPath } from "react-dropzone"
 import { type z } from "zod"
 
 import { type userPrivateMetadataSchema } from "@/lib/validations/auth"
-import type { cartItemSchema, checkoutItemSchema } from "@/lib/validations/cart"
+import type { cartItemSchema, checkoutItemSchema, stripeItemSchema } from "@/lib/validations/cart"
 import { type Icons } from "@/components/icons"
 
 export interface NavItem {
@@ -66,6 +66,8 @@ export interface DataTableFilterableColumn<TData>
 }
 
 export type CartItem = z.infer<typeof cartItemSchema>
+
+export type StripeItem = z.infer<typeof stripeItemSchema>
 
 export type CheckoutItem = z.infer<typeof checkoutItemSchema>
 
