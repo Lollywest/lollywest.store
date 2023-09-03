@@ -1,8 +1,4 @@
-import Link from "next/link"
 
-import { cn, truncate } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
-import { Icons } from "@/components/icons"
 
 interface MdxPagerItem {
   title: string
@@ -17,8 +13,6 @@ interface MdxPagerProps extends React.HTMLAttributes<HTMLDivElement> {
 export function MdxPager({
   currentItem,
   allItems,
-  className,
-  ...props
 }: MdxPagerProps) {
   const pager = getPager(currentItem, allItems)
 

@@ -1,15 +1,11 @@
 import { type Metadata } from "next"
 import { revalidatePath } from "next/cache"
-import Link from "next/link"
-import { notFound, redirect } from "next/navigation"
 import { db } from "@/db"
-import { products, artists } from "@/db/schema"
+import { artists } from "@/db/schema"
 import { env } from "@/env.mjs"
 import { and, eq, not } from "drizzle-orm"
 import { currentUser } from "@clerk/nextjs"
 
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -21,8 +17,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { LoadingButton } from "@/components/ui/loading-button"
 import { Textarea } from "@/components/ui/textarea"
-import { ConnectArtistToStripeButton } from "@/components/connect-store-to-stripe-button"
-import { checkStripeConnectionAction } from "@/app/_actions/stripe"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -30,11 +24,6 @@ export const metadata: Metadata = {
   description: "Manage your store",
 }
 
-interface UpdateArtistPageProps {
-  params: {
-    artistID: string
-  }
-}
 
 export default async function UpdateStorePage() {
   const user = await currentUser()
@@ -78,8 +67,6 @@ export default async function UpdateStorePage() {
     //check with charlie ==========================  
     revalidatePath(`/dashboard/stores/${artistId}`)
   }
-
-  const isConnectedToStripe = await checkStripeConnectionAction({ artistId })
 
   return (
     <div className="space-y-6">

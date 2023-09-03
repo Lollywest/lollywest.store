@@ -64,43 +64,45 @@ export function SponsorAddToCartForm({ productId }: AddToCartFromProps) {
           control={form.control}
           name="quantity"
           render={({ field }) => (
-            <FormItem >
+            <FormItem>
               <FormLabel>Sponsorship Amount: </FormLabel>
               <div className="flex items-center">
                 <FormControl>
-                    <Input
+                  <Input
                     type="number"
-                    
                     inputMode="numeric"
                     min={0}
                     {...field}
                     onChange={(e) => {
-                        const value = e.target.value
-                        const parsedValue = parseInt(value, 10)
-                        if (isNaN(parsedValue)) return
-                        field.onChange(parsedValue)
+                      const value = e.target.value
+                      const parsedValue = parseInt(value, 10)
+                      if (isNaN(parsedValue)) return
+                      field.onChange(parsedValue)
                     }}
-                    />
-                    
+                  />
                 </FormControl>
-                    <span className="text-sm text-muted-foreground mr-12">&nbsp;credits</span>
-                    <Button size="sm" className="h-9 w-full rounded-sm" disabled={isPending}>
-                        
-                        {isPending && (
-                            <Icons.spinner
-                            className="mr-2 h-4 w-4 animate-spin"
-                            aria-hidden="true"
-                            />
-                        )}
-                        Add Sponsorship to cart
-                        <span className="sr-only">Add to cart</span>
-                    </Button>
-                    </div>
-                <FormMessage />
+                <span className="mr-12 text-sm text-muted-foreground">
+                  &nbsp;credits
+                </span>
+                <Button
+                  size="sm"
+                  className="h-9 w-full rounded-sm"
+                  disabled={isPending}
+                >
+                  {isPending && (
+                    <Icons.spinner
+                      className="mr-2 h-4 w-4 animate-spin"
+                      aria-hidden="true"
+                    />
+                  )}
+                  Add Sponsorship to cart
+                  <span className="sr-only">Add to cart</span>
+                </Button>
+              </div>
+              <FormMessage />
             </FormItem>
           )}
-          />
-     
+        />
       </form>
     </Form>
   )

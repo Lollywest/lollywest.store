@@ -13,7 +13,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { Icons } from "@/components/icons"
 
@@ -204,32 +203,6 @@ export function MainNav({ items }: MainNavProps) {
                       </span> */}
                       
                     </Link>
-              {/* <NavigationMenuTrigger className="h-auto">
-                Leaderboards
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-             
-                  <li className="row-span-3">
-                    <NavigationMenuLink >
-
-                    <Link
-                      aria-label="Leaderboards"
-                      href="/leaderboards"
-                      className="hidden items-center space-x-2 lg:flex"
-                    >
-                      <span className="hidden font-bold lg:inline-block">
-                        Top Artists & Fans
-                      </span>
-                      
-                    </Link>
-                  
- 
-                    </NavigationMenuLink>
-                  </li>
-                 
-                </ul>
-              </NavigationMenuContent> */}
             </NavigationMenuItem>
           ) : null}
 

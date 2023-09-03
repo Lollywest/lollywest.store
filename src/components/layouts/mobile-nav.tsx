@@ -5,7 +5,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import type { MainNavItem, SidebarNavItem } from "@/types"
 
-import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import {
   Accordion,
@@ -17,15 +16,7 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Icons } from "@/components/icons"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+
 
 
 interface MobileNavProps {
@@ -33,7 +24,7 @@ interface MobileNavProps {
   sidebarNavItems: SidebarNavItem[]
 }
 
-export function MobileNav({ mainNavItems, sidebarNavItems }: MobileNavProps) {
+export function MobileNav({ mainNavItems }: MobileNavProps) {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = React.useState(false)
 
@@ -104,37 +95,6 @@ export function MobileNav({ mainNavItems, sidebarNavItems }: MobileNavProps) {
               ))}
 
               
-                
-
-              {/* <AccordionItem value="sidebar">
-                <AccordionTrigger className="text-sm">
-                  Sidebar Menu
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex flex-col space-y-2">
-                    {sidebarNavItems?.map((item, index) =>
-                      item.href ? (
-                        <MobileLink
-                          key={index}
-                          href={String(item.href)}
-                          pathname={pathname}
-                          setIsOpen={setIsOpen}
-                          disabled={item.disabled}
-                        >
-                          {item.title}
-                        </MobileLink>
-                      ) : (
-                        <div
-                          key={index}
-                          className="text-foreground/70 transition-colors"
-                        >
-                          {item.title}
-                        </div>
-                      )
-                    )}
-                  </div>
-                </AccordionContent>
-              </AccordionItem> */}
             </Accordion>
               <div  className = " grid gap-6">
                   <div className = " pt-8">

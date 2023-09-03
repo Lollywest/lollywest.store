@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { db } from "@/db"
-import { products, orders, type Product } from "@/db/schema"
+import { products, type Product } from "@/db/schema"
 import type { StoredFile } from "@/types"
 import { clerkClient } from "@clerk/nextjs"
 import {
@@ -18,7 +18,6 @@ import {
   lte,
   not,
   sql,
-  between
 } from "drizzle-orm"
 import { type z } from "zod"
 
