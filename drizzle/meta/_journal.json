@@ -141,6 +141,13 @@
       "when": 1693601052158,
       "tag": "0019_mute_silver_sable",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1693860186527,
+      "tag": "0020_fearless_black_bolt",
+      "breakpoints": true
     }
   ]
 }

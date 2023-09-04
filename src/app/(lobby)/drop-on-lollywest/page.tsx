@@ -34,6 +34,8 @@ import { Icons } from "@/components/icons"
 import { contactSchema } from "@/lib/validations/contact"
 import { toast } from "sonner"
 
+import va from '@vercel/analytics';
+
 type Inputs = z.infer<typeof contactSchema>
 
 export default function DropOnLollywest() {
@@ -52,7 +54,7 @@ export default function DropOnLollywest() {
       const contactInfo = data.contactInfo
       const message = data.message
 
-      console.log("check")
+      va.track("Artist contact form")
 
       await addContactAction({ category: "artist", contactInfo, message })
 

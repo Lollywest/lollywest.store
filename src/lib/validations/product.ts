@@ -42,7 +42,7 @@ export const productSchema = z.object({
       if(!Array.isArray(val)) return false
       if(val.some((owner) => !(owner instanceof String))) return false
       return true
-    }, "Must be a number array")
+    }, "Must be a string array")
     .optional()
     .nullable()
     .default(null),

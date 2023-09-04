@@ -146,7 +146,6 @@ export async function addProductAction(
     throw new Error("Product name already taken.")
   }
 
-  //ask charlie ==================================================
   await db.insert(products).values({
     ...input,
     artistID: input.artistId,
