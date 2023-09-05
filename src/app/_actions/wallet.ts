@@ -3,7 +3,6 @@
 import { db } from "@/db"
 import { wallets, products, orders } from "@/db/schema"
 import {
-    and,
     eq,
     inArray,
 } from "drizzle-orm"
@@ -195,12 +194,12 @@ export async function checkUsernameAction() {
     const user = await currentUser()
 
     if(!user) {
-        return("/signin")
+        return(false)
     }
 
     if(!user.username) {
-        return("/username")
+        return(false)
     }
 
-    return("/")
+    return(true)
 }
