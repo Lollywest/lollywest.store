@@ -38,17 +38,19 @@ import { FileDialog } from "@/components/file-dialog"
 import { toast } from "sonner"
 import { getArtistByNameAction } from "@/app/_actions/store"
 import { addProductAction } from "@/app/_actions/product"
+import { S } from "drizzle-orm/select.types.d-eff54486"
+import { s } from "drizzle-orm/select.types.d-b947a018"
 
 const inputsSchema = z.object({
     artistName: z.string(),
     name: z.string(),
     description: z.string(),
-    perk1: z.string(),
-    perk2: z.string(),
-    perk3: z.string(),
-    perk4: z.string(),
-    perk5: z.string(),
-    perk6: z.string(),
+    perk1: z.string().optional(),
+    perk2: z.string().optional(),
+    perk3: z.string().optional(),
+    perk4: z.string().optional(),
+    perk5: z.string().optional(),
+    perk6: z.string().optional(),
     category: z
         .enum(products.category.enumValues, {
             required_error: "Must be a valid category",
@@ -99,8 +101,7 @@ export default function AddProductPage() {
                 return
             }
 
-            const perks = [data.perk1, data.perk2, data.perk3, data.perk4, data.perk5, data.perk6]
-            perks.filter(Boolean)
+            const perks = [data.perk1, data.perk2, data.perk3, data.perk4, data.perk5, data.perk6].filter(Boolean) as string[]
 
             const owners : string[] = []
 
