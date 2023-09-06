@@ -313,7 +313,7 @@ export default function AddProductPage() {
                         <FormItem>
                             <FormLabel>Stripe Price ID</FormLabel>
                             <FormControl>
-                                <Input placeholder="0" {...field} />
+                                <Input placeholder="" {...field} />
                             </FormControl>
                             <FormDescription>Add the product in stripe and copy the product ID over</FormDescription>
                             <FormMessage />
