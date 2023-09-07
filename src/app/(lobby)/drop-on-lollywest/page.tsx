@@ -57,6 +57,7 @@ export default function DropOnLollywest() {
       await addContactAction({ category: "artist", contactInfo, message })
 
       toast.success("Message Sent!")
+      form.reset()
     })
   }
 
