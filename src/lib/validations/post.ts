@@ -6,6 +6,7 @@ export const postSchema = z.object({
     artistId: z.number(),
     title: z.string(),
     message: z.string(),
+    eventTime: z.date(),
     users: z
         .unknown()
         .refine((val) => {

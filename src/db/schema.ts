@@ -196,7 +196,8 @@ export const posts = mysqlTable("posts", {
   title: text("title").notNull(),
   message: text("message").notNull(),
   users: json("users").$type<string[] | null>().default(null),
-  createdAt: timestamp("createdAt").notNull().defaultNow()
+  eventTime: timestamp("eventTime").defaultNow(),
+  createdAt: timestamp("createdAt").defaultNow()
 })
 
 export type Post = InferModel<typeof posts>

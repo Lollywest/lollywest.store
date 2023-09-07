@@ -6,7 +6,8 @@ import { currentUser } from "@clerk/nextjs"
 export async function addPostAction(input: {
     productId: number,
     title: string,
-    message: string
+    message: string,
+    eventTime: Date,
 }) {
     const user = await currentUser()
     if(!user) {
@@ -60,4 +61,18 @@ export async function likePost(input: {
     }
 
     await db.update(posts).set(post).where(eq(posts.id, post.id))
+}
+
+export async function getPosts(input: {
+    productId: number
+}) {
+    const items = await db.query.posts.findMany({
+        where: eq(posts.productId, input.productId)
+    })
+
+    if(!items) {
+        return []
+    }
+
+    return items
 }
