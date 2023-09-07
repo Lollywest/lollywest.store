@@ -4,7 +4,7 @@ import * as React from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { products, artists } from "@/db/schema"
+import { products } from "@/db/schema"
 import { generateReactHelpers } from "@uploadthing/react/hooks"
 import type { OurFileRouter } from "@/app/api/uploadthing/core"
 import type { FileWithPreview } from "@/types"
@@ -38,12 +38,10 @@ import { FileDialog } from "@/components/file-dialog"
 import { toast } from "sonner"
 import { getArtistByNameAction } from "@/app/_actions/store"
 import { addProductAction } from "@/app/_actions/product"
-import { S } from "drizzle-orm/select.types.d-eff54486"
-import { s } from "drizzle-orm/select.types.d-b947a018"
 
 const inputsSchema = z.object({
     artistName: z.string(),
-    name: z.string(),
+    title: z.string(),
     description: z.string(),
     perk1: z.string().optional(),
     perk2: z.string().optional(),
@@ -101,7 +99,8 @@ export default function AddProductPage() {
                 return
             }
 
-            const perks = [data.perk1, data.perk2, data.perk3, data.perk4, data.perk5, data.perk6].filter(Boolean) as string[]
+            const arr = [data.perk1, data.perk2, data.perk3, data.perk4, data.perk5, data.perk6]
+            const perks = arr.filter(Boolean) as string[]
 
             const owners : string[] = []
 
@@ -118,8 +117,8 @@ export default function AddProductPage() {
             
             await addProductAction({
                 artistId: artistId,
-                name: data.name,
                 description: data.description,
+                name: data.title,
                 perks: perks,
                 images: images,
                 category: data.category,
@@ -155,7 +154,7 @@ export default function AddProductPage() {
                 />
                 <FormField
                     control={form.control}
-                    name="name"
+                    name="title"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Product Name</FormLabel>
