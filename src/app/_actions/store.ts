@@ -143,3 +143,17 @@ export async function getPreviousArtistIdAction(
 
   return previousArtist.id
 }
+
+export async function getArtistByNameAction(input: {
+  name: string
+}) {
+  const artist = await db.query.artists.findFirst({
+    where: eq(artists.name, input.name)
+  })
+
+  if(!artist) {
+    return
+  }
+
+  return artist.id
+}

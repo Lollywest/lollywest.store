@@ -7,7 +7,6 @@ import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
-import { checkUsernameAction } from "@/app/_actions/wallet"
 
 const oauthProviders = [
   { name: "Google", strategy: "oauth_google", icon: "google" },
@@ -29,7 +28,7 @@ export function OAuthSignIn() {
       await signIn.authenticateWithRedirect({
         strategy: provider,
         redirectUrl: "/sso-callback",
-        redirectUrlComplete: await checkUsernameAction() === "/username" ? "/username" : "/",
+        redirectUrlComplete: "/username",
       })
     } catch (error) {
       setIsLoading(null)

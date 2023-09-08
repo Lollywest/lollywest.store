@@ -1,0 +1,1 @@
+ALTER TABLE `orders` ADD `products` json DEFAULT ('null');

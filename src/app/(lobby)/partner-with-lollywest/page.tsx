@@ -58,6 +58,7 @@ export default function DropOnLollywest() {
       await addContactAction({ category: "partner", contactInfo, message })
 
       toast.success("Message Sent!")
+      form.reset()
     })
   }
 

@@ -141,16 +141,20 @@ export async function addProductAction(
   const productWithSameName = await db.query.products.findFirst({
     where: eq(products.name, input.name),
   })
-
   if (productWithSameName) {
     throw new Error("Product name already taken.")
   }
 
   await db.insert(products).values({
-    ...input,
     artistID: input.artistId,
+    name: input.name,
+    description: input.description,
     images: input.images,
     perks: input.perks,
+    category: input.category,
+    price: input.price,
+    decksLeft: input.decksLeft,
+    stripePriceId: input.stripePriceId,
     owners: input.owners
   })
 
