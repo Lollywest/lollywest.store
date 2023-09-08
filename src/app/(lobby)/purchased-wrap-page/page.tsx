@@ -47,7 +47,7 @@ interface PurchasedWrapPageProps {
     }
 }
 
-export default async function PurchasedWrapPage({ params }: PurchasedWrapPageProps) {
+export default function PurchasedWrapPage({ params }: PurchasedWrapPageProps) {
     const productId = Number(params.productId)
 
     // const product = await db.query.products.findFirst({
