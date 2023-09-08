@@ -39,11 +39,12 @@ export type Product = InferModel<typeof products>
 export type UpcomingProduct = InferModel<typeof upcoming>
 
 
-export const productsRelations = relations(products, ({ one }) => ({
+export const productsRelations = relations(products, ({ one, many }) => ({
   artist: one(artists, {
     fields: [products.artistID],
     references: [artists.id]
   }),
+  productPosts: many(posts)
   // owners: many(wallets, {
   //   fields: [products.owners],
   //   references: [wallets.id]
@@ -95,7 +96,8 @@ export const artists = mysqlTable("artists", {
 export type Artist = InferModel<typeof artists>
 
 export const artistsRelations = relations(artists, ({ many }) => ({
-    items: many(products)
+    items: many(products),
+    artistPosts: many(posts)
 }))
 
 //wallet
@@ -186,6 +188,30 @@ export const contacts = mysqlTable("contacts", {
 })
 
 export type Contact = InferModel<typeof contacts>
+
+export const posts = mysqlTable("posts", {
+  id: serial("id").primaryKey(),
+  productId: int("productId").notNull(),
+  artistId: int("artistId").notNull(),
+  title: text("title").notNull(),
+  message: text("message").notNull(),
+  users: json("users").$type<string[] | null>().default(null),
+  eventTime: timestamp("eventTime").defaultNow(),
+  createdAt: timestamp("createdAt").defaultNow()
+})
+
+export type Post = InferModel<typeof posts>
+
+export const postRelations = relations(posts, ({ one }) => ({
+  artist: one(artists, {
+    fields: [posts.artistId],
+    references: [artists.id]
+  }),
+  product: one(products, {
+    fields: [posts.productId],
+    references: [products.id]
+  })
+}))
 
 //=================================== old schema ===================================
 
