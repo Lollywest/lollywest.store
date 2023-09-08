@@ -7,7 +7,7 @@ import { artists, products } from "@/db/schema"
 import { env } from "@/env.mjs"
 import { and, eq, not } from "drizzle-orm"
 
-import { formatPrice, toTitleCase } from "@/lib/utils"
+import { formatPrice } from "@/lib/utils"
 import {
   Accordion,
   AccordionContent,
@@ -15,7 +15,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Separator } from "@/components/ui/separator"
-import { AddToCartForm } from "@/components/forms/add-to-cart-form"
 import { Icons } from "@/components/icons"
 import { Breadcrumbs } from "@/components/pagers/breadcrumbs"
 import { ProductCard } from "@/components/product-card"
@@ -23,6 +22,7 @@ import { ProductImageCarousel } from "@/components/product-image-carousel"
 import { Shell } from "@/components/shells/shell"
 import { SponsorProductCard } from "@/components/sponsor-product-card"
 import { WrapProductCard } from "@/components/wrap-product-card"
+import { SubscribeButton } from "@/components/cart/subscribe-button"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -120,7 +120,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
           <Separator className="my-1.5" />
           <div className="flex items-center justify-between">
-            <AddToCartForm productId={productId} />
+            <SubscribeButton productId={productId} />
             {/* <p className="text-base text-muted-foreground w-1/2">*Purchase includes 20 Sponsorship Credits</p> */}
           </div>
 
