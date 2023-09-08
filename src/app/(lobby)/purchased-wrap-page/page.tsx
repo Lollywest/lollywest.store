@@ -50,6 +50,18 @@ import { Badge } from "@/components/ui/badge"
 // export default async function PurchasedWrapPage({ params }: PurchasedWrapPageProps) {
 //     const productId = Number(params.productId)
 
+    // const product = await db.query.products.findFirst({
+    //     where: eq(products.id, productId),
+    // })
+
+
+    // if (!product) {
+    //     notFound()
+    // }
+
+// export default async function PurchasedWrapPage({ params }: PurchasedWrapPageProps) {
+//     const productId = Number(params.productId)
+
 //     // const product = await db.query.products.findFirst({
 //     //     where: eq(products.id, productId),
 //     // })
