@@ -30,6 +30,7 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
+
       <SheetTrigger asChild>
         <Button
           variant="ghost"
@@ -47,17 +48,17 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
             className="flex items-center"
             onClick={() => setIsOpen(false)}
           >
-            <Icons.logo className="mr-2 h-4 w-4" aria-hidden="true" />
+            <Icons.logo className="" aria-hidden="true" />
             {/* <span className="font-bold">{siteConfig.name}</span> */}
           </Link>
         </div>
 
-        
+
 
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="pl-1 pr-7">
             <Accordion type="single" collapsible className="w-full">
-              {mainNavItems?.slice(0,1).map((item, index) => (
+              {mainNavItems?.slice(0, 1).map((item, index) => (
                 <AccordionItem value={item.title} key={index}>
                   <AccordionTrigger className="text-sm capitalize">
                     {item.title}
@@ -66,7 +67,7 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
                     <div className="flex flex-col space-y-2">
 
 
-                      
+
 
 
                       {item.items?.map((subItem, index) =>
@@ -94,50 +95,50 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
                 </AccordionItem>
               ))}
 
-              
-            </Accordion>
-              <div  className = " grid gap-6">
-                  <div className = " pt-8">
-                    <Link
-                          aria-label="Featured"
-                          href="/featured"
-                          className="text-sm leading-tight text-muted-foreground"
-                        >
-                          Featured
-                      </Link>
-                  </div>
 
-                  <div>
-                      <Link
-                              aria-label="Leaderboard"
-                              href="/leaderboard"
-                              // className="hidden items-center space-x-2 lg:flex"
-                              className="text-sm leading-tight text-muted-foreground"
-                            >
-                              Leaderboard
-                              {/* <span className="hidden font-bold lg:inline-block">
+            </Accordion>
+            <div className=" grid gap-6">
+              <div className=" pt-8">
+                <Link
+                  aria-label="Featured"
+                  href="/featured"
+                  className="text-sm leading-tight text-muted-foreground"
+                >
+                  Featured
+                </Link>
+              </div>
+
+              <div>
+                <Link
+                  aria-label="Leaderboard"
+                  href="/leaderboard"
+                  // className="hidden items-center space-x-2 lg:flex"
+                  className="text-sm leading-tight text-muted-foreground"
+                >
+                  Leaderboard
+                  {/* <span className="hidden font-bold lg:inline-block">
                                 Top Artists & Fans
                               </span> */}
-                              
-                      </Link>
-                  </div>
 
-                  <div>
-                    <Link
-                        aria-label="Sponsor Artists"
-                        href="/sponsor-artists"
-                        // className="hidden items-center space-x-2 lg:flex"
-                        className="text-sm leading-tight text-muted-foreground"
-                      >
-                        Sponsor Artists
-                        {/* <span className="hidden font-bold lg:inline-block">
+                </Link>
+              </div>
+
+              <div>
+                <Link
+                  aria-label="Sponsor Artists"
+                  href="/sponsor-artists"
+                  // className="hidden items-center space-x-2 lg:flex"
+                  className="text-sm leading-tight text-muted-foreground"
+                >
+                  Sponsor Artists
+                  {/* <span className="hidden font-bold lg:inline-block">
                           Top Artists & Fans
                         </span> */}
-                        
-                    </Link>
-                    </div>
 
-                </div>
+                </Link>
+              </div>
+
+            </div>
           </div>
         </ScrollArea>
       </SheetContent>
