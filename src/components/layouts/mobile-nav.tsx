@@ -142,6 +142,16 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
           </div>
         </ScrollArea>
       </SheetContent>
+      <div className="pl-2">
+        <Link
+          aria-label="Home"
+          href="/"
+          className=" items-center space-x-2 lg:hidden"
+        >
+          <Icons.logo className="" aria-hidden="true" />
+
+        </Link>
+      </div>
     </Sheet>
   )
 }
