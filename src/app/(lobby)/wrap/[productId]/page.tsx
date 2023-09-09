@@ -19,6 +19,7 @@ import { Icons } from "@/components/icons"
 import { Breadcrumbs } from "@/components/pagers/breadcrumbs"
 import { ProductCard } from "@/components/product-card"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
+import Image from "next/image"
 import { Shell } from "@/components/shells/shell"
 import { SponsorProductCard } from "@/components/sponsor-product-card"
 import { WrapProductCard } from "@/components/wrap-product-card"
@@ -57,17 +58,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const productsFromStore = artist
     ? await db
-        .select()
-        .from(products)
-        .limit(4)
-        .where(
-          and(
-            eq(products.artistID, product.artistID),
-            not(eq(products.id, productId))
-          )
+      .select()
+      .from(products)
+      .limit(4)
+      .where(
+        and(
+          eq(products.artistID, product.artistID),
+          not(eq(products.id, productId))
         )
+      )
     : //.orderBy(desc(products.inventory))
-      []
+    []
 
   return (
     <Shell>
@@ -134,7 +135,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="space-y-2 text-sm text-muted-foreground">
               {product.perks?.map((perks) => (
                 <div key={perks} className="flex items-center gap-2">
-                  <Icons.star className="h-4 w-4" aria-hidden="true" />
+                  {/* <Icons.star className="h-4 w-4" aria-hidden="true" /> */}
+                  <Image
+                    className="h-5 w-5"
+                    src="/images/avatar/shield1.svg"
+                    width={400}
+                    height={400}
+                    alt="verified"
+                  />
                   <span>{perks}</span>
                 </div>
               ))}

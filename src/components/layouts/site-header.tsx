@@ -26,9 +26,8 @@ interface SiteHeaderProps {
 }
 
 export function SiteHeader({ user }: SiteHeaderProps) {
-  const initials = `${user?.firstName?.charAt(0) ?? ""} ${
-    user?.lastName?.charAt(0) ?? ""
-  }`
+  const initials = `${user?.firstName?.charAt(0) ?? ""} ${user?.lastName?.charAt(0) ?? ""
+    }`
   const email =
     user?.emailAddresses?.find((e) => e.id === user.primaryEmailAddressId)
       ?.emailAddress ?? ""
@@ -131,6 +130,7 @@ export function SiteHeader({ user }: SiteHeaderProps) {
               </Link>
             )}
           </nav>
+
         </div>
       </div>
     </header>
