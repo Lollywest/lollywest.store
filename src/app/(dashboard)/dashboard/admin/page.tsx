@@ -25,9 +25,7 @@ import { Textarea } from "@/components/ui/textarea"
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
@@ -341,8 +339,8 @@ export default function AddProductPage() {
                         <FileDialog
                             setValue={form.setValue}
                             name="images"
-                            maxFiles={3}
-                            maxSize={1024 * 1024 * 4}
+                            maxFiles={1}
+                            maxSize={1024 * 1024 * 2}
                             files={files}
                             setFiles={setFiles}
                             isUploading={isUploading}

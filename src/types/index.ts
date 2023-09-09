@@ -4,6 +4,7 @@ import { type z } from "zod"
 
 import { type userPrivateMetadataSchema } from "@/lib/validations/auth"
 import type { cartItemSchema, checkoutItemSchema, stripeItemSchema } from "@/lib/validations/cart"
+import { postSchema } from "@/lib/validations/post"
 import { type Icons } from "@/components/icons"
 
 export interface NavItem {
@@ -95,3 +96,5 @@ export interface SubscriptionPlan {
   price: number
   isCanceled?: boolean
 }
+
+export type NewPost = z.infer<typeof postSchema>

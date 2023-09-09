@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers"
 import { db } from "@/db"
-import { artists, payments } from "@/db/schema"
+import { artists, payments, products } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs"
 import { eq } from "drizzle-orm"
 import { type z } from "zod"
@@ -14,6 +14,8 @@ import type {
   createCheckoutSessionSchema,
   manageSubscriptionSchema,
 } from "@/lib/validations/stripe"
+import { currentUser } from "@clerk/nextjs"
+import { userPrivateMetadataSchema } from "@/lib/validations/auth"
 
 // For managing stripe subscriptions for a user
 export async function manageSubscriptionAction(
@@ -193,4 +195,46 @@ export async function createAccountLinkAction(
   return {
     url: accountLink.url,
   }
+}
+
+export async function subscribeToWrapAction(productId: number) {
+  const user = await currentUser()
+  if(!user) {
+    return "signin"
+  }
+
+  const userPrivateMetadata = userPrivateMetadataSchema.parse(
+    user.privateMetadata
+  )
+  const stripeCustomerId = userPrivateMetadata.stripeCustomerId || undefined
+
+  const item = await db.query.products.findFirst({
+    where: eq(products.id, productId)
+  })
+  if(!item) {
+    throw new Error("Product not found!")
+  }
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: [{
+      price: item.stripePriceId ? item.stripePriceId : undefined,
+      quantity: 1,
+    }],
+    success_url: absoluteUrl("/wrap/" + productId),
+    cancel_url: absoluteUrl("/wrap/" + productId),
+    metadata: {
+      userId: user.id,
+      username: user.username,
+      cartId: null,
+      email: user.emailAddresses[0]
+        ? user.emailAddresses[0].emailAddress
+        : null,
+      items: productId + ".1"
+    },
+    mode: "subscription",
+    customer: stripeCustomerId ? stripeCustomerId : undefined,
+    billing_address_collection: "auto",
+  })
+  return session
 }
