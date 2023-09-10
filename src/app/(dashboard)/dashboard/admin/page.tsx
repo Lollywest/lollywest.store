@@ -66,7 +66,6 @@ const inputsSchema = z.object({
         .optional()
         .nullable()
         .default(null),
-    stripePriceId: z.string()
 })
 
 type Inputs = z.infer<typeof inputsSchema>
@@ -121,8 +120,8 @@ export default function AddProductPage() {
                 images: images,
                 category: data.category,
                 price: data.price,
-                stripePriceId: data.stripePriceId,
                 decksLeft: data.decksLeft,
+                stripePriceId: "",
                 owners: owners
             })
 
@@ -300,20 +299,6 @@ export default function AddProductPage() {
                                 <Input placeholder="0" {...field} />
                             </FormControl>
                             <FormDescription>Leave blank if not a deck</FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="stripePriceId"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Stripe Price ID</FormLabel>
-                            <FormControl>
-                                <Input placeholder="" {...field} />
-                            </FormControl>
-                            <FormDescription>Add the product in stripe and copy the product ID over</FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
