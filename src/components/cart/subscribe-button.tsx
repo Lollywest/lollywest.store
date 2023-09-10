@@ -11,7 +11,7 @@ interface SubscribeButtonProps {
   productId: number
 }
 
-export function SubscribeButton({productId}: SubscribeButtonProps) {
+export function SubscribeButton({ productId }: SubscribeButtonProps) {
   const [isPending, startTransition] = React.useTransition()
   const router = useRouter()
 
@@ -22,12 +22,12 @@ export function SubscribeButton({productId}: SubscribeButtonProps) {
       try {
         const result = await subscribeToWrapAction(productId)
 
-        if(result === "signin") {
+        if (result === "signin") {
           router.push("/signin")
           return
         }
 
-        if(result) {
+        if (result) {
           window.location.href = result.url ?? "/wrap/" + productId
         }
       } catch (err) {
@@ -37,11 +37,11 @@ export function SubscribeButton({productId}: SubscribeButtonProps) {
   }
 
   return (
-    <form className="w-full" onSubmit={(e) => onSubmit(e)}>
+    <form className="w-full flex items-center justify-center" onSubmit={(e) => onSubmit(e)}>
       <Button
         aria-label="Subscribe"
         size="sm"
-        className="w-full"
+        className="w-2/3 rounded-xl"
         disabled={isPending}
       >
         {isPending && (
@@ -50,7 +50,7 @@ export function SubscribeButton({productId}: SubscribeButtonProps) {
             aria-hidden="true"
           />
         )}
-        Subscribe
+        Become a Member Now
       </Button>
     </form>
   )
