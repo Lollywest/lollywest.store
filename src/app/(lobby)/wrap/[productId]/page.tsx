@@ -105,7 +105,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {/* (Includes {Math.round(Number(product.price))} Free Credits/Mo.)  */}
               <p className="text-base text-muted-foreground">
                 {/* {formatPrice(product.price)}/Month    */}
-                (Includes {Math.round(Number(product.price))} Free Credits/Mo.)
+                (Includes {Math.round(Number(product.price)) * 100} Free Credits/Mo.)
               </p>
             </p>
 
@@ -120,12 +120,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             ) : null}
           </div>
           <Separator className="my-1.5" />
-          <div className="flex items-center justify-between">
-            <SubscribeButton productId={productId} />
-            {/* <p className="text-base text-muted-foreground w-1/2">*Purchase includes 20 Sponsorship Credits</p> */}
-          </div>
 
-          <Separator className="my-1.5" />
           <div className="space-y-2 text-sm ">
             <div className="flex items-center gap-2 text-xl font-bold">
               {/* <Icons.check className="h-4 w-4" aria-hidden="true" /> */}
@@ -149,6 +144,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
           <Separator className="mt-5" />
+
+          <div className=" flex items-center justify-between">
+            <SubscribeButton productId={productId} />
+            {/* <p className="text-base text-muted-foreground w-1/2">*Purchase includes 20 Sponsorship Credits</p> */}
+          </div>
+
+          <Separator className="my-1.5" />
+
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="description">
               <AccordionTrigger>Wrap Description</AccordionTrigger>
