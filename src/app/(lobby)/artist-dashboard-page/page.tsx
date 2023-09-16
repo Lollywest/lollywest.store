@@ -24,6 +24,10 @@ import { and, eq, not } from "drizzle-orm"
 import { notFound } from "next/navigation"
 import { Badge } from "@/components/ui/badge"
 
+import { NewPostForm } from "@/components/forms/new-post-form"
+import React from "react"
+import { isTheArtistAction } from "@/app/_actions/product"
+
 export const metadata: Metadata = {
     title: "Purchased Wrap Page",
     description: "",
@@ -34,8 +38,12 @@ interface ArtistDashboardPageProps {
     }
 }
 
-export default function ArtistDashboardPage({ params }: ArtistDashboardPageProps) {
-    const productId = Number(params.productId)
+export default async function ArtistDashboardPage({ params }: ArtistDashboardPageProps) {
+    //switch this back once routing is fixed
+    // const productId = Number(params.productId)
+    const productId = 19
+
+    const isTheArtist = await isTheArtistAction(productId)
 
     // const product = await db.query.products.findFirst({
     //     where: eq(products.id, productId),
@@ -174,6 +182,11 @@ export default function ArtistDashboardPage({ params }: ArtistDashboardPageProps
                                         {/* <UpcomingEvents /> */}
                                     </CardContent>
                                     <section className="grid gap-2">
+
+
+                                        {isTheArtist && <NewPostForm productId={productId} />}
+
+
                                         <div>
                                             <Card className="rounded-xl ">
                                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1.5">

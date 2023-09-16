@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -54,7 +53,10 @@ export function NewPostForm({ productId }: newPostProps) {
 
     function onSubmit(data: Inputs) {
         startTransition(async () => {
-            // TODO integrate the selected time into this
+            const [hours, minutes] = data.eventTime.split(":").map(Number);
+            data.eventDate.setHours(hours ? hours : 0)
+            data.eventDate.setMinutes(minutes ? minutes : 0)
+
             await addPostAction({
                 productId: productId,
                 title: data.title,
@@ -129,7 +131,7 @@ export function NewPostForm({ productId }: newPostProps) {
                                         selected={field.value}
                                         onSelect={field.onChange}
                                         disabled={(date) =>
-                                            date > new Date() || date < new Date("1900-01-01")
+                                            date < new Date("1900-01-01")
                                         }
                                         initialFocus
                                     />

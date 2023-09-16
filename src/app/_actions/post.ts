@@ -1,3 +1,5 @@
+"use server"
+
 import { db } from "@/db"
 import { eq } from "drizzle-orm"
 import { posts, artists } from "@/db/schema"
@@ -26,7 +28,8 @@ export async function addPostAction(input: {
         artistId: artist.id,
         title: input.title,
         message: input.message,
-        users: null
+        users: null,
+        eventTime: input.eventTime
     }
 
     await db.insert(posts).values(post)
