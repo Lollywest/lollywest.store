@@ -195,6 +195,7 @@ export const posts = mysqlTable("posts", {
   artistId: int("artistId").notNull(),
   title: text("title").notNull(),
   message: text("message").notNull(),
+  images: json("images").$type<StoredFile[] | null>().default(null),
   users: json("users").$type<string[] | null>().default(null),
   eventTime: timestamp("eventTime").defaultNow(),
   createdAt: timestamp("createdAt").defaultNow()
