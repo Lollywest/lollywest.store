@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { LoadingButton } from "@/components/ui/loading-button"
 import { Textarea } from "@/components/ui/textarea"
+import { ArtistImagesForm } from "@/components/forms/artist-images-form"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -70,29 +71,6 @@ export default async function UpdateStorePage() {
 
   return (
     <div className="space-y-6">
-      {/* <Card
-        as="section"
-        id="connect-store-to-stripe"
-        aria-labelledby="connect-store-to-stripe-heading"
-      >
-        <CardHeader className="space-y-1">
-          <CardTitle className="line-clamp-1 text-2xl">
-            Connect to Stripe
-          </CardTitle>
-          <CardDescription>
-            Connect your account to Stripe to start accepting payments
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {isConnectedToStripe ? (
-            <Link href="https://dashboard.stripe.com/">
-              <div className={cn(buttonVariants())}>Manage Stripe account</div>
-            </Link>
-          ) : (
-            <ConnectArtistToStripeButton artistId={artistId} />
-          )}
-        </CardContent>
-      </Card> */}
       <Card
         as="section"
         id="update-store"
@@ -144,87 +122,21 @@ export default async function UpdateStorePage() {
           </form>
         </CardContent>
       </Card>
+      <Card
+        as="section"
+        id="update-images"
+        aria-labelledby="update-images-heading"
+      >
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl">Images</CardTitle>
+          <CardDescription>
+            Update your profile images
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ArtistImagesForm />
+        </CardContent>
+      </Card>
     </div>
   )
 }
-
-
-// import type { Metadata } from "next"
-// import Link from "next/link"
-// import { redirect } from "next/navigation"
-// import { db } from "@/db"
-// import { artists } from "@/db/schema"
-// import { env } from "@/env.mjs"
-// import { currentUser } from "@clerk/nextjs"
-// import dayjs from "dayjs"
-// import { eq } from "drizzle-orm"
-
-// import {
-//   getFeaturedStoreAndProductCounts,
-//   getUserSubscriptionPlan,
-// } from "@/lib/subscription"
-// import { cn, formatDate } from "@/lib/utils"
-// import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-// import { buttonVariants } from "@/components/ui/button"
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card"
-// import { Header } from "@/components/header"
-// import { Icons } from "@/components/icons"
-// import { Shell } from "@/components/shells/shell"
-
-// // Running out of edge function execution units on vercel free plan
-// // export const runtime = "edge"
-
-// export const metadata: Metadata = {
-//   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
-//   title: "Stores",
-//   description: "Manage your stores",
-// }
-
-// export default async function StoresPage() {
-//   const user = await currentUser()
-
-//   if (!user) {
-//     redirect("/signin")
-//   }
-
-//   const artist = await db.query.artists.findFirst({
-//     where: eq(artists.userId, user.id)
-//   })
-
-//   return (
-//     <Shell variant="sidebar">
-//       <Header title="Stores" description="Manage your stores" size="sm" />
-//       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-//         {artist && <Card key={artist.id} className="flex h-full flex-col">
-//           <CardHeader className="flex-1">
-//             <CardTitle className="line-clamp-1">{artist.name}</CardTitle>
-//             <CardDescription className="line-clamp-2">
-//               {artist.description}
-//             </CardDescription>
-//           </CardHeader>
-//           <CardContent>
-//             <Link key={artist.id} href={`/dashboard/stores/${artist.id}`}>
-//               <div
-//                 className={cn(
-//                   buttonVariants({
-//                     size: "sm",
-//                     className: "h-8 w-full",
-//                   })
-//                 )}
-//               >
-//                 View store
-//                 <span className="sr-only">View {artist.name} store</span>
-//               </div>
-//             </Link>
-//           </CardContent>
-//         </Card>}
-//       </div>
-//     </Shell>
-//   )
-// }
