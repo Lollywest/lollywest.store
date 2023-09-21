@@ -191,28 +191,56 @@ export type Contact = InferModel<typeof contacts>
 
 export const posts = mysqlTable("posts", {
   id: serial("id").primaryKey(),
-  productId: int("productId").notNull(),
+  user: varchar("user", { length: 191 }),
+  isArtist: boolean("isArtist").notNull().default(false),
   artistId: int("artistId").notNull(),
   title: text("title").notNull(),
   message: text("message").notNull(),
   images: json("images").$type<StoredFile[] | null>().default(null),
-  users: json("users").$type<string[] | null>().default(null),
+  likers: json("likers").$type<string[] | null>().default(null),
+  numComments: int("numComments").notNull().default(0),
+  isEvent: boolean("isEvent").default(false),
   eventTime: timestamp("eventTime").defaultNow(),
   createdAt: timestamp("createdAt").defaultNow()
 })
 
 export type Post = InferModel<typeof posts>
 
-export const postRelations = relations(posts, ({ one }) => ({
+export const postRelations = relations(posts, ({ one, many }) => ({
   artist: one(artists, {
     fields: [posts.artistId],
     references: [artists.id]
   }),
-  product: one(products, {
-    fields: [posts.productId],
-    references: [products.id]
+  replies: many(comments)
+}))
+
+export const comments = mysqlTable("comments", {
+  id: serial("id").primaryKey(),
+  user: varchar("user", { length: 191 }),
+  postId: int("postId").notNull(),
+  message: text("message").notNull(),
+  likers: json("likers").$type<string[] | null>().default(null),
+  createdAt: timestamp("createdAt").defaultNow()
+})
+
+export type Comment = InferModel<typeof comments>
+
+export const commentsRelations = relations(comments, ({ one }) => ({
+  parent: one(posts, {
+    fields: [comments.postId],
+    references: [posts.id]
   })
 }))
+
+export const reports = mysqlTable("reported", {
+  id: serial("reported").primaryKey(),
+  user: varchar("user", { length: 191 }),
+  title: text("title"),
+  message: text("message"),
+  artistId: int("artistId").notNull(),
+})
+
+export type Report = InferModel<typeof reports>
 
 //=================================== old schema ===================================
 
