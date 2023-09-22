@@ -5,8 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import * as z from "zod"
-import { cn } from "@/lib/utils"
-import { format } from "date-fns"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -18,16 +16,10 @@ import {
     FormMessage,
     UncontrolledFormMessage,
 } from "@/components/ui/form"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Icons } from "@/components/icons"
-import { Calendar } from "@/components/ui/calendar"
-import { addPostAction } from "@/app/_actions/post"
+import { addCommunityPostAction } from "@/app/_actions/post"
 
 import { isArrayOfFile } from "@/lib/utils"
 import { generateReactHelpers } from "@uploadthing/react/hooks"
@@ -38,7 +30,7 @@ import type { FileWithPreview } from "@/types"
 import Image from "next/image"
 
 interface newPostProps {
-    productId: number
+    artistId: number
 }
 
 const formSchema = z.object({
@@ -54,15 +46,13 @@ const formSchema = z.object({
         .optional()
         .nullable()
         .default(null),
-    eventDate: z.date(),
-    eventTime: z.string(),
 })
 
 type Inputs = z.infer<typeof formSchema>
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>()
 
-export function NewPostForm({ productId }: newPostProps) {
+export function AddCommunityPostForm({ artistId }: newPostProps) {
     const [isPending, startTransition] = React.useTransition()
 
     const [files, setFiles] = React.useState<FileWithPreview[] | null>(null)
@@ -70,19 +60,12 @@ export function NewPostForm({ productId }: newPostProps) {
 
     const form = useForm<Inputs>({
         resolver: zodResolver(formSchema),
-        // defaultValues: {
-        //   category: "sponsorship",
-        // },
     })
 
     const previews = form.watch("images") as FileWithPreview[] | null
 
     function onSubmit(data: Inputs) {
         startTransition(async () => {
-            const [hours, minutes] = data.eventTime.split(":").map(Number);
-            data.eventDate.setHours(hours ? hours : 0)
-            data.eventDate.setMinutes(minutes ? minutes : 0)
-
             const images = isArrayOfFile(data.images)
                 ? await startUpload(data.images).then((res) => {
                     const formattedImages = res?.map((image) => ({
@@ -93,16 +76,15 @@ export function NewPostForm({ productId }: newPostProps) {
                     return formattedImages ?? null
                 })
                 : null
-
-            await addPostAction({
-                productId: productId,
+            
+            await addCommunityPostAction({
+                artistId: artistId,
                 title: data.title,
                 message: data.message,
-                images: images,
-                eventTime: data.eventDate,
+                images: images
             })
 
-            toast.success("Post Sent")
+            toast.success("Post sent")
             form.reset()
         })
     }
@@ -120,7 +102,7 @@ export function NewPostForm({ productId }: newPostProps) {
                         <FormItem>
                             <FormLabel>Title</FormLabel>
                             <FormControl>
-                                <Input placeholder="Concert this saturday!!!" {...field} />
+                                <Input placeholder="First Ave was amazing!!!" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -133,59 +115,7 @@ export function NewPostForm({ productId }: newPostProps) {
                         <FormItem>
                             <FormLabel>Message</FormLabel>
                             <FormControl>
-                                <Textarea placeholder="Come out to First Ave on the 12th to catch us in concert and use your perks." {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="eventDate"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Date</FormLabel>
-                            <Popover>
-                                <PopoverTrigger asChild>
-                                    <FormControl>
-                                        <Button
-                                            variant={"outline"}
-                                            className={cn(
-                                                "w-[240px] pl-3 text-left font-normal",
-                                                !field.value && "text-muted-foreground"
-                                            )}
-                                        >
-                                            {field.value ? (
-                                                format(field.value, "PPP")
-                                            ) : (
-                                                <span>Pick a date</span>
-                                            )}
-                                        </Button>
-                                    </FormControl>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0" align="start">
-                                    <Calendar
-                                        mode="single"
-                                        selected={field.value}
-                                        onSelect={field.onChange}
-                                        disabled={(date) =>
-                                            date < new Date("1900-01-01")
-                                        }
-                                        initialFocus
-                                    />
-                                </PopoverContent>
-                            </Popover>
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="eventTime"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Time</FormLabel>
-                            <FormControl>
-                                <Input placeholder="" type="time" {...field} />
+                                <Textarea placeholder="Had a great time at the concert on saturday!!!" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

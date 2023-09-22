@@ -25,7 +25,7 @@ export async function addArtistPostAction(input: {
     if(!artist) {
         throw new Error("User is not an artist")
     } else if(artist.id != input.artistId) {
-        throw new Error("user is not this pages artist")
+        throw new Error("user is not this page's artist")
     }
 
     const post = {
@@ -48,6 +48,7 @@ export async function addCommunityPostAction(input : {
     artistId: number,
     title: string,
     message: string,
+    images: StoredFile[] | null,
 }) {
     const user = await currentUser()
     if(!user) {
