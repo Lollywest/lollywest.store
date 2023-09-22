@@ -24,7 +24,6 @@ import { and, eq, not } from "drizzle-orm"
 import { notFound } from "next/navigation"
 import { Badge } from "@/components/ui/badge"
 
-import { NewPostForm } from "@/components/forms/new-post-form"
 import React from "react"
 import { isTheArtistAction } from "@/app/_actions/product"
 
@@ -182,11 +181,6 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
                                         {/* <UpcomingEvents /> */}
                                     </CardContent>
                                     <section className="grid gap-2">
-
-
-                                        {isTheArtist && <NewPostForm productId={productId} />}
-
-
                                         <div>
                                             <Card className="rounded-xl ">
                                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1.5">
