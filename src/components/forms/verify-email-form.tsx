@@ -52,7 +52,7 @@ export function VerifyEmailForm() {
         if (completeSignUp.status === "complete") {
           await setActive({ session: completeSignUp.createdSessionId })
 
-          router.push(`/username`)
+          router.push(`/verify`)
         }
       } catch (err) {
         catchClerkError(err)

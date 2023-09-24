@@ -20,7 +20,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           priority
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background to-background/60 md:to-background/40" />
+        {/* <div className="absolute inset-0 bg-gradient-to-t from-background to-background/60 md:to-background/40" /> */}
         <Link
           href="/"
           className="absolute left-8 top-6 z-20 flex items-center text-lg font-bold tracking-tight"
