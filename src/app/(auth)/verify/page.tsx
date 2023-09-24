@@ -24,7 +24,7 @@ export default function UsernamePage() {
 
     return (
         <Icons.spinner
-            className="flex h-40 w-40 animate-spin items-center justify-center"
+            className="flex h-20 w-20 animate-spin items-center justify-center"
             aria-hidden="true"
         />
     )
