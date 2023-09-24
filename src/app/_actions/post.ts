@@ -124,7 +124,7 @@ export async function likePostAction(input: {
     await db.update(posts).set(post).where(eq(posts.id, post.id))
 }
 
-export async function removeLikeAction(input: {
+export async function removeLikePostAction(input: {
     postId: number
 }) {
     const user = await currentUser()
@@ -180,7 +180,7 @@ export async function getCommunityPostsAction(input: {
     page?: number
 }) {
     const items = await db.query.posts.findMany({
-        where: and(eq(posts.artistId, input.artistId), eq(posts.isArtist, false)),
+        where: eq(posts.artistId, input.artistId),
         orderBy: [desc(posts.createdAt)],
         limit: input.limit ? input.limit : undefined,
         offset: input.page ? input.page * (input.limit ? input.limit : 0) : undefined

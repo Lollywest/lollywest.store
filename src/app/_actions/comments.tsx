@@ -58,7 +58,7 @@ export async function likeCommentAction(input: {
     await db.update(comments).set(comment).where(eq(comments.id, comment.id))
 }
 
-export async function removeLikeAction(input: {
+export async function removeLikeCommentAction(input: {
     commentId: number
 }) {
     const user = await currentUser()
