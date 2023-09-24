@@ -1,12 +1,16 @@
+"use server"
+
 import { db } from "@/db"
 import { eq } from "drizzle-orm"
 import { posts, artists } from "@/db/schema"
 import { currentUser } from "@clerk/nextjs"
+import type { StoredFile } from "@/types"
 
 export async function addPostAction(input: {
     productId: number,
     title: string,
     message: string,
+    images: StoredFile[] | null
     eventTime: Date,
 }) {
     const user = await currentUser()
@@ -26,7 +30,9 @@ export async function addPostAction(input: {
         artistId: artist.id,
         title: input.title,
         message: input.message,
-        users: null
+        images: input.images,
+        users: null,
+        eventTime: input.eventTime
     }
 
     await db.insert(posts).values(post)

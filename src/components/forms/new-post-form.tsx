@@ -12,11 +12,11 @@ import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
+    UncontrolledFormMessage,
 } from "@/components/ui/form"
 import {
     Popover,
@@ -29,6 +29,14 @@ import { Icons } from "@/components/icons"
 import { Calendar } from "@/components/ui/calendar"
 import { addPostAction } from "@/app/_actions/post"
 
+import { isArrayOfFile } from "@/lib/utils"
+import { generateReactHelpers } from "@uploadthing/react/hooks"
+import type { OurFileRouter } from "@/app/api/uploadthing/core"
+import { FileDialog } from "@/components/file-dialog"
+import { Zoom } from "@/components/zoom-image"
+import type { FileWithPreview } from "@/types"
+import Image from "next/image"
+
 interface newPostProps {
     productId: number
 }
@@ -36,14 +44,29 @@ interface newPostProps {
 const formSchema = z.object({
     title: z.string(),
     message: z.string(),
+    images: z
+        .unknown()
+        .refine((val) => {
+            if (!Array.isArray(val)) return false
+            if (val.some((file) => !(file instanceof File))) return false
+            return true
+        }, "Must be an array of File")
+        .optional()
+        .nullable()
+        .default(null),
     eventDate: z.date(),
     eventTime: z.string(),
 })
 
 type Inputs = z.infer<typeof formSchema>
 
+const { useUploadThing } = generateReactHelpers<OurFileRouter>()
+
 export function NewPostForm({ productId }: newPostProps) {
     const [isPending, startTransition] = React.useTransition()
+
+    const [files, setFiles] = React.useState<FileWithPreview[] | null>(null)
+    const { isUploading, startUpload } = useUploadThing("productImage")
 
     const form = useForm<Inputs>({
         resolver: zodResolver(formSchema),
@@ -52,13 +75,30 @@ export function NewPostForm({ productId }: newPostProps) {
         // },
     })
 
+    const previews = form.watch("images") as FileWithPreview[] | null
+
     function onSubmit(data: Inputs) {
         startTransition(async () => {
-            // TODO integrate the selected time into this
+            const [hours, minutes] = data.eventTime.split(":").map(Number);
+            data.eventDate.setHours(hours ? hours : 0)
+            data.eventDate.setMinutes(minutes ? minutes : 0)
+
+            const images = isArrayOfFile(data.images)
+                ? await startUpload(data.images).then((res) => {
+                    const formattedImages = res?.map((image) => ({
+                        id: image.fileKey,
+                        name: image.fileKey.split("_")[1] ?? image.fileKey,
+                        url: image.fileUrl,
+                    }))
+                    return formattedImages ?? null
+                })
+                : null
+
             await addPostAction({
                 productId: productId,
                 title: data.title,
                 message: data.message,
+                images: images,
                 eventTime: data.eventDate,
             })
 
@@ -129,7 +169,7 @@ export function NewPostForm({ productId }: newPostProps) {
                                         selected={field.value}
                                         onSelect={field.onChange}
                                         disabled={(date) =>
-                                            date > new Date() || date < new Date("1900-01-01")
+                                            date < new Date("1900-01-01")
                                         }
                                         initialFocus
                                     />
@@ -151,6 +191,39 @@ export function NewPostForm({ productId }: newPostProps) {
                         </FormItem>
                     )}
                 />
+                <FormItem className="flex w-full flex-col gap-1.5">
+                    <FormLabel>Images</FormLabel>
+                    {!isUploading && previews?.length ? (
+                        <div className="flex items-center gap-2">
+                            {previews.map((file) => (
+                                <Zoom key={file.name}>
+                                    <Image
+                                        src={file.preview}
+                                        alt={file.name}
+                                        className="h-20 w-20 shrink-0 rounded-md object-cover object-center"
+                                        width={80}
+                                        height={80}
+                                    />
+                                </Zoom>
+                            ))}
+                        </div>
+                    ) : null}
+                    <FormControl>
+                        <FileDialog
+                            setValue={form.setValue}
+                            name="images"
+                            maxFiles={3}
+                            maxSize={1024 * 1024 * 4}
+                            files={files}
+                            setFiles={setFiles}
+                            isUploading={isUploading}
+                            disabled={isPending}
+                        />
+                    </FormControl>
+                    <UncontrolledFormMessage
+                        message={form.formState.errors.images?.message}
+                    />
+                </FormItem>
                 <Button className="w-fit" disabled={isPending}>
                     {isPending && (
                         <Icons.spinner
