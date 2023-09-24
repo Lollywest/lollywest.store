@@ -52,7 +52,7 @@ type Inputs = z.infer<typeof formSchema>
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>()
 
-export function AddCommunityPostForm({ artistId }: newPostProps) {
+export function NewCommunityPostForm({ artistId }: newPostProps) {
     const [isPending, startTransition] = React.useTransition()
 
     const [files, setFiles] = React.useState<FileWithPreview[] | null>(null)
