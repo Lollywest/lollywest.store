@@ -58,6 +58,31 @@ export async function likeCommentAction(input: {
     await db.update(comments).set(comment).where(eq(comments.id, comment.id))
 }
 
+export async function removeLikeAction(input: {
+    commentId: number
+}) {
+    const user = await currentUser()
+    if(!user) {
+        throw new Error("user not found")
+    }
+
+    const comment = await db.query.comments.findFirst({
+        where: eq(comments.id, input.commentId)
+    })
+
+    if(!comment) {
+        throw new Error("comment not found")
+    }
+    if(!comment.likers) { return }
+    
+    const idx = comment.likers.indexOf(user.id)
+    if(idx > -1) {
+        comment.likers.splice(idx, 1)
+    } else { return }
+
+    await db.update(comments).set(comment).where(eq(comments.id, comment.id))
+}
+
 export async function getAllCommentsAction(input: {
     postId: number,
     limit?: number,

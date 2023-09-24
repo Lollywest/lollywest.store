@@ -124,6 +124,31 @@ export async function likePostAction(input: {
     await db.update(posts).set(post).where(eq(posts.id, post.id))
 }
 
+export async function removeLikeAction(input: {
+    postId: number
+}) {
+    const user = await currentUser()
+    if(!user) {
+        throw new Error("user not found")
+    }
+
+    const post = await db.query.posts.findFirst({
+        where: eq(posts.id, input.postId)
+    })
+
+    if(!post) {
+        throw new Error("post not found")
+    }
+    if(!post.likers) { return }
+    
+    const idx = post.likers.indexOf(user.id)
+    if(idx > -1) {
+        post.likers.splice(idx, 1)
+    } else { return }
+
+    await db.update(posts).set(post).where(eq(posts.id, post.id))
+}
+
 // get all of an artists posts ordered by when they were posted
 // input: the artistId of the page
 // returns: Post[]
