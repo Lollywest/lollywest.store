@@ -27,7 +27,8 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Icons } from "@/components/icons"
 import { Calendar } from "@/components/ui/calendar"
-import { addPostAction } from "@/app/_actions/post"
+import { Checkbox } from "@/components/ui/checkbox"
+import { addArtistPostAction } from "@/app/_actions/post"
 
 import { isArrayOfFile } from "@/lib/utils"
 import { generateReactHelpers } from "@uploadthing/react/hooks"
@@ -38,7 +39,7 @@ import type { FileWithPreview } from "@/types"
 import Image from "next/image"
 
 interface newPostProps {
-    productId: number
+    artistId: number
 }
 
 const formSchema = z.object({
@@ -54,15 +55,22 @@ const formSchema = z.object({
         .optional()
         .nullable()
         .default(null),
-    eventDate: z.date(),
-    eventTime: z.string(),
+    isEvent: z.boolean().default(false),
+    eventDate: z.date().optional(),
+    eventTime: z.string().optional(),
 })
 
 type Inputs = z.infer<typeof formSchema>
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>()
 
-export function NewPostForm({ productId }: newPostProps) {
+export function NewArtistPostForm({ artistId }: newPostProps) {
+    const [isEvent, setIsEvent] = React.useState(false)
+
+    React.useEffect(() => {
+        console.log("event toggled")
+    }, [isEvent])
+
     const [isPending, startTransition] = React.useTransition()
 
     const [files, setFiles] = React.useState<FileWithPreview[] | null>(null)
@@ -70,18 +78,21 @@ export function NewPostForm({ productId }: newPostProps) {
 
     const form = useForm<Inputs>({
         resolver: zodResolver(formSchema),
-        // defaultValues: {
-        //   category: "sponsorship",
-        // },
     })
 
     const previews = form.watch("images") as FileWithPreview[] | null
 
     function onSubmit(data: Inputs) {
         startTransition(async () => {
-            const [hours, minutes] = data.eventTime.split(":").map(Number);
-            data.eventDate.setHours(hours ? hours : 0)
-            data.eventDate.setMinutes(minutes ? minutes : 0)
+            if (isEvent) {
+                if (!data.eventTime || !data.eventDate) {
+                    toast.error("Please add a date and time to this event")
+                    return
+                }
+                const [hours, minutes] = data.eventTime.split(":").map(Number);
+                data.eventDate.setHours(hours ? hours : 0)
+                data.eventDate.setMinutes(minutes ? minutes : 0)
+            }
 
             const images = isArrayOfFile(data.images)
                 ? await startUpload(data.images).then((res) => {
@@ -94,12 +105,13 @@ export function NewPostForm({ productId }: newPostProps) {
                 })
                 : null
 
-            await addPostAction({
-                productId: productId,
+            await addArtistPostAction({
+                artistId: artistId,
                 title: data.title,
                 message: data.message,
                 images: images,
-                eventTime: data.eventDate,
+                isEvent: isEvent,
+                eventTime: data.eventDate ? data.eventDate : null,
             })
 
             toast.success("Post Sent")
@@ -141,6 +153,20 @@ export function NewPostForm({ productId }: newPostProps) {
                 />
                 <FormField
                     control={form.control}
+                    name="isEvent"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormControl>
+                                <Checkbox
+                                    checked={isEvent}
+                                    onCheckedChange={(() => setIsEvent(!isEvent))}
+                                />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
+                {isEvent && <FormField
+                    control={form.control}
                     name="eventDate"
                     render={({ field }) => (
                         <FormItem>
@@ -177,7 +203,7 @@ export function NewPostForm({ productId }: newPostProps) {
                             </Popover>
                         </FormItem>
                     )}
-                />
+                />}
                 <FormField
                     control={form.control}
                     name="eventTime"

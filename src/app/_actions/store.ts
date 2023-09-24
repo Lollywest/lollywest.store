@@ -5,6 +5,8 @@ import { db } from "@/db"
 import { products, artists, type Artist } from "@/db/schema"
 import { and, asc, desc, eq, gt, lt, sql } from "drizzle-orm"
 import { type z } from "zod"
+import type { StoredFile } from "@/types"
+import { currentUser } from "@clerk/nextjs"
 
 import { slugify } from "@/lib/utils"
 import type { getArtistSchema, artistSchema } from "@/lib/validations/artist"
@@ -156,4 +158,41 @@ export async function getArtistByNameAction(input: {
   }
 
   return artist.id
+}
+
+export async function updateArtistImagesAction(input: {
+  image1: StoredFile[] | null,
+  image2: StoredFile[] | null
+}) {
+  const user = await currentUser()
+  if(!user) {
+    throw new Error("user not found")
+  }
+
+  const artist = await db.query.artists.findFirst({
+    where: eq(artists.userId, user.id)
+  })
+  if(!artist) {
+    throw new Error("artist not found")
+  }
+
+  if(!artist.images?.length) {
+    artist.images = input.image1 ? (input.image2 ? input.image1.concat(input.image2) : input.image1) : (input.image2 ? input.image2 : null)
+    await db.update(artists).set(artist).where(eq(artists.userId, user.id))
+    return
+  }
+
+  if(input.image1) {
+    artist.images[0] = input.image1[0]!
+  }
+
+  if(input.image2) {
+    if(artist.images.length > 1) {
+      artist.images[1] = input.image2[0]!
+    } else {
+      artist.images = artist.images.concat(input.image2)
+    }
+  }
+
+  await db.update(artists).set(artist).where(eq(artists.userId, user.id))
 }

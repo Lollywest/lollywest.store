@@ -35,8 +35,6 @@ import { LikeIconToggle } from "@/components/like-toggle"
 import { UpcomingEventCard } from "@/components/upcoming-event-card"
 import { AddPostPopover } from "@/components/add-post-popover"
 
-
-
 export const metadata: Metadata = {
     title: "Purchased Wrap Page",
     description: "",
@@ -368,18 +366,7 @@ export default function ArtistDashboardPage({ params }: ArtistDashboardPageProps
                             </div>
                         </TabsContent>
                     </Tabs>
-
-
-
-
-
-
-
-
-
-
-
-                    
+                  
                 </div>
             </div>
         </Shell>
