@@ -186,7 +186,7 @@ export async function updateUsernameAction(input: {
     try {
         await clerkClient.users.updateUser(curuser.id, input)
     } catch (err) {
-        catchClerkError(err)
+        console.log("clerk error")
     }
 }
 
