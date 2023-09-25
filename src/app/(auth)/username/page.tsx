@@ -11,8 +11,6 @@ import { updateUsernameAction } from "@/app/_actions/wallet"
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
