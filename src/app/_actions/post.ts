@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/db"
-import { eq, and, desc } from "drizzle-orm"
+import { eq, and, desc, between } from "drizzle-orm"
 import { posts, artists, reports } from "@/db/schema"
 import { currentUser } from "@clerk/nextjs"
 import type { StoredFile } from "@/types"
@@ -203,6 +203,28 @@ export async function getEventsAction(input: {
         orderBy: [desc(posts.createdAt)],
         limit: input.limit ? input.limit : undefined,
         offset: input.page ? input.page * (input.limit ? input.limit : 0) : undefined
+    })
+
+    return items
+}
+
+export async function getEventsOnDayAction(input: {
+    artistId: number,
+    date: Date,
+}) {
+    const start = new Date(input.date.valueOf())
+    start.setHours(0)
+    start.setMinutes(0)
+    start.setSeconds(0)
+    start.setMilliseconds(0)
+    const end = new Date(input.date.valueOf())
+    end.setHours(23)
+    end.setMinutes(59)
+    end.setSeconds(59)
+    end.setMilliseconds(999)
+
+    const items = await db.query.posts.findMany({
+        where: and(eq(posts.artistId, input.artistId), and(eq(posts.isEvent, true), between(posts.eventTime, start, end)))
     })
 
     return items
