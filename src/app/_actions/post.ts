@@ -6,6 +6,14 @@ import { posts, artists, reports } from "@/db/schema"
 import { currentUser } from "@clerk/nextjs"
 import type { StoredFile } from "@/types"
 
+// Adds an artist post
+// input: artistId of the page
+//        title - string of the title of the post
+//        message - string of the body of the post
+//        images - storedFile[] if images are being added, otherwise null
+//        isEvent - true if post is an event, false otherwise. If true, event time can't be null
+//        eventTime - Date object of the event date and time if post is an event, otherwise null
+// returns: void
 export async function addArtistPostAction(input: {
     artistId: number,
     title: string,
@@ -44,6 +52,12 @@ export async function addArtistPostAction(input: {
     await db.insert(posts).values(post)
 }
 
+// Adds a community post
+// input: artistId of the page
+//        title - string of the title of the post
+//        message - string of the body of the post
+//        images - storedFile[] if images are being added, otherwise null
+// returns: void
 export async function addCommunityPostAction(input: {
     artistId: number,
     title: string,
@@ -126,6 +140,9 @@ export async function likePostAction(input: {
     await db.update(posts).set(post).where(eq(posts.id, post.id))
 }
 
+// unlike a post for the current user
+// input: postId of the post
+// returns: void
 export async function removeLikePostAction(input: {
     postId: number
 }) {
@@ -197,6 +214,9 @@ export async function getCommunityPostsAction(input: {
     return items
 }
 
+// get every post marked as an event
+// input: the artistId of the page
+// returns: Post[]
 export async function getEventsAction(input: {
     artistId: number,
     limit?: number,
@@ -212,6 +232,10 @@ export async function getEventsAction(input: {
     return items
 }
 
+// gets every event on a certain day
+// input: artistId of the page
+//        Date object for the day in question
+// returns: Post[]
 export async function getEventsOnDayAction(input: {
     artistId: number,
     date: Date,
@@ -234,6 +258,7 @@ export async function getEventsOnDayAction(input: {
     return items
 }
 
+// for the get top post action
 enum TimeFrame {
     "d",
     "w",
@@ -242,6 +267,11 @@ enum TimeFrame {
     "a"
 }
 
+// get the top posts from a certain time frame
+// input: artistId of the page
+//        timeFrame - one of the options in the enum above corresponding to the desired time frame
+//        (optional) artistPosts - true if you only want artist posts, false if you only want community posts, undefined for both
+//  returns: Post[]
 export async function getTopPostsAction(input: {
     artistId: number,
     timeFrame: TimeFrame,
