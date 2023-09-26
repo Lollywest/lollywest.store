@@ -198,6 +198,7 @@ export const posts = mysqlTable("posts", {
   message: text("message").notNull(),
   images: json("images").$type<StoredFile[] | null>().default(null),
   likers: json("likers").$type<string[] | null>().default(null),
+  numLikes: int("numLikes").notNull().default(0),
   numComments: int("numComments").notNull().default(0),
   isEvent: boolean("isEvent").default(false),
   eventTime: timestamp("eventTime").defaultNow(),
