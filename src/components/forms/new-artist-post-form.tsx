@@ -155,13 +155,22 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
                     control={form.control}
                     name="isEvent"
                     render={({ field }) => (
-                        <FormItem>
+                        <FormItem >
                             <FormControl>
-                                <Checkbox
-                                    checked={isEvent}
-                                    onCheckedChange={(() => setIsEvent(!isEvent))}
-                                />
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox
+                                        checked={isEvent}
+                                        onCheckedChange={(() => setIsEvent(!isEvent))}
+                                    />
+                                    <label
+                                        htmlFor="event"
+                                        className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Event?
+                                    </label>
+                                </div>
                             </FormControl>
+
                         </FormItem>
                     )}
                 />
@@ -170,14 +179,14 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
                     name="eventDate"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Date</FormLabel>
+                            <FormLabel>Event Date</FormLabel>
                             <Popover>
                                 <PopoverTrigger asChild>
                                     <FormControl>
                                         <Button
                                             variant={"outline"}
                                             className={cn(
-                                                "w-[240px] pl-3 text-left font-normal",
+                                                "ml-4 w-[240px] pl-3 text-left font-normal",
                                                 !field.value && "text-muted-foreground"
                                             )}
                                         >
@@ -204,19 +213,21 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
                         </FormItem>
                     )}
                 />}
-                <FormField
+                {isEvent && <FormField
                     control={form.control}
                     name="eventTime"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Time</FormLabel>
-                            <FormControl>
-                                <Input placeholder="" type="time" {...field} />
-                            </FormControl>
-                            <FormMessage />
+                            <div className="flex items-center space-x-4">
+                                <FormLabel>Event Start Time</FormLabel>
+                                <FormControl className="ml-4 w-[120px] pl-3 text-center font-normal">
+                                    <Input placeholder="" type="time" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </div>
                         </FormItem>
                     )}
-                />
+                />}
                 <FormItem className="flex w-full flex-col gap-1.5">
                     <FormLabel>Images</FormLabel>
                     {!isUploading && previews?.length ? (
