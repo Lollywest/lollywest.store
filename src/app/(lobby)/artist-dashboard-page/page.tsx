@@ -34,20 +34,21 @@ import Link from "next/link"
 import { LikeIconToggle } from "@/components/like-toggle"
 import { UpcomingEventCard } from "@/components/upcoming-event-card"
 import { AddPostPopover } from "@/components/add-post-popover"
+import { ArtistDashboardNav } from "@/components/layouts/artist-dashboard-nav"
+import { NewArtistPostForm } from "@/components/forms/new-artist-post-form"
+import { NewArtistPostDialog} from "@/components/new-artist-post-dialog"
 
 export const metadata: Metadata = {
-    title: "Purchased Wrap Page",
-    description: "",
+    title: "Artist Dashboard Page",
+    description: "Artist Dashboard",
 }
 
+// change props
 interface ArtistDashboardPageProps {
     params: {
         productId: string
     }
 }
-
-
-
 
 export default function ArtistDashboardPage({ params }: ArtistDashboardPageProps) {
     const [posts, setPosts] = useState([
@@ -66,93 +67,73 @@ export default function ArtistDashboardPage({ params }: ArtistDashboardPageProps
         <Shell className="md:pb-10">
             <div className="space-y-8">
                 <div className="flex-1 space-y-4 p-8 pt-6">
-                    <div className="flex flex-col items-center">
-                        {/* <Image
-                            className="rounded-full mb-4"
-                            src="/images/Delete-Example-Pic.png"
+                   {/*//////////////////    START OF HEADER      ////////////////////////*/}
+                   <div className="flex flex-col items-center">
+
+                    <div className="relative">
+                        <Image
+                            className="rounded-xl"
+                            src="/images/DeleteLater-Example-Banner.png"
                             alt=""
-                            height={200}
-                            width={200}
-                        /> */}
-                        <div className="relative">
+                            height={500}
+                            width={1500}
+                        />
+
+                        <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-32 h-32 rounded-full overflow-hidden border-2 border-white">
                             <Image
-                                className="rounded-xl"
-                                src="/images/DeleteLater-Example-Banner.png"
-                                alt=""
-                                height={500}
-                                width={1500}
+                                src="/images/DeleteLater-Example-Profile-Pic.png"
+                                alt="Artist Profile Picture"
+                                width={200}
+                                height={200}
                             />
-                            {/* <div className="absolute flex items-center justify-center text-3xl font-bold -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-950 py-3 px-5 rounded-full border-4 border-white">
-                                
-                                Artist Name
-                            </div> */}
-                            <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-32 h-32 rounded-full overflow-hidden border-2 border-white">
-                                    <Image
-                                        src="/images/DeleteLater-Example-Profile-Pic.png"
-                                        alt="Artist Profile Picture"
-                                        width={200}  
-                                        height={200}
-                                    />
-                            </div>
                         </div>
+                    </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <div className="flex-1 ">
-                            <Button variant="outline" className="rounded-xl ">
-                                <Icons.send
-                                    className="mr-2 h-4 w-4"
-                                    aria-hidden="true"
-                                />Invite a Friend </Button>
+                    <div className="flex-1 ">
+                        <Button variant="outline" className="rounded-xl ">
+                            <Icons.send
+                                className="mr-2 h-4 w-4"
+                                aria-hidden="true"
+                            />Invite a Friend </Button>
 
-                        </div>
-                        <Button variant="secondary" className="rounded-xl ">
-                            <Icons.message
-                                className="mr-2 h-5 w-5 bg-blue-550"
-                                aria-hidden="true"
-                            />Contact Artist 
-                        </Button>
-                        <Button variant="secondary" className="rounded-xl ">
-                            <Image
-                                className="mr-2 h-6 w-6"
-                                src="/images/avatar/verified1.svg"
-                                alt=""
-                                height={800}
-                                width={800}
-                            />Join
-                            {/* <Icons.badgeCheck
-                                className="mr-2 h-6 w-6"
-                                aria-hidden="true"
-                            /> */}
-                        </Button>
-                        <Button variant="secondary" className="rounded-xl">...</Button>
+                    </div>
+                    <Button variant="secondary" className="rounded-xl ">
+                        <Icons.message
+                            className="mr-2 h-5 w-5 bg-blue-550"
+                            aria-hidden="true"
+                        />Contact Artist
+                    </Button>
+                    <Button variant="secondary" className="rounded-xl ">
+                        <Image
+                            className="mr-2 h-6 w-6"
+                            src="/images/avatar/verified1.svg"
+                            alt=""
+                            height={800}
+                            width={800}
+                        />Join
+
+                    </Button>
+                    <Button variant="secondary" className="rounded-xl">...</Button>
                     </div>
 
+                    <div className="flex flex-col items-center space-y-4 ">
+
+                        <h2 className="mt-3 text-3xl font-bold tracking-tight">Artist</h2>
+                        <p className="text-muted-foreground">Artist Description or community description, etc. Artist Description or community description, etc.</p>
+                        <ArtistDashboardNav />
+                    </div>
+
+                    {/*//////////////////    END OF HEADER      ////////////////////////*/}
+
+                    
                     
 
-
-                    <Tabs defaultValue="home" className="flex flex-col items-center space-y-4 ">
-                    <h2 className="mt-3 text-3xl font-bold tracking-tight">Artist</h2>    
-                    <p className="text-muted-foreground">Artist Description or community description, etc. Artist Description or community description, etc.</p>
-                    
-                        {/* <div className="flex-1 ">
-                            <Button variant="outline" className="rounded-xl ">
-                                <Icons.addCircle
-                                    className="mr-2 h-4 w-4"
-                                    aria-hidden="true"
-                                />Add a Post </Button>
-                            
-                        </div> */}
+                
                         
-                        <TabsList className="rounded gap-8">
-                            <TabsTrigger value="home">Home</TabsTrigger>
-                            <TabsTrigger value="community" >Community</TabsTrigger>
-                            <TabsTrigger value="premium" disabled >Premium</TabsTrigger>
-                            <TabsTrigger value="about" >About</TabsTrigger>
-                            
-                        </TabsList>
+                       
                    
-                        <TabsContent value="home" className="space-y-4">
                             <div className="flex items-center ">
                                 <div className="flex-1 ">
                                     {/* <Button variant="outline" className="rounded-xl p-2 mr-2">
@@ -165,7 +146,9 @@ export default function ArtistDashboardPage({ params }: ArtistDashboardPageProps
                                             className="mr-2 h-6 w-6"
                                             aria-hidden="true"
                                         />Add Event </Button> */}
-                                    <AddPostPopover/> 
+                                    {/* <AddPostPopover/>  */}
+                                    {/* <NewArtistPostForm artistId={1} /> */}
+                                    <NewArtistPostDialog />
                                 </div>                                
                             </div>
                             <div className=" grid gap-4 md:grid-cols-2 lg:grid-cols-7 ">
@@ -204,168 +187,10 @@ export default function ArtistDashboardPage({ params }: ArtistDashboardPageProps
                                     </Card>
                                 </div>
                             </div>
-                        </TabsContent>
 
 
 
-                        <TabsContent value="community" className="space-y-4">
-                            <div className="flex grid gap-4 ">
-                                <Card className="rounded-xl p-4">
-                                    <CardHeader className="p-2">
-                                        <CardTitle>Artist Announcements</CardTitle>
-                                        <CardDescription>
-                                            Artist Announcements & Notifications
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        {/* <UpcomingEvents /> */}
-                                    </CardContent>
-                                    <section className="grid gap-2">
-                                        <div>
-                                            <Card className="rounded-xl ">
-                                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1.5">
-                                                    <CardTitle className="text-sm font-medium">
-                                                        Date: XX/XX/XXXX
-                                                    </CardTitle>
-                                                </CardHeader>
-                                                <CardContent>
-                                                    <div className="text-xl font-bold pb-1.5">Announcement Title</div>
-                                                    <p className="text-xs text-muted-foreground">
-                                                        Description description description description description description description description
-                                                    </p>
-                                                </CardContent>
-                                            </Card>
-                                        </div>
-                                        <div>
-                                            <Card className="rounded-xl ">
-                                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1.5">
-                                                    <CardTitle className="text-sm font-medium">
-                                                        Date: XX/XX/XXXX
-                                                    </CardTitle>
-                                                </CardHeader>
-                                                <CardContent>
-                                                    <div className="text-xl font-bold pb-1.5">Announcement Title</div>
-                                                    <p className="text-xs text-muted-foreground">
-                                                        Description description description description description description description description
-                                                    </p>
-                                                </CardContent>
-                                            </Card>
-                                        </div>
-                                        <div>
-                                            <Card className="rounded-xl ">
-                                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1.5">
-                                                    <CardTitle className="text-sm font-medium">
-                                                        Date: XX/XX/XXXX
-                                                    </CardTitle>
-                                                </CardHeader>
-                                                <CardContent>
-                                                    <div className="text-xl font-bold pb-1.5">Announcement Title</div>
-                                                    <p className="text-xs text-muted-foreground">
-                                                        Description description description description description description description description
-                                                    </p>
-                                                </CardContent>
-                                            </Card>
-                                        </div>
-                                    </section>
-                                </Card>
-                            </div>
-                        </TabsContent>
-
-                        <TabsContent value="about" className="space-y-4">
-                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                                <Card className="col-span-2 rounded-xl">
-                                    {/* <CardHeader>
-                                            <CardTitle>Artist Name</CardTitle>
-                                        </CardHeader> */}
-                                    <CardContent className=" p-0 ">
-                                        {/* <Overview /> */}
-                                        {/* <section className="mx-auto w-full justify-center overflow-hidden rounded-lg"> */}
-                                        <div >
-                                            <Image
-                                                className="rounded-xl"
-                                                src="/images/Delete-Example-Pic.png"
-                                                alt=""
-                                                height={1000}
-                                                width={1000}
-                                            />
-                                        </div>
-                                        {/* </section> */}
-                                    </CardContent>
-                                </Card>
-                                <Card className="col-span-5 rounded-xl">
-                                    <CardHeader>
-                                        <CardTitle>Upcoming</CardTitle>
-                                        <CardDescription>
-                                            Upcoming Artist Events
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        {/* <UpcomingEvents /> */}
-                                    </CardContent>
-                                </Card>
-                            </div>
-                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                                <Card className="rounded-xl">
-                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                        <CardTitle className="text-sm font-medium">
-                                            Monthly Perk 1
-                                        </CardTitle>
-                                        {/* <Badge variant="destructive">VIP</Badge> */}
-                                        <Badge>In-Person</Badge>
-
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="text-2xl font-bold">Backstage Passes</div>
-                                        <p className="text-xs text-muted-foreground">
-                                            Link or something
-                                        </p>
-                                    </CardContent>
-                                </Card>
-                                <Card className="rounded-xl">
-                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                        <CardTitle className="text-sm font-medium">
-                                            Monthly Perk 2
-                                        </CardTitle>
-                                        <Badge variant="secondary">Online</Badge>
-
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="text-2xl font-bold">Exclusive AMA</div>
-                                        <p className="text-xs text-muted-foreground">
-                                            Link or Something
-                                        </p>
-                                    </CardContent>
-                                </Card>
-                                <Card className="rounded-xl">
-                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                        <CardTitle className="text-sm font-medium">Monthly Perk 3</CardTitle>
-                                        <Badge variant="secondary">Online</Badge>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="text-2xl font-bold">Game with Artist</div>
-                                        <p className="text-xs text-muted-foreground">
-                                            Link or Something
-                                        </p>
-                                    </CardContent>
-                                </Card>
-                                <Card className="rounded-xl">
-                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                        <CardTitle className="text-sm font-medium">
-                                            Monthly Perk 4
-                                        </CardTitle>
-                                        <Badge >In-Person</Badge>
-
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="text-2xl font-bold">Exculsive Event</div>
-                                        <p className="text-xs text-muted-foreground">
-                                            Link or something
-                                        </p>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </TabsContent>
-                    </Tabs>
+                        
                   
                 </div>
             </div>
