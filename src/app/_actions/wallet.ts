@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/db"
-import { wallets, products, orders } from "@/db/schema"
+import { wallets, products, orders, userStats, artists } from "@/db/schema"
 import {
     eq,
     inArray,
@@ -202,4 +202,31 @@ export async function checkUsernameAction() {
     }
 
     return(true)
+}
+
+export async function getUserHubsArtistsAction() {
+    const user = await currentUser()
+    if (!user) {
+        throw new Error("user not found")
+    }
+
+    const items = await db.transaction(async (tx) => {
+        const userInfo = await tx.query.userStats.findFirst({
+            where: eq(userStats.userId, user.id)
+        })
+
+        if (!userInfo || !userInfo.hubsJoined) {
+            return null
+        }
+
+        const hubs = userInfo.hubsJoined.map(a => a.artistId)
+
+        const items = await tx.query.artists.findMany({
+            where: inArray(artists.id, hubs)
+        })
+
+        return items
+    })
+
+    return items
 }

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { db } from "@/db"
-import { products, artists, type Artist } from "@/db/schema"
+import { products, userStats, artists, type Artist } from "@/db/schema"
 import { and, asc, desc, eq, gt, lt, sql } from "drizzle-orm"
 import { type z } from "zod"
 import type { StoredFile } from "@/types"
@@ -195,4 +195,68 @@ export async function updateArtistImagesAction(input: {
   }
 
   await db.update(artists).set(artist).where(eq(artists.userId, user.id))
+}
+
+export async function joinArtistHubAction(input: {
+  artistId: number
+}) {
+  const user = await currentUser()
+  if(!user) {
+    throw new Error("user not found")
+  }
+
+  const { artist, userInfo } = await db.transaction(async (tx) => {
+    const artist = await tx.query.artists.findFirst({
+      where: eq(artists.id, input.artistId)
+    })
+
+    const userInfo = await tx.query.userStats.findFirst({
+      where: eq(userStats.userId, user.id)
+    })
+
+    return {
+      artist,
+      userInfo,
+    }
+  })
+
+  if (!artist) {
+    throw new Error("artist not found")
+  }
+
+  if (!artist.hubMembers) {
+    artist.hubMembers = [ user.id ]
+  } else if (artist.hubMembers.indexOf(user.id) === -1) {
+    artist.hubMembers.push(user.id)
+  }
+
+  const hubJoinInfo = {
+    artistId: input.artistId,
+    date: new Date(),
+  }
+
+  if (!userInfo) {
+    const newUserInfo = {
+      userId: user.id,
+      hubsJoined: [ hubJoinInfo ],
+    }
+
+    await db.transaction(async (tx) => {
+      await tx.update(artists).set(artist).where(eq(artists.id, input.artistId))
+      await tx.insert(userStats).values(newUserInfo)
+    })
+
+    return
+  }
+
+  if (userInfo.hubsJoined) {
+    userInfo.hubsJoined.push(hubJoinInfo)
+  } else {
+    userInfo.hubsJoined = [ hubJoinInfo ]
+  }
+
+  await db.transaction(async (tx) => {
+    await tx.update(artists).set(artist).where(eq(artists.id, input.artistId))
+    await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
+  })
 }

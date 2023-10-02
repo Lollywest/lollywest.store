@@ -26,6 +26,10 @@ export function formatDate(date: Date | string) {
   return dayjs(date).format("MMMM D, YYYY")
 }
 
+export function formatTime(date: Date | string) {
+  return dayjs(date).format("h:mm a")
+}
+
 export function formatBytes(
   bytes: number,
   decimals = 0,

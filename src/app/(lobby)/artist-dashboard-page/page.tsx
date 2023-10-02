@@ -38,6 +38,8 @@ import { ArtistDashboardNav } from "@/components/layouts/artist-dashboard-nav"
 import { NewArtistPostForm } from "@/components/forms/new-artist-post-form"
 import { NewArtistPostDialog} from "@/components/new-artist-post-dialog"
 
+import { EventCalendar } from "@/components/event-calendar"
+
 export const metadata: Metadata = {
     title: "Artist Dashboard Page",
     description: "Artist Dashboard",
@@ -46,11 +48,13 @@ export const metadata: Metadata = {
 // change props
 interface ArtistDashboardPageProps {
     params: {
-        productId: string
+        artistId: string
     }
 }
 
 export default function ArtistDashboardPage({ params }: ArtistDashboardPageProps) {
+    const artistId = Number(params.artistId)
+
     const [posts, setPosts] = useState([
         { title: "Exclusive Event", content: "I've received so many messages from you all, asking about my songwriting process. Well, today's the day I'm sharing some behind-the-scenes magic.Every song, to me, begins as an emotion. Maybe it's a flash of a memory, a line from a conversation, or a feeling from a dream. I usually start with humming a melody or tapping out a rhythm. From there, it's a journey of discovery, navigating the chords and finding the story I want to tell.", date: "10/31/2024", time: "4:24 AM" },
         { title: "Upcoming Tour!", content: "Guess what? I'm hitting the road again, and I'm thrilled to announce the dates and cities for my upcoming tour. I've been working on some new material and I can't wait to share it with you live!But it's not just about me. I want to hear from you! Comment below with the songs you'd love to hear live. Maybe even a cover or two? Let's make these shows the best yet!        ", date: "10/31/2024", time: "4:24 AM"},
@@ -177,6 +181,7 @@ export default function ArtistDashboardPage({ params }: ArtistDashboardPageProps
                                             <CardTitle>Recent Activity</CardTitle>
                                         </CardHeader>
                                         <CardContent>
+                                            <EventCalendar {...{artistId: artistId}} />
                                             {/* Sample Activities */}
                                             <p>- Collaborated with XYZlakdshfjasldhfkj hasdf</p>
                                             <p>- Released a new album</p>

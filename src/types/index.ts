@@ -1,6 +1,6 @@
 import { type Product } from "@/db/schema"
 import { type FileWithPath } from "react-dropzone"
-import { type z } from "zod"
+import * as z from "zod"
 
 import { type userPrivateMetadataSchema } from "@/lib/validations/auth"
 import type { cartItemSchema, checkoutItemSchema, stripeItemSchema } from "@/lib/validations/cart"
@@ -98,3 +98,19 @@ export interface SubscriptionPlan {
 }
 
 export type NewPost = z.infer<typeof postSchema>
+
+
+export const HubJoinInfoSchema = z.object({
+  artistId: z.number(),
+  date: z.date(),
+})
+
+export type HubJoinInfo = z.infer<typeof HubJoinInfoSchema>
+
+export const SponsorInfoSchema = z.object({
+  artistId: z.number(),
+  amount: z.number(),
+  date: z.date(),
+})
+
+export type SponsorInfo = z.infer<typeof SponsorInfoSchema>
