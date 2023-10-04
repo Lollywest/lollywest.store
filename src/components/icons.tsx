@@ -61,6 +61,7 @@ import {
   Heart,
   BadgeCheck,
   Share,
+  CornerDownRight,
 
   type LucideIcon,
   type LucideProps,
@@ -131,6 +132,7 @@ export const Icons = {
   heart: Heart,
   badgeCheck: BadgeCheck,
   share: Share,
+  commentReply: CornerDownRight,
 
   logo: (props: LucideProps) => (
 

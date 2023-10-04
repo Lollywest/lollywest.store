@@ -75,7 +75,7 @@ export async function addCommunityPostAction(input: {
         artistId: input.artistId,
         title: input.title,
         message: input.message,
-        images: null,
+        images: input.images,
         likers: null,
         numComments: 0,
         isEvent: false,
@@ -168,6 +168,18 @@ export async function removeLikePostAction(input: {
     post.numLikes = post.numLikes - 1
 
     await db.update(posts).set(post).where(eq(posts.id, post.id))
+}
+
+export async function hasUserLikedPost(postId: number): Promise<boolean> {
+    const user = await currentUser();
+    if (!user) return false;
+
+    const post = await db.query.posts.findFirst({
+        where: eq(posts.id, postId)
+    });
+
+    if (!post || !post.likers) return false;
+    return post.likers.includes(user.id);
 }
 
 // get all of an artists posts ordered by when they were posted

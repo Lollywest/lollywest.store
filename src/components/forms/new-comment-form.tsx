@@ -50,7 +50,7 @@ export function NewCommentForm({ postId }: newCommentProps) {
     return (
         <Form {...form}>
             <form
-                className="grid w-full max-w-2xl gap-5"
+                className="grid w-full  gap-5"
                 onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
             >
                 <FormField
@@ -59,7 +59,7 @@ export function NewCommentForm({ postId }: newCommentProps) {
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Textarea placeholder="" {...field} />
+                                <Textarea className="h-10" placeholder="Join the conversation..." {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

@@ -65,7 +65,11 @@ export function DashboardPostCard({ title, content, date, time }: DashboardPostP
                         height={300}
                     />
                 </Button> */}
-                    <LikeIconToggle />
+
+
+                    {/* UPDATE */}
+
+                    {/* <LikeIconToggle postId={post.id} /> */}
                     {/* Add like Quantity */}
                     <span className="pl-1">134 </span>
 

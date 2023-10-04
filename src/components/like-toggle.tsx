@@ -4,26 +4,49 @@ import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import * as React from "react"
 import Image from "next/image"
+import { removeLikePostAction, likePostAction, hasUserLikedPost } from "src/app/_actions/post"
 
-export function LikeIconToggle() {
+interface LikeIconToggleProps {
+    postId: number;
+}
+
+
+export function LikeIconToggle({ postId }: LikeIconToggleProps) {
     // const [iconState, setIconState] = React.useState("plus"); 
-    const [iconState, setIconState] = React.useState("plus")
+    const [iconState, setIconState] = React.useState("minus")
+
+    const handleToggle = async () => {
+        if (iconState === "plus") {
+            await removeLikePostAction({ postId });
+            setIconState("minus");
+        } else {
+            await likePostAction({ postId });
+            setIconState("plus");
+        }
+    }
+
+    React.useEffect(() => {
+        (async () => {
+            const liked = await hasUserLikedPost(postId);
+            setIconState(liked ? "plus" : "minus");
+        })();
+    }, [postId]);
 
     return (
         <Button
             variant="ghost"
             size="icon"
             className="rounded-xl p-1 "
-            onClick={() => setIconState(iconState === "plus" ? "minus" : "plus")}
+            onClick={handleToggle}
         >
             <Icons.heart
-                className={`h-7 w-7 rotate-0 scale-0 transition-all ${iconState === "minus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}
+                className={`h-6 w-6 rotate-0 scale-0 transition-all ${iconState === "plus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}
                 aria-hidden="true"
             />
             <Image
                 src="/images/avatar/heart-check.svg"
                 alt=""
-                className={`absolute h-8 w-8 rotate-0 scale-0 transition-all ${iconState === "plus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}
+                className={`absolute h-7 w-7 rotate-0 scale-0 transition-all ${iconState === "minus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}
                 width={300}
                 height={300}
             />

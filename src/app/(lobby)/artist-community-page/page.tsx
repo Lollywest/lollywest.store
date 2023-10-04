@@ -1,4 +1,3 @@
-"use client"
 import { Metadata } from "next"
 import Image from "next/image"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -18,8 +17,6 @@ import {
 } from "@/components/ui/tabs"
 import { Shell } from "@/components/shells/shell"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
-import { db } from "@/db"
-import { products, artists } from "@/db/schema"
 import { and, eq, not } from "drizzle-orm"
 import { notFound } from "next/navigation"
 import { Badge } from "@/components/ui/badge"
@@ -39,6 +36,9 @@ import { NewArtistPostDialog } from "@/components/new-artist-post-dialog"
 import { NewCommunityPostDialog } from "@/components/new-community-post-dialog"
 import { ViewUserPosts } from "@/components/view-user-posts"
 
+import { db } from "@/db"
+import { posts, comments, artists } from "@/db/schema"
+
 
 export const metadata: Metadata = {
     title: "Artist Community Page",
@@ -52,13 +52,19 @@ interface ArtistCommunityPageProps {
     }
 }
 
-export default function ArtistCommunityPage({ params }: ArtistCommunityPageProps) {
-    const [posts, setPosts] = useState([
-        { title: "Example Community Post 1", content: "I've received so many messages from you all, asking about my songwriting process. Well, today's the day I'm sharing some behind-the-scenes magic.Every song, to me, begins as an emotion. Maybe it's a flash of a memory, a line from a conversation, or a feeling from a dream. I usually start with humming a melody or tapping out a rhythm. From there, it's a journey of discovery, navigating the chords and finding the story I want to tell.", date: "10/31/2024", time: "4:24 AM" },
-        { title: "Example Community Post 2", content: "Guess what? I'm hitting the road again, and I'm thrilled to announce the dates and cities for my upcoming tour. I've been working on some new material and I can't wait to share it with you live!But it's not just about me. I want to hear from you! Comment below with the songs you'd love to hear live. Maybe even a cover or two? Let's make these shows the best yet!        ", date: "10/31/2024", time: "4:24 AM" },
-        { title: "Example Community Post 3", content: "Had a great performance at ...", date: "10/31/2024", time: "4:24 AM" },
-        { title: "Example Community Post 4", content: "Join me next week for ...", date: "10/31/2024", time: "4:24 AM" },
-    ]);
+export default async function ArtistCommunityPage({ params }: ArtistCommunityPageProps) {
+    const allCommunityPosts = await db
+        .select()
+        .from(posts)
+        //.limit(4)
+        .orderBy(desc(posts.createdAt))
+
+    // const [posts, setPosts] = useState([
+    //     { title: "Example Community Post 1", content: "I've received so many messages from you all, asking about my songwriting process. Well, today's the day I'm sharing some behind-the-scenes magic.Every song, to me, begins as an emotion. Maybe it's a flash of a memory, a line from a conversation, or a feeling from a dream. I usually start with humming a melody or tapping out a rhythm. From there, it's a journey of discovery, navigating the chords and finding the story I want to tell.", date: "10/31/2024", time: "4:24 AM" },
+    //     { title: "Example Community Post 2", content: "Guess what? I'm hitting the road again, and I'm thrilled to announce the dates and cities for my upcoming tour. I've been working on some new material and I can't wait to share it with you live!But it's not just about me. I want to hear from you! Comment below with the songs you'd love to hear live. Maybe even a cover or two? Let's make these shows the best yet!        ", date: "10/31/2024", time: "4:24 AM" },
+    //     { title: "Example Community Post 3", content: "Had a great performance at ...", date: "10/31/2024", time: "4:24 AM" },
+    //     { title: "Example Community Post 4", content: "Join me next week for ...", date: "10/31/2024", time: "4:24 AM" },
+    // ]);
 
     return (
         <Shell className="md:pb-10">
@@ -139,13 +145,21 @@ export default function ArtistCommunityPage({ params }: ArtistCommunityPageProps
                         </Button>
                     </div>
 
+                    {/* <div className=" grid gap-4 md:grid-cols-2 lg:grid-cols-5 "> */}
+                    {/* Posts */}
 
-                    {posts.map((post, index) => (
+                    {/* <div className="col-span-1 space-y-4">
 
-                        <CommunityPostCard key={index} {...post} />
+                        </div>
+
+                        <div className="col-span-4 hidden md:block"> */}
+
+                    {allCommunityPosts.map((post) => (
+
+                        <CommunityPostCard key={post.id} post={post} />
                     ))}
-
-
+                    {/* </div> */}
+                    {/* </div> */}
 
 
                     {/* <div className="flex grid gap-4 "> */}

@@ -37,6 +37,14 @@ import { AddPostPopover } from "@/components/add-post-popover"
 import { ArtistDashboardNav } from "@/components/layouts/artist-dashboard-nav"
 import { NewArtistPostForm } from "@/components/forms/new-artist-post-form"
 import { NewArtistPostDialog} from "@/components/new-artist-post-dialog"
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+  } from "@/components/ui/accordion"
+  import { Separator } from "@/components/ui/separator"
+
 
 export const metadata: Metadata = {
     title: "Artist Dashboard Page",
@@ -164,6 +172,62 @@ export default function ArtistDashboardPage({ params }: ArtistDashboardPageProps
 
                                 {/* Sidebar: add calendar later e.g. recent activity, upcoing events popular posts */}
                                 <div className="col-span-2 hidden md:block">
+                                <Card className="rounded-xl my-4">
+                                        <CardHeader>
+                                            <CardTitle>Artist Hub Rules</CardTitle>
+                                            
+                                        </CardHeader>
+                                        <CardContent>
+                                            {/* Sample Activities */}
+                                            {/* <p>- Collaborated with XYZlakdshfjasldhfkj hasdf</p>
+                                            <p>- Released a new album</p>
+                                            <p>- Collaborated with XYZ</p>
+                                            <p>- Pooped pants</p>
+                                            <p>- Pooped pants (again) </p> */}
+                                            <Separator className="" />
+                                             <Accordion type="single" collapsible className="w-full text-sm text-muted-foreground ">
+                                                <AccordionItem value="description">
+                                                <AccordionTrigger>1. Be respectful at all times</AccordionTrigger>
+                                                <AccordionContent>
+                                                    Do not make personal attacks, insult, or demean a specific group or person. Do not use slurs without relevant context and quotes. 
+                                                    No blatant statements of bigotry. No posts that 'bait' users into breaking other rules. Zero tolerance for posts/comments that sexualize minors. 
+                                                    Zero tolerance for posts/comments that encourage suicide
+                                                </AccordionContent>
+                                                </AccordionItem>
+                                                <AccordionItem value="item-2">
+                                                <AccordionTrigger>2. No spam</AccordionTrigger>
+                                                <AccordionContent> Do not post spam or any machine generated content. Do not edit comments to mislead and/or advertise. Do not farm likes or shotgun comments</AccordionContent>
+                                                </AccordionItem>
+                                                <AccordionItem value="item-3">
+                                                <AccordionTrigger>
+                                                    3. No personal info
+                                                </AccordionTrigger>
+                                                <AccordionContent>
+                                                Do not post or seek any real or fake personal information (examples include: full names, phone numbers, email addresses, or social media accounts). 
+                                                Only link another user's comment when it is relevant and never when it is to launch a personal attack or encourage others to do so. 
+                                                Do not ask questions designed to target specific usernames or links to social media. 
+                                                </AccordionContent>
+                                                </AccordionItem>
+                                                <AccordionItem value="item-4">
+                                                <AccordionTrigger>
+                                                4. No loaded questions
+                                                </AccordionTrigger>
+                                                <AccordionContent>
+                                                Do not include an opinion, bias, or lead respondents towards expressing a specific opinion in your post title. Do not use this subreddit to promote a specific agenda or to gain positive or negative publicity for an entity or person
+                                                </AccordionContent>
+                                                </AccordionItem>
+                                                <AccordionItem value="item-5">
+                                                <AccordionTrigger>
+                                                5. No begging 
+                                                </AccordionTrigger>
+                                                <AccordionContent>
+                                                Do not ask for any rewards, money, goods, services, or favors. 
+                                                Do not form a brigade to draw positive or negative attention to posts or comments in the hub, even from other artist hubs/communities .                                                </AccordionContent>
+                                                </AccordionItem>
+                                            </Accordion>
+                                        </CardContent>
+                                    </Card>
+
                                     {/* <Calendar/> */}
                                     {posts.map((post, index) => (
                                         // <UpcomingEventPost key={index} {...post} />
@@ -172,19 +236,7 @@ export default function ArtistDashboardPage({ params }: ArtistDashboardPageProps
                                     
 
 
-                                    <Card className="rounded-xl my-4">
-                                        <CardHeader>
-                                            <CardTitle>Recent Activity</CardTitle>
-                                        </CardHeader>
-                                        <CardContent>
-                                            {/* Sample Activities */}
-                                            <p>- Collaborated with XYZlakdshfjasldhfkj hasdf</p>
-                                            <p>- Released a new album</p>
-                                            <p>- Collaborated with XYZ</p>
-                                            <p>- Pooped pants</p>
-                                            <p>- Pooped pants (again) </p>
-                                        </CardContent>
-                                    </Card>
+                                    
                                 </div>
                             </div>
 
