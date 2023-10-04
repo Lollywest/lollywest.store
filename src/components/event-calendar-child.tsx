@@ -13,6 +13,8 @@ import { Icons } from "@/components/icons"
 
 import type { Post } from "@/db/schema"
 import { getEventsOnDayAction } from "@/app/_actions/post"
+import { UpcomingEventCard } from "./upcoming-event-card"
+import { formatDate, formatTime } from "@/lib/utils"
 
 interface EventCalendarChildProps {
     artistId: number
@@ -53,8 +55,8 @@ export function EventCalendarChild({ artistId, dates }: EventCalendarChildProps)
                         selected={date}
                         onSelect={setDate}
                         className="rounded-md border"
-                        disabled={(date) =>
-                            dates.length !== 0 ? (date < dates[0]! || date > dates[dates.length - 1]! || dates.indexOf(date) === -1) : true
+                        disabled={(day) =>
+                            dates.length !== 0 ? (day < dates[0]! || day > dates[dates.length - 1]! || dates.indexOf(day) === -1) : true
                         }
                     />
                     {isPending ?
@@ -65,8 +67,14 @@ export function EventCalendarChild({ artistId, dates }: EventCalendarChildProps)
                             />
                         </Shell>
                         :
-                        <p></p> // placeholder
-                        // events.map(...)
+                        events.map((event, index) => (
+                            <UpcomingEventCard key={index} {...{
+                                title: event.title,
+                                content: event.message,
+                                date: formatDate(event.eventTime!),
+                                time: formatTime(event.eventTime!),
+                            }} />
+                        ))
                     }
                 </CardContent>
             </Card>

@@ -2,9 +2,15 @@
 
 import { db } from "@/db"
 import { eq, and, desc, between, gte } from "drizzle-orm"
-import { posts, artists, reports } from "@/db/schema"
-import { currentUser } from "@clerk/nextjs"
+import { posts, artists, reports, userStats } from "@/db/schema"
+import { clerkClient, currentUser } from "@clerk/nextjs"
 import type { StoredFile } from "@/types"
+
+// how to weigh various things when calculating a users points
+const joinsWeight = 100
+const likesWeight = 1
+const postsWeight = 10
+const commentsWeight = 5
 
 // Adds an artist post
 // input: artistId of the page
@@ -27,9 +33,21 @@ export async function addArtistPostAction(input: {
         throw new Error("User not found")
     }
 
-    const artist = await db.query.artists.findFirst({
-        where: eq(artists.userId, user.id)
+    const { artist, userInfo } = await db.transaction(async (tx) => {
+        const artist = await tx.query.artists.findFirst({
+            where: eq(artists.userId, user.id)
+        })
+
+        const userInfo = await tx.query.userStats.findFirst({
+            where: eq(userStats.userId, user.id)
+        })
+
+        return {
+            artist,
+            userInfo,
+        }
     })
+
     if (!artist) {
         throw new Error("User is not an artist")
     } else if (artist.id != input.artistId) {
@@ -49,7 +67,26 @@ export async function addArtistPostAction(input: {
         eventTime: input.eventTime ? input.eventTime : undefined
     }
 
-    await db.insert(posts).values(post)
+    if (!userInfo) {
+        const newUserInfo = {
+            userId: user.id,
+            numPosts: 1
+        }
+
+        await db.transaction(async (tx) => {
+            await tx.insert(posts).values(post)
+            await tx.insert(userStats).values(newUserInfo)
+        })
+
+        return
+    }
+
+    userInfo.numPosts = userInfo.numPosts + 1
+
+    await db.transaction(async (tx) => {
+        await tx.insert(posts).values(post)
+        await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
+    })
 }
 
 // Adds a community post
@@ -69,6 +106,10 @@ export async function addCommunityPostAction(input: {
         throw new Error("user not found")
     }
 
+    const userInfo = await db.query.userStats.findFirst({
+        where: eq(userStats.userId, user.id)
+    })
+
     const post = {
         user: user.id,
         isArtist: false,
@@ -81,7 +122,26 @@ export async function addCommunityPostAction(input: {
         isEvent: false,
     }
 
-    await db.insert(posts).values(post)
+    if (!userInfo) {
+        const newUserInfo = {
+            userId: user.id,
+            numPosts: 1
+        }
+
+        await db.transaction(async (tx) => {
+            await tx.insert(posts).values(post)
+            await tx.insert(userStats).values(newUserInfo)
+        })
+
+        return
+    }
+
+    userInfo.numPosts = userInfo.numPosts + 1
+
+    await db.transaction(async (tx) => {
+        await tx.insert(posts).values(post)
+        await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
+    })
 }
 
 // delete a post and optionally report it
@@ -100,13 +160,19 @@ export async function deletePostAction(input: {
             throw new Error("post not found")
         }
 
-        await db.insert(reports).values({
-            user: post.user,
-            title: post.title,
-            message: post.message,
-            artistId: post.artistId
+        await db.transaction(async (tx) => {
+            await tx.insert(reports).values({
+                user: post.user,
+                title: post.title,
+                message: post.message,
+                artistId: post.artistId
+            })
+            await tx.delete(posts).where(eq(posts.id, input.postId))
         })
+
+        return
     }
+
     await db.delete(posts).where(eq(posts.id, input.postId))
 }
 
@@ -121,13 +187,24 @@ export async function likePostAction(input: {
         throw new Error("user not found")
     }
 
-    const post = await db.query.posts.findFirst({
-        where: eq(posts.id, input.postId)
-    })
+    const { post, userInfo } = await db.transaction(async (tx) => {
+        const post = await tx.query.posts.findFirst({
+            where: eq(posts.id, input.postId)
+        })
 
-    if (!post) {
-        throw new Error("post not found")
-    }
+        if (!post) {
+            throw new Error("post not found")
+        }
+
+        const userInfo = await tx.query.userStats.findFirst({
+            where: eq(userStats.userId, post.user)
+        })
+
+        return {
+            post,
+            userInfo,
+        }
+    })
 
     if (!post.likers) {
         post.likers = [user.id]
@@ -137,7 +214,26 @@ export async function likePostAction(input: {
 
     post.numLikes = post.numLikes + 1
 
-    await db.update(posts).set(post).where(eq(posts.id, post.id))
+    if (!userInfo) {
+        const newUserInfo = {
+            userId: post.user,
+            numLikes: 1
+        }
+
+        await db.transaction(async (tx) => {
+            await tx.update(posts).set(post).where(eq(posts.id, post.id))
+            await tx.insert(userStats).values(newUserInfo)
+        })
+
+        return
+    }
+
+    userInfo.numLikes = userInfo.numLikes + 1
+
+    await db.transaction(async (tx) => {
+        await tx.update(posts).set(post).where(eq(posts.id, post.id))
+        await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
+    })
 }
 
 // unlike a post for the current user
@@ -151,13 +247,25 @@ export async function removeLikePostAction(input: {
         throw new Error("user not found")
     }
 
-    const post = await db.query.posts.findFirst({
-        where: eq(posts.id, input.postId)
+    const { post, userInfo } = await db.transaction(async (tx) => {
+        const post = await tx.query.posts.findFirst({
+            where: eq(posts.id, input.postId)
+        })
+
+        if (!post) {
+            throw new Error("post not found")
+        }
+
+        const userInfo = await tx.query.userStats.findFirst({
+            where: eq(userStats.userId, post.user)
+        })
+
+        return {
+            post,
+            userInfo,
+        }
     })
 
-    if (!post) {
-        throw new Error("post not found")
-    }
     if (!post.likers) { return }
 
     const idx = post.likers.indexOf(user.id)
@@ -167,7 +275,26 @@ export async function removeLikePostAction(input: {
 
     post.numLikes = post.numLikes - 1
 
-    await db.update(posts).set(post).where(eq(posts.id, post.id))
+    if (!userInfo) {
+        const newUserInfo = {
+            userId: post.user,
+            numLikes: 0
+        }
+
+        await db.transaction(async (tx) => {
+            await tx.update(posts).set(post).where(eq(posts.id, post.id))
+            await tx.insert(userStats).values(newUserInfo)
+        })
+
+        return
+    }
+
+    userInfo.numLikes = userInfo.numLikes - 1
+
+    await db.transaction(async (tx) => {
+        await tx.update(posts).set(post).where(eq(posts.id, post.id))
+        await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
+    })
 }
 
 export async function hasUserLikedPost(postId: number): Promise<boolean> {
@@ -184,46 +311,159 @@ export async function hasUserLikedPost(postId: number): Promise<boolean> {
 
 // get all of an artists posts ordered by when they were posted
 // input: the artistId of the page
-// returns: Post[]
+// returns: an array where each element has all the attributes of a post +
+//              - points: int corresponding to the users points
+//              - username: string of the users username
+//              - image: url of the users profile image
 export async function getArtistPostsAction(input: {
     artistId: number,
     limit?: number,
     page?: number
 }) {
-    const items = await db.query.posts.findMany({
-        where: and(eq(posts.artistId, input.artistId), eq(posts.isArtist, true)),
-        orderBy: [desc(posts.createdAt)],
-        limit: input.limit ? input.limit : undefined,
-        offset: input.page ? input.page * (input.limit ? input.limit : 0) : undefined
+    const items = await db.transaction(async (tx) => {
+        const items = await tx
+            .select({
+                id: posts.id,
+                user: posts.user,
+                isArtist: posts.isArtist,
+                artistId: posts.artistId,
+                title: posts.title,
+                message: posts.message,
+                images: posts.images,
+                likers: posts.likers,
+                numLikes: posts.numLikes,
+                numComments: posts.numComments,
+                isEvent: posts.isEvent,
+                eventTime: posts.eventTime,
+                createdAt: posts.createdAt,
+                userHubsJoined: userStats.hubsJoined,
+                userNumPosts: userStats.numPosts,
+                userNumComments: userStats.numComments,
+                userNumLikes: userStats.numComments,
+            })
+            .from(posts)
+            .leftJoin(userStats, eq(userStats.userId, posts.user))
+            .where(and(eq(posts.artistId, input.artistId), eq(posts.isArtist, true)))
+            .orderBy(desc(posts.createdAt))
+            .limit(input.limit ? input.limit : 999999)
+            .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
+        return items
     })
 
-    if (!items) {
-        return []
+    // const items = await db.query.posts.findMany({
+    //     where: and(eq(posts.artistId, input.artistId), eq(posts.isArtist, true)),
+    //     orderBy: [desc(posts.createdAt)],
+    //     limit: input.limit ? input.limit : undefined,
+    //     offset: input.page ? input.page * (input.limit ? input.limit : 0) : undefined
+    // })
+
+    const result = []
+    for (const item of items) {
+        const user = await clerkClient.users.getUser(item.user)
+
+        item.userHubsJoined = item.userHubsJoined ?? []
+        item.userNumPosts = item.userNumPosts ?? 0
+        item.userNumComments = item.userNumComments ?? 0
+        item.userNumLikes = item.userNumLikes ?? 0
+
+        const info = {
+            id: item.id,
+            user: item.user,
+            isArtist: item.isArtist,
+            artistId: item.artistId,
+            title: item.title,
+            message: item.message,
+            images: item.images,
+            likers: item.likers,
+            numLikes: item.numLikes,
+            numComments: item.numComments,
+            isEvent: item.isEvent,
+            eventTime: item.eventTime,
+            createdAt: item.createdAt,
+            points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
+            username: user.username,
+            image: user.imageUrl,
+        }
+
+        result.push(info)
     }
 
-    return items
+    return result
 }
 
 // get all of the community posts from an artist page ordered by when they were posted
 // input: the artistId of the page
-// returns: Post[]
+// returns: an array where each element has all the attributes of a post +
+//              - points: int corresponding to the users points
+//              - username: string of the users username
+//              - image: url of the users profile image
 export async function getCommunityPostsAction(input: {
     artistId: number,
     limit?: number,
     page?: number
 }) {
-    const items = await db.query.posts.findMany({
-        where: eq(posts.artistId, input.artistId),
-        orderBy: [desc(posts.createdAt)],
-        limit: input.limit ? input.limit : undefined,
-        offset: input.page ? input.page * (input.limit ? input.limit : 0) : undefined
+    const items = await db.transaction(async (tx) => {
+        const items = await tx
+            .select({
+                id: posts.id,
+                user: posts.user,
+                isArtist: posts.isArtist,
+                artistId: posts.artistId,
+                title: posts.title,
+                message: posts.message,
+                images: posts.images,
+                likers: posts.likers,
+                numLikes: posts.numLikes,
+                numComments: posts.numComments,
+                isEvent: posts.isEvent,
+                eventTime: posts.eventTime,
+                createdAt: posts.createdAt,
+                userHubsJoined: userStats.hubsJoined,
+                userNumPosts: userStats.numPosts,
+                userNumComments: userStats.numComments,
+                userNumLikes: userStats.numComments,
+            })
+            .from(posts)
+            .leftJoin(userStats, eq(userStats.userId, posts.user))
+            .where(eq(posts.artistId, input.artistId))
+            .orderBy(desc(posts.createdAt))
+            .limit(input.limit ? input.limit : 999999)
+            .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
+        return items
     })
 
-    if (!items) {
-        return []
+    const result = []
+    for (const item of items) {
+        const user = await clerkClient.users.getUser(item.user)
+
+        item.userHubsJoined = item.userHubsJoined ?? []
+        item.userNumPosts = item.userNumPosts ?? 0
+        item.userNumComments = item.userNumComments ?? 0
+        item.userNumLikes = item.userNumLikes ?? 0
+
+        const info = {
+            id: item.id,
+            user: item.user,
+            isArtist: item.isArtist,
+            artistId: item.artistId,
+            title: item.title,
+            message: item.message,
+            images: item.images,
+            likers: item.likers,
+            numLikes: item.numLikes,
+            numComments: item.numComments,
+            isEvent: item.isEvent,
+            eventTime: item.eventTime,
+            createdAt: item.createdAt,
+            points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
+            username: user.username,
+            image: user.imageUrl,
+        }
+
+        result.push(info)
     }
 
-    return items
+    return result
 }
 
 // get every post marked as an event
@@ -283,7 +523,10 @@ enum TimeFrame {
 // input: artistId of the page
 //        timeFrame - one of the options in the enum above corresponding to the desired time frame
 //        (optional) artistPosts - true if you only want artist posts, false if you only want community posts, undefined for both
-//  returns: Post[]
+// returns: an array where each element has all the attributes of a post +
+//              - points: int corresponding to the users points
+//              - username: string of the users username
+//              - image: url of the users profile image
 export async function getTopPostsAction(input: {
     artistId: number,
     timeFrame: TimeFrame,
@@ -307,23 +550,117 @@ export async function getTopPostsAction(input: {
             start.setFullYear(2022)
     }
 
-    if (input.artistPosts !== undefined) {
-        const items = await db.query.posts.findMany({
-            where: and(eq(posts.artistId, input.artistId), and(eq(posts.isArtist, input.artistPosts), gte(posts.createdAt, start))),
-            orderBy: desc(posts.numLikes),
-            limit: input.limit ? input.limit : undefined,
-            offset: input.page ? input.page * (input.limit ? input.limit : 0) : undefined
-        })
-
+    const items = await db.transaction(async (tx) => {
+        const items = await tx
+            .select({
+                id: posts.id,
+                user: posts.user,
+                isArtist: posts.isArtist,
+                artistId: posts.artistId,
+                title: posts.title,
+                message: posts.message,
+                images: posts.images,
+                likers: posts.likers,
+                numLikes: posts.numLikes,
+                numComments: posts.numComments,
+                isEvent: posts.isEvent,
+                eventTime: posts.eventTime,
+                createdAt: posts.createdAt,
+                userHubsJoined: userStats.hubsJoined,
+                userNumPosts: userStats.numPosts,
+                userNumComments: userStats.numComments,
+                userNumLikes: userStats.numComments,
+            })
+            .from(posts)
+            .leftJoin(userStats, eq(userStats.userId, posts.user))
+            .where(and(eq(posts.artistId, input.artistId), and((input.artistPosts !== undefined ? eq(posts.isArtist, input.artistPosts) : undefined), gte(posts.createdAt, start))))
+            .orderBy(desc(posts.numLikes))
+            .limit(input.limit ? input.limit : 999999)
+            .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
         return items
-    }
-
-    const items = await db.query.posts.findMany({
-        where: and(eq(posts.artistId, input.artistId), gte(posts.createdAt, start)),
-        orderBy: desc(posts.numLikes),
-        limit: input.limit ? input.limit : undefined,
-        offset: input.page ? input.page * (input.limit ? input.limit : 0) : undefined
     })
 
-    return items
+    const result = []
+    for (const item of items) {
+        const user = await clerkClient.users.getUser(item.user)
+
+        item.userHubsJoined = item.userHubsJoined ?? []
+        item.userNumPosts = item.userNumPosts ?? 0
+        item.userNumComments = item.userNumComments ?? 0
+        item.userNumLikes = item.userNumLikes ?? 0
+
+        const info = {
+            id: item.id,
+            user: item.user,
+            isArtist: item.isArtist,
+            artistId: item.artistId,
+            title: item.title,
+            message: item.message,
+            images: item.images,
+            likers: item.likers,
+            numLikes: item.numLikes,
+            numComments: item.numComments,
+            isEvent: item.isEvent,
+            eventTime: item.eventTime,
+            createdAt: item.createdAt,
+            points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
+            username: user.username,
+            image: user.imageUrl,
+        }
+
+        result.push(info)
+    }
+
+    return result
+
+    // if (input.artistPosts !== undefined) {
+    //     const items = await db.query.posts.findMany({
+    //         where: and(eq(posts.artistId, input.artistId), and(eq(posts.isArtist, input.artistPosts), gte(posts.createdAt, start))),
+    //         orderBy: desc(posts.numLikes),
+    //         limit: input.limit ? input.limit : undefined,
+    //         offset: input.page ? input.page * (input.limit ? input.limit : 0) : undefined
+    //     })
+
+    //     return items
+    // }
+
+    // const items = await db.query.posts.findMany({
+    //     where: and(eq(posts.artistId, input.artistId), gte(posts.createdAt, start)),
+    //     orderBy: desc(posts.numLikes),
+    //     limit: input.limit ? input.limit : undefined,
+    //     offset: input.page ? input.page * (input.limit ? input.limit : 0) : undefined
+    // })
+
+    // return items
+}
+
+// gets the userId, username, and profile images of the person who made the post
+// input: postId of the post
+// return: id - clerk userId
+//         username - string username
+//         image - url of the users profile image
+//
+// not current: idk if we need it
+export async function getPostUserInfo(input: {
+    postId: number
+}) {
+    const post = await db.query.posts.findFirst({
+        where: eq(posts.id, input.postId)
+    })
+    if (!post) {
+        throw new Error("post not found")
+    }
+
+    const user = await clerkClient.users.getUser(post.user)
+    if (!user) {
+        throw new Error("user not found")
+    }
+
+    const info = {
+        id: user.id,
+        username: user.username,
+        image: user.imageUrl,
+    }
+
+    return info
 }
