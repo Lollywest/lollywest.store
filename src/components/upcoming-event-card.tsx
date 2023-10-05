@@ -1,4 +1,3 @@
-"use client"
 
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
@@ -13,17 +12,24 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import Link from "next/link"
+import { type Post } from "@/db/schema"
+import { cn, formatDate, toTitleCase } from "@/lib/utils"
 
 
-interface UpcomingEventPostProps {
-    title: string;
-    content: string;
-    date: string;
-    time: string;
+interface UpcomingEventPostProps extends React.HTMLAttributes<HTMLDivElement> {
+    post: Post
+    variant?: "default" | "switchable"
+    onSwitch?: () => Promise<void>
 }
 
-export function UpcomingEventCard({ title, content, date, time }: UpcomingEventPostProps) {
+export async function UpcomingEventCard({
+    post,
+    variant = "default",
+    onSwitch,
+    className,
 
+    ...props
+}: UpcomingEventPostProps) {
     return (
         <Card className="grid rounded-xl my-4 ">
             <Link
@@ -36,7 +42,7 @@ export function UpcomingEventCard({ title, content, date, time }: UpcomingEventP
 
                     <div className="flex items-center gap-4">
                         <div className="flex-1 ">
-                            <CardTitle className="text-xl">{title}</CardTitle>
+                            <CardTitle className="text-xl">{post.title}</CardTitle>
                         </div>
                         <Icons.chevronRight
                             className="mr-2 h-10 w-10 "
@@ -47,8 +53,7 @@ export function UpcomingEventCard({ title, content, date, time }: UpcomingEventP
 
                     <CardDescription className="">
                         <div className="flex items-center gap-4">
-                            <p>{date}</p>
-                            <p>{time}</p>
+                            <p>{formatDate(post.createdAt!)}</p>
                         </div>
                     </CardDescription>
                 </CardHeader>

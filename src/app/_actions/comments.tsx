@@ -312,14 +312,14 @@ export async function getAllCommentsAction(input: {
         item.userNumLikes = item.userNumLikes ?? 0
 
         const info = {
-            id: comments.id,
-            user: comments.user,
-            postId: comments.postId,
-            replyingTo: comments.replyingTo,
-            numReplies: comments.numReplies,
-            message: comments.message,
-            likers: comments.likers,
-            createdAt: comments.createdAt,
+            id: item.id,
+            user: item.user,
+            postId: item.postId,
+            replyingTo: item.replyingTo,
+            numReplies: item.numReplies,
+            message: item.message,
+            likers: item.likers,
+            createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
             username: user.username,
             image: user.imageUrl,

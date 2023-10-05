@@ -12,8 +12,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { NewArtistPostForm } from "@/components/forms/new-artist-post-form"
 import { Icons } from "@/components/icons"
+import { type Post } from "@/db/schema"
 
-export function NewArtistPostDialog() {
+interface NewArtistPostDialogProps extends React.HTMLAttributes<HTMLDivElement> {
+
+  artistId: number
+}
+
+
+export default async function NewArtistPostDialog({ artistId }: NewArtistPostDialogProps) {
+  // const artistId = Number(params.artistId)
+
   return (
     <Dialog >
       <DialogTrigger asChild>
@@ -33,7 +42,7 @@ export function NewArtistPostDialog() {
         </DialogHeader>
 
         {/* //////////////////    change artist ids     ////////////////// */}
-        <NewArtistPostForm artistId={1} />
+        <NewArtistPostForm artistId={artistId} />
 
         {/* <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
