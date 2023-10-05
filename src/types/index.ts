@@ -114,3 +114,68 @@ export const SponsorInfoSchema = z.object({
 })
 
 export type SponsorInfo = z.infer<typeof SponsorInfoSchema>
+
+export const GetPostReturnSchema = z.object({
+  id: z.number(),
+  user: z.string(),
+  isArtist: z.boolean().default(false),
+  artistId: z.number(),
+  title: z.string(),
+  message: z.string(),
+  images: z
+    .unknown()
+    .refine((val) => {
+      if (!Array.isArray(val)) return false
+      if (val.some((file) => !(file instanceof File))) return false
+      return true
+    }, "Must be an array of File")
+    .optional()
+    .nullable()
+    .default(null),
+  likers: z
+    .unknown()
+    .refine((val) => {
+      if (!Array.isArray(val)) return false
+      if (val.some((str) => !(str instanceof String))) return false
+      return true
+    }, "Must be an array of Strings")
+    .optional()
+    .nullable()
+    .default(null),
+  numLikes: z.number().default(0),
+  numComments: z.number().default(0),
+  isEvent: z.boolean().default(false),
+  eventTime: z.date().nullable(),
+  isPremium: z.boolean().default(false),
+  createdAt: z.date().nullable(),
+  points: z.number(),
+  username: z.string(),
+  image: z.string(),
+})
+
+export type GetPostReturn = z.infer<typeof GetPostReturnSchema>
+
+export const GetCommentReturnSchema = z.object({
+  id: z.number(),
+  user: z.string(),
+  postId: z.number(),
+  replyingTo: z.number().optional().nullable().default(null),
+  numReplies: z.number().default(0),
+  message: z.string(),
+  likers: z
+    .unknown()
+    .refine((val) => {
+      if (!Array.isArray(val)) return false
+      if (val.some((str) => !(str instanceof String))) return false
+      return true
+    }, "Must be an array of Strings")
+    .optional()
+    .nullable()
+    .default(null),
+  createdAt: z.date().nullable(),
+  points: z.number().default(0),
+  username: z.string(),
+  image: z.string(),
+})
+
+export type GetCommentReturn = z.infer<typeof GetCommentReturnSchema>

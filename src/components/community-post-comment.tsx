@@ -18,11 +18,12 @@ import { LikeIconToggle } from "@/components/like-toggle"
 import { CommentToggleForm } from "@/components/comment-toggle"
 import { type Comment } from "@/db/schema"
 import { cn, formatDate, toTitleCase } from "@/lib/utils"
+import type { GetCommentReturn } from "@/types"
 
 // add interface/params
 
 interface CommunityPostCommentProps extends React.HTMLAttributes<HTMLDivElement> {
-    comment: Comment
+    comment: GetCommentReturn
     variant?: "default" | "switchable"
     onSwitch?: () => Promise<void>
     // title: string;

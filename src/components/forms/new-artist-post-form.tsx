@@ -56,6 +56,7 @@ const formSchema = z.object({
         .nullable()
         .default(null),
     isEvent: z.boolean().default(false),
+    isPremium: z.boolean().default(false),
     eventDate: z.date().optional(),
     eventTime: z.string().optional(),
 })
@@ -112,6 +113,7 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
                 images: images,
                 isEvent: isEvent,
                 eventTime: data.eventDate ? data.eventDate : null,
+                isPremium: data.isPremium,
             })
 
             toast.success("Post Sent")
@@ -261,6 +263,29 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
                         message={form.formState.errors.images?.message}
                     />
                 </FormItem>
+                <FormField
+                    control={form.control}
+                    name="isPremium"
+                    render={({ field }) => (
+                        <FormItem >
+                            <FormControl>
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                    />
+                                    <label
+                                        htmlFor="event"
+                                        className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Make this post for premium members only?
+                                    </label>
+                                </div>
+                            </FormControl>
+
+                        </FormItem>
+                    )}
+                />
                 <Button className="w-fit" disabled={isPending}>
                     {isPending && (
                         <Icons.spinner

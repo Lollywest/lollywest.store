@@ -27,6 +27,7 @@ export async function addArtistPostAction(input: {
     images: StoredFile[] | null,
     isEvent: boolean,
     eventTime: Date | null,
+    isPremium: boolean,
 }) {
     const user = await currentUser()
     if (!user) {
@@ -64,7 +65,8 @@ export async function addArtistPostAction(input: {
         likers: null,
         numComments: 0,
         isEvent: input.isEvent,
-        eventTime: input.eventTime ? input.eventTime : undefined
+        eventTime: input.eventTime ? input.eventTime : undefined,
+        isPremium: input.isPremium,
     }
 
     if (!userInfo) {
@@ -335,6 +337,7 @@ export async function getArtistPostsAction(input: {
                 numComments: posts.numComments,
                 isEvent: posts.isEvent,
                 eventTime: posts.eventTime,
+                isPremium: posts.isPremium,
                 createdAt: posts.createdAt,
                 userHubsJoined: userStats.hubsJoined,
                 userNumPosts: userStats.numPosts,
@@ -379,10 +382,11 @@ export async function getArtistPostsAction(input: {
             numComments: item.numComments,
             isEvent: item.isEvent,
             eventTime: item.eventTime,
+            isPremium: item.isPremium,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: user.username,
-            image: user.imageUrl,
+            username: user.username ? user.username : "[deleted]",
+            image: user.imageUrl ? user.imageUrl : "/images/product-placeholder.webp",
         }
 
         result.push(info)
@@ -417,6 +421,7 @@ export async function getCommunityPostsAction(input: {
                 numComments: posts.numComments,
                 isEvent: posts.isEvent,
                 eventTime: posts.eventTime,
+                isPremium: posts.isPremium,
                 createdAt: posts.createdAt,
                 userHubsJoined: userStats.hubsJoined,
                 userNumPosts: userStats.numPosts,
@@ -454,10 +459,11 @@ export async function getCommunityPostsAction(input: {
             numComments: item.numComments,
             isEvent: item.isEvent,
             eventTime: item.eventTime,
+            isPremium: item.isPremium,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: user.username,
-            image: user.imageUrl,
+            username: user.username ? user.username : "[deleted]",
+            image: user.imageUrl ? user.imageUrl : "/images/product-placeholder.webp",
         }
 
         result.push(info)
@@ -565,6 +571,7 @@ export async function getTopPostsAction(input: {
                 numComments: posts.numComments,
                 isEvent: posts.isEvent,
                 eventTime: posts.eventTime,
+                isPremium: posts.isPremium,
                 createdAt: posts.createdAt,
                 userHubsJoined: userStats.hubsJoined,
                 userNumPosts: userStats.numPosts,
@@ -602,10 +609,11 @@ export async function getTopPostsAction(input: {
             numComments: item.numComments,
             isEvent: item.isEvent,
             eventTime: item.eventTime,
+            isPremium: item.isPremium,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: user.username,
-            image: user.imageUrl,
+            username: user.username ? user.username : "[deleted]",
+            image: user.imageUrl ? user.imageUrl : "/images/product-placeholder.webp",
         }
 
         result.push(info)
