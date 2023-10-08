@@ -15,21 +15,26 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 
+interface ArtistDashboardNavProps extends React.HTMLAttributes<HTMLDivElement> {
 
-export function ArtistDashboardNav() {
+    artistId: number
+}
+
+export default function ArtistDashboardNav({ artistId }: ArtistDashboardNavProps) {
+
     return (
         <NavigationMenu className="inline-flex h-10 items-center justify-center rounded border-2 border-gray-350 p-1 text-muted-foreground">
             <NavigationMenuList className="gap-4">
 
                 <NavigationMenuItem>
-                    <Link href="/artist-dashboard-page" legacyBehavior passHref>
+                    <Link href={`/artist-dashboard-page/${artistId}`} legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Home
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link href="/artist-community-page" legacyBehavior passHref>
+                    <Link href={`/artist-community-page/${artistId}`} legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Community
                         </NavigationMenuLink>

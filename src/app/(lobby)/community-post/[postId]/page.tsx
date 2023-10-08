@@ -23,7 +23,7 @@ import { ProductImageCarousel } from "@/components/product-image-carousel"
 import { Shell } from "@/components/shells/shell"
 import { WrapProductCard } from "@/components/wrap-product-card"
 import { SponsorProductCard } from "@/components/sponsor-product-card"
-import { getAllCommentsAction } from "@/app/_actions/comments"
+import { getAllCommentsAction, getCommentRepliesAction } from "@/app/_actions/comments"
 import { CommunityPostComment } from "@/components/community-post-comment"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
@@ -73,10 +73,12 @@ export default async function PostPage({ params }: PostPageProps) {
   //       )
   //     )
   //     : []
+
   const allCommunityPostComments = await getAllCommentsAction({
     postId,
-
   })
+
+
 
   return (
     <Shell>
