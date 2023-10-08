@@ -88,6 +88,7 @@ export const artists = mysqlTable("artists", {
     userId: varchar("userId", { length: 191 }).notNull(),
     name: varchar("name", { length: 191 }).notNull(),
     description: text("description"),
+    premiumDescription: text("premiumDescription"),
     images: json("image").$type<StoredFile[] | null>().default(null),
     products: json("products").$type<number[] | null>().default(null),
     createdAt: timestamp("createdAt").defaultNow(),
@@ -202,8 +203,9 @@ export const posts = mysqlTable("posts", {
   likers: json("likers").$type<string[] | null>().default(null),
   numLikes: int("numLikes").notNull().default(0),
   numComments: int("numComments").notNull().default(0),
-  isEvent: boolean("isEvent").default(false),
+  isEvent: boolean("isEvent").notNull().default(false),
   eventTime: timestamp("eventTime").defaultNow(),
+  isPremium: boolean("isPremium").notNull().default(false),
   createdAt: timestamp("createdAt").defaultNow()
 })
 

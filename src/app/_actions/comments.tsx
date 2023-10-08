@@ -321,8 +321,8 @@ export async function getAllCommentsAction(input: {
             likers: item.likers,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: user.username,
-            image: user.imageUrl,
+            username: user.username ? user.username : "[deleted]",
+            image: user.imageUrl ? user.imageUrl : "/images/product-placeholder.webp",
         }
 
         result.push(info)
@@ -388,8 +388,8 @@ export async function getCommentRepliesAction(input: {
             likers: comments.likers,
             createdAt: comments.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: user.username,
-            image: user.imageUrl,
+            username: user.username ? user.username : "[deleted]",
+            image: user.imageUrl ? user.imageUrl : "/images/product-placeholder.webp",
         }
 
         result.push(info)

@@ -24,11 +24,12 @@ import {
     AvatarImage,
 } from "@/components/ui/avatar"
 import { User } from "@clerk/nextjs/dist/types/server"
+import type { GetCommentReturn } from "@/types"
 
 // add interface/params
 
 interface CommunityPostCommentProps extends React.HTMLAttributes<HTMLDivElement> {
-    comment: any
+    comment: GetCommentReturn
     variant?: "default" | "switchable"
     onSwitch?: () => Promise<void>
     // title: string;

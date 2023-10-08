@@ -199,7 +199,7 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
                                                 <AccordionTrigger>1. Be respectful at all times</AccordionTrigger>
                                                 <AccordionContent>
                                                     Do not make personal attacks, insult, or demean a specific group or person. Do not use slurs without relevant context and quotes. 
-                                                    No blatant statements of bigotry. No posts that 'bait' users into breaking other rules. Zero tolerance for posts/comments that sexualize minors. 
+                                                    No blatant statements of bigotry. No posts that &apos;bait&apos; users into breaking other rules. Zero tolerance for posts/comments that sexualize minors. 
                                                     Zero tolerance for posts/comments that encourage suicide
                                                 </AccordionContent>
                                                 </AccordionItem>
@@ -213,7 +213,7 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
                                                 </AccordionTrigger>
                                                 <AccordionContent>
                                                 Do not post or seek any real or fake personal information (examples include: full names, phone numbers, email addresses, or social media accounts). 
-                                                Only link another user's comment when it is relevant and never when it is to launch a personal attack or encourage others to do so. 
+                                                Only link another user&apos;s comment when it is relevant and never when it is to launch a personal attack or encourage others to do so. 
                                                 Do not ask questions designed to target specific usernames or links to social media. 
                                                 </AccordionContent>
                                                 </AccordionItem>
