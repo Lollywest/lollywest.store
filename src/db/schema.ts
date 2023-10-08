@@ -89,6 +89,7 @@ export const artists = mysqlTable("artists", {
     name: varchar("name", { length: 191 }).notNull(),
     description: text("description"),
     premiumDescription: text("premiumDescription"),
+    links: json("links").$type<string[] | null>().default(null),
     images: json("image").$type<StoredFile[] | null>().default(null),
     products: json("products").$type<number[] | null>().default(null),
     createdAt: timestamp("createdAt").defaultNow(),
@@ -251,10 +252,15 @@ export type Report = InferModel<typeof reports>
 
 export const userStats = mysqlTable("userStats", {
   userId: varchar("user", { length: 191 }).notNull(),
+  username: text("username"),
+  firstName: text("firstName"),
+  lastName: text("lastName"),
+  image: text("image"),
   hubsJoined: json("hubsJoined").$type<HubJoinInfo[] | null>().default(null),
   premiumHubs: json("premiumHubs").$type<number[] | null>().default(null),
   sponsorAmounts: json("sponsorAmounts").$type<SponsorInfo[] | null>().default(null),
   numLikes: int("numLikes").notNull().default(0),
   numComments: int("numComments").notNull().default(0),
   numPosts: int("numPosts").notNull().default(0),
+  updatedAt: timestamp("updatedAt").defaultNow(),
 })

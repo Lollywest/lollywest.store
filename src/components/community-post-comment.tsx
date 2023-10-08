@@ -142,7 +142,7 @@ export function CommunityPostComment({
                     </Button> */}
 
                     <div className="flex-1 flex ">
-                        <LikeIconToggle postId={comment.id} />
+                        <LikeIconToggle postId={comment.id} liked={comment.likedByUser} />
                         <div className="flex-1 ">
                             <CommentToggleForm postId={comment.postId} />
                         </div>

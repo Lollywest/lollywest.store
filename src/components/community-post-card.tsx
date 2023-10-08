@@ -30,9 +30,10 @@ import { CommentToggleForm } from "@/components/comment-toggle"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
 import Link from "next/link"
+import { GetPostReturn } from "@/types"
 
 interface CommunityPostProps extends React.HTMLAttributes<HTMLDivElement> {
-    post: Post
+    post: GetPostReturn
     variant?: "default" | "switchable"
     onSwitch?: () => Promise<void>
     // title: string;
@@ -142,7 +143,7 @@ export async function CommunityPostCard({
                     </div>
 
                     <div className=" flex items-center ">
-                        <LikeIconToggle postId={post.id} />
+                        <LikeIconToggle postId={post.id} liked={post.likedByUser} />
                         <span className=" pr-8"> {post.numLikes}</span>
                         <Link
                             aria-label={`View all comments`}

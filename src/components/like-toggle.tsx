@@ -7,13 +7,14 @@ import Image from "next/image"
 import { removeLikePostAction, likePostAction, hasUserLikedPost } from "src/app/_actions/post"
 
 interface LikeIconToggleProps {
-    postId: number;
+    postId: number,
+    liked: boolean,
 }
 
 
-export function LikeIconToggle({ postId }: LikeIconToggleProps) {
+export function LikeIconToggle({ postId, liked }: LikeIconToggleProps) {
     // const [iconState, setIconState] = React.useState("plus"); 
-    const [iconState, setIconState] = React.useState("minus")
+    const [iconState, setIconState] = React.useState(liked ? "plus" : "minus")
 
     const handleToggle = async () => {
         if (iconState === "plus") {
@@ -24,13 +25,6 @@ export function LikeIconToggle({ postId }: LikeIconToggleProps) {
             setIconState("plus");
         }
     }
-
-    React.useEffect(() => {
-        (async () => {
-            const liked = await hasUserLikedPost(postId);
-            setIconState(liked ? "plus" : "minus");
-        })();
-    }, [postId]);
 
     return (
         <Button

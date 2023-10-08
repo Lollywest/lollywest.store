@@ -48,10 +48,10 @@ import {
 
 import { EventCalendar } from "@/components/event-calendar"
 
-export const metadata: Metadata = {
-    title: "Artist Dashboard Page",
-    description: "Artist Dashboard",
-}
+// export const metadata: Metadata = {
+//     title: "Artist Dashboard Page",
+//     description: "Artist Dashboard",
+// }
 
 // change props
 interface ArtistDashboardPageProps {

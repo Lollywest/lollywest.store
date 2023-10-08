@@ -38,6 +38,7 @@ import { ViewUserPosts } from "@/components/view-user-posts"
 
 import { db } from "@/db"
 import { posts, comments, artists } from "@/db/schema"
+import { getCommunityPostsAction } from "@/app/_actions/post"
 
 
 export const metadata: Metadata = {
@@ -53,11 +54,7 @@ interface ArtistCommunityPageProps {
 }
 
 export default async function ArtistCommunityPage({ params }: ArtistCommunityPageProps) {
-    const allCommunityPosts = await db
-        .select()
-        .from(posts)
-        //.limit(4)
-        .orderBy(desc(posts.createdAt))
+    const allCommunityPosts = await getCommunityPostsAction({artistId: Number(params.artistId)})
 
     // const [posts, setPosts] = useState([
     //     { title: "Example Community Post 1", content: "I've received so many messages from you all, asking about my songwriting process. Well, today's the day I'm sharing some behind-the-scenes magic.Every song, to me, begins as an emotion. Maybe it's a flash of a memory, a line from a conversation, or a feeling from a dream. I usually start with humming a melody or tapping out a rhythm. From there, it's a journey of discovery, navigating the chords and finding the story I want to tell.", date: "10/31/2024", time: "4:24 AM" },

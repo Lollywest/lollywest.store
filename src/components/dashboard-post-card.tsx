@@ -69,7 +69,7 @@ export function DashboardPostCard({ title, content, date, time }: DashboardPostP
 
                     {/* UPDATE */}
 
-                    {/* <LikeIconToggle postId={post.id} /> */}
+                    {/* <LikeIconToggle postId={post.id} liked={post.likedByUser} /> */}
                     {/* Add like Quantity */}
                     <span className="pl-1">134 </span>
 
