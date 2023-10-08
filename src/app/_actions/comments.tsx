@@ -284,7 +284,7 @@ export async function getAllCommentsAction(input: {
                 userHubsJoined: userStats.hubsJoined,
                 userNumPosts: userStats.numPosts,
                 userNumComments: userStats.numComments,
-                userNumLikes: userStats.numComments,
+                userNumLikes: userStats.numLikes,
             })
             .from(comments)
             .leftJoin(userStats, eq(userStats.userId, comments.user))
