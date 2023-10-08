@@ -26,6 +26,9 @@ import { posts, comments, artists } from "@/db/schema"
 import { desc } from "drizzle-orm"
 import { eq } from "drizzle-orm"
 import { getAllCommentsAction } from "@/app/_actions/comments"
+import { getPostUserInfo } from "@/app/_actions/post"
+import { getCommunityPostsAction } from "@/app/_actions/post"
+
 import { CommentToggleForm } from "@/components/comment-toggle"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
@@ -63,6 +66,16 @@ export async function CommunityPostCard({
         limit,
     })
 
+    // const CommunityPostUserInfo = await getPostUserInfo({
+    //     postId,
+    // })
+
+    ///////////      change artistId    ///////////////////
+    const artistId = post.artistId
+    const CommunityPostUserInfo = await getCommunityPostsAction({
+        artistId,
+    })
+
 
     // const allCommunityPostComments = await db.query.artists.findFirst({
     //     columns: {
@@ -90,7 +103,8 @@ export async function CommunityPostCard({
                     <div className="flex-1 ">
                         <CardTitle className="text-xl ">{post.title}</CardTitle>
                     </div>
-                    <UserProfileBadge />
+                    <UserProfileBadge user={CommunityPostUserInfo} />
+                    {/* {CommunityPostUserInfo.points} */}
                 </div>
 
             </CardHeader>

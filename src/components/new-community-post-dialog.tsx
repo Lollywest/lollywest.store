@@ -13,7 +13,13 @@ import { Label } from "@/components/ui/label"
 import { NewCommunityPostForm } from "@/components/forms/new-community-post-form"
 import { Icons } from "@/components/icons"
 
-export function NewCommunityPostDialog() {
+interface NewCommunityPostDialogProps extends React.HTMLAttributes<HTMLDivElement> {
+
+    artistId: number
+}
+
+export default async function NewCommunityPostDialog({ artistId }: NewCommunityPostDialogProps) {
+
     return (
         <Dialog >
             <DialogTrigger asChild>
@@ -33,7 +39,7 @@ export function NewCommunityPostDialog() {
                 </DialogHeader>
 
                 {/* //////////////////    change artist ids     ////////////////// */}
-                <NewCommunityPostForm artistId={1} />
+                <NewCommunityPostForm artistId={artistId} />
 
 
             </DialogContent>

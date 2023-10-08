@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { db } from "@/db"
 //import { products, stores } from "@/db/schema"
-import { products, upcoming } from "@/db/schema"
+import { products, upcoming, artists } from "@/db/schema"
 
 import { desc } from "drizzle-orm"
 //import Balance from "react-wrap-balancer"
@@ -19,9 +19,18 @@ import { UpcomingDeckCard } from "@/components/upcoming-deck-card"
 
 import { Shell } from "@/components/shells/shell"
 
-import SimpleSlider  from "@/components/HomePageCarousel"
-import "slick-carousel/slick/slick.css"; 
+import SimpleSlider from "@/components/HomePageCarousel"
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { formatDate, toTitleCase } from "@/lib/utils"
 
 // Running out of edge function execution units on vercel free plan
 // export const runtime = "edge"
@@ -43,15 +52,21 @@ export default async function IndexPage() {
     .limit(4)
     .orderBy(desc(upcoming.createdAt))
 
+  const allArtistCommunities = await db
+    .select()
+    .from(artists)
+    .limit(12)
+    .orderBy(desc(artists.createdAt))
+
   return (
     <Shell as="div" className="gap-12">
 
-      <section className="mx-auto w-full justify-center overflow-hidden rounded-lg">  
+      <section className="mx-auto w-full justify-center overflow-hidden rounded-lg">
         <div >
-            <SimpleSlider />
-          </div>
+          <SimpleSlider />
+        </div>
       </section>
-      
+
       <section
         id="featured-products"
         aria-labelledby="featured-products-heading"
@@ -86,8 +101,8 @@ export default async function IndexPage() {
             ) : (
               <ProductCard key={product.id} product={product} />
             )
-              
-          
+
+
           ))}
         </div>
       </section>
@@ -97,9 +112,9 @@ export default async function IndexPage() {
         className="space-y-6"
       >
         <div className="flex items-center">
-        <h2 className="text-2xl font-medium sm:text-3xl">Upcoming Drops</h2>
+          <h2 className="text-2xl font-medium sm:text-3xl">Upcoming Drops</h2>
         </div>
-            
+
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {allUpcoming.map((upcomingProducts) => (
             // <UpcomingCard key={upcomingProducts.id} upcomingProducts={upcomingProducts} />
@@ -115,9 +130,54 @@ export default async function IndexPage() {
 
           ))}
         </div>
-        
+
       </section>
-    
+      <section
+        id="artist-communities"
+        aria-labelledby="upcoming-stores-heading"
+        className="space-y-6"
+      >
+        <div className="flex items-center">
+          <h2 className="text-2xl font-medium sm:text-3xl">Artist Communities</h2>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {allArtistCommunities.map((artist) => (
+
+            <Card className="grid rounded-xl my-4 ">
+              <Link
+                aria-label={`View details`}
+                //   href={`//${artist.id}`}
+                href={`/artist-dashboard-page/${artist.id}`}
+              >
+                <CardHeader>
+
+
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1 ">
+                      <CardTitle className="text-xl">{artist.name}</CardTitle>
+                    </div>
+                    {/* <Icons.chevronRight
+                            className="mr-2 h-10 w-10 "
+                            aria-hidden="true"
+                        /> */}
+                  </div>
+
+
+                  <CardDescription className="">
+                    <div className="flex items-center gap-4">
+                      <p> Created on {formatDate(artist.createdAt!)}</p>
+                    </div>
+                  </CardDescription>
+                </CardHeader>
+                {/* <CardContent  >        
+        </CardContent> */}
+              </Link>
+            </Card>
+          ))}
+        </div>
+
+      </section>
     </Shell>
   )
 }

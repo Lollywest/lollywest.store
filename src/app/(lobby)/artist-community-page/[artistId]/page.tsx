@@ -30,14 +30,15 @@ import Link from "next/link"
 import { LikeIconToggle } from "@/components/like-toggle"
 import { UpcomingEventCard } from "@/components/upcoming-event-card"
 import { AddPostPopover } from "@/components/add-post-popover"
-import { ArtistDashboardNav } from "@/components/layouts/artist-dashboard-nav"
+import ArtistDashboardNav from "@/components/layouts/artist-dashboard-nav"
 import { CommunityPostCard } from "@/components/community-post-card"
-import { NewArtistPostDialog } from "@/components/new-artist-post-dialog"
-import { NewCommunityPostDialog } from "@/components/new-community-post-dialog"
+// import { NewArtistPostDialog } from "@/components/new-artist-post-dialog"
+import NewCommunityPostDialog from "@/components/new-community-post-dialog"
 import { ViewUserPosts } from "@/components/view-user-posts"
 
 import { db } from "@/db"
 import { posts, comments, artists } from "@/db/schema"
+import { getCommunityPostsAction } from "@/app/_actions/post"
 
 
 export const metadata: Metadata = {
@@ -53,11 +54,22 @@ interface ArtistCommunityPageProps {
 }
 
 export default async function ArtistCommunityPage({ params }: ArtistCommunityPageProps) {
-    const allCommunityPosts = await db
-        .select()
-        .from(posts)
-        //.limit(4)
-        .orderBy(desc(posts.createdAt))
+    const artistId = Number(params.artistId)
+
+    //////////////////////////////////////////  change to artists info     ///////////////////////////////////////
+    // const allCommunityPosts = await db
+    //     .select()
+    //     .from(posts)
+    //     //.limit(4)
+    //     .orderBy(desc(posts.createdAt))
+    const allCommunityPosts = await getCommunityPostsAction({
+        artistId,
+        // limit,
+    })
+    // const allArtistInfo = await db
+    //     .select()
+    //     .from(artists)
+    //     .where(eq(artists.id, artistId))
 
     // const [posts, setPosts] = useState([
     //     { title: "Example Community Post 1", content: "I've received so many messages from you all, asking about my songwriting process. Well, today's the day I'm sharing some behind-the-scenes magic.Every song, to me, begins as an emotion. Maybe it's a flash of a memory, a line from a conversation, or a feeling from a dream. I usually start with humming a melody or tapping out a rhythm. From there, it's a journey of discovery, navigating the chords and finding the story I want to tell.", date: "10/31/2024", time: "4:24 AM" },
@@ -74,6 +86,7 @@ export default async function ArtistCommunityPage({ params }: ArtistCommunityPag
                     {/*//////////////////    START OF HEADER      ////////////////////////*/}
                     <div className="flex flex-col items-center">
 
+                        {/* /////////////////////    update to artist info  //////////////////////////// */}
                         <div className="relative">
                             <Image
                                 className="rounded-xl"
@@ -126,14 +139,14 @@ export default async function ArtistCommunityPage({ params }: ArtistCommunityPag
 
                         <h2 className="mt-3 text-3xl font-bold tracking-tight">Artist</h2>
                         <p className="text-muted-foreground">Artist Description or community description, etc. Artist Description or community description, etc.</p>
-                        <ArtistDashboardNav />
+                        <ArtistDashboardNav artistId={artistId} />
                     </div>
 
                     {/*//////////////////    END OF HEADER      ////////////////////////*/}
 
                     <div className="flex items-center gap-2">
                         <div className="flex-1 space-x-6">
-                            <NewCommunityPostDialog />
+                            <NewCommunityPostDialog artistId={artistId} />
 
                             <ViewUserPosts />
                         </div>
