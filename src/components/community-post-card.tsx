@@ -18,14 +18,14 @@ import { Separator } from "@/components/ui/separator"
 import { NewCommentForm } from "@/components/forms/new-comment-form"
 import { UserAvatar } from "@/components/user-avatar"
 import { CommunityPostComment } from "@/components/community-post-comment"
-import { cn, formatDate, toTitleCase } from "@/lib/utils"
+import { cn, formatDate, formatTime, toTitleCase } from "@/lib/utils"
 
 import { type Post } from "@/db/schema"
 import { db } from "@/db"
 import { posts, comments, artists } from "@/db/schema"
 import { desc } from "drizzle-orm"
 import { eq } from "drizzle-orm"
-import { getAllCommentsAction } from "@/app/_actions/comments"
+import { getAllCommentsAction, getCommentRepliesAction } from "@/app/_actions/comments"
 import { getPostUserInfo } from "@/app/_actions/post"
 import { getCommunityPostsAction } from "@/app/_actions/post"
 
@@ -65,6 +65,7 @@ export async function CommunityPostCard({
         postId,
         limit,
     })
+
 
     // const CommunityPostUserInfo = await getPostUserInfo({
     //     postId,
@@ -150,7 +151,7 @@ export async function CommunityPostCard({
                             <div className="flex items-center gap-4">
                                 {/* </div>p>{date}</p> */}
                                 <p>{formatDate(post.createdAt!)}</p>
-                                <p> </p>
+                                <p> {formatTime(post.createdAt!)}</p>
                             </div>
                         </CardDescription>
                     </div>

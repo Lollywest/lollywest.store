@@ -59,7 +59,7 @@ export function NewCommentReplyForm({ commentId }: newCommentReplyProps) {
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Textarea className="h-10" placeholder="Join the conversation..." {...field} />
+                                <Textarea className="h-10" placeholder="Reply to community member..." {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
