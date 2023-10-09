@@ -20,7 +20,7 @@ import Link from "next/link"
 import { Separator } from "@/components/ui/separator"
 import { getAllCommentsAction } from "@/app/_actions/comments"
 import { CommunityPostComment } from "@/components/community-post-comment"
-
+import { GetPostReturn } from "@/types"
 
 // interface DashboardPostProps {
 //     title: string;
@@ -29,7 +29,7 @@ import { CommunityPostComment } from "@/components/community-post-comment"
 //     time: string;
 // }
 interface DashboardPostProps extends React.HTMLAttributes<HTMLDivElement> {
-    post: Post
+    post: GetPostReturn
     variant?: "default" | "switchable"
     onSwitch?: () => Promise<void>
     // title: string;
@@ -130,7 +130,7 @@ export async function DashboardPostCard({
                     </div>
 
                     <div className=" flex items-center ">
-                        <LikeIconToggle postId={post.id} />
+                        <LikeIconToggle postId={post.id} liked={post.likedByUser}/>
                         <span className=" pr-8"> {post.numLikes}</span>
                         <Link
                             aria-label={`View all comments`}

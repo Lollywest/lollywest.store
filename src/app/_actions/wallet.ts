@@ -183,11 +183,31 @@ export async function updateUsernameAction(input: {
         throw new Error("user not found")
     }
 
-    try {
-        await clerkClient.users.updateUser(curuser.id, input)
-    } catch (err) {
-        catchClerkError(err)
+    const userInfo = await db.query.userStats.findFirst({
+        where: eq(userStats.userId, curuser.id)
+    })
+
+    if(!userInfo) {
+        const newUserInfo = {
+            userId: curuser.id,
+            username: input.username,
+            firstName: input.firstName,
+            lastName: input.lastName,
+            image: curuser.imageUrl,
+        }
+
+        await db.insert(userStats).values(newUserInfo)
+
+        return
     }
+
+    userInfo.username = input.username
+    userInfo.firstName = input.firstName
+    userInfo.lastName = input.lastName
+    userInfo.image = curuser.imageUrl
+    userInfo.updatedAt = new Date()
+
+    await db.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
 }
 
 export async function checkUsernameAction() {
@@ -197,7 +217,11 @@ export async function checkUsernameAction() {
         return(false)
     }
 
-    if(!user.username) {
+    const userInfo = await db.query.userStats.findFirst({
+        where: eq(userStats.userId, user.id)
+    })
+
+    if(!userInfo || !userInfo.username) {
         return(false)
     }
 

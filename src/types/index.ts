@@ -151,6 +151,7 @@ export const GetPostReturnSchema = z.object({
   points: z.number(),
   username: z.string(),
   image: z.string(),
+  likedByUser: z.boolean().default(false),
 })
 
 export type GetPostReturn = z.infer<typeof GetPostReturnSchema>
@@ -176,6 +177,7 @@ export const GetCommentReturnSchema = z.object({
   points: z.number().default(0),
   username: z.string(),
   image: z.string(),
+  likedByUser: z.boolean().default(false),
 })
 
 export type GetCommentReturn = z.infer<typeof GetCommentReturnSchema>

@@ -156,9 +156,13 @@ export async function likeCommentAction(input: {
         const comment = await tx.query.comments.findFirst({
             where: eq(comments.id, input.commentId)
         })
+        
+        if (!comment) {
+            throw new Error("comment not found")
+        }
 
         const userInfo = await tx.query.userStats.findFirst({
-            where: eq(userStats.userId, user.id)
+            where: eq(userStats.userId, comment.user)
         })
 
         return {
@@ -166,10 +170,6 @@ export async function likeCommentAction(input: {
             userInfo
         }
     })
-
-    if (!comment) {
-        throw new Error("comment not found")
-    }
 
     if (!comment.likers || !comment.likers.length) {
         comment.likers = [user.id]
@@ -179,7 +179,7 @@ export async function likeCommentAction(input: {
 
     if (!userInfo) {
         const newUserInfo = {
-            userId: user.id,
+            userId: comment.user,
             numLikes: 1
         }
 
@@ -215,8 +215,12 @@ export async function removeLikeCommentAction(input: {
             where: eq(comments.id, input.commentId)
         })
 
+        if (!comment) {
+            throw new Error("comment not found")
+        }
+
         const userInfo = await tx.query.userStats.findFirst({
-            where: eq(userStats.userId, user.id)
+            where: eq(userStats.userId, comment.user)
         })
 
         return {
@@ -225,9 +229,6 @@ export async function removeLikeCommentAction(input: {
         }
     })
 
-    if (!comment) {
-        throw new Error("comment not found")
-    }
     if (!comment.likers) { return }
 
     const idx = comment.likers.indexOf(user.id)
@@ -237,7 +238,7 @@ export async function removeLikeCommentAction(input: {
 
     if (!userInfo) {
         const newUserInfo = {
-            userId: user.id,
+            userId: comment.user,
             numLikes: 0,
         }
 
@@ -270,6 +271,11 @@ export async function getAllCommentsAction(input: {
     limit?: number,
     page?: number
 }) {
+    const curuser = await currentUser()
+    if (!curuser) {
+        throw new Error("user not found")
+    }
+
     const items = await db.transaction(async (tx) => {
         const items = await tx
             .select({
@@ -281,10 +287,13 @@ export async function getAllCommentsAction(input: {
                 message: comments.message,
                 likers: comments.likers,
                 createdAt: comments.createdAt,
+                username: userStats.username,
+                image: userStats.image,
                 userHubsJoined: userStats.hubsJoined,
                 userNumPosts: userStats.numPosts,
                 userNumComments: userStats.numComments,
-                userNumLikes: userStats.numLikes,
+                userNumLikes: userStats.numComments,
+                updatedAt: userStats.updatedAt,
             })
             .from(comments)
             .leftJoin(userStats, eq(userStats.userId, comments.user))
@@ -301,10 +310,21 @@ export async function getAllCommentsAction(input: {
     //     limit: input.limit ? input.limit : undefined,
     //     offset: input.page ? input.page * (input.limit ? input.limit : 0) : undefined
     // })
+    const weekAgo = new Date()
+    weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
+    const now = new Date()
 
     const result = []
     for (const item of items) {
-        const user = await clerkClient.users.getUser(item.user)
+        if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
+            const user = await clerkClient.users.getUser(item.user)
+
+            if(item.image != user?.imageUrl) {
+                await db.update(userStats).set({ image: user.imageUrl, updatedAt: now }).where(eq(userStats.userId, user.id))
+            } else {
+                await db.update(userStats).set({ updatedAt: now }).where(eq(userStats.userId, user.id))
+            }
+        }
 
         item.userHubsJoined = item.userHubsJoined ?? []
         item.userNumPosts = item.userNumPosts ?? 0
@@ -321,8 +341,9 @@ export async function getAllCommentsAction(input: {
             likers: item.likers,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: user.username ? user.username : "[deleted]",
-            image: user.imageUrl ? user.imageUrl : "/images/product-placeholder.webp",
+            username: item.username ? item.username : "[deleted]",
+            image: item.image ? item.image : "/images/product-placeholder.webp",
+            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1
         }
 
         result.push(info)
@@ -344,6 +365,11 @@ export async function getCommentRepliesAction(input: {
     limit?: number,
     page?: number,
 }) {
+    const curuser = await currentUser()
+    if (!curuser) {
+        throw new Error("user not found")
+    }
+
     const items = await db.transaction(async (tx) => {
         const items = await tx
             .select({
@@ -355,10 +381,13 @@ export async function getCommentRepliesAction(input: {
                 message: comments.message,
                 likers: comments.likers,
                 createdAt: comments.createdAt,
+                username: userStats.username,
+                image: userStats.image,
                 userHubsJoined: userStats.hubsJoined,
                 userNumPosts: userStats.numPosts,
                 userNumComments: userStats.numComments,
                 userNumLikes: userStats.numComments,
+                updatedAt: userStats.updatedAt,
             })
             .from(comments)
             .leftJoin(userStats, eq(userStats.userId, comments.user))
@@ -369,9 +398,21 @@ export async function getCommentRepliesAction(input: {
         return items
     })
 
+    const weekAgo = new Date()
+    weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
+    const now = new Date()
+
     const result = []
     for (const item of items) {
-        const user = await clerkClient.users.getUser(item.user)
+        if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
+            const user = await clerkClient.users.getUser(item.user)
+
+            if(item.image != user?.imageUrl) {
+                await db.update(userStats).set({ image: user.imageUrl, updatedAt: now }).where(eq(userStats.userId, user.id))
+            } else {
+                await db.update(userStats).set({ updatedAt: now }).where(eq(userStats.userId, user.id))
+            }
+        }
 
         item.userHubsJoined = item.userHubsJoined ?? []
         item.userNumPosts = item.userNumPosts ?? 0
@@ -379,17 +420,17 @@ export async function getCommentRepliesAction(input: {
         item.userNumLikes = item.userNumLikes ?? 0
 
         const info = {
-            id: comments.id,
-            user: comments.user,
-            postId: comments.postId,
-            replyingTo: comments.replyingTo,
-            numReplies: comments.numReplies,
-            message: comments.message,
-            likers: comments.likers,
-            createdAt: comments.createdAt,
+            id: item.id,
+            user: item.user,
+            postId: item.postId,
+            replyingTo: item.replyingTo,
+            numReplies: item.numReplies,
+            message: item.message,
+            likers: item.likers,
+            createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: user.username ? user.username : "[deleted]",
-            image: user.imageUrl ? user.imageUrl : "/images/product-placeholder.webp",
+            username: item.username ? item.username : "[deleted]",
+            image: item.image ? item.image : "/images/product-placeholder.webp",
         }
 
         result.push(info)

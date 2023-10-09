@@ -322,6 +322,11 @@ export async function getArtistPostsAction(input: {
     limit?: number,
     page?: number
 }) {
+    const curuser = await currentUser()
+    if (!curuser) {
+        throw new Error("user not found")
+    }
+
     const items = await db.transaction(async (tx) => {
         const items = await tx
             .select({
@@ -339,10 +344,13 @@ export async function getArtistPostsAction(input: {
                 eventTime: posts.eventTime,
                 isPremium: posts.isPremium,
                 createdAt: posts.createdAt,
+                username: userStats.username,
+                image: userStats.image,
                 userHubsJoined: userStats.hubsJoined,
                 userNumPosts: userStats.numPosts,
                 userNumComments: userStats.numComments,
                 userNumLikes: userStats.numComments,
+                updatedAt: userStats.updatedAt,
             })
             .from(posts)
             .leftJoin(userStats, eq(userStats.userId, posts.user))
@@ -359,10 +367,21 @@ export async function getArtistPostsAction(input: {
     //     limit: input.limit ? input.limit : undefined,
     //     offset: input.page ? input.page * (input.limit ? input.limit : 0) : undefined
     // })
+    const weekAgo = new Date()
+    weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
+    const now = new Date()
 
     const result = []
     for (const item of items) {
-        const user = await clerkClient.users.getUser(item.user)
+        if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
+            const user = await clerkClient.users.getUser(item.user)
+            
+            if(item.image != user?.imageUrl) {
+                await db.update(userStats).set({ image: user.imageUrl, updatedAt: now }).where(eq(userStats.userId, user.id))
+            } else {
+                await db.update(userStats).set({ updatedAt: now }).where(eq(userStats.userId, user.id))
+            }
+        }
 
         item.userHubsJoined = item.userHubsJoined ?? []
         item.userNumPosts = item.userNumPosts ?? 0
@@ -385,8 +404,9 @@ export async function getArtistPostsAction(input: {
             isPremium: item.isPremium,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: user.username ? user.username : "[deleted]",
-            image: user.imageUrl ? user.imageUrl : "/images/product-placeholder.webp",
+            username: item.username ? item.username : "[deleted]",
+            image: item.image ? item.image : "/images/product-placeholder.webp",
+            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1
         }
 
         result.push(info)
@@ -406,6 +426,11 @@ export async function getCommunityPostsAction(input: {
     limit?: number,
     page?: number
 }) {
+    const curuser = await currentUser()
+    if (!curuser) {
+        throw new Error("user not found")
+    }
+
     const items = await db.transaction(async (tx) => {
         const items = await tx
             .select({
@@ -423,10 +448,13 @@ export async function getCommunityPostsAction(input: {
                 eventTime: posts.eventTime,
                 isPremium: posts.isPremium,
                 createdAt: posts.createdAt,
+                username: userStats.username,
+                image: userStats.image,
                 userHubsJoined: userStats.hubsJoined,
                 userNumPosts: userStats.numPosts,
                 userNumComments: userStats.numComments,
                 userNumLikes: userStats.numComments,
+                updatedAt: userStats.updatedAt
             })
             .from(posts)
             .leftJoin(userStats, eq(userStats.userId, posts.user))
@@ -437,9 +465,21 @@ export async function getCommunityPostsAction(input: {
         return items
     })
 
+    const weekAgo = new Date()
+    weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
+    const now = new Date()
+
     const result = []
     for (const item of items) {
-        const user = await clerkClient.users.getUser(item.user)
+        if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
+            const user = await clerkClient.users.getUser(item.user)
+            
+            if(item.image != user?.imageUrl) {
+                await db.update(userStats).set({ image: user.imageUrl, updatedAt: now }).where(eq(userStats.userId, user.id))
+            } else {
+                await db.update(userStats).set({ updatedAt: now }).where(eq(userStats.userId, user.id))
+            }
+        }
 
         item.userHubsJoined = item.userHubsJoined ?? []
         item.userNumPosts = item.userNumPosts ?? 0
@@ -462,8 +502,9 @@ export async function getCommunityPostsAction(input: {
             isPremium: item.isPremium,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: user.username ? user.username : "[deleted]",
-            image: user.imageUrl ? user.imageUrl : "/images/product-placeholder.webp",
+            username: item.username ? item.username : "[deleted]",
+            image: item.image ? item.image : "/images/product-placeholder.webp",
+            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1
         }
 
         result.push(info)
@@ -540,6 +581,11 @@ export async function getTopPostsAction(input: {
     limit?: number,
     page?: number,
 }) {
+    const curuser = await currentUser()
+    if (!curuser) {
+        throw new Error("user not found")
+    }
+
     const millisecondsPerDay = 86400000
 
     const start = new Date()
@@ -573,10 +619,13 @@ export async function getTopPostsAction(input: {
                 eventTime: posts.eventTime,
                 isPremium: posts.isPremium,
                 createdAt: posts.createdAt,
+                username: userStats.username,
+                image: userStats.image,
                 userHubsJoined: userStats.hubsJoined,
                 userNumPosts: userStats.numPosts,
                 userNumComments: userStats.numComments,
                 userNumLikes: userStats.numComments,
+                updatedAt: userStats.updatedAt
             })
             .from(posts)
             .leftJoin(userStats, eq(userStats.userId, posts.user))
@@ -587,9 +636,21 @@ export async function getTopPostsAction(input: {
         return items
     })
 
+    const weekAgo = new Date()
+    weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
+    const now = new Date()
+
     const result = []
     for (const item of items) {
-        const user = await clerkClient.users.getUser(item.user)
+        if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
+            const user = await clerkClient.users.getUser(item.user)
+            
+            if(item.image != user?.imageUrl) {
+                await db.update(userStats).set({ image: user.imageUrl, updatedAt: now }).where(eq(userStats.userId, user.id))
+            } else {
+                await db.update(userStats).set({ updatedAt: now }).where(eq(userStats.userId, user.id))
+            }
+        }
 
         item.userHubsJoined = item.userHubsJoined ?? []
         item.userNumPosts = item.userNumPosts ?? 0
@@ -612,8 +673,9 @@ export async function getTopPostsAction(input: {
             isPremium: item.isPremium,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: user.username ? user.username : "[deleted]",
-            image: user.imageUrl ? user.imageUrl : "/images/product-placeholder.webp",
+            username: item.username ? item.username : "[deleted]",
+            image: item.image ? item.image : "/images/product-placeholder.webp",
+            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1
         }
 
         result.push(info)

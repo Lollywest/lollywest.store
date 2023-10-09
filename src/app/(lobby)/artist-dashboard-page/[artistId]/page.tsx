@@ -49,10 +49,10 @@ import { EventCalendar } from "@/components/event-calendar"
 import { getArtistPostsAction } from "@/app/_actions/post"
 import NewArtistPostDialog from "@/components/new-artist-post-dialog"
 
-export const metadata: Metadata = {
-    title: "Artist Dashboard Page",
-    description: "Artist Dashboard",
-}
+// export const metadata: Metadata = {
+//     title: "Artist Dashboard Page",
+//     description: "Artist Dashboard",
+// }
 
 // change props
 interface ArtistDashboardPageProps {
