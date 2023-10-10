@@ -375,8 +375,8 @@ export async function getArtistPostsAction(input: {
     for (const item of items) {
         if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
             const user = await clerkClient.users.getUser(item.user)
-            
-            if(item.image != user?.imageUrl) {
+
+            if (item.image != user?.imageUrl) {
                 await db.update(userStats).set({ image: user.imageUrl, updatedAt: now }).where(eq(userStats.userId, user.id))
             } else {
                 await db.update(userStats).set({ updatedAt: now }).where(eq(userStats.userId, user.id))
@@ -473,8 +473,102 @@ export async function getCommunityPostsAction(input: {
     for (const item of items) {
         if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
             const user = await clerkClient.users.getUser(item.user)
-            
-            if(item.image != user?.imageUrl) {
+
+            if (item.image != user?.imageUrl) {
+                await db.update(userStats).set({ image: user.imageUrl, updatedAt: now }).where(eq(userStats.userId, user.id))
+            } else {
+                await db.update(userStats).set({ updatedAt: now }).where(eq(userStats.userId, user.id))
+            }
+        }
+
+        item.userHubsJoined = item.userHubsJoined ?? []
+        item.userNumPosts = item.userNumPosts ?? 0
+        item.userNumComments = item.userNumComments ?? 0
+        item.userNumLikes = item.userNumLikes ?? 0
+
+        const info = {
+            id: item.id,
+            user: item.user,
+            isArtist: item.isArtist,
+            artistId: item.artistId,
+            title: item.title,
+            message: item.message,
+            images: item.images,
+            likers: item.likers,
+            numLikes: item.numLikes,
+            numComments: item.numComments,
+            isEvent: item.isEvent,
+            eventTime: item.eventTime,
+            isPremium: item.isPremium,
+            createdAt: item.createdAt,
+            points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
+            username: item.username ? item.username : "[deleted]",
+            image: item.image ? item.image : "/images/product-placeholder.webp",
+            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1
+        }
+
+        result.push(info)
+    }
+
+    return result
+}
+
+export async function getCommunityPostAction(input: {
+    // artistId: number,
+    postId: number,
+    limit?: number,
+    page?: number
+}) {
+    const curuser = await currentUser()
+    if (!curuser) {
+        throw new Error("user not found")
+    }
+
+    const items = await db.transaction(async (tx) => {
+        const items = await tx
+            .select({
+                id: posts.id,
+                user: posts.user,
+                isArtist: posts.isArtist,
+                artistId: posts.artistId,
+                title: posts.title,
+                message: posts.message,
+                images: posts.images,
+                likers: posts.likers,
+                numLikes: posts.numLikes,
+                numComments: posts.numComments,
+                isEvent: posts.isEvent,
+                eventTime: posts.eventTime,
+                isPremium: posts.isPremium,
+                createdAt: posts.createdAt,
+                username: userStats.username,
+                image: userStats.image,
+                userHubsJoined: userStats.hubsJoined,
+                userNumPosts: userStats.numPosts,
+                userNumComments: userStats.numComments,
+                userNumLikes: userStats.numComments,
+                updatedAt: userStats.updatedAt
+            })
+            .from(posts)
+            .leftJoin(userStats, eq(userStats.userId, posts.user))
+            // .where(and(eq(posts.artistId, input.artistId), eq(posts.id, input.postId)))
+            .where(eq(posts.id, input.postId))
+            .orderBy(desc(posts.createdAt))
+            .limit(input.limit ? input.limit : 999999)
+            .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
+        return items
+    })
+
+    const weekAgo = new Date()
+    weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
+    const now = new Date()
+
+    const result = []
+    for (const item of items) {
+        if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
+            const user = await clerkClient.users.getUser(item.user)
+
+            if (item.image != user?.imageUrl) {
                 await db.update(userStats).set({ image: user.imageUrl, updatedAt: now }).where(eq(userStats.userId, user.id))
             } else {
                 await db.update(userStats).set({ updatedAt: now }).where(eq(userStats.userId, user.id))
@@ -644,8 +738,8 @@ export async function getTopPostsAction(input: {
     for (const item of items) {
         if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
             const user = await clerkClient.users.getUser(item.user)
-            
-            if(item.image != user?.imageUrl) {
+
+            if (item.image != user?.imageUrl) {
                 await db.update(userStats).set({ image: user.imageUrl, updatedAt: now }).where(eq(userStats.userId, user.id))
             } else {
                 await db.update(userStats).set({ updatedAt: now }).where(eq(userStats.userId, user.id))

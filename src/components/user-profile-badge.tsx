@@ -15,10 +15,6 @@ interface UserProfileBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
     user: any
     variant?: "default" | "switchable"
     onSwitch?: () => Promise<void>
-    // title: string;
-    // message: string;
-    // //date: string;
-    // createdAt: Date | null;
 }
 
 export function UserProfileBadge({

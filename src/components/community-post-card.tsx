@@ -15,7 +15,6 @@ import { LikeIconToggle } from "@/components/like-toggle"
 import { Badge } from "@/components/ui/badge"
 import { UserProfileBadge } from "@/components/user-profile-badge"
 import { Separator } from "@/components/ui/separator"
-import { NewCommentForm } from "@/components/forms/new-comment-form"
 import { UserAvatar } from "@/components/user-avatar"
 import { CommunityPostComment } from "@/components/community-post-comment"
 import { cn, formatDate, formatTime, toTitleCase } from "@/lib/utils"
@@ -34,6 +33,12 @@ import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
 import Link from "next/link"
 import { GetPostReturn } from "@/types"
+import { type StoredFile } from "@/types"
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@/components/ui/avatar"
 
 interface CommunityPostProps extends React.HTMLAttributes<HTMLDivElement> {
     post: GetPostReturn
@@ -60,24 +65,25 @@ export async function CommunityPostCard({
     //     .orderBy(desc(comments.createdAt)),
 
     const postId = post.id
-    const limit = 2
+    const limit = 3
 
     const allCommunityPostComments = await getAllCommentsAction({
         postId,
         limit,
+        // where: eq(comments.replyingTo,0),
     })
-
 
     // const CommunityPostUserInfo = await getPostUserInfo({
     //     postId,
     // })
 
     ///////////      change artistId    ///////////////////
-    const artistId = post.artistId
-    const CommunityPostUserInfo = await getCommunityPostsAction({
-        artistId,
-    })
+    // const artistId = post.artistId
+    // const CommunityPostUserInfo = await getCommunityPostsAction({
+    //     artistId,
+    // })
 
+    // const postImages = post.images as StoredFile[];
 
     // const allCommunityPostComments = await db.query.artists.findFirst({
     //     columns: {
@@ -105,8 +111,36 @@ export async function CommunityPostCard({
                     <div className="flex-1 ">
                         <CardTitle className="text-xl ">{post.title}</CardTitle>
                     </div>
-                    <UserProfileBadge user={CommunityPostUserInfo} />
+                    {/* <UserProfileBadge user={CommunityPostUserInfo} /> */}
                     {/* {CommunityPostUserInfo.points} */}
+                    <div className=" flex items-center space-x-4 rounded-xl border p-1">
+
+                        {/* <UserAvatar /> */}
+                        <Avatar>
+                            <AvatarImage src={post.image} alt="" />
+                            <AvatarFallback>AN</AvatarFallback>
+                        </Avatar>
+                        {/* Change to username */}
+                        <div className="flex-1 space-y-1 pr-2">
+
+                            <div className="flex items-center gap-2 ">
+                                <span className="text-sm font-medium leading-none ">{post.username}</span>
+                                <Image
+                                    className="h-3 w-3"
+                                    src="/images/avatar/verified1.svg"
+                                    alt=""
+                                    height={100}
+                                    width={100}
+                                />
+                            </div>
+
+                            <p className=" flex-1 text-sm text-muted-foreground">
+                                Kudos | {post.points}
+                            </p>
+
+                        </div>
+
+                    </div>
                 </div>
 
             </CardHeader>
@@ -139,7 +173,10 @@ export async function CommunityPostCard({
                     <div className="flex flex-col md:flex-row md:gap-16 p-2">
                         <ProductImageCarousel
                             className="flex-1 w-full md:w-1/2"
-                            images={post.images ?? []}
+                            // images={post.images ?? []}
+                            // images={postImages}
+                            images={post.images as StoredFile[] ?? []}
+
                             options={{
                                 loop: true,
                             }}
@@ -201,6 +238,8 @@ export async function CommunityPostCard({
                         <Link
                             aria-label={`View all comments`}
                             href={`/community-post/${post.id}`}
+                        // href={`/community-post/${post.id}?artistId=${post.artistId}`}
+
                         >
                             <Button variant="link" className="rounded-xl p-2 text-sm text-muted-foreground">
                                 ... See all Comments
@@ -248,7 +287,10 @@ export async function CommunityPostCard({
                 </div> */}
                 <div className="flex-1">
                     {allCommunityPostComments.map((comment) => (
-                        <CommunityPostComment key={comment.id} comment={comment} />
+                        // <CommunityPostComment key={comment.id} comment={comment} />
+                        comment.replyingTo === 0 ? (
+                            <CommunityPostComment key={comment.id} comment={comment} />
+                        ) : ("")
                     ))}
                 </div>
             </CardFooter>

@@ -156,7 +156,7 @@ export async function likeCommentAction(input: {
         const comment = await tx.query.comments.findFirst({
             where: eq(comments.id, input.commentId)
         })
-        
+
         if (!comment) {
             throw new Error("comment not found")
         }
@@ -319,7 +319,7 @@ export async function getAllCommentsAction(input: {
         if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
             const user = await clerkClient.users.getUser(item.user)
 
-            if(item.image != user?.imageUrl) {
+            if (item.image != user?.imageUrl) {
                 await db.update(userStats).set({ image: user.imageUrl, updatedAt: now }).where(eq(userStats.userId, user.id))
             } else {
                 await db.update(userStats).set({ updatedAt: now }).where(eq(userStats.userId, user.id))
@@ -341,7 +341,8 @@ export async function getAllCommentsAction(input: {
             likers: item.likers,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: item.username ? item.username : "[deleted]",
+            // username: item.username ? item.username : "[deleted]",
+            username: item.username ?? "[deleted]",
             image: item.image ? item.image : "/images/product-placeholder.webp",
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1
         }
@@ -407,7 +408,7 @@ export async function getCommentRepliesAction(input: {
         if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
             const user = await clerkClient.users.getUser(item.user)
 
-            if(item.image != user?.imageUrl) {
+            if (item.image != user?.imageUrl) {
                 await db.update(userStats).set({ image: user.imageUrl, updatedAt: now }).where(eq(userStats.userId, user.id))
             } else {
                 await db.update(userStats).set({ updatedAt: now }).where(eq(userStats.userId, user.id))
@@ -431,6 +432,7 @@ export async function getCommentRepliesAction(input: {
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
             username: item.username ? item.username : "[deleted]",
             image: item.image ? item.image : "/images/product-placeholder.webp",
+            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
         }
 
         result.push(info)

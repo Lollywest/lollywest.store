@@ -96,7 +96,7 @@ export function CommunityPostCommentReply({
                     </Button> */}
 
                     <div className="flex-1 flex ">
-                        <LikeIconToggle postId={reply.id} />
+                        <LikeIconToggle postId={reply.id} liked={reply.likedByUser} />
                         <div className="flex-1 ">
                             {/* <CommentToggleForm postId={comment.postId} /> */}
                             <CommentReplyToggleForm commentId={reply.id} />

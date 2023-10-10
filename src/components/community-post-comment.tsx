@@ -108,6 +108,7 @@ export async function CommunityPostComment({
 
                     <div className="flex-1 flex ">
                         <LikeIconToggle postId={comment.id} liked={comment.likedByUser} />
+                        {/* <span className=" pr-8"> {comment.numLikes}</span> */}
                         <div className="flex-1 ">
                             {/* <CommentToggleForm postId={comment.postId} /> */}
                             <CommentReplyToggleForm commentId={comment.id} />
@@ -116,12 +117,12 @@ export async function CommunityPostComment({
 
                 </div>
             </div>
-            {/* <div className="flex-1">
+            <div className="flex-1 pl-24">
                 {allCommentReplies.map((reply) => (
-                    <CommunityPostCommentReply reply={reply}   /> 
-                    <CommunityPostComment key={comment.id} comment={comment} />
+                    <CommunityPostCommentReply className="pl-8" key={reply.id} reply={reply} />
+                    // <CommunityPostComment key={comment.id} comment={comment} />
                 ))}
-            </div> */}
+            </div>
         </section>
     )
 }
