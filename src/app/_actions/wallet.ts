@@ -228,7 +228,7 @@ export async function checkUsernameAction() {
     return(true)
 }
 
-export async function getUserHubsArtistsAction() {
+export async function getUserHubsAction() {
     const user = await currentUser()
     if (!user) {
         throw new Error("user not found")
@@ -253,4 +253,81 @@ export async function getUserHubsArtistsAction() {
     })
 
     return items
+}
+
+export async function checkUserJoined(input: {
+    artistId: number
+}) {
+    const user = await currentUser()
+    if(!user) {
+        throw new Error("user not found")
+    }
+
+    const artist = await db.query.artists.findFirst({
+        where: eq(artists.id, input.artistId)
+    })
+    if(!artist) {
+        throw new Error("artist not found")
+    }
+
+    return (artist.hubMembers !== null && artist.hubMembers.indexOf(user.id) > -1)
+}
+
+export async function checkUserPremium(input: {
+    artistId: number
+}) {
+    const user = await currentUser()
+    if(!user) {
+        throw new Error("user not found")
+    }
+
+    const artist = await db.query.artists.findFirst({
+        where: eq(artists.id, input.artistId)
+    })
+    if(!artist) {
+        throw new Error("artist not found")
+    }
+
+    return (artist.premiumHubMembers !== null && artist.premiumHubMembers.indexOf(user.id) > -1)
+}
+
+export async function checkUserArtist(input: {
+    artistId: number
+}) {
+    const user = await currentUser()
+    if(!user) {
+        throw new Error("user not found")
+    }
+
+    const artist = await db.query.artists.findFirst({
+        where: eq(artists.id, input.artistId)
+    })
+    if(!artist) {
+        throw new Error("artist not found")
+    }
+
+    return (artist.userId === user.id)
+}
+
+// this one is most efficent so preferably use this one instead of all three of the previous ones
+export async function checkUserPrivileges(input: {
+    artistId: number
+}) {
+    const user = await currentUser()
+    if(!user) {
+        throw new Error("user not found")
+    }
+
+    const artist = await db.query.artists.findFirst({
+        where: eq(artists.id, input.artistId)
+    })
+    if(!artist) {
+        throw new Error("artist not found")
+    }
+
+    return ({
+        joined: (artist.hubMembers !== null && artist.hubMembers.indexOf(user.id) > -1),
+        premium: (artist.premiumHubMembers !== null && artist.premiumHubMembers.indexOf(user.id) > -1),
+        artist: (artist.userId === user.id),
+    })
 }

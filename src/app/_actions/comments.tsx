@@ -47,6 +47,7 @@ export async function addCommentAction(input: {
 
     const comment = {
         user: user.id,
+        artistId: post.artistId,
         postId: input.postId,
         message: input.message,
         likers: null
@@ -110,6 +111,7 @@ export async function replyToCommentAction(input: {
 
     const reply = {
         user: user.id,
+        artistId: comment.artistId,
         postId: comment.postId,
         replyingTo: comment.replyingTo ? comment.replyingTo : comment.id,
         message: input.message,
@@ -281,6 +283,7 @@ export async function getAllCommentsAction(input: {
             .select({
                 id: comments.id,
                 user: comments.user,
+                artistId: comments.artistId,
                 postId: comments.postId,
                 replyingTo: comments.replyingTo,
                 numReplies: comments.numReplies,
@@ -290,6 +293,7 @@ export async function getAllCommentsAction(input: {
                 username: userStats.username,
                 image: userStats.image,
                 userHubsJoined: userStats.hubsJoined,
+                userPremiumHubs: userStats.premiumHubs,
                 userNumPosts: userStats.numPosts,
                 userNumComments: userStats.numComments,
                 userNumLikes: userStats.numComments,
@@ -344,7 +348,8 @@ export async function getAllCommentsAction(input: {
             // username: item.username ? item.username : "[deleted]",
             username: item.username ?? "[deleted]",
             image: item.image ? item.image : "/images/product-placeholder.webp",
-            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1
+            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
         }
 
         result.push(info)
@@ -376,6 +381,7 @@ export async function getCommentRepliesAction(input: {
             .select({
                 id: comments.id,
                 user: comments.user,
+                artistId: comments.artistId,
                 postId: comments.postId,
                 replyingTo: comments.replyingTo,
                 numReplies: comments.numReplies,
@@ -385,6 +391,7 @@ export async function getCommentRepliesAction(input: {
                 username: userStats.username,
                 image: userStats.image,
                 userHubsJoined: userStats.hubsJoined,
+                userPremiumHubs: userStats.premiumHubs,
                 userNumPosts: userStats.numPosts,
                 userNumComments: userStats.numComments,
                 userNumLikes: userStats.numComments,
@@ -433,6 +440,7 @@ export async function getCommentRepliesAction(input: {
             username: item.username ? item.username : "[deleted]",
             image: item.image ? item.image : "/images/product-placeholder.webp",
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
         }
 
         result.push(info)

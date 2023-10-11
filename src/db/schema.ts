@@ -94,6 +94,7 @@ export const artists = mysqlTable("artists", {
     products: json("products").$type<number[] | null>().default(null),
     createdAt: timestamp("createdAt").defaultNow(),
     hubMembers: json("hubMembers").$type<string[] | null>().default(null),
+    premiumHubMembers: json("premiumHubMembers").$type<string[] | null>().default(null),
     slug: text("slug")
 })
 
@@ -223,6 +224,7 @@ export const postRelations = relations(posts, ({ one, many }) => ({
 export const comments = mysqlTable("comments", {
   id: serial("id").primaryKey(),
   user: varchar("user", { length: 191 }).notNull(),
+  artistId: int("artistId").notNull(),
   postId: int("postId").notNull(),
   replyingTo: int("replyingTo").default(0),
   numReplies: int("numReplies").notNull().default(0),
@@ -257,7 +259,7 @@ export const userStats = mysqlTable("userStats", {
   lastName: text("lastName"),
   image: text("image"),
   hubsJoined: json("hubsJoined").$type<HubJoinInfo[] | null>().default(null),
-  premiumHubs: json("premiumHubs").$type<number[] | null>().default(null),
+  premiumHubs: json("premiumHubs").$type<HubJoinInfo[] | null>().default(null),
   sponsorAmounts: json("sponsorAmounts").$type<SponsorInfo[] | null>().default(null),
   numLikes: int("numLikes").notNull().default(0),
   numComments: int("numComments").notNull().default(0),
