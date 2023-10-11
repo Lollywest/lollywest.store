@@ -46,7 +46,6 @@ export const metadata: Metadata = {
     description: "Artist Community",
 }
 
-// change props
 interface ArtistCommunityPageProps {
     params: {
         artistId: string
@@ -171,6 +170,7 @@ export default async function ArtistCommunityPage({ params }: ArtistCommunityPag
 
                         <CommunityPostCard key={post.id} post={post} />
                     ))}
+
                     {/* </div> */}
                     {/* </div> */}
 

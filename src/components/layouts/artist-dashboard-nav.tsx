@@ -41,7 +41,7 @@ export default function ArtistDashboardNav({ artistId }: ArtistDashboardNavProps
                     </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link href="/docs" legacyBehavior passHref>
+                    <Link href={`/artist-premium/${artistId}`} legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Premium
                         </NavigationMenuLink>

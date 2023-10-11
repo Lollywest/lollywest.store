@@ -20,7 +20,7 @@ import { CommentReplyToggleForm } from "@/components/comment-reply-toggle"
 import { getAllCommentsAction, getCommentRepliesAction } from "@/app/_actions/comments"
 
 import { type Comment } from "@/db/schema"
-import { cn, formatDate, formatTime, toTitleCase } from "@/lib/utils"
+import { cn, formatDate, toTitleCase } from "@/lib/utils"
 import {
     Avatar,
     AvatarFallback,
@@ -28,12 +28,11 @@ import {
 } from "@/components/ui/avatar"
 import { User } from "@clerk/nextjs/dist/types/server"
 import { GetCommentReturn } from "@/types"
-import { CommunityPostCommentReply } from "@/components/community-post-comment-reply"
 
 // add interface/params
 
-interface CommunityPostCommentProps extends React.HTMLAttributes<HTMLDivElement> {
-    comment: GetCommentReturn
+interface CommunityPostCommentReplyProps extends React.HTMLAttributes<HTMLDivElement> {
+    reply: GetCommentReturn
     variant?: "default" | "switchable"
     onSwitch?: () => Promise<void>
     // title: string;
@@ -42,27 +41,23 @@ interface CommunityPostCommentProps extends React.HTMLAttributes<HTMLDivElement>
     // createdAt: Date | null;
 }
 
-export async function CommunityPostComment({
-    comment,
+export function CommunityPostCommentReply({
+    reply,
     variant = "default",
     onSwitch,
     className,
 
     ...props
-}: CommunityPostCommentProps) {
+}: CommunityPostCommentReplyProps) {
 
-    const commentId = comment.id
-    const allCommentReplies = await getCommentRepliesAction({
-        commentId,
-        // limit,
-    })
+
 
     return (
         <section className="  flex-1 ">
             <div className=" flex flex-1 space-x-4  p-1 pl-24">
                 {/* <UserAvatar postId={comment.id} /> */}
                 <Avatar>
-                    <AvatarImage src={comment.image} />
+                    <AvatarImage src={reply.image} />
                     <AvatarFallback>
                         <Icons.user
                             className=" h-6 w-6"
@@ -73,7 +68,7 @@ export async function CommunityPostComment({
                 {/* Update to link to comment database*/}
                 <div className="flex-1 space-y-1 pr-2">
                     <div className="flex items-center gap-2 ">
-                        <span className="text-sm font-medium leading-none ">{comment.username}</span>
+                        <span className="text-sm font-medium leading-none ">{reply.username}</span>
                         <Image
                             className="h-3 w-3"
                             src="/images/avatar/verified1.svg"
@@ -82,20 +77,14 @@ export async function CommunityPostComment({
                             width={100}
                         />
                         <p className=" flex-1 text-sm text-muted-foreground ml-2">
-                            Kudos | {comment.points}
+                            Kudos | {reply.points}
                         </p>
-                        {/* <p className=" gap-4 text-sm text-muted-foreground ml-2">
-                            {formatDate(comment.createdAt!)}    {formatTime(comment.createdAt!)}
-
-                        </p> */}
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            {/* </div>p>{date}</p> */}
-                            <p>{formatDate(comment.createdAt!)}</p>
-                            <p> {formatTime(comment.createdAt!)}</p>
-                        </div>
+                        <p className=" text-sm text-muted-foreground ml-2">
+                            {formatDate(reply.createdAt!)}
+                        </p>
                     </div>
                     <div className="flex-1 flex items-center ">
-                        <p > {comment.message}</p>
+                        <p > {reply.message}</p>
                     </div>
 
 
@@ -107,24 +96,16 @@ export async function CommunityPostComment({
                     </Button> */}
 
                     <div className="flex-1 flex ">
-                        <LikeIconToggle postId={comment.id} liked={comment.likedByUser} />
-                        {/* <span className=" pr-8"> {comment.numLikes}</span> */}
+                        <LikeIconToggle postId={reply.id} liked={reply.likedByUser} />
                         <div className="flex-1 ">
                             {/* <CommentToggleForm postId={comment.postId} /> */}
-                            <CommentReplyToggleForm commentId={comment.id} />
+                            <CommentReplyToggleForm commentId={reply.id} />
                         </div>
                     </div>
 
                 </div>
             </div>
-            <div className="flex-1 pl-24">
-                {allCommentReplies.map((reply) => (
-                    <CommunityPostCommentReply className="pl-8" key={reply.id} reply={reply} />
-                    // <CommunityPostComment key={comment.id} comment={comment} />
-                ))}
-            </div>
+
         </section>
     )
 }
-
-

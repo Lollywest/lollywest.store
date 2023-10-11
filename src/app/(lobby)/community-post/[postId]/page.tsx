@@ -24,11 +24,16 @@ import { Shell } from "@/components/shells/shell"
 import { WrapProductCard } from "@/components/wrap-product-card"
 import { SponsorProductCard } from "@/components/sponsor-product-card"
 import { getAllCommentsAction, getCommentRepliesAction } from "@/app/_actions/comments"
+
+import { getCommunityPostsAction, getCommunityPostAction } from "@/app/_actions/post"
+
 import { CommunityPostComment } from "@/components/community-post-comment"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { LikeIconToggle } from "@/components/like-toggle"
 import { PostCommentToggleForm } from "@/components/post-comment-toggle"
+import { GetPostReturn } from "@/types"
+import { type StoredFile } from "@/types"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -39,27 +44,38 @@ export const metadata: Metadata = {
 interface PostPageProps {
   params: {
     postId: string
+    // artistId: string
   }
+  CommunityPost: GetPostReturn
 }
 
+
 export default async function PostPage({ params }: PostPageProps) {
+
   const postId = Number(params.postId)
-
-  const post = await db.query.posts.findFirst({
-    where: eq(posts.id, postId),
+  // const artistId = Number(params.artistId)
+  // const CommunityPost:GetPostReturn = await getCommunityPostAction({
+  const [CommunityPost] = await getCommunityPostAction({
+    // artistId,
+    postId,
   })
 
-  if (!post) {
-    notFound()
-  }
+  // type post =  GetPostReturn 
+  // const post: GetPostReturn = await db.query.posts.findFirst({
+  //   where: eq(posts.id, postId),
+  // })
 
-  const artist = await db.query.artists.findFirst({
-    columns: {
-      id: true,
-      name: true,
-    },
-    where: eq(artists.id, post.artistId),
-  })
+  // if (!post) {
+  //   notFound()
+  // }
+
+  // const artist = await db.query.artists.findFirst({
+  //   columns: {
+  //     id: true,
+  //     name: true,
+  //   },
+  //   where: eq(artists.id, post.artistId),
+  // })
 
   //   const productsFromStore = artist
   //     ? await db
@@ -88,10 +104,10 @@ export default async function PostPage({ params }: PostPageProps) {
           //   title: "Products",
           //   href: "/products",
           // },
-          {
-            title: "Back to community",
-            href: `/artist-community-page`,
-          },
+          // {
+          //   title: "Back to community",
+          //   href: `/artist-community-page/${CommunityPost.artistId}`,
+          // },
           // {
           //   title: product.name,
           //   href: `/product/${product.id}`,
@@ -105,7 +121,8 @@ export default async function PostPage({ params }: PostPageProps) {
 
           <ProductImageCarousel
             className="w-full md:w-1/2"
-            images={post.images ?? []}
+            // images={post.images ?? []}
+            images={CommunityPost?.images as StoredFile[] ?? []}
             options={{
               loop: true,
             }}
@@ -129,14 +146,14 @@ export default async function PostPage({ params }: PostPageProps) {
           <div className="flex-1 gap-2 space-y-4">
 
             <div className="flex-1 ">
-              <h2 className="line-clamp-1 text-2xl font-bold">{post.title}</h2>
+              <h2 className="line-clamp-1 text-2xl font-bold">{CommunityPost?.title}</h2>
               <div className="flex items-center gap-4">
                 {/* </div>p>{date}</p> */}
-                <p className="text-base text-muted-foreground" >{formatDate(post.createdAt!)}</p>
+                <p className="text-base text-muted-foreground" >{formatDate(CommunityPost?.createdAt!)}</p>
               </div>
             </div>
 
-            <p >{post.message}</p>
+            <p >{CommunityPost?.message}</p>
 
             <div className="flex-1 flex ">
               <Button variant="ghost" className="rounded-xl  p-1">
@@ -147,53 +164,28 @@ export default async function PostPage({ params }: PostPageProps) {
               </Button>
               <div className=" ">
                 <div className=" flex items-center">
-                  <LikeIconToggle postId={post.id} />
-                  <span className="  pr-8"> {post.numLikes}</span>
+                  <LikeIconToggle postId={CommunityPost!.id} liked={CommunityPost!.likedByUser} />
+                  <span className="  pr-8"> {CommunityPost?.numLikes}</span>
                 </div>
               </div>
               <div className="flex-1 ">
-                <PostCommentToggleForm postId={post.id} />
+                <PostCommentToggleForm postId={CommunityPost!.id} />
+
               </div>
             </div>
 
             <Separator className="mt-5 mb-5" />
             {allCommunityPostComments.map((comment) => (
-              <CommunityPostComment key={comment.id} comment={comment} />
+              // <CommunityPostComment key={comment.id} comment={comment} />
+              comment.replyingTo === 0 ? (
+                <CommunityPostComment key={comment.id} comment={comment} />
+              ) : ("")
             ))}
           </div>
-          {/* <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="description">
-              <AccordionTrigger>Description</AccordionTrigger>
-              <AccordionContent>
-                {product.description ??
-                  "No description is available for this product."}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion> */}
+
         </div>
       </div>
-      {/* {artist && productsFromStore.length > 0 ? (
-        <div className="overflow-hidden md:pt-6">
-          <h2 className="line-clamp-1 flex-1 text-2xl font-bold">
-            More from {artist.name}
-          </h2>
-          <div className="overflow-x-auto pb-2 pt-6">
-            <div className="flex w-fit gap-4">
-              {productsFromStore.map((product) => (
-                product.category === "deck" ? (
-                  <ProductCard key={product.id} product={product} className="min-w-[260px]" />
-                ) : product.category === "wrap" ? (
-                  <WrapProductCard key={product.id} product={product} className="min-w-[260px]" />
-                ) : product.category === "sponsorship" ? (
-                  <SponsorProductCard key={product.id} product={product} className="min-w-[260px]" />
-                ) : (
-                  <ProductCard key={product.id} product={product} />
-                )
-              ))}
-            </div>
-          </div>
-        </div>
-      ) : null} */}
+
     </Shell>
   )
 }
