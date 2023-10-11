@@ -40,8 +40,8 @@ import {
     AvatarImage,
 } from "@/components/ui/avatar"
 
-interface CommunityPostProps extends React.HTMLAttributes<HTMLDivElement> {
-    post: GetPostReturn
+interface PremiumCardProps extends React.HTMLAttributes<HTMLDivElement> {
+    // post: GetPostReturn
     variant?: "default" | "switchable"
     onSwitch?: () => Promise<void>
     // title: string;
@@ -50,66 +50,33 @@ interface CommunityPostProps extends React.HTMLAttributes<HTMLDivElement> {
     // createdAt: Date | null;
 }
 
-export async function CommunityPostCard({
-    post,
+export function PremiumCard({
+    // post,
     variant = "default",
     onSwitch,
     className,
 
     ...props
-}: CommunityPostProps) {
-    // const allCommunityPostComments = await db
-    //     .select()
-    //     .from(comments)
-    //     .limit(2)
-    //     .orderBy(desc(comments.createdAt)),
+}: PremiumCardProps) {
 
-    const postId = post.id
+    // const postId = post.id
     const limit = 3
 
-    const allCommunityPostComments = await getAllCommentsAction({
-        postId,
-        limit,
-        // where: eq(comments.replyingTo,0),
-    })
-
-    // const CommunityPostUserInfo = await getPostUserInfo({
+    // const allCommunityPostComments = await getAllCommentsAction({
     //     postId,
+    //     limit,
     // })
 
-    ///////////      change artistId    ///////////////////
-    // const artistId = post.artistId
-    // const CommunityPostUserInfo = await getCommunityPostsAction({
-    //     artistId,
-    // })
 
-    // const postImages = post.images as StoredFile[];
-
-    // const allCommunityPostComments = await db.query.artists.findFirst({
-    //     columns: {
-    //         id: true,
-    //         name: true,
-    //         message: true,
-    //     },
-    //     where: eq(artists.id, artistsId),
-    //     })
 
     return (
         <Card className="grid rounded-xl ">
 
-            {/* <CardHeader className="pb-0 pt-2">
-                <div className="flex items-center gap-4">
-                    <div className="flex-1 ">
-                        <CardTitle className="text-xl ">{title}</CardTitle>
-                    </div>
-                    <UserProfileBadge />
-                </div>
 
-            </CardHeader> */}
             <CardHeader className="pb-0 pt-2">
                 <div className="flex items-center gap-4">
                     <div className="flex-1 ">
-                        <CardTitle className="text-xl ">{post.title}</CardTitle>
+                        {/* <CardTitle className="text-xl ">{post.title}</CardTitle> */}
                     </div>
                     {/* <UserProfileBadge user={CommunityPostUserInfo} /> */}
                     {/* {CommunityPostUserInfo.points} */}
@@ -117,14 +84,14 @@ export async function CommunityPostCard({
 
                         {/* <UserAvatar /> */}
                         <Avatar>
-                            <AvatarImage src={post.image} alt="" />
+                            {/* <AvatarImage src={post.image} alt="" /> */}
                             <AvatarFallback>AN</AvatarFallback>
                         </Avatar>
                         {/* Change to username */}
                         <div className="flex-1 space-y-1 pr-2">
 
                             <div className="flex items-center gap-2 ">
-                                <span className="text-sm font-medium leading-none ">{post.username}</span>
+                                {/* <span className="text-sm font-medium leading-none ">{post.username}</span> */}
                                 <Image
                                     className="h-3 w-3"
                                     src="/images/avatar/verified1.svg"
@@ -135,7 +102,7 @@ export async function CommunityPostCard({
                             </div>
 
                             <p className=" flex-1 text-sm text-muted-foreground">
-                                Kudos | {post.points}
+                                {/* Kudos | {post.points} */}
                             </p>
 
                         </div>
@@ -151,11 +118,12 @@ export async function CommunityPostCard({
                     <div className="flex-1 flex flex-col col-span-2">
                         {/* <CardTitle className="text-xl ">{title}</CardTitle> */}
                         <div className="pt-2 ">
-                            <Badge> Badge </Badge>
-                            <Badge className=" ml-2" variant="secondary"> Trending Now </Badge>
+                            {/* <Badge> Badge </Badge>
+                            <Badge className=" ml-2" variant="secondary"> Trending Now </Badge> */}
+                            Premium Card
                         </div>
                         <div className="flex-1 flex items-center ">
-                            <p >{post.message}</p>
+                            {/* <p >{post.message}</p> */}
                         </div>
 
 
@@ -171,16 +139,7 @@ export async function CommunityPostCard({
                         />
                     </div> */}
                     <div className="flex flex-col md:flex-row md:gap-16 p-2">
-                        <ProductImageCarousel
-                            className="flex-1 w-full md:w-1/2"
-                            // images={post.images ?? []}
-                            // images={postImages}
-                            images={post.images as StoredFile[] ?? []}
 
-                            options={{
-                                loop: true,
-                            }}
-                        />
                     </div>
                 </div>
                 <div className="flex items-center">
@@ -188,18 +147,18 @@ export async function CommunityPostCard({
                         <CardDescription className="">
                             <div className="flex items-center gap-4">
                                 {/* </div>p>{date}</p> */}
-                                <p>{formatDate(post.createdAt!)}</p>
-                                <p> {formatTime(post.createdAt!)}</p>
+                                {/* <p>{formatDate(post.createdAt!)}</p>
+                                <p> {formatTime(post.createdAt!)}</p> */}
                             </div>
                         </CardDescription>
                     </div>
 
                     <div className=" flex items-center ">
-                        <LikeIconToggle postId={post.id} liked={post.likedByUser} />
-                        <span className=" pr-8"> {post.numLikes}</span>
-                        <Link
+                        {/* <LikeIconToggle postId={post.id} liked={post.likedByUser} />
+                        <span className=" pr-8"> {post.numLikes}</span> */}
+                        {/* <Link
                             aria-label={`View all comments`}
-                            href={`/community-post/${post.id}`}
+                            // href={`/community-post/${post.id}`}
                         >
                             <Button variant="link" className="rounded-xl p-2">
                                 <Icons.message
@@ -207,10 +166,10 @@ export async function CommunityPostCard({
                                     aria-hidden="true"
                                 />
                             </Button>
-                        </Link>
-                        <span className=" pr-8"> {post.numComments}</span>
+                        </Link> */}
+                        {/* <span className=" pr-8"> {post.numComments}</span> */}
                         <div className="flex-1 ">
-                            <CommentToggleForm postId={post.id} />
+                            {/* <CommentToggleForm postId={post.id} /> */}
                         </div>
                         <Button variant="ghost" className="rounded-xl  p-1">
                             <Icons.share
@@ -235,16 +194,16 @@ export async function CommunityPostCard({
                 <CardDescription className="">
                     <div className="flex items-center gap-4">
                         {/* <p>See all comments</p> */}
-                        <Link
+                        {/* <Link
                             aria-label={`View all comments`}
-                            href={`/community-post/${post.id}`}
+                            // href={`/community-post/${post.id}`}
                         // href={`/community-post/${post.id}?artistId=${post.artistId}`}
 
                         >
                             <Button variant="link" className="rounded-xl p-2 text-sm text-muted-foreground">
                                 ... See all Comments
                             </Button>
-                        </Link>
+                        </Link> */}
                     </div>
                 </CardDescription>
             </CardContent>
@@ -286,12 +245,12 @@ export async function CommunityPostCard({
 
                 </div> */}
                 <div className="flex-1">
-                    {allCommunityPostComments.map((comment) => (
+                    {/* {allCommunityPostComments.map((comment) => (
                         // <CommunityPostComment key={comment.id} comment={comment} />
                         comment.replyingTo === 0 ? (
                             <CommunityPostComment key={comment.id} comment={comment} />
                         ) : ("")
-                    ))}
+                    ))} */}
                 </div>
             </CardFooter>
         </Card>

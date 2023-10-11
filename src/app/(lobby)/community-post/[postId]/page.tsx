@@ -46,11 +46,11 @@ interface PostPageProps {
     postId: string
     // artistId: string
   }
-  communityPost: GetPostReturn
+  CommunityPost: GetPostReturn
 }
 
 
-export default async function PostPage({ params, communityPost }: PostPageProps) {
+export default async function PostPage({ params }: PostPageProps) {
 
   const postId = Number(params.postId)
   // const artistId = Number(params.artistId)
@@ -59,6 +59,7 @@ export default async function PostPage({ params, communityPost }: PostPageProps)
     // artistId,
     postId,
   })
+
   // type post =  GetPostReturn 
   // const post: GetPostReturn = await db.query.posts.findFirst({
   //   where: eq(posts.id, postId),
@@ -103,10 +104,10 @@ export default async function PostPage({ params, communityPost }: PostPageProps)
           //   title: "Products",
           //   href: "/products",
           // },
-          {
-            title: "Back to community",
-            href: `/artist-community-page/${CommunityPost?.artistId}`,
-          },
+          // {
+          //   title: "Back to community",
+          //   href: `/artist-community-page/${CommunityPost.artistId}`,
+          // },
           // {
           //   title: product.name,
           //   href: `/product/${product.id}`,
@@ -169,6 +170,7 @@ export default async function PostPage({ params, communityPost }: PostPageProps)
               </div>
               <div className="flex-1 ">
                 <PostCommentToggleForm postId={CommunityPost!.id} />
+
               </div>
             </div>
 
