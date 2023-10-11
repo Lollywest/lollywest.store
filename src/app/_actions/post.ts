@@ -347,6 +347,7 @@ export async function getArtistPostsAction(input: {
                 username: userStats.username,
                 image: userStats.image,
                 userHubsJoined: userStats.hubsJoined,
+                userPremiumHubs: userStats.premiumHubs,
                 userNumPosts: userStats.numPosts,
                 userNumComments: userStats.numComments,
                 userNumLikes: userStats.numComments,
@@ -406,7 +407,8 @@ export async function getArtistPostsAction(input: {
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
             username: item.username ? item.username : "[deleted]",
             image: item.image ? item.image : "/images/product-placeholder.webp",
-            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1
+            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
         }
 
         result.push(info)
@@ -451,6 +453,7 @@ export async function getCommunityPostsAction(input: {
                 username: userStats.username,
                 image: userStats.image,
                 userHubsJoined: userStats.hubsJoined,
+                userPremiumHubs: userStats.premiumHubs,
                 userNumPosts: userStats.numPosts,
                 userNumComments: userStats.numComments,
                 userNumLikes: userStats.numComments,
@@ -504,7 +507,8 @@ export async function getCommunityPostsAction(input: {
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
             username: item.username ? item.username : "[deleted]",
             image: item.image ? item.image : "/images/product-placeholder.webp",
-            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1
+            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
         }
 
         result.push(info)
@@ -622,6 +626,7 @@ export async function getTopPostsAction(input: {
                 username: userStats.username,
                 image: userStats.image,
                 userHubsJoined: userStats.hubsJoined,
+                userPremiumHubs: userStats.premiumHubs,
                 userNumPosts: userStats.numPosts,
                 userNumComments: userStats.numComments,
                 userNumLikes: userStats.numComments,
@@ -675,7 +680,8 @@ export async function getTopPostsAction(input: {
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
             username: item.username ? item.username : "[deleted]",
             image: item.image ? item.image : "/images/product-placeholder.webp",
-            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1
+            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
         }
 
         result.push(info)
