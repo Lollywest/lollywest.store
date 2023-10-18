@@ -36,10 +36,10 @@ import { AddPostPopover } from "@/components/add-post-popover"
 import ArtistDashboardNav from "@/components/layouts/artist-dashboard-nav"
 import { PremiumCard } from "@/components/premium-card"
 
-export const metadata: Metadata = {
-    title: "Artist Community Page",
-    description: "Artist Community",
-}
+// export const metadata: Metadata = {
+//     title: "Artist Community Page",
+//     description: "Artist Community",
+// }
 
 // change props
 interface ArtistPremiumPageProps {

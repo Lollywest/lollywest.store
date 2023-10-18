@@ -90,7 +90,7 @@ export const artists = mysqlTable("artists", {
     description: text("description"),
     premiumDescription: text("premiumDescription"),
     links: json("links").$type<string[] | null>().default(null),
-    images: json("image").$type<StoredFile[] | null>().default(null),
+    images: json("image").$type<(StoredFile | null)[]>().notNull().default([null, null]),
     products: json("products").$type<number[] | null>().default(null),
     createdAt: timestamp("createdAt").defaultNow(),
     hubMembers: json("hubMembers").$type<string[] | null>().default(null),

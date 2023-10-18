@@ -547,6 +547,7 @@ export async function getCommunityPostAction(input: {
                 username: userStats.username,
                 image: userStats.image,
                 userHubsJoined: userStats.hubsJoined,
+                userPremiumHubs: userStats.premiumHubs,
                 userNumPosts: userStats.numPosts,
                 userNumComments: userStats.numComments,
                 userNumLikes: userStats.numComments,
@@ -833,4 +834,116 @@ export async function getPostUserInfo(input: {
     }
 
     return info
+}
+
+export async function getActivePostsAction(input: {
+    artistId: number,
+    timeFrame: TimeFrame,
+    artistPosts?: boolean,
+    limit?: number,
+    page?: number,
+}) {
+    const curuser = await currentUser()
+    if (!curuser) {
+        throw new Error("user not found")
+    }
+
+    const millisecondsPerDay = 86400000
+
+    const start = new Date()
+    switch (input.timeFrame) {
+        case 0:
+            start.setTime(start.getTime() - millisecondsPerDay)
+        case 1:
+            start.setTime(start.getTime() - (millisecondsPerDay * 7))
+        case 2:
+            start.setTime(start.getTime() - (millisecondsPerDay * 30))
+        case 3:
+            start.setTime(start.getTime() - (millisecondsPerDay * 365))
+        case 4:
+            start.setFullYear(2022)
+    }
+
+    const items = await db.transaction(async (tx) => {
+        const items = await tx
+            .select({
+                id: posts.id,
+                user: posts.user,
+                isArtist: posts.isArtist,
+                artistId: posts.artistId,
+                title: posts.title,
+                message: posts.message,
+                images: posts.images,
+                likers: posts.likers,
+                numLikes: posts.numLikes,
+                numComments: posts.numComments,
+                isEvent: posts.isEvent,
+                eventTime: posts.eventTime,
+                isPremium: posts.isPremium,
+                createdAt: posts.createdAt,
+                username: userStats.username,
+                image: userStats.image,
+                userHubsJoined: userStats.hubsJoined,
+                userPremiumHubs: userStats.premiumHubs,
+                userNumPosts: userStats.numPosts,
+                userNumComments: userStats.numComments,
+                userNumLikes: userStats.numComments,
+                updatedAt: userStats.updatedAt
+            })
+            .from(posts)
+            .leftJoin(userStats, eq(userStats.userId, posts.user))
+            .where(and(eq(posts.artistId, input.artistId), and((input.artistPosts !== undefined ? eq(posts.isArtist, input.artistPosts) : undefined), gte(posts.createdAt, start))))
+            .orderBy(desc(posts.numComments))
+            .limit(input.limit ? input.limit : 999999)
+            .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
+        return items
+    })
+
+    const weekAgo = new Date()
+    weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
+    const now = new Date()
+
+    const result = []
+    for (const item of items) {
+        if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
+            const user = await clerkClient.users.getUser(item.user)
+
+            if (item.image != user?.imageUrl) {
+                await db.update(userStats).set({ image: user.imageUrl, updatedAt: now }).where(eq(userStats.userId, user.id))
+            } else {
+                await db.update(userStats).set({ updatedAt: now }).where(eq(userStats.userId, user.id))
+            }
+        }
+
+        item.userHubsJoined = item.userHubsJoined ?? []
+        item.userNumPosts = item.userNumPosts ?? 0
+        item.userNumComments = item.userNumComments ?? 0
+        item.userNumLikes = item.userNumLikes ?? 0
+
+        const info = {
+            id: item.id,
+            user: item.user,
+            isArtist: item.isArtist,
+            artistId: item.artistId,
+            title: item.title,
+            message: item.message,
+            images: item.images,
+            likers: item.likers,
+            numLikes: item.numLikes,
+            numComments: item.numComments,
+            isEvent: item.isEvent,
+            eventTime: item.eventTime,
+            isPremium: item.isPremium,
+            createdAt: item.createdAt,
+            points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
+            username: item.username ? item.username : "[deleted]",
+            image: item.image ? item.image : "/images/product-placeholder.webp",
+            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
+        }
+
+        result.push(info)
+    }
+
+    return result
 }

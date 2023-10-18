@@ -1,4 +1,5 @@
-"use client"
+
+import * as React from "react"
 import { Metadata } from "next"
 import Image from "next/image"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -33,7 +34,10 @@ import Link from "next/link"
 import { LikeIconToggle } from "@/components/like-toggle"
 import { UpcomingEventCard } from "@/components/upcoming-event-card"
 import { AddPostPopover } from "@/components/add-post-popover"
-import { ArtistDashboardNav } from "@/components/layouts/artist-dashboard-nav"
+import ArtistDashboardNav from "@/components/layouts/artist-dashboard-nav"
+import IconLink from "@/components/icon-link"
+import { checkUserArtist } from "@/app/_actions/wallet"
+import { UpdateArtistAboutForm } from "@/components/forms/update-artist-about-form"
 
 export const metadata: Metadata = {
     title: "Artist Community Page",
@@ -47,13 +51,17 @@ interface ArtistCommunityPageProps {
     }
 }
 
-export default function ArtistDashboardPage({ params }: ArtistCommunityPageProps) {
-    const [posts, setPosts] = useState([
-        { title: "Exclusive Event", content: "I've received so many messages from you all, asking about my songwriting process. Well, today's the day I'm sharing some behind-the-scenes magic.Every song, to me, begins as an emotion. Maybe it's a flash of a memory, a line from a conversation, or a feeling from a dream. I usually start with humming a melody or tapping out a rhythm. From there, it's a journey of discovery, navigating the chords and finding the story I want to tell.", date: "10/31/2024", time: "4:24 AM" },
-        { title: "Upcoming Tour!", content: "Guess what? I'm hitting the road again, and I'm thrilled to announce the dates and cities for my upcoming tour. I've been working on some new material and I can't wait to share it with you live!But it's not just about me. I want to hear from you! Comment below with the songs you'd love to hear live. Maybe even a cover or two? Let's make these shows the best yet!        ", date: "10/31/2024", time: "4:24 AM" },
-        { title: "Recent Performance", content: "Had a great performance at ...", date: "10/31/2024", time: "4:24 AM" },
-        { title: "Upcoming Event", content: "Join me next week for ...", date: "10/31/2024", time: "4:24 AM" },
-    ]);
+export default async function ArtistDashboardPage({ params }: ArtistCommunityPageProps) {
+    const artistId = Number(params.artistId)
+    const artist = await db.query.artists.findFirst({
+        where: eq(artists.id, artistId)
+    })
+
+    if(!artist) {
+        throw new Error("artist not found")
+    }
+
+    const isArtist: boolean = await checkUserArtist({artistId})
 
     return (
         <Shell className="md:pb-10">
@@ -115,21 +123,15 @@ export default function ArtistDashboardPage({ params }: ArtistCommunityPageProps
 
                         <h2 className="mt-3 text-3xl font-bold tracking-tight">Artist</h2>
                         <p className="text-muted-foreground">Artist Description or community description, etc. Artist Description or community description, etc.</p>
-                        <ArtistDashboardNav />
+                        <ArtistDashboardNav artistId={Number(params.artistId)}/>
                     </div>
 
                     {/*//////////////////    END OF HEADER      ////////////////////////*/}
 
 
 
-
-
-
-                    <div className="flex grid gap-4 ">
-                        ABOUT
-                    </div>
-
-
+                    <UpdateArtistAboutForm artist={artist} isArtist={isArtist} />
+                    
 
 
                 </div>
