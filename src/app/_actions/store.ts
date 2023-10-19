@@ -160,42 +160,42 @@ export async function getArtistByNameAction(input: {
   return artist.id
 }
 
-export async function updateArtistImagesAction(input: {
-  image1: StoredFile[] | null,
-  image2: StoredFile[] | null
-}) {
-  const user = await currentUser()
-  if(!user) {
-    throw new Error("user not found")
-  }
+// export async function updateArtistImagesAction(input: {
+//   image1: StoredFile[] | null,
+//   image2: StoredFile[] | null
+// }) {
+//   const user = await currentUser()
+//   if(!user) {
+//     throw new Error("user not found")
+//   }
 
-  const artist = await db.query.artists.findFirst({
-    where: eq(artists.userId, user.id)
-  })
-  if(!artist) {
-    throw new Error("artist not found")
-  }
+//   const artist = await db.query.artists.findFirst({
+//     where: eq(artists.userId, user.id)
+//   })
+//   if(!artist) {
+//     throw new Error("artist not found")
+//   }
 
-  if(!artist.images?.length) {
-    artist.images = input.image1 ? (input.image2 ? input.image1.concat(input.image2) : input.image1) : (input.image2 ? input.image2 : null)
-    await db.update(artists).set(artist).where(eq(artists.userId, user.id))
-    return
-  }
+//   if(!artist.images?.length) {
+//     artist.images = input.image1 ? (input.image2 ? input.image1.concat(input.image2) : input.image1) : (input.image2 ? input.image2 : null)
+//     await db.update(artists).set(artist).where(eq(artists.userId, user.id))
+//     return
+//   }
 
-  if(input.image1) {
-    artist.images[0] = input.image1[0]!
-  }
+//   if(input.image1) {
+//     artist.images[0] = input.image1[0]!
+//   }
 
-  if(input.image2) {
-    if(artist.images.length > 1) {
-      artist.images[1] = input.image2[0]!
-    } else {
-      artist.images = artist.images.concat(input.image2)
-    }
-  }
+//   if(input.image2) {
+//     if(artist.images.length > 1) {
+//       artist.images[1] = input.image2[0]!
+//     } else {
+//       artist.images = artist.images.concat(input.image2)
+//     }
+//   }
 
-  await db.update(artists).set(artist).where(eq(artists.userId, user.id))
-}
+//   await db.update(artists).set(artist).where(eq(artists.userId, user.id))
+// }
 
 export async function joinArtistHubAction(input: {
   artistId: number

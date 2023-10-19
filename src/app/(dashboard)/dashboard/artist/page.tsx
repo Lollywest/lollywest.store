@@ -17,7 +17,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { LoadingButton } from "@/components/ui/loading-button"
 import { Textarea } from "@/components/ui/textarea"
-import { ArtistImagesForm } from "@/components/forms/artist-images-form"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -120,21 +119,6 @@ export default async function UpdateStorePage() {
               </LoadingButton>
             </div>
           </form>
-        </CardContent>
-      </Card>
-      <Card
-        as="section"
-        id="update-images"
-        aria-labelledby="update-images-heading"
-      >
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Images</CardTitle>
-          <CardDescription>
-            Update your profile images
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ArtistImagesForm />
         </CardContent>
       </Card>
     </div>

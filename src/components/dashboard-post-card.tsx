@@ -21,6 +21,7 @@ import { Separator } from "@/components/ui/separator"
 import { getAllCommentsAction } from "@/app/_actions/comments"
 import { CommunityPostComment } from "@/components/community-post-comment"
 import { GetPostReturn } from "@/types"
+import { type StoredFile } from "@/types"
 
 // interface DashboardPostProps {
 //     title: string;
@@ -69,7 +70,7 @@ export async function DashboardPostCard({
             <CardContent  >
 
                 {/* Add place to show comments ? */}
-                <div className="flex grid grid-cols-3 gap-12">
+                <div className="grid grid-cols-3 gap-12">
                     <div className="flex-1 flex flex-col col-span-2">
                         {/* <CardTitle className="text-xl ">{title}</CardTitle> */}
                         <div className="pt-2 ">
@@ -95,7 +96,7 @@ export async function DashboardPostCard({
                     <div className="flex flex-col md:flex-row md:gap-16 p-2">
                         <ProductImageCarousel
                             className="flex-1 w-full md:w-1/2"
-                            images={post.images ?? []}
+                            images={post.images as StoredFile[]}
                             options={{
                                 loop: true,
                             }}

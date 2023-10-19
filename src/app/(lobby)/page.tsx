@@ -144,7 +144,7 @@ export default async function IndexPage() {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {allArtistCommunities.map((artist) => (
 
-            <Card className="grid rounded-xl my-4 ">
+            <Card key={artist.id} className="grid rounded-xl my-4 ">
               <Link
                 aria-label={`View details`}
                 //   href={`//${artist.id}`}
