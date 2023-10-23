@@ -22,7 +22,7 @@ interface UpcomingEventPostProps extends React.HTMLAttributes<HTMLDivElement> {
     onSwitch?: () => Promise<void>
 }
 
-export async function UpcomingEventCard({
+export function UpcomingEventCard({
     post,
     variant = "default",
     onSwitch,

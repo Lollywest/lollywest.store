@@ -18,7 +18,7 @@ interface NewCommunityPostDialogProps extends React.HTMLAttributes<HTMLDivElemen
     artistId: number
 }
 
-export default async function NewCommunityPostDialog({ artistId }: NewCommunityPostDialogProps) {
+export default function NewCommunityPostDialog({ artistId }: NewCommunityPostDialogProps) {
 
     return (
         <Dialog >

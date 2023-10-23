@@ -20,7 +20,7 @@ interface NewArtistPostDialogProps extends React.HTMLAttributes<HTMLDivElement> 
 }
 
 
-export default async function NewArtistPostDialog({ artistId }: NewArtistPostDialogProps) {
+export default function NewArtistPostDialog({ artistId }: NewArtistPostDialogProps) {
   // const artistId = Number(params.artistId)
 
   return (
@@ -37,7 +37,7 @@ export default async function NewArtistPostDialog({ artistId }: NewArtistPostDia
         <DialogHeader>
           <DialogTitle>Create New </DialogTitle>
           <DialogDescription>
-            Add a new post or event here. Click post when you're done.
+            Add a new post or event here. Click post when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
 

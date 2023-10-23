@@ -68,12 +68,7 @@ export function EventCalendarChild({ artistId, dates }: EventCalendarChildProps)
                         </Shell>
                         :
                         events.map((event, index) => (
-                            <UpcomingEventCard key={index} {...{
-                                title: event.title,
-                                content: event.message,
-                                date: formatDate(event.eventTime!),
-                                time: formatTime(event.eventTime!),
-                            }} />
+                            <UpcomingEventCard key={index} post={event} />
                         ))
                     }
                 </CardContent>

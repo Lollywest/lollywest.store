@@ -31,7 +31,7 @@ export function LikeIconToggle({ postId, liked }: LikeIconToggleProps) {
             variant="ghost"
             size="icon"
             className="rounded-xl p-1 "
-            onClick={handleToggle}
+            onClick={() => {void handleToggle()}}
         >
             <Icons.heart
                 className={`h-6 w-6 rotate-0 scale-0 transition-all ${iconState === "plus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}

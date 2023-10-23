@@ -46,7 +46,7 @@ interface PostPageProps {
     postId: string
     // artistId: string
   }
-  CommunityPost: GetPostReturn
+  // CommunityPost: GetPostReturn
 }
 
 
@@ -149,7 +149,7 @@ export default async function PostPage({ params }: PostPageProps) {
               <h2 className="line-clamp-1 text-2xl font-bold">{CommunityPost?.title}</h2>
               <div className="flex items-center gap-4">
                 {/* </div>p>{date}</p> */}
-                <p className="text-base text-muted-foreground" >{formatDate(CommunityPost?.createdAt!)}</p>
+                <p className="text-base text-muted-foreground" >{formatDate(CommunityPost?.createdAt ?? "")}</p>
               </div>
             </div>
 

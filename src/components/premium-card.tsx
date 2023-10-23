@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card"
 import { LikeIconToggle } from "@/components/like-toggle"
 import { Badge } from "@/components/ui/badge"
-import { UserProfileBadge } from "@/components/user-profile-badge"
+// import { UserProfileBadge } from "@/components/user-profile-badge"
 import { Separator } from "@/components/ui/separator"
 import { UserAvatar } from "@/components/user-avatar"
 import { CommunityPostComment } from "@/components/community-post-comment"
@@ -114,7 +114,7 @@ export function PremiumCard({
             <CardContent className="pb-0 ">
 
                 {/* Add place to show comments ? */}
-                <div className="flex grid grid-cols-3 gap-12">
+                <div className="grid grid-cols-3 gap-12">
                     <div className="flex-1 flex flex-col col-span-2">
                         {/* <CardTitle className="text-xl ">{title}</CardTitle> */}
                         <div className="pt-2 ">

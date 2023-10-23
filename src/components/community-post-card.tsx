@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card"
 import { LikeIconToggle } from "@/components/like-toggle"
 import { Badge } from "@/components/ui/badge"
-import { UserProfileBadge } from "@/components/user-profile-badge"
+// import { UserProfileBadge } from "@/components/user-profile-badge"
 import { Separator } from "@/components/ui/separator"
 import { UserAvatar } from "@/components/user-avatar"
 import { CommunityPostComment } from "@/components/community-post-comment"
@@ -150,6 +150,7 @@ export async function CommunityPostCard({
 
             </CardHeader>
             <CardContent className="pb-0 ">
+
                 <div className="flex-1 ">
                     <CardDescription className="">
                         <div className="flex items-center gap-4">

@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/db"
-import { wallets, products, orders, userStats, artists } from "@/db/schema"
+import { wallets, products, orders, userStats, artists, type Artist } from "@/db/schema"
 import {
     eq,
     inArray,
@@ -9,6 +9,7 @@ import {
 import { currentUser } from "@clerk/nextjs"
 import { clerkClient } from "@clerk/nextjs"
 import { catchClerkError } from "@/lib/utils"
+import { StoredFile } from "@/types"
 
 export async function getProductsAction(input?: { category?: string }) {
     if (input && input.category && input.category !== "deck" && input.category !== "wrap" && input.category !== "sponsorship") {
@@ -306,7 +307,7 @@ export async function checkUserArtist(input: {
         throw new Error("artist not found")
     }
 
-    return (artist.userId === user.id)
+    return (artist.userId == user.id)
 }
 
 // this one is most efficent so preferably use this one instead of all three of the previous ones
@@ -330,4 +331,10 @@ export async function checkUserPrivileges(input: {
         premium: (artist.premiumHubMembers !== null && artist.premiumHubMembers.indexOf(user.id) > -1),
         artist: (artist.userId === user.id),
     })
+}
+
+export async function updateArtistAction(input: {
+    artist: Artist,
+}) {
+    await db.update(artists).set(input.artist).where(eq(artists.id, input.artist.id))
 }

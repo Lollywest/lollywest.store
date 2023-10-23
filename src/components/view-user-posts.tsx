@@ -29,7 +29,7 @@ export function ViewUserPosts() {
                 <SheetHeader>
                     <SheetTitle>Your Posts</SheetTitle>
                     <SheetDescription>
-                        View or delete your previous posts here. Click save when you're done.
+                        View or delete your previous posts here. Click save when you&apos;re done.
                     </SheetDescription>
                 </SheetHeader>
                 <div className="grid gap-4 py-4">

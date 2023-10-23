@@ -40,10 +40,10 @@ import { cn } from "@/lib/utils"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 
 
-export const metadata: Metadata = {
-    title: "Artist Community Page",
-    description: "Artist Community",
-}
+// export const metadata: Metadata = {
+//     title: "Artist Community Page",
+//     description: "Artist Community",
+// }
 
 // change props
 interface ArtistPremiumPageProps {
