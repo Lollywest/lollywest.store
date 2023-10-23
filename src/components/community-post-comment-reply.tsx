@@ -20,7 +20,7 @@ import { CommentReplyToggleForm } from "@/components/comment-reply-toggle"
 import { getAllCommentsAction, getCommentRepliesAction } from "@/app/_actions/comments"
 
 import { type Comment } from "@/db/schema"
-import { cn, formatDate, toTitleCase } from "@/lib/utils"
+import { cn, formatDate, formatTime } from "@/lib/utils"
 import {
     Avatar,
     AvatarFallback,
@@ -57,7 +57,7 @@ export function CommunityPostCommentReply({
             <div className=" flex flex-1 space-x-4  p-1 pl-24">
                 {/* <UserAvatar postId={comment.id} /> */}
                 <Avatar>
-                    <AvatarImage src={reply.image} />
+                    {/* <AvatarImage src={reply.image} /> */}
                     <AvatarFallback>
                         <Icons.user
                             className=" h-6 w-6"
@@ -79,9 +79,10 @@ export function CommunityPostCommentReply({
                         <p className=" flex-1 text-sm text-muted-foreground ml-2">
                             Kudos | {reply.points}
                         </p>
-                        <p className=" text-sm text-muted-foreground ml-2">
-                            {formatDate(reply.createdAt!)}
-                        </p>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <p>{formatDate(reply.createdAt!)}</p>
+                            <p> {formatTime(reply.createdAt!)}</p>
+                        </div>
                     </div>
                     <div className="flex-1 flex items-center ">
                         <p > {reply.message}</p>
