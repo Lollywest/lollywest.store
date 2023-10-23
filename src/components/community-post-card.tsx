@@ -40,6 +40,8 @@ import {
     AvatarImage,
 } from "@/components/ui/avatar"
 
+import { DeletePostHoverCard } from "@/components/delete-post-hovercard"
+
 interface CommunityPostProps extends React.HTMLAttributes<HTMLDivElement> {
     post: GetPostReturn
     variant?: "default" | "switchable"
@@ -95,7 +97,7 @@ export async function CommunityPostCard({
     //     })
 
     return (
-        <Card className="grid rounded-xl ">
+        <Card className="grid rounded-xl bg-stone-950">
 
             {/* <CardHeader className="pb-0 pt-2">
                 <div className="flex items-center gap-4">
@@ -107,23 +109,26 @@ export async function CommunityPostCard({
 
             </CardHeader> */}
             <CardHeader className="pb-0 pt-2">
+
                 <div className="flex items-center gap-4">
                     <div className="flex-1 ">
                         <CardTitle className="text-xl ">{post.title}</CardTitle>
                     </div>
                     {/* <UserProfileBadge user={CommunityPostUserInfo} /> */}
                     {/* {CommunityPostUserInfo.points} */}
-                    <div className=" flex items-center space-x-4 rounded-xl border p-1">
+                    <div className=" flex items-center space-x-4 rounded-xl border p-1 bg-neutral-950">
 
                         {/* <UserAvatar /> */}
                         <Avatar>
-                            <AvatarImage src={post.image} alt="" />
+                            {/* <AvatarImage src={post.image} alt="" /> */}
+                            <AvatarImage src="/images/demo-profile-pic.jpg" alt="" />
                             <AvatarFallback>AN</AvatarFallback>
                         </Avatar>
                         {/* Change to username */}
                         <div className="flex-1 space-y-1 pr-2">
 
                             <div className="flex items-center gap-2 ">
+                                {/* <span className="text-sm font-medium leading-none ">{"Moise"}</span> */}
                                 <span className="text-sm font-medium leading-none ">{post.username}</span>
                                 <Image
                                     className="h-3 w-3"
@@ -146,55 +151,58 @@ export async function CommunityPostCard({
             </CardHeader>
             <CardContent className="pb-0 ">
 
-                {/* Add place to show comments ? */}
-                <div className="grid grid-cols-3 gap-12">
-                    <div className="flex-1 flex flex-col col-span-2">
-                        {/* <CardTitle className="text-xl ">{title}</CardTitle> */}
-                        <div className="pt-2 ">
-                            <Badge> Badge </Badge>
-                            <Badge className=" ml-2" variant="secondary"> Trending Now </Badge>
+                <div className="flex-1 ">
+                    <CardDescription className="">
+                        <div className="flex items-center gap-4">
+                            {/* </div>p>{date}</p> */}
+                            <p>{formatDate(post.createdAt!)}</p>
+                            <p> {formatTime(post.createdAt!)}</p>
                         </div>
-                        <div className="flex-1 flex items-center ">
-                            <p >{post.message}</p>
-                        </div>
-
-
-
-                    </div>
-                    {/* <div className="pb-4 pt-2 ">
-                        <Image
-                            src="/images/DeleteLater-Example-Profile-Pic.png"
-                            alt="Artist Profile Picture"
-                            className="border-4 border-gray-350 rounded"
-                            width={300}
-                            height={300}
-                        />
-                    </div> */}
-                    <div className="flex flex-col md:flex-row md:gap-16 p-2">
-                        <ProductImageCarousel
-                            className="flex-1 w-full md:w-1/2"
-                            // images={post.images ?? []}
-                            // images={postImages}
-                            images={post.images as StoredFile[] ?? []}
-
-                            options={{
-                                loop: true,
-                            }}
-                        />
-                    </div>
+                    </CardDescription>
                 </div>
-                <div className="flex items-center">
-                    <div className="flex-1 ">
-                        <CardDescription className="">
-                            <div className="flex items-center gap-4">
-                                {/* </div>p>{date}</p> */}
-                                <p>{formatDate(post.createdAt!)}</p>
-                                <p> {formatTime(post.createdAt!)}</p>
+                {/* If post includes images */}
+                {Array.isArray(post.images) && post.images.length > 0 ? (
+                    <div className="flex grid grid-cols-3 gap-12">
+                        <div className="flex-1 flex flex-col col-span-2">
+                            {/* <CardTitle className="text-xl ">{title}</CardTitle> */}
+                            {/* <div className="pt-2 ">
+                                <Badge> Badge </Badge>
+                                <Badge className=" ml-2" variant="secondary"> Trending Now </Badge>
+                            </div> */}
+                            <div className="flex-1 flex items-center pt-4 pb-4">
+                                <p >{post.message}</p>
                             </div>
-                        </CardDescription>
+                        </div>
+                        <div className="flex flex-col md:flex-row md:gap-16 p-2">
+                            <ProductImageCarousel
+                                className="flex-1 w-full md:w-1/2"
+                                images={post.images as StoredFile[]}
+                                options={{
+                                    loop: true,
+                                }}
+                            />
+                        </div>
                     </div>
+                ) :
+                    // If no images in post
+                    <div className="flex grid grid-cols-3 gap-12">
+                        <div className="flex-1 flex flex-col col-span-3">
+                            {/* <CardTitle className="text-xl ">{title}</CardTitle> */}
+                            {/* <div className="pt-2 ">
+                                <Badge> Badge </Badge>
+                                <Badge className=" ml-2" variant="secondary"> Trending Now </Badge>
+                            </div> */}
+                            <div className="flex-1 flex items-center pt-4 pb-4">
+                                <p >{post.message}</p>
+                            </div>
+                        </div>
+                    </div>
+                }
 
-                    <div className=" flex items-center ">
+
+
+                <div className="flex items-center">
+                    <div className="flex-1 flex items-center  ">
                         <LikeIconToggle postId={post.id} liked={post.likedByUser} />
                         <span className=" pr-8"> {post.numLikes}</span>
                         <Link
@@ -209,15 +217,20 @@ export async function CommunityPostCard({
                             </Button>
                         </Link>
                         <span className=" pr-8"> {post.numComments}</span>
-                        <div className="flex-1 ">
+                        {/* <div className="flex-1 ">
                             <CommentToggleForm postId={post.id} />
-                        </div>
+                        </div> */}
                         <Button variant="ghost" className="rounded-xl  p-1">
                             <Icons.share
                                 className=" h-6 w-6"
                                 aria-hidden="true"
                             />
                         </Button>
+                    </div>
+
+                    <div className=" flex items-center ">
+
+                        <DeletePostHoverCard postId={post.id} />
                     </div>
 
 

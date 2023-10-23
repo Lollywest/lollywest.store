@@ -508,6 +508,7 @@ export async function getCommunityPostsAction(input: {
             username: item.username ? item.username : "[deleted]",
             image: item.image ? item.image : "/images/product-placeholder.webp",
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1
+
         }
 
         result.push(info)
@@ -551,7 +552,8 @@ export async function getCommunityPostAction(input: {
                 userNumPosts: userStats.numPosts,
                 userNumComments: userStats.numComments,
                 userNumLikes: userStats.numComments,
-                updatedAt: userStats.updatedAt
+                updatedAt: userStats.updatedAt,
+                userPremiumHubs: userStats.premiumHubs,
             })
             .from(posts)
             .leftJoin(userStats, eq(userStats.userId, posts.user))

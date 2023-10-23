@@ -400,7 +400,7 @@ export async function getCommentRepliesAction(input: {
             .from(comments)
             .leftJoin(userStats, eq(userStats.userId, comments.user))
             .where(eq(comments.replyingTo, input.commentId))
-            .orderBy(desc(comments.createdAt))
+            .orderBy((comments.createdAt))
             .limit(input.limit ? input.limit : 999999)
             .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
         return items

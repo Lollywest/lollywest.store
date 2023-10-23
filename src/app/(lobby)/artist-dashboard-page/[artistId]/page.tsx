@@ -48,6 +48,7 @@ import { Separator } from "@/components/ui/separator"
 import { EventCalendar } from "@/components/event-calendar"
 import { getArtistPostsAction } from "@/app/_actions/post"
 import NewArtistPostDialog from "@/components/new-artist-post-dialog"
+import { Balancer } from "react-wrap-balancer"
 
 // export const metadata: Metadata = {
 //     title: "Artist Dashboard Page",
@@ -80,65 +81,75 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
         <Shell className="md:pb-10">
             <div className="space-y-8">
                 <div className="flex-1 space-y-4 p-8 pt-6">
-                   {/*//////////////////    START OF HEADER      ////////////////////////*/}
+                   {/*//////////////////    START OF HEADER (FOR DEMO)      ////////////////////////*/}
                    <div className="flex flex-col items-center">
 
-                    <div className="relative">
-                        <Image
-                            className="rounded-xl"
-                            src="/images/DeleteLater-Example-Banner.png"
-                            alt=""
-                            height={500}
-                            width={1500}
-                        />
+<div className="relative">
+    <Image
+        className="rounded-xl"
+        src="/images/demo-banner.png"
+        alt=""
+        height={350}
+        width={1400}
+    />
 
-                        <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-32 h-32 rounded-full overflow-hidden border-2 border-white">
-                            <Image
-                                src="/images/DeleteLater-Example-Profile-Pic.png"
-                                alt="Artist Profile Picture"
-                                width={200}
-                                height={200}
-                            />
-                        </div>
-                    </div>
-                    </div>
+    <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-32 h-32 rounded-full overflow-hidden border-2 border-white">
+        <Image
+            src="/images/demo-profile-pic.jpg"
+            alt="Artist Profile Picture"
+            width={400}
+            height={400}
+        />
+    </div>
+</div>
+</div>
 
-                    <div className="flex items-center gap-2">
-                    <div className="flex-1 ">
-                        <Button variant="outline" className="rounded-xl ">
-                            <Icons.send
-                                className="mr-2 h-4 w-4"
-                                aria-hidden="true"
-                            />Invite a Friend </Button>
+<div className="flex items-center gap-2">
+<div className="flex-1 ">
+    <Button variant="outline" className="rounded-xl ">
+        <Icons.send
+            className="mr-2 h-4 w-4"
+            aria-hidden="true"
+        />Invite a Friend </Button>
 
-                    </div>
-                    <Button variant="secondary" className="rounded-xl ">
-                        <Icons.message
-                            className="mr-2 h-5 w-5 bg-blue-550"
-                            aria-hidden="true"
-                        />Contact Artist
-                    </Button>
-                    <Button variant="secondary" className="rounded-xl ">
-                        <Image
-                            className="mr-2 h-6 w-6"
-                            src="/images/avatar/verified1.svg"
-                            alt=""
-                            height={800}
-                            width={800}
-                        />Join
+</div>
+{/* <Button variant="secondary" className="rounded-xl ">
+    <Icons.message
+        className="mr-2 h-5 w-5 bg-blue-550"
+        aria-hidden="true"
+    />Contact Artist
+</Button> */}
+<Button variant="secondary" className="rounded-xl ">
+    <Image
+        className="mr-2 h-6 w-6"
+        src="/images/avatar/verified1.svg"
+        alt=""
+        height={800}
+        width={800}
+    />Join
 
-                    </Button>
-                    <Button variant="secondary" className="rounded-xl">...</Button>
-                    </div>
+</Button>
+<Button variant="secondary" className="rounded-xl">
+    <Icons.horizontalThreeDots
+        className=" h-5 w-5"
+        aria-hidden="true"
+    />
+</Button>
+</div>
 
-                    <div className="flex flex-col items-center space-y-4 ">
+<div className="flex flex-col items-center justify-center space-y-4 text-center ">
 
-                        <h2 className="mt-3 text-3xl font-bold tracking-tight">Artist</h2>
-                        <p className="text-muted-foreground">Artist Description or community description, etc. Artist Description or community description, etc.</p>
-                        <ArtistDashboardNav artistId={artistId}/>
-                    </div>
-
-                    {/*//////////////////    END OF HEADER      ////////////////////////*/}
+<h2 className="mt-3 text-3xl font-bold tracking-tight">Moise</h2>
+{/* <p className="text-muted-foreground items-center  justify-center "> */}
+<Balancer className="max-w-[42rem] leading-normal text-muted-foreground sm:text-md sm:leading-8">
+    Welcome to the elite circle of my music journey.
+    Here, we don't just listen to music; we live it.
+    Come amplify your experience and dance to the rhythm of exclusivity - let's resonate together.
+    {/* </p> */}
+</Balancer>
+<ArtistDashboardNav artistId={artistId} />
+</div>
+{/*//////////////////    END OF HEADER (FOR DEMO)      ////////////////////////*/}
 
                     
                     
@@ -244,26 +255,21 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
                                     ))}
                                     
 
-
                                     <Card className="rounded-xl my-4">
                                         <CardHeader>
                                             <CardTitle>Recent Activity</CardTitle>
                                         </CardHeader>
                                         <CardContent>
                                             {/* Sample Activities */}
-                                            <p>- Collaborated with XYZlakdshfjasldhfkj hasdf</p>
+                                            {/* <p>- Collaborated with XYZlakdshfjasldhfkj hasdf</p>
                                             <p>- Released a new album</p>
                                             <p>- Collaborated with XYZ</p>
                                             <p>- Pooped pants</p>
-                                            <p>- Pooped pants (again) </p>
+                                            <p>- Pooped pants (again) </p> */}
                                         </CardContent>
                                     </Card>
                                 </div>
                             </div>
-
-
-
-                        
                   
                 </div>
             </div>
