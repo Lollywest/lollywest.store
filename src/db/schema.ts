@@ -12,6 +12,7 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/mysql-core"
+import type { HubJoinInfo, SponsorInfo } from "@/types"
 
 export const products = mysqlTable("products", {
   id: serial("id").primaryKey(),
@@ -87,9 +88,13 @@ export const artists = mysqlTable("artists", {
     userId: varchar("userId", { length: 191 }).notNull(),
     name: varchar("name", { length: 191 }).notNull(),
     description: text("description"),
-    images: json("image").$type<StoredFile[] | null>().default(null),
+    premiumDescription: text("premiumDescription"),
+    links: json("links").$type<string[] | null>().default(null),
+    images: json("image").$type<(StoredFile | null)[]>().notNull().default([null, null]),
     products: json("products").$type<number[] | null>().default(null),
     createdAt: timestamp("createdAt").defaultNow(),
+    hubMembers: json("hubMembers").$type<string[] | null>().default(null),
+    premiumHubMembers: json("premiumHubMembers").$type<string[] | null>().default(null),
     slug: text("slug")
 })
 
@@ -191,233 +196,73 @@ export type Contact = InferModel<typeof contacts>
 
 export const posts = mysqlTable("posts", {
   id: serial("id").primaryKey(),
-  productId: int("productId").notNull(),
+  user: varchar("user", { length: 191 }).notNull(),
+  isArtist: boolean("isArtist").notNull().default(false),
   artistId: int("artistId").notNull(),
   title: text("title").notNull(),
   message: text("message").notNull(),
-  users: json("users").$type<string[] | null>().default(null),
+  images: json("images").$type<StoredFile[] | null>().default(null),
+  likers: json("likers").$type<string[] | null>().default(null),
+  numLikes: int("numLikes").notNull().default(0),
+  numComments: int("numComments").notNull().default(0),
+  isEvent: boolean("isEvent").notNull().default(false),
   eventTime: timestamp("eventTime").defaultNow(),
+  isPremium: boolean("isPremium").notNull().default(false),
   createdAt: timestamp("createdAt").defaultNow()
 })
 
 export type Post = InferModel<typeof posts>
 
-export const postRelations = relations(posts, ({ one }) => ({
+export const postRelations = relations(posts, ({ one, many }) => ({
   artist: one(artists, {
     fields: [posts.artistId],
     references: [artists.id]
   }),
-  product: one(products, {
-    fields: [posts.productId],
-    references: [products.id]
+  replies: many(comments)
+}))
+
+export const comments = mysqlTable("comments", {
+  id: serial("id").primaryKey(),
+  user: varchar("user", { length: 191 }).notNull(),
+  artistId: int("artistId").notNull(),
+  postId: int("postId").notNull(),
+  replyingTo: int("replyingTo").default(0),
+  numReplies: int("numReplies").notNull().default(0),
+  message: text("message").notNull(),
+  likers: json("likers").$type<string[] | null>().default(null),
+  createdAt: timestamp("createdAt").defaultNow()
+})
+
+export type Comment = InferModel<typeof comments>
+
+export const commentsRelations = relations(comments, ({ one }) => ({
+  parent: one(posts, {
+    fields: [comments.postId],
+    references: [posts.id]
   })
 }))
 
-//=================================== old schema ===================================
+export const reports = mysqlTable("reported", {
+  id: serial("reported").primaryKey(),
+  user: varchar("user", { length: 191 }),
+  title: text("title"),
+  message: text("message"),
+  artistId: int("artistId").notNull(),
+})
 
-// import type { CartItem, CheckoutItem, StoredFile } from "@/types"
-// import { relations, type InferModel } from "drizzle-orm"
-// import {
-//   boolean,
-//   decimal,
-//   int,
-//   json,
-//   mysqlEnum,
-//   mysqlTable,
-//   serial,
-//   text,
-//   timestamp,
-//   varchar,
-// } from "drizzle-orm/mysql-core"
+export type Report = InferModel<typeof reports>
 
-// export const stores = mysqlTable("stores", {
-//   id: serial("id").primaryKey(),
-//   userId: varchar("userId", { length: 191 }).notNull(),
-//   name: varchar("name", { length: 191 }).notNull(),
-//   description: text("description"),
-//   slug: text("slug"),
-//   active: boolean("active").notNull().default(true),
-//   stripeAccountId: varchar("stripeAccountId", { length: 191 }),
-//   createdAt: timestamp("createdAt").defaultNow(),
-// })
-
-// export type Store = InferModel<typeof stores>
-
-// export const storesRelations = relations(stores, ({ many }) => ({
-//   products: many(products),
-// }))
-
-// export const products = mysqlTable("products", {
-//   id: serial("id").primaryKey(),
-//   name: varchar("name", { length: 191 }).notNull(),
-//   description: text("description"),
-//   images: json("images").$type<StoredFile[] | null>().default(null),
-//   category: mysqlEnum("category", [
-//     "skateboards",
-//     "clothing",
-//     "shoes",
-//     "accessories",
-//   ])
-//     .notNull()
-//     .default("skateboards"),
-//   subcategory: varchar("subcategory", { length: 191 }),
-//   price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
-//   inventory: int("inventory").notNull().default(0),
-//   rating: int("rating").notNull().default(0),
-//   tags: json("tags").$type<string[] | null>().default(null),
-//   storeId: int("storeId").notNull(),
-//   createdAt: timestamp("createdAt").defaultNow(),
-// })
-
-// export type Product = InferModel<typeof products>
-
-// export const productsRelations = relations(products, ({ one }) => ({
-//   store: one(stores, { fields: [products.storeId], references: [stores.id] }),
-// }))
-
-// export const carts = mysqlTable("carts", {
-//   id: serial("id").primaryKey(),
-//   userId: varchar("userId", { length: 191 }),
-//   paymentIntentId: varchar("paymentIntentId", { length: 191 }),
-//   clientSecret: varchar("clientSecret", { length: 191 }),
-//   items: json("items").$type<CartItem[] | null>().default(null),
-//   createdAt: timestamp("createdAt").defaultNow(),
-// })
-
-// export type Cart = InferModel<typeof carts>
-
-// export const emailPreferences = mysqlTable("email_preferences", {
-//   id: serial("id").primaryKey(),
-//   userId: varchar("userId", { length: 191 }),
-//   email: varchar("email", { length: 191 }).notNull(),
-//   token: varchar("token", { length: 191 }).notNull(),
-//   newsletter: boolean("newsletter").notNull().default(false),
-//   marketing: boolean("marketing").notNull().default(false),
-//   transactional: boolean("transactional").notNull().default(false),
-//   createdAt: timestamp("createdAt").defaultNow(),
-// })
-
-// export type EmailPreference = InferModel<typeof emailPreferences>
-
-// export const payments = mysqlTable("payments", {
-//   id: serial("id").primaryKey(),
-//   userId: varchar("userId", { length: 191 }),
-//   storeId: int("storeId").notNull(),
-//   stripeAccountId: varchar("stripeAccountId", { length: 191 }).notNull(),
-//   stripeAccountCreatedAt: int("stripeAccountCreatedAt").notNull(),
-//   stripeAccountExpiresAt: int("stripeAccountExpiresAt").notNull(),
-//   detailsSubmitted: boolean("detailsSubmitted").notNull().default(false),
-//   createdAt: timestamp("createdAt").defaultNow(),
-// })
-
-// export type Payment = InferModel<typeof payments>
-
-// export const orders = mysqlTable("orders", {
-//   id: serial("id").primaryKey(),
-//   userId: varchar("userId", { length: 191 }),
-//   storeId: int("storeId").notNull(),
-//   items: json("items").$type<CheckoutItem[] | null>().default(null),
-//   total: decimal("total", { precision: 10, scale: 2 }).notNull().default("0"),
-//   stripePaymentIntentId: varchar("stripePaymentIntentId", {
-//     length: 191,
-//   }).notNull(),
-//   stripePaymentIntentStatus: varchar("stripePaymentIntentStatus", {
-//     length: 191,
-//   }).notNull(),
-//   name: varchar("name", { length: 191 }),
-//   email: varchar("email", { length: 191 }),
-//   addressId: int("addressId"),
-//   createdAt: timestamp("createdAt").defaultNow(),
-// })
-
-// export type Order = InferModel<typeof orders>
-
-// export const addresses = mysqlTable("addresses", {
-//   id: serial("id").primaryKey(),
-//   line1: varchar("line1", { length: 191 }),
-//   line2: varchar("line2", { length: 191 }),
-//   city: varchar("city", { length: 191 }),
-//   state: varchar("state", { length: 191 }),
-//   postalCode: varchar("postalCode", { length: 191 }),
-//   country: varchar("country", { length: 191 }),
-//   createdAt: timestamp("createdAt").defaultNow(),
-// })
-
-// export type Address = InferModel<typeof addresses>
-
-// export const deckFamilies = mysqlTable("deck_families", {
-//   id: serial("id").primaryKey(),
-//   artistID: int("artistID").notNull(),
-//   name: varchar("name", { length: 191 }).notNull(),
-//   description: text("description"),
-//   perks: json("perks").$type<string[] | null>().default(null),
-//   totalDecks: int("totalDecks").notNull().default(0),
-//   image: json("image").$type<StoredFile | null>().default(null),
-//   initPrice: decimal("initPrice", { precision: 10, scale: 2 }).notNull().default("0"),
-//   priceHistory: json("priceHistory").$type<Float32Array | null>().default(null),
-// })
-
-// export type DeckFamilies = InferModel<typeof deckFamilies>
-
-// export const deckFamiliesRelations = relations(deckFamilies, ({ one, many }) => ({
-//   artist: one(artists, {
-//     fields: [deckFamilies.artistID],
-//     references: [artists.id],
-//   }),
-//     decks: many(decks)
-// }))
-
-// export const decks = mysqlTable("decks", {
-//     id: serial("id").primaryKey(),
-//     ownerID: varchar("ownerID", { length: 191 }).notNull(),
-//     deckFamily: int("deckFamily").notNull(),
-// })
-
-// export type Decks = InferModel<typeof decks>
-
-// export const decksRelations = relations(decks, ({ one, many }) => ({
-//   deckFamily: one(deckFamilies, {
-//     fields: [decks.deckFamily],
-//     references: [deckFamilies.id]
-//   }),
-//   orders: many(orders)
-// }))
-
-// export const wraps = mysqlTable("wraps", {
-//   id: serial("id").primaryKey(),
-//   artistID: int("artistID").notNull(),
-//   name: varchar("name", { length: 191 }).notNull(),
-//   description: text("description"),
-//   perks: json("perks").$type<string[] | null>().default(null),
-//   image: json("image").$type<StoredFile | null>().default(null),
-//   price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
-//   subscribers: json("subscribers").$type<string[] | null>().default(null),
-// })
-
-// export type Wraps = InferModel<typeof wraps>
-
-// export const wrapsRelations = relations(wraps, ({ one }) => ({
-//   artist: one(artists, {
-//     fields: [wraps.artistID],
-//     references: [artists.id]
-//   })
-// }))
-
-// export const sponsorships = mysqlTable("sponsorships", {
-//   id: serial("id").primaryKey(),
-//   artistID: int("artistID").notNull(),
-//   name: varchar("name", { length: 191 }).notNull(),
-//   description: text("description"),
-//   image: json("image").$type<StoredFile | null>().default(null),
-//   price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
-//   sponsors: json("sponsors").$type<string[] | null>().default(null),
-// })
-
-// export type Sponsorships = InferModel<typeof sponsorships>
-
-// export const sponsorshipsRelations = relations(sponsorships, ({ one }) => ({
-//   artist: one(artists, {
-//     fields: [sponsorships.artistID],
-//     references: [artists.id]
-//   })
-// }))
+export const userStats = mysqlTable("userStats", {
+  userId: varchar("user", { length: 191 }).notNull(),
+  username: text("username"),
+  firstName: text("firstName"),
+  lastName: text("lastName"),
+  image: text("image"),
+  hubsJoined: json("hubsJoined").$type<HubJoinInfo[] | null>().default(null),
+  premiumHubs: json("premiumHubs").$type<HubJoinInfo[] | null>().default(null),
+  sponsorAmounts: json("sponsorAmounts").$type<SponsorInfo[] | null>().default(null),
+  numLikes: int("numLikes").notNull().default(0),
+  numComments: int("numComments").notNull().default(0),
+  numPosts: int("numPosts").notNull().default(0),
+  updatedAt: timestamp("updatedAt").defaultNow(),
+})

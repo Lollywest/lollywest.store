@@ -1,14 +1,12 @@
 "use server"
 
 import { db } from "@/db"
-import { wallets, products, orders } from "@/db/schema"
+import { wallets, products, orders, userStats, artists, type Artist } from "@/db/schema"
 import {
     eq,
     inArray,
 } from "drizzle-orm"
 import { currentUser } from "@clerk/nextjs"
-import { clerkClient } from "@clerk/nextjs"
-import { catchClerkError } from "@/lib/utils"
 
 export async function getProductsAction(input?: { category?: string }) {
     if (input && input.category && input.category !== "deck" && input.category !== "wrap" && input.category !== "sponsorship") {
@@ -183,11 +181,31 @@ export async function updateUsernameAction(input: {
         throw new Error("user not found")
     }
 
-    try {
-        await clerkClient.users.updateUser(curuser.id, input)
-    } catch (err) {
-        console.log("clerk error")
+    const userInfo = await db.query.userStats.findFirst({
+        where: eq(userStats.userId, curuser.id)
+    })
+
+    if(!userInfo) {
+        const newUserInfo = {
+            userId: curuser.id,
+            username: input.username,
+            firstName: input.firstName,
+            lastName: input.lastName,
+            image: curuser.imageUrl,
+        }
+
+        await db.insert(userStats).values(newUserInfo)
+
+        return
     }
+
+    userInfo.username = input.username
+    userInfo.firstName = input.firstName
+    userInfo.lastName = input.lastName
+    userInfo.image = curuser.imageUrl
+    userInfo.updatedAt = new Date()
+
+    await db.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
 }
 
 export async function checkUsernameAction() {
@@ -197,9 +215,123 @@ export async function checkUsernameAction() {
         return(false)
     }
 
-    if(!user.username) {
+    const userInfo = await db.query.userStats.findFirst({
+        where: eq(userStats.userId, user.id)
+    })
+
+    if(!userInfo || !userInfo.username) {
         return(false)
     }
 
     return(true)
+}
+
+export async function getUserHubsAction() {
+    const user = await currentUser()
+    if (!user) {
+        throw new Error("user not found")
+    }
+
+    const items = await db.transaction(async (tx) => {
+        const userInfo = await tx.query.userStats.findFirst({
+            where: eq(userStats.userId, user.id)
+        })
+
+        if (!userInfo || !userInfo.hubsJoined) {
+            return null
+        }
+
+        const hubs = userInfo.hubsJoined.map(a => a.artistId)
+
+        const items = await tx.query.artists.findMany({
+            where: inArray(artists.id, hubs)
+        })
+
+        return items
+    })
+
+    return items
+}
+
+export async function checkUserJoined(input: {
+    artistId: number
+}) {
+    const user = await currentUser()
+    if(!user) {
+        throw new Error("user not found")
+    }
+
+    const artist = await db.query.artists.findFirst({
+        where: eq(artists.id, input.artistId)
+    })
+    if(!artist) {
+        throw new Error("artist not found")
+    }
+
+    return (artist.hubMembers !== null && artist.hubMembers.indexOf(user.id) > -1)
+}
+
+export async function checkUserPremium(input: {
+    artistId: number
+}) {
+    const user = await currentUser()
+    if(!user) {
+        throw new Error("user not found")
+    }
+
+    const artist = await db.query.artists.findFirst({
+        where: eq(artists.id, input.artistId)
+    })
+    if(!artist) {
+        throw new Error("artist not found")
+    }
+
+    return (artist.premiumHubMembers !== null && artist.premiumHubMembers.indexOf(user.id) > -1)
+}
+
+export async function checkUserArtist(input: {
+    artistId: number
+}) {
+    const user = await currentUser()
+    if(!user) {
+        throw new Error("user not found")
+    }
+
+    const artist = await db.query.artists.findFirst({
+        where: eq(artists.id, input.artistId)
+    })
+    if(!artist) {
+        throw new Error("artist not found")
+    }
+
+    return (artist.userId == user.id)
+}
+
+// this one is most efficent so preferably use this one instead of all three of the previous ones
+export async function checkUserPrivileges(input: {
+    artistId: number
+}) {
+    const user = await currentUser()
+    if(!user) {
+        throw new Error("user not found")
+    }
+
+    const artist = await db.query.artists.findFirst({
+        where: eq(artists.id, input.artistId)
+    })
+    if(!artist) {
+        throw new Error("artist not found")
+    }
+
+    return ({
+        joined: (artist.hubMembers !== null && artist.hubMembers.indexOf(user.id) > -1),
+        premium: (artist.premiumHubMembers !== null && artist.premiumHubMembers.indexOf(user.id) > -1),
+        artist: (artist.userId === user.id),
+    })
+}
+
+export async function updateArtistAction(input: {
+    artist: Artist,
+}) {
+    await db.update(artists).set(input.artist).where(eq(artists.id, input.artist.id))
 }
