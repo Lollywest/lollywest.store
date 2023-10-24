@@ -122,8 +122,8 @@ export default function ArtistDashboardPage({ params }: ArtistPremiumPageProps) 
                         {/* <p className="text-muted-foreground items-center  justify-center "> */}
                         <Balancer className="max-w-[42rem] leading-normal text-muted-foreground sm:text-md sm:leading-8">
                             Welcome to the elite circle of my music journey.
-                            Here, we don't just listen to music; we live it.
-                            Come amplify your experience and dance to the rhythm of exclusivity - let's resonate together.
+                            Here, we don&apos;t just listen to music; we live it.
+                            Come amplify your experience and dance to the rhythm of exclusivity - let&apos;s resonate together.
                             {/* </p> */}
                         </Balancer>
                         <ArtistDashboardNav artistId={artistId} />
@@ -180,7 +180,7 @@ export default function ArtistDashboardPage({ params }: ArtistPremiumPageProps) 
                                     <CardTitle className="text-xl capitalize text-zinc-200">
                                         Pre-Sale Tickets
                                     </CardTitle>
-                                    <CardDescription> Lock in tickets before they're released to the public! </CardDescription>
+                                    <CardDescription> Lock in tickets before they&apos;re released to the public! </CardDescription>
                                 </CardContent>
                             </Card>
                             {/* </Link> */}

@@ -563,7 +563,6 @@ export async function getCommunityPostAction(input: {
                 userNumComments: userStats.numComments,
                 userNumLikes: userStats.numComments,
                 updatedAt: userStats.updatedAt,
-                userPremiumHubs: userStats.premiumHubs,
             })
             .from(posts)
             .leftJoin(userStats, eq(userStats.userId, posts.user))

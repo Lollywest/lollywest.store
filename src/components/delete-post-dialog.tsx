@@ -64,7 +64,7 @@ export default function DeletePostDialog({ postId }: DeletePostDialogProps) {
                             variant="ghost"
                             size="icon"
                             className="rounded-xl p-1 "
-                            onClick={DeletePostHandle}
+                            onClick={() => void DeletePostHandle}
                         >Continue</Button>
                     </AlertDialogAction>
                 </AlertDialogFooter>
