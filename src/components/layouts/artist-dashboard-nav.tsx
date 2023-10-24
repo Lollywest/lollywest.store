@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
@@ -43,7 +44,14 @@ export default function ArtistDashboardNav({ artistId }: ArtistDashboardNavProps
                 <NavigationMenuItem>
                     <Link href={`/artist-premium/${artistId}`} legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Premium
+                            Access Pass
+                            <Image
+                                className="ml-1 h-4 w-4"
+                                src="/images/avatar/verified1.svg"
+                                alt=""
+                                height={800}
+                                width={800}
+                            />
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>

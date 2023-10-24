@@ -39,8 +39,17 @@ import { ViewUserPosts } from "@/components/view-user-posts"
 import { db } from "@/db"
 import { posts, comments, artists } from "@/db/schema"
 import { getCommunityPostsAction } from "@/app/_actions/post"
-import { joinArtistHubAction } from "@/app/_actions/store"
+import { Balancer } from "react-wrap-balancer"
+import { DeletePostHoverCard } from "@/components/delete-post-hovercard"
+import { type StoredFile } from "@/types"
+import { CommentReplyToggleForm } from "@/components/comment-reply-toggle"
 
+import { Separator } from "@/components/ui/separator"
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@/components/ui/avatar"
 
 export const metadata: Metadata = {
     title: "Artist Community Page",
@@ -71,11 +80,11 @@ export default async function ArtistCommunityPage({ params }: ArtistCommunityPag
     //     .from(artists)
     //     .where(eq(artists.id, artistId))
 
-    // const [posts, setPosts] = useState([
-    //     { title: "Example Community Post 1", content: "I've received so many messages from you all, asking about my songwriting process. Well, today's the day I'm sharing some behind-the-scenes magic.Every song, to me, begins as an emotion. Maybe it's a flash of a memory, a line from a conversation, or a feeling from a dream. I usually start with humming a melody or tapping out a rhythm. From there, it's a journey of discovery, navigating the chords and finding the story I want to tell.", date: "10/31/2024", time: "4:24 AM" },
-    //     { title: "Example Community Post 2", content: "Guess what? I'm hitting the road again, and I'm thrilled to announce the dates and cities for my upcoming tour. I've been working on some new material and I can't wait to share it with you live!But it's not just about me. I want to hear from you! Comment below with the songs you'd love to hear live. Maybe even a cover or two? Let's make these shows the best yet!        ", date: "10/31/2024", time: "4:24 AM" },
-    //     { title: "Example Community Post 3", content: "Had a great performance at ...", date: "10/31/2024", time: "4:24 AM" },
-    //     { title: "Example Community Post 4", content: "Join me next week for ...", date: "10/31/2024", time: "4:24 AM" },
+    // const [demoPosts, setDemoPosts] = useState([
+    //     { id: "101", images: "", image: "", title: "Example Community Post 1", message: "I've received so many messages from you all, asking about my songwriting process. Well, today's the day I'm sharing some behind-the-scenes magic.", createdAt: "10/31/2024", username: "username1", points: "x", numLikes: "5", numComments: "10", likedByUser: true },
+    //     { id: "102", images: "", image: "", title: "Example Community Post 2", message: "Guess what? I'm hitting the road again, and I'm thrilled to announce the dates and cities for my upcoming tour. ", createdAt: "10/31/2024", username: "username2", points: "x", numLikes: "9", numComments: "10", likedByUser: true },
+    //     { id: "103", images: "", image: "", title: "Example Community Post 3", message: "Had a great performance at ...", createdAt: "10/31/2024", username: "username3", points: "x", numLikes: "5", numComments: "10", likedByUser: true },
+    //     { id: "104", images: "", image: "", title: "Example Community Post 4", message: "Join me next week for ...", createdAt: "10/31/2024", username: "username4", points: "x", numLikes: "5", numComments: "10", likedByUser: true },
     // ]);
 
     return (
@@ -83,25 +92,24 @@ export default async function ArtistCommunityPage({ params }: ArtistCommunityPag
             <div className="space-y-8">
                 <div className="flex-1 space-y-4 p-8 pt-6">
 
-                    {/*//////////////////    START OF HEADER      ////////////////////////*/}
+                    {/*//////////////////    START OF HEADER (FOR DEMO)      ////////////////////////*/}
                     <div className="flex flex-col items-center">
 
-                        {/* /////////////////////    update to artist info  //////////////////////////// */}
                         <div className="relative">
                             <Image
                                 className="rounded-xl"
-                                src="/images/DeleteLater-Example-Banner.png"
+                                src="/images/demo-banner.png"
                                 alt=""
-                                height={500}
-                                width={1500}
+                                height={350}
+                                width={1400}
                             />
 
                             <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-32 h-32 rounded-full overflow-hidden border-2 border-white">
                                 <Image
-                                    src="/images/DeleteLater-Example-Profile-Pic.png"
+                                    src="/images/demo-profile-pic.jpg"
                                     alt="Artist Profile Picture"
-                                    width={200}
-                                    height={200}
+                                    width={400}
+                                    height={400}
                                 />
                             </div>
                         </div>
@@ -116,16 +124,13 @@ export default async function ArtistCommunityPage({ params }: ArtistCommunityPag
                                 />Invite a Friend </Button>
 
                         </div>
-                        <Button variant="secondary" className="rounded-xl ">
+                        {/* <Button variant="secondary" className="rounded-xl ">
                             <Icons.message
                                 className="mr-2 h-5 w-5 bg-blue-550"
                                 aria-hidden="true"
                             />Contact Artist
-                        </Button>
-                        <Button 
-                            variant="secondary" 
-                            className="rounded-xl "
-                        >
+                        </Button> */}
+                        <Button variant="secondary" className="rounded-xl ">
                             <Image
                                 className="mr-2 h-6 w-6"
                                 src="/images/avatar/verified1.svg"
@@ -135,17 +140,27 @@ export default async function ArtistCommunityPage({ params }: ArtistCommunityPag
                             />Join
 
                         </Button>
-                        <Button variant="secondary" className="rounded-xl">...</Button>
+                        <Button variant="secondary" className="rounded-xl">
+                            <Icons.horizontalThreeDots
+                                className=" h-5 w-5"
+                                aria-hidden="true"
+                            />
+                        </Button>
                     </div>
 
-                    <div className="flex flex-col items-center space-y-4 ">
+                    <div className="flex flex-col items-center justify-center space-y-4 text-center ">
 
-                        <h2 className="mt-3 text-3xl font-bold tracking-tight">Artist</h2>
-                        <p className="text-muted-foreground">Artist Description or community description, etc. Artist Description or community description, etc.</p>
+                        <h2 className="mt-3 text-3xl font-bold tracking-tight">Moise</h2>
+                        {/* <p className="text-muted-foreground items-center  justify-center "> */}
+                        <Balancer className="max-w-[42rem] leading-normal text-muted-foreground sm:text-md sm:leading-8">
+                            Welcome to the elite circle of my music journey.
+                            Here, we don&apos;t just listen to music; we live it.
+                            Come amplify your experience and dance to the rhythm of exclusivity - let&apos;s resonate together.
+                            {/* </p> */}
+                        </Balancer>
                         <ArtistDashboardNav artistId={artistId} />
                     </div>
-
-                    {/*//////////////////    END OF HEADER      ////////////////////////*/}
+                    {/*//////////////////    END OF HEADER (FOR DEMO)      ////////////////////////*/}
 
                     <div className="flex items-center gap-2">
                         <div className="flex-1 space-x-6">
@@ -170,10 +185,13 @@ export default async function ArtistCommunityPage({ params }: ArtistCommunityPag
 
                         <div className="col-span-4 hidden md:block"> */}
 
+
+
                     {allCommunityPosts.map((post) => (
 
                         <CommunityPostCard key={post.id} post={post} />
                     ))}
+
 
                     {/* </div> */}
                     {/* </div> */}
