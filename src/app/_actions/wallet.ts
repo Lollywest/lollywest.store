@@ -7,9 +7,6 @@ import {
     inArray,
 } from "drizzle-orm"
 import { currentUser } from "@clerk/nextjs"
-import { clerkClient } from "@clerk/nextjs"
-import { catchClerkError } from "@/lib/utils"
-import { StoredFile } from "@/types"
 
 export async function getProductsAction(input?: { category?: string }) {
     if (input && input.category && input.category !== "deck" && input.category !== "wrap" && input.category !== "sponsorship") {

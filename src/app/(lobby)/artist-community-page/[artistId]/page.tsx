@@ -39,6 +39,7 @@ import { ViewUserPosts } from "@/components/view-user-posts"
 import { db } from "@/db"
 import { posts, comments, artists } from "@/db/schema"
 import { getCommunityPostsAction } from "@/app/_actions/post"
+import { joinArtistHubAction } from "@/app/_actions/store"
 
 
 export const metadata: Metadata = {
@@ -121,7 +122,10 @@ export default async function ArtistCommunityPage({ params }: ArtistCommunityPag
                                 aria-hidden="true"
                             />Contact Artist
                         </Button>
-                        <Button variant="secondary" className="rounded-xl ">
+                        <Button 
+                            variant="secondary" 
+                            className="rounded-xl "
+                        >
                             <Image
                                 className="mr-2 h-6 w-6"
                                 src="/images/avatar/verified1.svg"

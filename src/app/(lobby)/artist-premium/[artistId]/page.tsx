@@ -35,6 +35,7 @@ import { UpcomingEventCard } from "@/components/upcoming-event-card"
 import { AddPostPopover } from "@/components/add-post-popover"
 import ArtistDashboardNav from "@/components/layouts/artist-dashboard-nav"
 import { PremiumCard } from "@/components/premium-card"
+import { joinArtistHubAction } from "@/app/_actions/store"
 
 // export const metadata: Metadata = {
 //     title: "Artist Community Page",
@@ -94,7 +95,10 @@ export default function ArtistDashboardPage({ params }: ArtistPremiumPageProps) 
                                 aria-hidden="true"
                             />Contact Artist
                         </Button>
-                        <Button variant="secondary" className="rounded-xl ">
+                        <Button 
+                            variant="secondary" 
+                            className="rounded-xl "
+                        >
                             <Image
                                 className="mr-2 h-6 w-6"
                                 src="/images/avatar/verified1.svg"

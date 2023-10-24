@@ -48,7 +48,7 @@ export default function ArtistDashboardNav({ artistId }: ArtistDashboardNavProps
                     </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link href="/artist-about-page" legacyBehavior passHref>
+                    <Link href={`/artist-about-page/${artistId}`} legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             About
                         </NavigationMenuLink>

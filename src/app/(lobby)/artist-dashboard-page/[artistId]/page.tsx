@@ -48,6 +48,7 @@ import { Separator } from "@/components/ui/separator"
 import { EventCalendar } from "@/components/event-calendar"
 import { getArtistPostsAction } from "@/app/_actions/post"
 import NewArtistPostDialog from "@/components/new-artist-post-dialog"
+import { joinArtistHubAction } from "@/app/_actions/store"
 
 // export const metadata: Metadata = {
 //     title: "Artist Dashboard Page",
@@ -118,7 +119,15 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
                             aria-hidden="true"
                         />Contact Artist
                     </Button>
-                    <Button variant="secondary" className="rounded-xl ">
+                    {/* <Button 
+                        variant="secondary" 
+                        className="rounded-xl "
+                        onClick={() => void joinArtistHubAction({artistId})}
+                    > */}
+                    <Button 
+                        variant="secondary" 
+                        className="rounded-xl "
+                    >
                         <Image
                             className="mr-2 h-6 w-6"
                             src="/images/avatar/verified1.svg"

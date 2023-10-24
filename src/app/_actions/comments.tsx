@@ -4,6 +4,7 @@ import { db } from "@/db"
 import { eq, desc } from "drizzle-orm"
 import { posts, reports, comments, userStats } from "@/db/schema"
 import { clerkClient, currentUser } from "@clerk/nextjs"
+import { revalidatePath } from "next/cache"
 
 // how to weigh various things when calculating a users points
 const joinsWeight = 100
@@ -75,6 +76,8 @@ export async function addCommentAction(input: {
         await tx.insert(comments).values(comment)
         await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
     })
+
+    revalidatePath(`/community-post/${comment.postId}`)
 }
 
 // replies to a comment
@@ -90,9 +93,14 @@ export async function replyToCommentAction(input: {
         throw new Error("user not found")
     }
 
-    const { comment, userInfo } = await db.transaction(async (tx) => {
+    const { comment, post, userInfo } = await db.transaction(async (tx) => {
         const comment = await tx.query.comments.findFirst({
             where: eq(comments.id, input.commentId)
+        })
+        if(!comment) { throw new Error("comment not found") }
+
+        const post = await tx.query.posts.findFirst({
+            where: eq(posts.id, comment.postId)
         })
 
         const userInfo = await tx.query.userStats.findFirst({
@@ -101,13 +109,10 @@ export async function replyToCommentAction(input: {
 
         return {
             comment,
+            post,
             userInfo,
         }
     })
-
-    if (!comment) {
-        throw new Error("comment not found")
-    }
 
     const reply = {
         user: user.id,
@@ -119,6 +124,11 @@ export async function replyToCommentAction(input: {
 
     comment.numReplies = comment.numReplies + 1
 
+    if(!post) {
+        throw new Error("parent post not found")
+    }
+    post.numComments = post.numComments + 1
+
     if (!userInfo) {
         const newUserInfo = {
             userId: user.id,
@@ -128,6 +138,7 @@ export async function replyToCommentAction(input: {
         await db.transaction(async (tx) => {
             await tx.insert(comments).values(reply)
             await tx.update(comments).set(comment).where(eq(comments.id, comment.id))
+            await tx.update(posts).set(post).where(eq(posts.id, post.id))
             await tx.insert(userStats).values(newUserInfo)
         })
 
@@ -139,8 +150,11 @@ export async function replyToCommentAction(input: {
     await db.transaction(async (tx) => {
         await tx.insert(comments).values(reply)
         await tx.update(comments).set(comment).where(eq(comments.id, comment.id))
+        await tx.update(posts).set(post).where(eq(posts.id, post.id))
         await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
     })
+
+    revalidatePath(`/community-post/${comment.postId}`)
 }
 
 // likes a comment for a user
@@ -491,6 +505,8 @@ export async function deleteCommentAction(input: {
             await tx.delete(comments).where(eq(comments.id, input.commentId))
         })
 
+        revalidatePath(`/community-post/${comment.postId}`)
+
         return
     }
 
@@ -520,4 +536,37 @@ export async function getCommentUserInfo(input: {
     }
 
     return info
+}
+
+export async function reportCommentAction(input: {
+    commentId: number
+}) {
+    const { comment, post } = await db.transaction(async (tx) => {
+        const comment = await tx.query.comments.findFirst({
+            where: eq(comments.id, input.commentId)
+        })
+        if (!comment) {
+            throw new Error("comment not found")
+        }
+
+        const post = await tx.query.posts.findFirst({
+            where: eq(posts.id, comment.postId)
+        })
+
+        return {
+            comment,
+            post,
+        }
+    })
+
+    if (!post) {
+        throw new Error("parent post not found")
+    }
+
+    await db.insert(reports).values({
+        user: comment.user,
+        title: null,
+        message: comment.message,
+        artistId: post.artistId
+    })
 }
