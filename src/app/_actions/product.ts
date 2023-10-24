@@ -27,6 +27,8 @@ import type {
   productSchema,
 } from "@/lib/validations/product"
 
+import { stripe } from "@/lib/stripe"
+
 export async function filterProductsAction(query: string) {
   if (query.length === 0) return null
 
@@ -145,6 +147,16 @@ export async function addProductAction(
     throw new Error("Product name already taken.")
   }
 
+  const prod = await stripe.products.create({
+    name: input.name,
+    default_price_data: {
+      currency: "usd",
+      unit_amount: Number(input.price) * 100,
+      recurring: input.category === "wrap" ? { interval: "month" } : undefined
+    },
+    images: (input.images && input.images[0]) ? [ input.images[0].url ] : undefined,
+  })
+
   await db.insert(products).values({
     artistID: input.artistId,
     name: input.name,
@@ -154,7 +166,7 @@ export async function addProductAction(
     category: input.category,
     price: input.price,
     decksLeft: input.decksLeft,
-    stripePriceId: input.stripePriceId,
+    stripePriceId: typeof prod.default_price !== "string" ? prod.default_price?.id : prod.default_price,
     owners: input.owners
   })
 
