@@ -45,6 +45,7 @@ import {
     AvatarImage,
 } from "@/components/ui/avatar"
 import { AspectRatio } from "@radix-ui/react-aspect-ratio"
+import { Balancer } from "react-wrap-balancer"
 
 export const metadata: Metadata = {
     title: "Artist Community Page",
@@ -153,10 +154,11 @@ export default async function ArtistAboutPage({ params }: ArtistAboutPageProps) 
                         <Button variant="secondary" className="rounded-xl">...</Button>
                     </div>
 
-                    <div className="flex flex-col items-center space-y-4 ">
+                    <div className="flex flex-col items-center justify-center text-center space-y-4 ">
 
                         <h2 className="mt-3 text-3xl font-bold tracking-tight">{artist.name}</h2>
-                        <p className="text-muted-foreground">{artist.shortDescription}</p>
+                        <Balancer className="max-w-[42rem] leading-normal text-muted-foreground sm:text-md sm:leading-8">
+                            {artist.shortDescription}</Balancer>
                         <ArtistDashboardNav artistId={Number(params.artistId)} />
                     </div>
                     {/*//////////////////    END OF HEADER      ////////////////////////*/}

@@ -144,7 +144,7 @@ export default async function ArtistPremiumPage({ params }: ArtistPremiumPagePro
                         <Button variant="secondary" className="rounded-xl">...</Button>
                     </div>
 
-                    <div className="flex flex-col items-center space-y-4 ">
+                    <div className="flex flex-col items-center justify-center text-center space-y-4 ">
 
                         <h2 className="mt-3 text-3xl font-bold tracking-tight">{artist.name}</h2>
                         <Balancer className="max-w-[42rem] leading-normal text-muted-foreground sm:text-md sm:leading-8">
