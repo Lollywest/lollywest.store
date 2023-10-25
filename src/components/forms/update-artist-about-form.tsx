@@ -78,6 +78,8 @@ const formSchema = z.object({
             })
         )
         .optional(),
+    shortDescription: z.string(),
+    hubTitle: z.string(),
 })
 
 type Inputs = z.infer<typeof formSchema>
@@ -107,6 +109,8 @@ export function UpdateArtistAboutForm({ artist, isArtist }: props) {
         defaultValues: {
             description: artist.description !== null ? artist.description : undefined,
             urls: links !== null ? links : undefined,
+            shortDescription: artist.shortDescription !== null ? artist.shortDescription : undefined,
+            hubTitle: artist.hubTitle !== null ? artist.hubTitle : undefined,
         }
     })
 
@@ -144,10 +148,14 @@ export function UpdateArtistAboutForm({ artist, isArtist }: props) {
 
             artist.description = data.description
             artist.links = data.urls?.map(url => url.value) ?? null
+            artist.shortDescription = data.shortDescription
+            artist.hubTitle = data.hubTitle
             artist.images[0] = image1 !== null ? image1[0]! : artist.images[0]!
             artist.images[1] = image2 !== null ? image2[0]! : artist.images[1]!
 
             await updateArtistAction({ artist })
+
+            setEditing(false)
 
             toast.success("Profile Updated")
         })
@@ -285,6 +293,48 @@ export function UpdateArtistAboutForm({ artist, isArtist }: props) {
                             )}
                         />
 
+                        <FormField
+                            control={form.control}
+                            name="shortDescription"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Idk what to name this</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder=""
+                                            className="resize-none"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Give a concise description to display beneath your name
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="hubTitle"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Hub Title</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder=""
+                                            className="resize-none"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Name your hub
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
                         <div>
                             {fields.map((field, index) => (
                                 <FormField
@@ -297,7 +347,7 @@ export function UpdateArtistAboutForm({ artist, isArtist }: props) {
                                                 Links
                                             </FormLabel>
                                             <FormDescription className={cn(index !== 0 && "sr-only")}>
-                                                Add links to your profile.
+                                                Add links to your profile
                                             </FormDescription>
                                             <FormControl>
                                                 <div className="flex">
