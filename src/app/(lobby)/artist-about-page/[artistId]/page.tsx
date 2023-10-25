@@ -139,6 +139,7 @@ export default async function ArtistAboutPage({ params }: ArtistAboutPageProps) 
 
                         </div>
 
+
                         <Button variant="secondary" className="rounded-xl ">
                             <Image
                                 className="mr-2 h-6 w-6"

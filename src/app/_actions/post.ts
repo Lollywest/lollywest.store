@@ -4,6 +4,7 @@ import { db } from "@/db"
 import { eq, and, desc, between, gte } from "drizzle-orm"
 import { posts, artists, reports, userStats } from "@/db/schema"
 import { clerkClient, currentUser } from "@clerk/nextjs"
+import { revalidatePath } from "next/cache"
 import type { StoredFile } from "@/types"
 
 // how to weigh various things when calculating a users points
@@ -89,6 +90,8 @@ export async function addArtistPostAction(input: {
         await tx.insert(posts).values(post)
         await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
     })
+
+    revalidatePath(`/artist-dashboard-page/${post.artistId}`)
 }
 
 // Adds a community post
@@ -144,6 +147,8 @@ export async function addCommunityPostAction(input: {
         await tx.insert(posts).values(post)
         await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
     })
+
+    revalidatePath(`/artist-community-page/${post.artistId}`)
 }
 
 // delete a post and optionally report it
@@ -171,6 +176,11 @@ export async function deletePostAction(input: {
             })
             await tx.delete(posts).where(eq(posts.id, input.postId))
         })
+
+        if (post.isArtist) {
+            revalidatePath(`/artist-dashboard-page/${post.artistId}`)
+        }
+        revalidatePath(`/artist-community-page/${post.artistId}`)
 
         return
     }
@@ -947,4 +957,22 @@ export async function getActivePostsAction(input: {
     }
 
     return result
+}
+
+export async function reportPostAction(input: {
+    postId: number
+}) {
+    const post = await db.query.posts.findFirst({
+        where: eq(posts.id, input.postId)
+    })
+    if (!post) {
+        throw new Error("post not found")
+    }
+
+    await db.insert(reports).values({
+        user: post.user,
+        title: post.title,
+        message: post.message,
+        artistId: post.artistId
+    })
 }

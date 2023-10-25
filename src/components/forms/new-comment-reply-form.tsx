@@ -17,6 +17,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { Icons } from "@/components/icons"
 import { replyToCommentAction } from "@/app/_actions/comments"
+import { useRouter } from "next/navigation"
 
 interface newCommentReplyProps {
     commentId: number
@@ -35,6 +36,8 @@ export function NewCommentReplyForm({ commentId }: newCommentReplyProps) {
         resolver: zodResolver(formSchema),
     })
 
+    const router = useRouter()
+
     function onSubmit(data: Inputs) {
         startTransition(async () => {
             await replyToCommentAction({
@@ -44,6 +47,8 @@ export function NewCommentReplyForm({ commentId }: newCommentReplyProps) {
 
             toast.success("Comment posted")
             form.reset()
+
+            router.refresh()
         })
     }
 

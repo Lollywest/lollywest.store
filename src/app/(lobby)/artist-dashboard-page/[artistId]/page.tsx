@@ -145,8 +145,8 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
 <h2 className="mt-3 text-3xl font-bold tracking-tight">Moise</h2>
 <Balancer className="max-w-[42rem] leading-normal text-muted-foreground sm:text-md sm:leading-8">
     Welcome to the elite circle of my music journey.
-    Here, we don't just listen to music; we live it.
-    Come amplify your experience and dance to the rhythm of exclusivity - let's resonate together.
+    Here, we don&apos;t just listen to music; we live it.
+    Come amplify your experience and dance to the rhythm of exclusivity - let&apos;s resonate together.
 </Balancer>
 <ArtistDashboardNav artistId={artistId} />
 </div> */}

@@ -13,14 +13,14 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     <div className="grid min-h-screen grid-cols-1 overflow-hidden md:grid-cols-3 lg:grid-cols-2">
       <AspectRatio ratio={16 / 9}>
         <Image
-          src="/images/signin-pic.webp"
+          src="/images/newLogin.webp"
           alt="A skateboarder doing a high drop"
           fill
           className="absolute inset-0 object-cover"
           priority
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background to-background/60 md:to-background/40" />
+        {/* <div className="absolute inset-0 bg-gradient-to-t from-background to-background/60 md:to-background/40" /> */}
         <Link
           href="/"
           className="absolute left-8 top-6 z-20 flex items-center text-lg font-bold tracking-tight"

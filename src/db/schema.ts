@@ -88,6 +88,8 @@ export const artists = mysqlTable("artists", {
     userId: varchar("userId", { length: 191 }).notNull(),
     name: varchar("name", { length: 191 }).notNull(),
     description: text("description"),
+    shortDescription: text("shortDescription"),
+    hubTitle: text("hubTitle"),
     premiumDescription: text("premiumDescription"),
     links: json("links").$type<string[] | null>().default(null),
     images: json("image").$type<(StoredFile | null)[]>().notNull().default([null, null]),

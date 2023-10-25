@@ -17,6 +17,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { Icons } from "@/components/icons"
 import { addCommentAction } from "@/app/_actions/comments"
+import { useRouter } from "next/navigation"
 
 interface newCommentProps {
     postId: number
@@ -35,6 +36,8 @@ export function NewCommentForm({ postId }: newCommentProps) {
         resolver: zodResolver(formSchema),
     })
 
+    const router = useRouter()
+
     function onSubmit(data: Inputs) {
         startTransition(async () => {
             await addCommentAction({
@@ -44,6 +47,8 @@ export function NewCommentForm({ postId }: newCommentProps) {
 
             toast.success("Comment posted")
             form.reset()
+
+            router.refresh()
         })
     }
 

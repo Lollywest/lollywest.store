@@ -37,6 +37,7 @@ import { FileDialog } from "@/components/file-dialog"
 import { Zoom } from "@/components/zoom-image"
 import type { FileWithPreview } from "@/types"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 interface newPostProps {
     artistId: number
@@ -83,6 +84,8 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
 
     const previews = form.watch("images") as FileWithPreview[] | null
 
+    const router = useRouter()
+
     function onSubmit(data: Inputs) {
         startTransition(async () => {
             if (isEvent) {
@@ -118,6 +121,8 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
 
             toast.success("Post Sent")
             form.reset()
+
+            router.refresh()
         })
     }
 
