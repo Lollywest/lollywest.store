@@ -119,48 +119,7 @@ export function MainNav({ items }: MainNavProps) {
 
             </NavigationMenuItem>
           ) : null}
-          {items?.[0]?.items ? (
-            <NavigationMenuItem>
-              <Link
-                aria-label="Leaderboard"
-                href="/leaderboard"
-                // className="hidden items-center space-x-2 lg:flex"
-                className="text-sm leading-tight text-muted-foreground"
-              >
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Leaderboard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {/* <span className="hidden font-bold lg:inline-block">
-                        Top Artists & Fans
-                      </span> */}
 
-              </Link>
-              {/* <NavigationMenuTrigger className="h-auto">
-                Leaderboards
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-             
-                  <li className="row-span-3">
-                    <NavigationMenuLink >
-
-                    <Link
-                      aria-label="Leaderboards"
-                      href="/leaderboards"
-                      className="hidden items-center space-x-2 lg:flex"
-                    >
-                      <span className="hidden font-bold lg:inline-block">
-                        Top Artists & Fans
-                      </span>
-                      
-                    </Link>
-                  
- 
-                    </NavigationMenuLink>
-                  </li>
-                 
-                </ul>
-              </NavigationMenuContent> */}
-            </NavigationMenuItem>
-          ) : null}
 
           {items?.[0]?.items ? (
             <NavigationMenuItem>

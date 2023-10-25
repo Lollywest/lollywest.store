@@ -148,7 +148,7 @@ export function LobbyCommunityCard({
                     <CardTitle className="text-xl capitalize text-zinc-200">
                         {artist.name}
                     </CardTitle>
-                    <CardDescription> Description Description </CardDescription>
+                    <CardDescription> {artist.hubTitle} </CardDescription>
                 </CardContent>
             </Link>
         </Card>

@@ -156,7 +156,7 @@ export default async function ArtistAboutPage({ params }: ArtistAboutPageProps) 
                     <div className="flex flex-col items-center space-y-4 ">
 
                         <h2 className="mt-3 text-3xl font-bold tracking-tight">{artist.name}</h2>
-                        <p className="text-muted-foreground">Artist Description or community description, etc. Artist Description or community description, etc.</p>
+                        <p className="text-muted-foreground">{artist.shortDescription}</p>
                         <ArtistDashboardNav artistId={Number(params.artistId)} />
                     </div>
                     {/*//////////////////    END OF HEADER      ////////////////////////*/}

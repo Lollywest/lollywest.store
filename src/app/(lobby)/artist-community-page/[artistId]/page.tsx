@@ -180,7 +180,8 @@ export default async function ArtistCommunityPage({ params }: ArtistCommunityPag
                     <div className="flex flex-col items-center space-y-4 ">
 
                         <h2 className="mt-3 text-3xl font-bold tracking-tight">{artist.name}</h2>
-                        <p className="text-muted-foreground">Artist Description or community description, etc. Artist Description or community description, etc.</p>
+                        <Balancer className="max-w-[42rem] leading-normal text-muted-foreground sm:text-md sm:leading-8">
+                            {artist.shortDescription}</Balancer>
                         <ArtistDashboardNav artistId={Number(params.artistId)} />
                     </div>
                     {/*//////////////////    END OF HEADER      ////////////////////////*/}
