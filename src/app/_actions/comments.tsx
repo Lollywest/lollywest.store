@@ -2,7 +2,7 @@
 
 import { db } from "@/db"
 import { eq, desc } from "drizzle-orm"
-import { posts, reports, comments, userStats } from "@/db/schema"
+import { posts, reports, comments, userStats, artists } from "@/db/schema"
 import { clerkClient, currentUser } from "@clerk/nextjs"
 import { revalidatePath } from "next/cache"
 
@@ -97,7 +97,7 @@ export async function replyToCommentAction(input: {
         const comment = await tx.query.comments.findFirst({
             where: eq(comments.id, input.commentId)
         })
-        if(!comment) { throw new Error("comment not found") }
+        if (!comment) { throw new Error("comment not found") }
 
         const post = await tx.query.posts.findFirst({
             where: eq(posts.id, comment.postId)
@@ -124,7 +124,7 @@ export async function replyToCommentAction(input: {
 
     comment.numReplies = comment.numReplies + 1
 
-    if(!post) {
+    if (!post) {
         throw new Error("parent post not found")
     }
     post.numComments = post.numComments + 1
@@ -292,7 +292,7 @@ export async function getAllCommentsAction(input: {
         throw new Error("user not found")
     }
 
-    const items = await db.transaction(async (tx) => {
+    const { items, artist } = await db.transaction(async (tx) => {
         const items = await tx
             .select({
                 id: comments.id,
@@ -319,7 +319,21 @@ export async function getAllCommentsAction(input: {
             .orderBy(desc(comments.createdAt))
             .limit(input.limit ? input.limit : 999999)
             .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
-        return items
+
+        if (items[0]) {
+            const artist = await tx.query.artists.findFirst({
+                where: eq(artists.id, items[0].artistId)
+            })
+
+            return {
+                items,
+                artist,
+            }
+        }
+        return {
+            items,
+            undefined,
+        }
     })
 
     // const items = await db.query.comments.findMany({
@@ -359,9 +373,8 @@ export async function getAllCommentsAction(input: {
             likers: item.likers,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            // username: item.username ? item.username : "[deleted]",
-            username: item.username ?? "[deleted]",
-            image: item.image ? item.image : "/images/product-placeholder.webp",
+            username: item.user === artist?.userId ? artist?.name : (item.username ? item.username : "[deleted]"),
+            image: item.user === artist?.userId ? artist?.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
             userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
         }
@@ -390,7 +403,7 @@ export async function getCommentRepliesAction(input: {
         throw new Error("user not found")
     }
 
-    const items = await db.transaction(async (tx) => {
+    const {items, artist} = await db.transaction(async (tx) => {
         const items = await tx
             .select({
                 id: comments.id,
@@ -417,7 +430,21 @@ export async function getCommentRepliesAction(input: {
             .orderBy((comments.createdAt))
             .limit(input.limit ? input.limit : 999999)
             .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
-        return items
+
+        if (items[0]) {
+            const artist = await tx.query.artists.findFirst({
+                where: eq(artists.id, items[0].artistId)
+            })
+
+            return {
+                items,
+                artist,
+            }
+        }
+        return {
+            items,
+            undefined,
+        }
     })
 
     const weekAgo = new Date()
@@ -451,8 +478,8 @@ export async function getCommentRepliesAction(input: {
             likers: item.likers,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: item.username ? item.username : "[deleted]",
-            image: item.image ? item.image : "/images/product-placeholder.webp",
+            username: item.user === artist?.userId ? artist?.name : (item.username ? item.username : "[deleted]"),
+            image: item.user === artist?.userId ? artist?.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
             userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
         }
