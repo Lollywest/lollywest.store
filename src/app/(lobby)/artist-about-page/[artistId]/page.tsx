@@ -52,7 +52,7 @@ export const metadata: Metadata = {
 }
 
 // change props
-interface ArtistAboutPageProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ArtistAboutPageProps {
     params: {
         artistId: string
     }
