@@ -33,9 +33,16 @@ interface DeletePostDialogProps {
 
 export default function DeletePostDialog({ postId }: DeletePostDialogProps) {
 
-    const DeletePostHandle = async () => {
-        await deletePostAction({ postId });
+    // const DeletePostHandle = async () => {
+    //     await deletePostAction({ postId });
+    // }
+    const DeletePostHandle = () => {
+        void (async () => {
+            await deletePostAction({ postId });
+        })();
     }
+
+
 
     return (
         <AlertDialog>

@@ -202,7 +202,7 @@ export default async function ArtistPremiumPage({ params }: ArtistPremiumPagePro
                                     <CardTitle className="text-xl capitalize text-zinc-200">
                                         Pre-Sale Tickets
                                     </CardTitle>
-                                    <CardDescription> Lock in tickets before they're released to the public! </CardDescription>
+                                    <CardDescription> Lock in tickets before they are released to the public! </CardDescription>
                                 </CardContent>
                             </Card>
                             {/* </Link> */}

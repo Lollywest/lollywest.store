@@ -146,7 +146,7 @@ export default async function IndexPage() {
           ))} */}
 
           {allArtistCommunities.map((artist) => (
-            <LobbyCommunityCard artist={artist} />
+            <LobbyCommunityCard key={artist.id} artist={artist} />
           ))}
 
         </div>

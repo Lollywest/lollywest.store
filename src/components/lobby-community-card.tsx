@@ -43,7 +43,7 @@ import { type Artist } from "@/db/schema"
 
 interface LobbyCommunityCardProps extends React.HTMLAttributes<HTMLDivElement> {
     artist: Artist
-    variant?: "default" | "switchable"
+    // variant?: "default" | "switchable"
     onSwitch?: () => Promise<void>
     // title: string;
     // message: string;
@@ -53,7 +53,7 @@ interface LobbyCommunityCardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function LobbyCommunityCard({
     artist,
-    variant = "default",
+    // variant = "default",
     onSwitch,
     className,
 

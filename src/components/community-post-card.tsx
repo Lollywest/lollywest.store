@@ -161,7 +161,7 @@ export async function CommunityPostCard({
                 </div>
                 {/* If post includes images */}
                 {Array.isArray(post.images) && post.images.length > 0 ? (
-                    <div className="flex grid grid-cols-3 gap-12">
+                    <div className=" grid grid-cols-3 gap-12">
                         <div className="flex-1 flex flex-col col-span-2">
                             {/* <CardTitle className="text-xl ">{title}</CardTitle> */}
                             {/* <div className="pt-2 ">
@@ -184,7 +184,7 @@ export async function CommunityPostCard({
                     </div>
                 ) :
                     // If no images in post
-                    <div className="flex grid grid-cols-3 gap-12">
+                    <div className=" grid grid-cols-3 gap-12">
                         <div className="flex-1 flex flex-col col-span-3">
                             {/* <CardTitle className="text-xl ">{title}</CardTitle> */}
                             {/* <div className="pt-2 ">
