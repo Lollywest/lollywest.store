@@ -82,7 +82,7 @@ export async function CommunityPostComment({
                             width={100}
                         />
                         <p className=" flex-1 text-sm text-muted-foreground ml-2">
-                            Kudos | {comment.points}
+                            Lolly | {comment.points}
                         </p>
                         {/* <p className=" gap-4 text-sm text-muted-foreground ml-2">
                             {formatDate(comment.createdAt!)}    {formatTime(comment.createdAt!)}

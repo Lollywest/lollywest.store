@@ -1,4 +1,3 @@
-"use client"
 import { Metadata } from "next"
 import Image from "next/image"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -38,12 +37,13 @@ import { PremiumCard } from "@/components/premium-card"
 import { Balancer } from "react-wrap-balancer"
 import { cn } from "@/lib/utils"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { checkUserArtist } from "@/app/_actions/wallet"
 
 
-// export const metadata: Metadata = {
-//     title: "Artist Community Page",
-//     description: "Artist Community",
-// }
+export const metadata: Metadata = {
+    title: "Artist Premium Page",
+    description: "Artist Premium",
+}
 
 // change props
 interface ArtistPremiumPageProps {
@@ -52,33 +52,71 @@ interface ArtistPremiumPageProps {
     }
 }
 
-export default function ArtistDashboardPage({ params }: ArtistPremiumPageProps) {
+export default async function ArtistPremiumPage({ params }: ArtistPremiumPageProps) {
     const artistId = Number(params.artistId)
+    const artist = await db.query.artists.findFirst({
+        where: eq(artists.id, artistId)
+    })
+    if (!artist) {
+        throw new Error("artist not found")
+    }
 
+    const isArtist: boolean = await checkUserArtist({ artistId })
     return (
         <Shell className="md:pb-10">
             <div className="space-y-8">
                 <div className="flex-1 space-y-4 p-8 pt-6">
 
-                    {/*//////////////////    START OF HEADER (FOR DEMO)      ////////////////////////*/}
+                    {/*//////////////////    START OF HEADER      ////////////////////////*/}
                     <div className="flex flex-col items-center">
 
                         <div className="relative">
-                            <Image
-                                className="rounded-xl"
-                                src="/images/demo-banner.png"
-                                alt=""
-                                height={350}
-                                width={1400}
-                            />
+                            {artist.images[1] !== null ? (
+                                // <AspectRatio ratio={3 / 1}>
+                                <Image
+                                    className="rounded-xl"
+                                    src={artist.images[1]!.url}
+                                    alt=""
+                                    height={500}
+                                    width={1500}
+                                />
+                                // </AspectRatio>
+                            ) :
+
+                                <Image
+                                    className="rounded-xl"
+                                    src="/images/DeleteLater-Example-Banner.png"
+                                    alt=""
+                                    height={500}
+                                    width={1500}
+                                />
+
+                            }
+
 
                             <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-32 h-32 rounded-full overflow-hidden border-2 border-white">
-                                <Image
-                                    src="/images/demo-profile-pic.jpg"
-                                    alt="Artist Profile Picture"
-                                    width={400}
-                                    height={400}
-                                />
+                                {artist.images[0] !== null ? (
+                                    <Image
+                                        className="rounded-xl"
+                                        src={artist.images[0]!.url}
+                                        alt=""
+                                        height={200}
+                                        width={200}
+                                    />
+                                ) :
+                                    <div
+                                        aria-label="Image Placeholder"
+                                        role="img"
+                                        aria-roledescription="placeholder"
+                                        className="flex aspect-square h-full w-full flex-1 items-center justify-center bg-secondary"
+                                    >
+                                        <Icons.placeholder
+                                            className="h-9 w-9 text-muted-foreground"
+                                            aria-hidden="true"
+                                        />
+                                    </div>
+                                }
+
                             </div>
                         </div>
                     </div>
@@ -92,12 +130,7 @@ export default function ArtistDashboardPage({ params }: ArtistPremiumPageProps) 
                                 />Invite a Friend </Button>
 
                         </div>
-                        {/* <Button variant="secondary" className="rounded-xl ">
-                            <Icons.message
-                                className="mr-2 h-5 w-5 bg-blue-550"
-                                aria-hidden="true"
-                            />Contact Artist
-                        </Button> */}
+
                         <Button variant="secondary" className="rounded-xl ">
                             <Image
                                 className="mr-2 h-6 w-6"
@@ -108,27 +141,16 @@ export default function ArtistDashboardPage({ params }: ArtistPremiumPageProps) 
                             />Join
 
                         </Button>
-                        <Button variant="secondary" className="rounded-xl">
-                            <Icons.horizontalThreeDots
-                                className=" h-5 w-5"
-                                aria-hidden="true"
-                            />
-                        </Button>
+                        <Button variant="secondary" className="rounded-xl">...</Button>
                     </div>
 
-                    <div className="flex flex-col items-center justify-center space-y-4 text-center ">
+                    <div className="flex flex-col items-center space-y-4 ">
 
-                        <h2 className="mt-3 text-3xl font-bold tracking-tight">Moise</h2>
-                        {/* <p className="text-muted-foreground items-center  justify-center "> */}
-                        <Balancer className="max-w-[42rem] leading-normal text-muted-foreground sm:text-md sm:leading-8">
-                            Welcome to the elite circle of my music journey.
-                            Here, we don&apos;t just listen to music; we live it.
-                            Come amplify your experience and dance to the rhythm of exclusivity - let&apos;s resonate together.
-                            {/* </p> */}
-                        </Balancer>
-                        <ArtistDashboardNav artistId={artistId} />
+                        <h2 className="mt-3 text-3xl font-bold tracking-tight">{artist.name}</h2>
+                        <p className="text-muted-foreground">Artist Description or community description, etc. Artist Description or community description, etc.</p>
+                        <ArtistDashboardNav artistId={Number(params.artistId)} />
                     </div>
-                    {/*//////////////////    END OF HEADER (FOR DEMO)      ////////////////////////*/}
+                    {/*//////////////////    END OF HEADER      ////////////////////////*/}
 
 
 
@@ -180,7 +202,7 @@ export default function ArtistDashboardPage({ params }: ArtistPremiumPageProps) 
                                     <CardTitle className="text-xl capitalize text-zinc-200">
                                         Pre-Sale Tickets
                                     </CardTitle>
-                                    <CardDescription> Lock in tickets before they&apos;re released to the public! </CardDescription>
+                                    <CardDescription> Lock in tickets before they are released to the public! </CardDescription>
                                 </CardContent>
                             </Card>
                             {/* </Link> */}

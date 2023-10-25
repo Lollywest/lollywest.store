@@ -97,24 +97,21 @@ export default async function PostPage({ params }: PostPageProps) {
 
 
   return (
-    <Shell>
+    <Shell className="md:pb-10">
       <Breadcrumbs
         segments={[
-          // {
-          //   title: "Products",
-          //   href: "/products",
-          // },
-          // {
-          //   title: "Back to community",
-          //   href: `/artist-community-page/${CommunityPost.artistId}`,
-          // },
+
+          {
+            title: "Back to community",
+            href: `/artist-community-page/${CommunityPost?.artistId}`,
+          }
           // {
           //   title: product.name,
           //   href: `/product/${product.id}`,
           // },
         ]}
       />
-      <div className="flex flex-col gap-8 md:flex-row md:gap-16  ">
+      <div className="flex flex-1 flex-col gap-8 md:flex-row md:gap-16  ">
 
         <Separator className="mt-4 md:hidden" />
         <div className="flex flex-1 w-full flex-col gap-4 md:w-1/2 items-center">
@@ -129,21 +126,7 @@ export default async function PostPage({ params }: PostPageProps) {
           />
 
 
-          <div className="space-y-2 flex-1 ">
-
-
-            {/* {artist ? (
-                            <Link
-                                href={`/artist-products?artist_ids=${artist.id}`}
-                                className="line-clamp-1 inline-block text-base text-muted-foreground hover:underline"
-                            >
-                                {artist.name}
-                            </Link>
-                        ) : null} */}
-          </div>
-
-
-          <div className="flex-1 gap-2 space-y-4">
+          <div className=" flex w-3/4 flex-col gap-2 space-y-4">
 
             <div className="flex-1 ">
               <h2 className="line-clamp-1 text-2xl font-bold">{CommunityPost?.title}</h2>

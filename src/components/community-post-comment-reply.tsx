@@ -57,7 +57,7 @@ export function CommunityPostCommentReply({
             <div className=" flex flex-1 space-x-4  p-1 pl-24">
                 {/* <UserAvatar postId={comment.id} /> */}
                 <Avatar>
-                    {/* <AvatarImage src={reply.image} /> */}
+                    <AvatarImage src={reply.image} />
                     <AvatarFallback>
                         <Icons.user
                             className=" h-6 w-6"
@@ -77,7 +77,7 @@ export function CommunityPostCommentReply({
                             width={100}
                         />
                         <p className=" flex-1 text-sm text-muted-foreground ml-2">
-                            Kudos | {reply.points}
+                            Lolly | {reply.points}
                         </p>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <p>{formatDate(reply.createdAt!)}</p>

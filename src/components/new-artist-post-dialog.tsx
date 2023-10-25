@@ -41,7 +41,6 @@ export default function NewArtistPostDialog({ artistId }: NewArtistPostDialogPro
           </DialogDescription>
         </DialogHeader>
 
-        {/* //////////////////    change artist ids     ////////////////// */}
         <NewArtistPostForm artistId={artistId} />
 
         {/* <div className="grid gap-4 py-4">
