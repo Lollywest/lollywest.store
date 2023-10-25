@@ -337,7 +337,7 @@ export async function getArtistPostsAction(input: {
         throw new Error("user not found")
     }
 
-    const items = await db.transaction(async (tx) => {
+    const { items, artist } = await db.transaction(async (tx) => {
         const items = await tx
             .select({
                 id: posts.id,
@@ -369,8 +369,20 @@ export async function getArtistPostsAction(input: {
             .orderBy(desc(posts.createdAt))
             .limit(input.limit ? input.limit : 999999)
             .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
-        return items
+
+        const artist = await tx.query.artists.findFirst({
+            where: eq(artists.id, input.artistId)
+        })
+
+        return {
+            items,
+            artist,
+        }
     })
+
+    if (!artist) {
+        throw new Error("artist not found")
+    }
 
     // const items = await db.query.posts.findMany({
     //     where: and(eq(posts.artistId, input.artistId), eq(posts.isArtist, true)),
@@ -415,8 +427,8 @@ export async function getArtistPostsAction(input: {
             isPremium: item.isPremium,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: item.username ? item.username : "[deleted]",
-            image: item.image ? item.image : "/images/product-placeholder.webp",
+            username: item.user === artist.userId ? artist.name : (item.username ? item.username : "[deleted]"),
+            image: item.user === artist.userId ? artist.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
             userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
         }
@@ -443,7 +455,7 @@ export async function getCommunityPostsAction(input: {
         throw new Error("user not found")
     }
 
-    const items = await db.transaction(async (tx) => {
+    const { items, artist } = await db.transaction(async (tx) => {
         const items = await tx
             .select({
                 id: posts.id,
@@ -475,8 +487,20 @@ export async function getCommunityPostsAction(input: {
             .orderBy(desc(posts.createdAt))
             .limit(input.limit ? input.limit : 999999)
             .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
-        return items
+
+        const artist = await tx.query.artists.findFirst({
+            where: eq(artists.id, input.artistId)
+        })
+
+        return {
+            items,
+            artist,
+        }
     })
+
+    if (!artist) {
+        throw new Error("artist not found")
+    }
 
     const weekAgo = new Date()
     weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
@@ -515,8 +539,8 @@ export async function getCommunityPostsAction(input: {
             isPremium: item.isPremium,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: item.username ? item.username : "[deleted]",
-            image: item.image ? item.image : "/images/product-placeholder.webp",
+            username: item.user === artist.userId ? artist.name : (item.username ? item.username : "[deleted]"),
+            image: item.user === artist.userId ? artist.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1
 
         }
@@ -538,7 +562,7 @@ export async function getCommunityPostAction(input: {
         throw new Error("user not found")
     }
 
-    const items = await db.transaction(async (tx) => {
+    const { items, artist } = await db.transaction(async (tx) => {
         const items = await tx
             .select({
                 id: posts.id,
@@ -571,8 +595,24 @@ export async function getCommunityPostAction(input: {
             .orderBy(desc(posts.createdAt))
             .limit(input.limit ? input.limit : 999999)
             .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
-        return items
+
+        if (!items[0]) {
+            throw new Error("post not found")
+        }
+
+        const artist = await tx.query.artists.findFirst({
+            where: eq(artists.id, items[0].artistId)
+        })
+
+        return {
+            items,
+            artist,
+        }
     })
+
+    if (!artist) {
+        throw new Error("artist not found")
+    }
 
     const weekAgo = new Date()
     weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
@@ -611,8 +651,8 @@ export async function getCommunityPostAction(input: {
             isPremium: item.isPremium,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: item.username ? item.username : "[deleted]",
-            image: item.image ? item.image : "/images/product-placeholder.webp",
+            username: item.user === artist.userId ? artist.name : (item.username ? item.username : "[deleted]"),
+            image: item.user === artist.userId ? artist.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
             userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
         }
@@ -712,7 +752,7 @@ export async function getTopPostsAction(input: {
             start.setFullYear(2022)
     }
 
-    const items = await db.transaction(async (tx) => {
+    const { items, artist } = await db.transaction(async (tx) => {
         const items = await tx
             .select({
                 id: posts.id,
@@ -744,8 +784,20 @@ export async function getTopPostsAction(input: {
             .orderBy(desc(posts.numLikes))
             .limit(input.limit ? input.limit : 999999)
             .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
-        return items
+
+        const artist = await tx.query.artists.findFirst({
+            where: eq(artists.id, input.artistId)
+        })
+
+        return {
+            items,
+            artist,
+        }
     })
+
+    if (!artist) {
+        throw new Error("artist not found")
+    }
 
     const weekAgo = new Date()
     weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
@@ -784,8 +836,8 @@ export async function getTopPostsAction(input: {
             isPremium: item.isPremium,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: item.username ? item.username : "[deleted]",
-            image: item.image ? item.image : "/images/product-placeholder.webp",
+            username: item.user === artist.userId ? artist.name : (item.username ? item.username : "[deleted]"),
+            image: item.user === artist.userId ? artist.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
             userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
         }
@@ -875,7 +927,7 @@ export async function getActivePostsAction(input: {
             start.setFullYear(2022)
     }
 
-    const items = await db.transaction(async (tx) => {
+    const {items, artist} = await db.transaction(async (tx) => {
         const items = await tx
             .select({
                 id: posts.id,
@@ -907,8 +959,20 @@ export async function getActivePostsAction(input: {
             .orderBy(desc(posts.numComments))
             .limit(input.limit ? input.limit : 999999)
             .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
-        return items
+
+        const artist = await tx.query.artists.findFirst({
+            where: eq(artists.id, input.artistId)
+        })
+
+        return {
+            items,
+            artist,
+        }
     })
+
+    if (!artist) {
+        throw new Error("artist not found")
+    }
 
     const weekAgo = new Date()
     weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
@@ -947,8 +1011,8 @@ export async function getActivePostsAction(input: {
             isPremium: item.isPremium,
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
-            username: item.username ? item.username : "[deleted]",
-            image: item.image ? item.image : "/images/product-placeholder.webp",
+            username: item.user === artist.userId ? artist.name : (item.username ? item.username : "[deleted]"),
+            image: item.user === artist.userId ? artist.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
             userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
         }
