@@ -68,7 +68,7 @@ export default async function IndexPage() {
         </div>
       </section>
 
-      <section
+      {/* <section
         id="featured-products"
         aria-labelledby="featured-products-heading"
         className="space-y-6"
@@ -92,7 +92,6 @@ export default async function IndexPage() {
         </div>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {allProducts.map((product) => (
-            //<ProductCard key={product.id} product={product} />
             product.category === "deck" ? (
               <ProductCard key={product.id} product={product} />
             ) : product.category === "wrap" ? (
@@ -106,7 +105,7 @@ export default async function IndexPage() {
 
           ))}
         </div>
-      </section>
+      </section> */}
 
       <section
         id="artist-communities"
