@@ -300,7 +300,7 @@ export function UpdateArtistAboutForm({ artist, isArtist }: props) {
                             name="shortDescription"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Idk what to name this</FormLabel>
+                                    <FormLabel>Community Bio</FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder=""

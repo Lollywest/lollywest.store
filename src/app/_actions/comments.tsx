@@ -374,7 +374,7 @@ export async function getAllCommentsAction(input: {
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
             username: item.user === artist?.userId ? artist?.name : (item.username ? item.username : "[deleted]"),
-            image: item.user === artist?.userId ? artist?.images[0]?.url : (item.image ? item.image : "/images/product-placeholder.webp"),
+            image: item.user === artist?.userId ? artist?.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
             userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
         }
@@ -479,7 +479,7 @@ export async function getCommentRepliesAction(input: {
             createdAt: item.createdAt,
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
             username: item.user === artist?.userId ? artist?.name : (item.username ? item.username : "[deleted]"),
-            image: item.user === artist?.userId ? artist?.images[0]?.url : (item.image ? item.image : "/images/product-placeholder.webp"),
+            image: item.user === artist?.userId ? artist?.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
             userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
         }
