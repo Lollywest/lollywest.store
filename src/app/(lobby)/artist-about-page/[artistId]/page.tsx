@@ -52,13 +52,13 @@ export const metadata: Metadata = {
 }
 
 // change props
-interface ArtistCommunityPageProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ArtistAboutPageProps extends React.HTMLAttributes<HTMLDivElement> {
     params: {
         artistId: string
     }
 }
 
-export default async function ArtistDashboardPage({ params }: ArtistCommunityPageProps) {
+export default async function ArtistAboutPage({ params }: ArtistAboutPageProps) {
     const artistId = Number(params.artistId)
     const artist = await db.query.artists.findFirst({
         where: eq(artists.id, artistId)
