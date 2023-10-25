@@ -49,6 +49,7 @@ import { EventCalendar } from "@/components/event-calendar"
 import { getArtistPostsAction } from "@/app/_actions/post"
 import NewArtistPostDialog from "@/components/new-artist-post-dialog"
 import { Balancer } from "react-wrap-balancer"
+import { checkUserArtist } from "@/app/_actions/wallet"
 
 // export const metadata: Metadata = {
 //     title: "Artist Dashboard Page",
@@ -64,6 +65,14 @@ interface ArtistDashboardPageProps {
 
 export default async function ArtistDashboardPage({ params }: ArtistDashboardPageProps) {
     const artistId = Number(params.artistId)
+    const artist = await db.query.artists.findFirst({
+        where: eq(artists.id, artistId)
+    })
+    if (!artist) {
+        throw new Error("artist not found")
+    }
+
+    const isArtist: boolean = await checkUserArtist({ artistId })
 
     // const [posts, setPosts] = useState([
     //     { title: "Exclusive Event", content: "I've received so many messages from you all, asking about my songwriting process. Well, today's the day I'm sharing some behind-the-scenes magic.Every song, to me, begins as an emotion. Maybe it's a flash of a memory, a line from a conversation, or a feeling from a dream. I usually start with humming a melody or tapping out a rhythm. From there, it's a journey of discovery, navigating the chords and finding the story I want to tell.", date: "10/31/2024", time: "4:24 AM" },
@@ -82,7 +91,7 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
             <div className="space-y-8">
                 <div className="flex-1 space-y-4 p-8 pt-6">
                    {/*//////////////////    START OF HEADER (FOR DEMO)      ////////////////////////*/}
-                   <div className="flex flex-col items-center">
+                   {/* <div className="flex flex-col items-center">
 
 <div className="relative">
     <Image
@@ -102,9 +111,8 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
         />
     </div>
 </div>
-</div>
-
-<div className="flex items-center gap-2">
+</div> */}
+{/* <div className="flex items-center gap-2">
 <div className="flex-1 ">
     <Button variant="outline" className="rounded-xl ">
         <Icons.send
@@ -113,12 +121,7 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
         />Invite a Friend </Button>
 
 </div>
-{/* <Button variant="secondary" className="rounded-xl ">
-    <Icons.message
-        className="mr-2 h-5 w-5 bg-blue-550"
-        aria-hidden="true"
-    />Contact Artist
-</Button> */}
+
 <Button variant="secondary" className="rounded-xl ">
     <Image
         className="mr-2 h-6 w-6"
@@ -135,23 +138,105 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
         aria-hidden="true"
     />
 </Button>
-</div>
+</div> */}
 
-<div className="flex flex-col items-center justify-center space-y-4 text-center ">
+{/* <div className="flex flex-col items-center justify-center space-y-4 text-center ">
 
 <h2 className="mt-3 text-3xl font-bold tracking-tight">Moise</h2>
-{/* <p className="text-muted-foreground items-center  justify-center "> */}
 <Balancer className="max-w-[42rem] leading-normal text-muted-foreground sm:text-md sm:leading-8">
     Welcome to the elite circle of my music journey.
     Here, we don't just listen to music; we live it.
     Come amplify your experience and dance to the rhythm of exclusivity - let's resonate together.
-    {/* </p> */}
 </Balancer>
 <ArtistDashboardNav artistId={artistId} />
-</div>
+</div> */}
 {/*//////////////////    END OF HEADER (FOR DEMO)      ////////////////////////*/}
 
-                    
+                    {/*//////////////////    START OF HEADER      ////////////////////////*/}
+                    <div className="flex flex-col items-center">
+
+                        <div className="relative">
+                            {artist.images[1] !== null ? (
+                                // <AspectRatio ratio={3 / 1}>
+                                <Image
+                                    className="rounded-xl"
+                                    src={artist.images[1]!.url}
+                                    alt=""
+                                    height={500}
+                                    width={1500}
+                                />
+                                // </AspectRatio>
+                            ) :
+
+                                <Image
+                                    className="rounded-xl"
+                                    src="/images/DeleteLater-Example-Banner.png"
+                                    alt=""
+                                    height={500}
+                                    width={1500}
+                                />
+
+                            }
+
+
+                            <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-32 h-32 rounded-full overflow-hidden border-2 border-white">
+                                {artist.images[0] !== null ? (
+                                    <Image
+                                        className="rounded-xl"
+                                        src={artist.images[0]!.url}
+                                        alt=""
+                                        height={200}
+                                        width={200}
+                                    />
+                                ) :
+                                    <div
+                                        aria-label="Image Placeholder"
+                                        role="img"
+                                        aria-roledescription="placeholder"
+                                        className="flex aspect-square h-full w-full flex-1 items-center justify-center bg-secondary"
+                                    >
+                                        <Icons.placeholder
+                                            className="h-9 w-9 text-muted-foreground"
+                                            aria-hidden="true"
+                                        />
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <div className="flex-1 ">
+                            <Button variant="outline" className="rounded-xl ">
+                                <Icons.send
+                                    className="mr-2 h-4 w-4"
+                                    aria-hidden="true"
+                                />Invite a Friend </Button>
+
+                        </div>
+
+                        <Button variant="secondary" className="rounded-xl ">
+                            <Image
+                                className="mr-2 h-6 w-6"
+                                src="/images/avatar/verified1.svg"
+                                alt=""
+                                height={800}
+                                width={800}
+                            />Join
+
+                        </Button>
+                        <Button variant="secondary" className="rounded-xl">...</Button>
+                    </div>
+
+                    <div className="flex flex-col items-center space-y-4 ">
+
+                        <h2 className="mt-3 text-3xl font-bold tracking-tight">{artist.name}</h2>
+                        <Balancer className="max-w-[42rem] leading-normal text-muted-foreground sm:text-md sm:leading-8">
+Artist Description or community description, etc. Artist Description or community description, etc.</Balancer>
+                        <ArtistDashboardNav artistId={Number(params.artistId)} />
+                    </div>
+                    {/*//////////////////    END OF HEADER      ////////////////////////*/}
                     
 
                 
@@ -172,7 +257,9 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
                                         />Add Event </Button> */}
                                     {/* <AddPostPopover/>  */}
                                     {/* <NewArtistPostForm artistId={1} /> */}
-                                    <NewArtistPostDialog artistId={artistId}/>
+
+                                    {isArtist !== false ? <NewArtistPostDialog artistId={artistId}/> : null}
+
                                 </div>                                
                             </div>
                             <div className=" grid gap-4 md:grid-cols-2 lg:grid-cols-7 ">
@@ -188,8 +275,6 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
 
 
                                
-
-
                                 {/* Sidebar: add calendar later e.g. recent activity, upcoing events popular posts */}
                                 <div className="col-span-2 hidden md:block">
                                 <Card className="rounded-xl my-4">
@@ -249,11 +334,13 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
                                     </Card>
 
                                     {/* <Calendar/> */}
-                                    {allArtistPosts.map((post) => (
-                                        // <UpcomingEventPost key={index} {...post} />
-                                        <UpcomingEventCard key={post.id} post={post} />
-                                    ))}
                                     
+                                    {allArtistPosts.map(post => 
+    post.isEvent !== false ? (
+        <UpcomingEventCard key={post.id} post={post} />
+    ) : null
+)}
+
 
                                     <Card className="rounded-xl my-4">
                                         <CardHeader>

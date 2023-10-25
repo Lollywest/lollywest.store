@@ -31,6 +31,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { formatDate, toTitleCase } from "@/lib/utils"
+import { LobbyCommunityCard } from "@/components/lobby-community-card"
 
 // Running out of edge function execution units on vercel free plan
 // export const runtime = "edge"
@@ -106,6 +107,52 @@ export default async function IndexPage() {
           ))}
         </div>
       </section>
+
+      <section
+        id="artist-communities"
+        aria-labelledby="upcoming-stores-heading"
+        className="space-y-6"
+      >
+        <div className="flex items-center">
+          <h2 className="text-2xl font-medium sm:text-3xl">Artist Communities</h2>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {/* {allArtistCommunities.map((artist) => (
+            <Card key={artist.id} className="grid rounded-xl my-4 ">
+              <Link
+                aria-label={`View details`}
+                //   href={`//${artist.id}`}
+                href={`/artist-dashboard-page/${artist.id}`}
+              >
+                <CardHeader>
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1 ">
+                      <CardTitle className="text-xl">{artist.name}</CardTitle>
+                    </div>
+                   
+                  </div>
+
+
+                  <CardDescription className="">
+                    <div className="flex items-center gap-4">
+                      <p> Created on {formatDate(artist.createdAt!)}</p>
+                    </div>
+                  </CardDescription>
+                </CardHeader>
+               
+              </Link>
+            </Card>
+          ))} */}
+
+          {allArtistCommunities.map((artist) => (
+            <LobbyCommunityCard artist={artist} />
+          ))}
+
+        </div>
+
+      </section>
+
       <section
         id="upcoming-stores"
         aria-labelledby="upcoming-stores-heading"
@@ -132,52 +179,7 @@ export default async function IndexPage() {
         </div>
 
       </section>
-      <section
-        id="artist-communities"
-        aria-labelledby="upcoming-stores-heading"
-        className="space-y-6"
-      >
-        <div className="flex items-center">
-          <h2 className="text-2xl font-medium sm:text-3xl">Artist Communities</h2>
-        </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {allArtistCommunities.map((artist) => (
-
-            <Card key={artist.id} className="grid rounded-xl my-4 ">
-              <Link
-                aria-label={`View details`}
-                //   href={`//${artist.id}`}
-                href={`/artist-dashboard-page/${artist.id}`}
-              >
-                <CardHeader>
-
-
-                  <div className="flex items-center gap-4">
-                    <div className="flex-1 ">
-                      <CardTitle className="text-xl">{artist.name}</CardTitle>
-                    </div>
-                    {/* <Icons.chevronRight
-                            className="mr-2 h-10 w-10 "
-                            aria-hidden="true"
-                        /> */}
-                  </div>
-
-
-                  <CardDescription className="">
-                    <div className="flex items-center gap-4">
-                      <p> Created on {formatDate(artist.createdAt!)}</p>
-                    </div>
-                  </CardDescription>
-                </CardHeader>
-                {/* <CardContent  >        
-        </CardContent> */}
-              </Link>
-            </Card>
-          ))}
-        </div>
-
-      </section>
     </Shell>
   )
 }

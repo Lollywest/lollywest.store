@@ -70,9 +70,8 @@ export async function DashboardPostCard({
             <CardContent  >
 
                 {/* Add place to show comments ? */}
-                <div className="grid grid-cols-3 gap-12">
+                {/* <div className="grid grid-cols-3 gap-12">
                     <div className="flex-1 flex flex-col col-span-2">
-                        {/* <CardTitle className="text-xl ">{title}</CardTitle> */}
                         <div className="pt-2 ">
                             <Badge> Badge </Badge>
                             <Badge className=" ml-2" variant="secondary"> Trending Now </Badge>
@@ -84,15 +83,7 @@ export async function DashboardPostCard({
 
 
                     </div>
-                    {/* <div className="pb-4 pt-2 ">
-                        <Image
-                            src="/images/DeleteLater-Example-Profile-Pic.png"
-                            alt="Artist Profile Picture"
-                            className="border-4 border-gray-350 rounded"
-                            width={300}
-                            height={300}
-                        />
-                    </div> */}
+                    
                     <div className="flex flex-col md:flex-row md:gap-16 p-2">
                         <ProductImageCarousel
                             className="flex-1 w-full md:w-1/2"
@@ -102,7 +93,45 @@ export async function DashboardPostCard({
                             }}
                         />
                     </div>
-                </div>
+                </div> */}
+                {/* If post includes images */}
+                {Array.isArray(post.images) && post.images.length > 0 ? (
+                    <div className="flex grid grid-cols-3 gap-12">
+                        <div className="flex-1 flex flex-col col-span-2">
+                            {/* <CardTitle className="text-xl ">{title}</CardTitle> */}
+                            {/* <div className="pt-2 ">
+                                <Badge> Badge </Badge>
+                                <Badge className=" ml-2" variant="secondary"> Trending Now </Badge>
+                            </div> */}
+                            <div className="flex-1 flex items-center pt-4 pb-4">
+                                <p >{post.message}</p>
+                            </div>
+                        </div>
+                        <div className="flex flex-col md:flex-row md:gap-16 p-2">
+                            <ProductImageCarousel
+                                className="flex-1 w-full md:w-1/2"
+                                images={post.images as StoredFile[]}
+                                options={{
+                                    loop: true,
+                                }}
+                            />
+                        </div>
+                    </div>
+                ) :
+                    // If no images in post
+                    <div className="flex grid grid-cols-3 gap-12">
+                        <div className="flex-1 flex flex-col col-span-3">
+                            {/* <CardTitle className="text-xl ">{title}</CardTitle> */}
+                            {/* <div className="pt-2 ">
+                                <Badge> Badge </Badge>
+                                <Badge className=" ml-2" variant="secondary"> Trending Now </Badge>
+                            </div> */}
+                            <div className="flex-1 flex items-center pt-4 pb-4">
+                                <p >{post.message}</p>
+                            </div>
+                        </div>
+                    </div>
+                }
                 {/* <div className="flex items-center gap-4">
                     <div className="flex-1 ">
                         <CardTitle className="text-xl ">{post.title}</CardTitle>
@@ -131,7 +160,7 @@ export async function DashboardPostCard({
                     </div>
 
                     <div className=" flex items-center ">
-                        <LikeIconToggle postId={post.id} liked={post.likedByUser}/>
+                        <LikeIconToggle postId={post.id} liked={post.likedByUser} />
                         <span className=" pr-8"> {post.numLikes}</span>
                         <Link
                             aria-label={`View all comments`}

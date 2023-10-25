@@ -120,8 +120,7 @@ export async function CommunityPostCard({
 
                         {/* <UserAvatar /> */}
                         <Avatar>
-                            {/* <AvatarImage src={post.image} alt="" /> */}
-                            <AvatarImage src="/images/demo-profile-pic.jpg" alt="" />
+                            <AvatarImage src={post.image} alt="" />
                             <AvatarFallback>AN</AvatarFallback>
                         </Avatar>
                         {/* Change to username */}
@@ -140,7 +139,7 @@ export async function CommunityPostCard({
                             </div>
 
                             <p className=" flex-1 text-sm text-muted-foreground">
-                                Kudos | {post.points}
+                                Lolly | {post.points}
                             </p>
 
                         </div>

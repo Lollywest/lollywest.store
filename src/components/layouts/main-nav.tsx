@@ -77,89 +77,62 @@ export function MainNav({ items }: MainNavProps) {
           {items?.[0]?.items ? (
             <NavigationMenuItem>
               <Link
-                  aria-label="Featured"
-                  href="/featured"
-                  className="text-sm leading-tight text-muted-foreground"
-                >
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Featured&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                aria-label="Featured"
+                href="/featured"
+                className="text-sm leading-tight text-muted-foreground"
+              >
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Hubs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               </Link>
-                      {/* <span className="hidden font-bold lg:inline-block">
-                        Featured Decks
-                      </span> */}
-              {/* <NavigationMenuTrigger className="h-auto">
-                Featured
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">             
-                  <li className="row-span-3">
-                    <NavigationMenuLink >
-                    <Link
-                      aria-label="Featured"
-                      href="/featured"
-                      className="hidden items-center space-x-2 lg:flex"
-                    >
-                      <span className="mb-2 mt-4 text-lg font-medium">
-                        Featured Wraps
-                      </span>
-                    </Link>
-                    <p className="text-sm leading-tight text-muted-foreground">
-                          Featured Wraps Description
-                    </p>
-                    <Link
-                      aria-label="Featured"
-                      href="/featured"
-                      className="hidden items-center space-x-2 lg:flex"
-                    >
-                      <span className="hidden font-bold lg:inline-block">
-                        Featured Decks
-                      </span>
-                      
-                    </Link> */}
-                    
-                      {/* <a
-                        aria-label="Home"
-                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                        href="/"
-                      >
-                        <Icons.logo className="h-6 w-6" aria-hidden="true" />
-                        <div className="mb-2 mt-4 text-lg font-medium">
-                          {siteConfig.name}
-                        </div>
-                        <p className="text-sm leading-tight text-muted-foreground">
-                          {siteConfig.description}
-                        </p>
-                      </a> */}
-                    {/* </NavigationMenuLink>
-                  </li> */}
-                  {/* {items[0].items.map((item) => (
-                    <ListItem
-                      //key={item.title}
-                      title="TEST TITLE"
-                      href="/featured"
-                    >
-                      {item.description}
-                    </ListItem>
-                    
-                  ))} */}
-                {/* </ul> */}
-              {/* </NavigationMenuContent> */}
             </NavigationMenuItem>
           ) : null}
-
           {items?.[0]?.items ? (
             <NavigationMenuItem>
               <Link
-                      aria-label="Leaderboard"
-                      href="/leaderboard"
-                      // className="hidden items-center space-x-2 lg:flex"
-                      className="text-sm leading-tight text-muted-foreground"
-                    >
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Leaderboard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      {/* <span className="hidden font-bold lg:inline-block">
+                aria-label="Leaderboard"
+                href="/leaderboard"
+                // className="hidden items-center space-x-2 lg:flex"
+                className="text-sm leading-tight text-muted-foreground"
+              >
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For Artists&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {/* <span className="hidden font-bold lg:inline-block">
                         Top Artists & Fans
                       </span> */}
-                      
-                    </Link>
+
+              </Link>
+
+            </NavigationMenuItem>
+          ) : null}
+          {items?.[0]?.items ? (
+            <NavigationMenuItem>
+              <Link
+                aria-label="Leaderboard"
+                href="/leaderboard"
+                // className="hidden items-center space-x-2 lg:flex"
+                className="text-sm leading-tight text-muted-foreground"
+              >
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For Fans&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {/* <span className="hidden font-bold lg:inline-block">
+                        Top Artists & Fans
+                      </span> */}
+
+              </Link>
+
+            </NavigationMenuItem>
+          ) : null}
+          {items?.[0]?.items ? (
+            <NavigationMenuItem>
+              <Link
+                aria-label="Leaderboard"
+                href="/leaderboard"
+                // className="hidden items-center space-x-2 lg:flex"
+                className="text-sm leading-tight text-muted-foreground"
+              >
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Leaderboard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {/* <span className="hidden font-bold lg:inline-block">
+                        Top Artists & Fans
+                      </span> */}
+
+              </Link>
               {/* <NavigationMenuTrigger className="h-auto">
                 Leaderboards
               </NavigationMenuTrigger>
@@ -192,17 +165,17 @@ export function MainNav({ items }: MainNavProps) {
           {items?.[0]?.items ? (
             <NavigationMenuItem>
               <Link
-                      aria-label="Sponsor Artists"
-                      href="/sponsor-artists"
-                      // className="hidden items-center space-x-2 lg:flex"
-                      className="text-sm leading-tight text-muted-foreground"
-                    >
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sponsor Artists&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      {/* <span className="hidden font-bold lg:inline-block">
+                aria-label="Sponsor Artists"
+                href="/sponsor-artists"
+                // className="hidden items-center space-x-2 lg:flex"
+                className="text-sm leading-tight text-muted-foreground"
+              >
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;About&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {/* <span className="hidden font-bold lg:inline-block">
                         Top Artists & Fans
                       </span> */}
-                      
-                    </Link>
+
+              </Link>
             </NavigationMenuItem>
           ) : null}
 
@@ -216,12 +189,12 @@ export function MainNav({ items }: MainNavProps) {
                       className="text-sm leading-tight text-muted-foreground"
                     >
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Drop a Wrap&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
-                      {/* <span className="hidden font-bold lg:inline-block">
+          {/* <span className="hidden font-bold lg:inline-block">
                         Drop a Wrap
                       </span> */}
-                      
-                    {/* </Link>  */}
-              {/* <NavigationMenuTrigger className="h-auto">
+
+          {/* </Link>  */}
+          {/* <NavigationMenuTrigger className="h-auto">
                 Drop on Lollywest
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -246,28 +219,28 @@ export function MainNav({ items }: MainNavProps) {
                  
                 </ul>
               </NavigationMenuContent> */}
-            {/* </NavigationMenuItem>
+          {/* </NavigationMenuItem>
           ) : null} */}
 
           {/* {items?.[0]?.items ? (
             
             <NavigationMenuItem> */}
-  
-              {/* <NavigationMenuTrigger className="h-auto"> */}
-                {/* <Link
+
+          {/* <NavigationMenuTrigger className="h-auto"> */}
+          {/* <Link
                         aria-label="about-us"
                         href="/about-us"
                         //className="hidden items-center space-x-2 lg:flex"
                         className="text-sm leading-tight text-muted-foreground"
                       >
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;About Us */}
-                        {/* <span className="hidden font-bold lg:inline-block">
+          {/* <span className="hidden font-bold lg:inline-block">
                           About Lollywest
                         </span> */}
-                      {/* </Link> */}
-                
-              {/* </NavigationMenuTrigger> */}
-              {/* <NavigationMenuContent>
+          {/* </Link> */}
+
+          {/* </NavigationMenuTrigger> */}
+          {/* <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
              
                   <li className="row-span-3">
@@ -290,7 +263,7 @@ export function MainNav({ items }: MainNavProps) {
                  
                 </ul>
               </NavigationMenuContent> */}
-            {/* </NavigationMenuItem>
+          {/* </NavigationMenuItem>
           ) : null} */}
 
 

@@ -158,6 +158,8 @@ export function UpdateArtistAboutForm({ artist, isArtist }: props) {
             {isArtist &&
                 <Button
                     onClick={() => setEditing(!editing)}
+                    className="w-1/4"
+                    size="sm"
                 >
                     <Icons.edit
                         className="mr-2 h-4 w-4"
