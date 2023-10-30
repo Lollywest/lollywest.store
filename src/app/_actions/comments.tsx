@@ -336,12 +336,6 @@ export async function getAllCommentsAction(input: {
         }
     })
 
-    // const items = await db.query.comments.findMany({
-    //     where: eq(comments.postId, input.postId),
-    //     orderBy: [desc(comments.createdAt)],
-    //     limit: input.limit ? input.limit : undefined,
-    //     offset: input.page ? input.page * (input.limit ? input.limit : 0) : undefined
-    // })
     const weekAgo = new Date()
     weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
     const now = new Date()
@@ -376,7 +370,8 @@ export async function getAllCommentsAction(input: {
             username: item.user === artist?.userId ? artist?.name : (item.username ? item.username : "[deleted]"),
             image: item.user === artist?.userId ? artist?.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
-            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1,
+            userJoined: item.userHubsJoined !== null && item.userHubsJoined.map(a => a.artistId).indexOf(item.artistId) > -1,
         }
 
         result.push(info)
@@ -481,7 +476,8 @@ export async function getCommentRepliesAction(input: {
             username: item.user === artist?.userId ? artist?.name : (item.username ? item.username : "[deleted]"),
             image: item.user === artist?.userId ? artist?.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
-            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1,
+            userJoined: item.userHubsJoined !== null && item.userHubsJoined.map(a => a.artistId).indexOf(item.artistId) > -1,
         }
 
         result.push(info)

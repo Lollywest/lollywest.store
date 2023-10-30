@@ -20,7 +20,7 @@ import { CommentReplyToggleForm } from "@/components/comment-reply-toggle"
 import { getAllCommentsAction, getCommentRepliesAction } from "@/app/_actions/comments"
 
 import { type Comment } from "@/db/schema"
-import { cn, formatDate, formatTime } from "@/lib/utils"
+import { cn, formatDate, formatTime, formatTimeSince } from "@/lib/utils"
 import {
     Avatar,
     AvatarFallback,
@@ -80,8 +80,9 @@ export function CommunityPostCommentReply({
                             Lolly | {reply.points}
                         </p>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <p>{formatDate(reply.createdAt!)}</p>
-                            <p> {formatTime(reply.createdAt!)}</p>
+                            {/* <p>{formatDate(reply.createdAt!)}</p>
+                            <p> {formatTime(reply.createdAt!)}</p> */}
+                            <p> {formatTimeSince(reply.createdAt!)}</p>
                         </div>
                     </div>
                     <div className="flex-1 flex items-center ">
@@ -97,7 +98,7 @@ export function CommunityPostCommentReply({
                     </Button> */}
 
                     <div className="flex-1 flex ">
-                        <LikeIconToggle postId={reply.id} liked={reply.likedByUser} />
+                        <LikeIconToggle postId={reply.id} liked={reply.likedByUser} numLikes={(reply.likers as string[])?.length ?? 0} />
                         <div className="flex-1 ">
                             {/* <CommentToggleForm postId={comment.postId} /> */}
                             <CommentReplyToggleForm commentId={reply.id} />

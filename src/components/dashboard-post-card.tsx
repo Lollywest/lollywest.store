@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card"
 import { LikeIconToggle } from "@/components/like-toggle"
 import { type Post } from "@/db/schema"
-import { cn, formatDate, formatTime, toTitleCase } from "@/lib/utils"
+import { cn, formatDate, formatTime, formatTimeSince, toTitleCase } from "@/lib/utils"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
@@ -153,8 +153,9 @@ export async function DashboardPostCard({
                         <CardDescription className="">
                             <div className="flex items-center gap-4">
                                 {/* </div>p>{date}</p> */}
-                                <p>{formatDate(post.createdAt!)}</p>
-                                <p>{formatTime(post.createdAt!)} </p>
+                                {/* <p>{formatDate(post.createdAt!)}</p>
+                                <p>{formatTime(post.createdAt!)} </p> */}
+                                <p>{formatTimeSince(post.createdAt!)} </p>
                             </div>
                         </CardDescription>
                     </div>
