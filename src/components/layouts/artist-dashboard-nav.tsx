@@ -34,13 +34,13 @@ export default function ArtistDashboardNav({ artistId }: ArtistDashboardNavProps
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
-                <NavigationMenuItem>
+                {/* <NavigationMenuItem>
                     <Link href={`/artist-community-page/${artistId}`} legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Community
                         </NavigationMenuLink>
                     </Link>
-                </NavigationMenuItem>
+                </NavigationMenuItem> */}
                 <NavigationMenuItem>
                     <Link href={`/artist-premium/${artistId}`} legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>

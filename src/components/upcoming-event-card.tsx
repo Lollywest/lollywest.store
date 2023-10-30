@@ -33,9 +33,8 @@ export function UpcomingEventCard({
     return (
         <Card className="grid rounded-xl my-4 ">
             <Link
-                aria-label={`View details`}
-                //   href={`//${artist.id}`}
-                href="/artist-community-page"
+                aria-label={`View Event Details`}
+                href={`/community-post/${post.id}`}
             >
                 <CardHeader>
 

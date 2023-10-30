@@ -117,32 +117,7 @@ export default async function IndexPage() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {/* {allArtistCommunities.map((artist) => (
-            <Card key={artist.id} className="grid rounded-xl my-4 ">
-              <Link
-                aria-label={`View details`}
-                //   href={`//${artist.id}`}
-                href={`/artist-dashboard-page/${artist.id}`}
-              >
-                <CardHeader>
-                  <div className="flex items-center gap-4">
-                    <div className="flex-1 ">
-                      <CardTitle className="text-xl">{artist.name}</CardTitle>
-                    </div>
-                   
-                  </div>
 
-
-                  <CardDescription className="">
-                    <div className="flex items-center gap-4">
-                      <p> Created on {formatDate(artist.createdAt!)}</p>
-                    </div>
-                  </CardDescription>
-                </CardHeader>
-               
-              </Link>
-            </Card>
-          ))} */}
 
           {allArtistCommunities.map((artist) => (
             <LobbyCommunityCard key={artist.id} artist={artist} />
