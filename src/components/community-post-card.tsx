@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { UserAvatar } from "@/components/user-avatar"
 import { CommunityPostComment } from "@/components/community-post-comment"
-import { cn, formatDate, formatTime, toTitleCase } from "@/lib/utils"
+import { cn, formatDate, formatTime, formatTimeSince, toTitleCase } from "@/lib/utils"
 
 import { type Post } from "@/db/schema"
 import { db } from "@/db"
@@ -154,8 +154,8 @@ export async function CommunityPostCard({
                     <CardDescription className="">
                         <div className="flex items-center gap-4">
                             {/* </div>p>{date}</p> */}
-                            <p>{formatDate(post.createdAt!)}</p>
-                            <p> {formatTime(post.createdAt!)}</p>
+                            {/* <p>{formatDate(post.createdAt!)}</p> */}
+                            <p> {formatTimeSince(post.createdAt!)}</p>
                         </div>
                     </CardDescription>
                 </div>
@@ -202,8 +202,8 @@ export async function CommunityPostCard({
 
                 <div className="flex items-center">
                     <div className="flex-1 flex items-center  ">
-                        <LikeIconToggle postId={post.id} liked={post.likedByUser} />
-                        <span className=" pr-8"> {post.numLikes}</span>
+                        <LikeIconToggle postId={post.id} liked={post.likedByUser} numLikes={post.numLikes} />
+                        {/* <span className=" pr-8"> {post.numLikes}</span> */}
                         <Link
                             aria-label={`View all comments`}
                             href={`/community-post/${post.id}`}

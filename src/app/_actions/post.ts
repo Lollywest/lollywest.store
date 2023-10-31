@@ -384,12 +384,6 @@ export async function getArtistPostsAction(input: {
         throw new Error("artist not found")
     }
 
-    // const items = await db.query.posts.findMany({
-    //     where: and(eq(posts.artistId, input.artistId), eq(posts.isArtist, true)),
-    //     orderBy: [desc(posts.createdAt)],
-    //     limit: input.limit ? input.limit : undefined,
-    //     offset: input.page ? input.page * (input.limit ? input.limit : 0) : undefined
-    // })
     const weekAgo = new Date()
     weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
     const now = new Date()
@@ -430,7 +424,8 @@ export async function getArtistPostsAction(input: {
             username: item.user === artist.userId ? artist.name : (item.username ? item.username : "[deleted]"),
             image: item.user === artist.userId ? artist.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
-            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1,
+            userJoined: item.userHubsJoined !== null && item.userHubsJoined.map(a => a.artistId).indexOf(item.artistId) > -1,
         }
 
         result.push(info)
@@ -541,8 +536,9 @@ export async function getCommunityPostsAction(input: {
             points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
             username: item.user === artist.userId ? artist.name : (item.username ? item.username : "[deleted]"),
             image: item.user === artist.userId ? artist.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
-            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1
-
+            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1,
+            userJoined: item.userHubsJoined !== null && item.userHubsJoined.map(a => a.artistId).indexOf(item.artistId) > -1,
         }
 
         result.push(info)
@@ -654,7 +650,8 @@ export async function getCommunityPostAction(input: {
             username: item.user === artist.userId ? artist.name : (item.username ? item.username : "[deleted]"),
             image: item.user === artist.userId ? artist.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
-            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1,
+            userJoined: item.userHubsJoined !== null && item.userHubsJoined.map(a => a.artistId).indexOf(item.artistId) > -1,
         }
 
         result.push(info)
@@ -839,7 +836,8 @@ export async function getTopPostsAction(input: {
             username: item.user === artist.userId ? artist.name : (item.username ? item.username : "[deleted]"),
             image: item.user === artist.userId ? artist.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
-            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1,
+            userJoined: item.userHubsJoined !== null && item.userHubsJoined.map(a => a.artistId).indexOf(item.artistId) > -1,
         }
 
         result.push(info)
@@ -1014,7 +1012,8 @@ export async function getActivePostsAction(input: {
             username: item.user === artist.userId ? artist.name : (item.username ? item.username : "[deleted]"),
             image: item.user === artist.userId ? artist.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
-            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1,
+            userJoined: item.userHubsJoined !== null && item.userHubsJoined.map(a => a.artistId).indexOf(item.artistId) > -1,
         }
 
         result.push(info)

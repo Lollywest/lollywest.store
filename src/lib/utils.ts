@@ -30,6 +30,50 @@ export function formatTime(date: Date | string) {
   return dayjs(date).format("h:mm a")
 }
 
+export function formatTimeSince(date: Date) {
+  const cur = new Date()
+
+  const year = cur.getUTCFullYear() - date.getUTCFullYear()
+  const month = cur.getUTCMonth() - date.getUTCMonth()
+  const day = cur.getUTCDate() - date.getUTCDate()
+  const hour = cur.getUTCHours() - date.getUTCHours()
+  const min = cur.getUTCMinutes() - date.getUTCMinutes()
+
+  if (year > 0) {
+    if (year > 1) {
+      return (`${year} years ago`)
+    } else {
+      return (`1 year ago`)
+    }
+  } else if (month > 0) {
+    if (month > 1) {
+      return (`${month} months ago`)
+    } else {
+      return (`1 month ago`)
+    }
+  } else if (day > 0) {
+    if (day > 1) {
+      return (`${day} days ago`)
+    } else {
+      return (`1 day ago`)
+    }
+  } else if (hour > 0) {
+    if (hour > 1) {
+      return (`${hour} hours ago`)
+    } else {
+      return (`1 hour ago`)
+    }
+  } else if (min > 0) {
+    if (min > 1) {
+      return (`${min} minutes ago`)
+    } else {
+      return (`1 minute ago`)
+    }
+  } else {
+    return ('Less than a minute ago')
+  }
+}
+
 export function formatBytes(
   bytes: number,
   decimals = 0,

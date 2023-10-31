@@ -32,6 +32,7 @@ import { isArrayOfFile } from "@/lib/utils"
 import { generateReactHelpers } from "@uploadthing/react/hooks"
 import type { OurFileRouter } from "@/app/api/uploadthing/core"
 import { FileDialog } from "@/components/file-dialog"
+import { BannerFileDialog } from "../banner-file-dialog"
 import { Zoom } from "@/components/zoom-image"
 import type { FileWithPreview } from "@/types"
 import Image from "next/image"
@@ -258,7 +259,7 @@ export function UpdateArtistAboutForm({ artist, isArtist }: props) {
                                 </div>
                             ) : null}
                             <FormControl>
-                                <FileDialog
+                                <BannerFileDialog
                                     setValue={form.setValue}
                                     name="image2"
                                     maxFiles={1}

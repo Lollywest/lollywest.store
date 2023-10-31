@@ -20,7 +20,7 @@ import { CommentReplyToggleForm } from "@/components/comment-reply-toggle"
 import { getAllCommentsAction, getCommentRepliesAction } from "@/app/_actions/comments"
 
 import { type Comment } from "@/db/schema"
-import { cn, formatDate, formatTime, toTitleCase } from "@/lib/utils"
+import { cn, formatDate, formatTime, formatTimeSince, toTitleCase } from "@/lib/utils"
 import {
     Avatar,
     AvatarFallback,
@@ -90,8 +90,9 @@ export async function CommunityPostComment({
                         </p> */}
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             {/* </div>p>{date}</p> */}
-                            <p>{formatDate(comment.createdAt!)}</p>
-                            <p> {formatTime(comment.createdAt!)}</p>
+                            {/* <p>{formatDate(comment.createdAt!)}</p>
+                            <p> {formatTime(comment.createdAt!)}</p> */}
+                            <p> {formatTimeSince(comment.createdAt!)}</p>
                         </div>
                     </div>
                     <div className="flex-1 flex items-center ">
@@ -107,7 +108,7 @@ export async function CommunityPostComment({
                     </Button> */}
 
                     <div className="flex-1 flex ">
-                        <LikeIconToggle postId={comment.id} liked={comment.likedByUser} />
+                        <LikeIconToggle postId={comment.id} liked={comment.likedByUser} numLikes={(comment.likers as string[])?.length} />
                         {/* <span className=" pr-8"> {comment.numLikes}</span> */}
                         <div className="flex-1 ">
                             {/* <CommentToggleForm postId={comment.postId} /> */}
