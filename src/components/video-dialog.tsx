@@ -18,6 +18,8 @@ export function VideoDialog({endpointCallback, successCallback}: VideoDialogProp
         successCallback()
     }
 
+    console.log("video dialog")
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -35,7 +37,7 @@ export function VideoDialog({endpointCallback, successCallback}: VideoDialogProp
             </DialogTrigger>
             <DialogContent>
                 <MuxUploaderDrop mux-uploader="uploader" >
-                    <MuxUploader endpoint={() => {return endpointCallback()}} onSuccess={success} id="uploader" />
+                    <MuxUploader endpoint={endpointCallback} onSuccess={success} id="uploader" />
                 </MuxUploaderDrop>
             </DialogContent>
         </Dialog>
