@@ -1,4 +1,4 @@
-import type { StoredFile, CartItem, StripeItem } from "@/types"
+import type { StoredFile, VideoFile, CartItem, StripeItem } from "@/types"
 import { relations, type InferModel } from "drizzle-orm"
 import {
   boolean,
@@ -204,6 +204,8 @@ export const posts = mysqlTable("posts", {
   title: text("title").notNull(),
   message: text("message").notNull(),
   images: json("images").$type<StoredFile[] | null>().default(null),
+  video: json("video").$type<VideoFile | null>().default(null),
+  videoUpload: text("videoUpload").default(""),
   likers: json("likers").$type<string[] | null>().default(null),
   numLikes: int("numLikes").notNull().default(0),
   numComments: int("numComments").notNull().default(0),

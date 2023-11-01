@@ -9,14 +9,14 @@ import { removeLikePostAction, likePostAction, hasUserLikedPost } from "src/app/
 interface LikeIconToggleProps {
     postId: number,
     liked: boolean,
-    numLikes: number,
+    numLikes?: number,
 }
 
 
 export function LikeIconToggle({ postId, liked, numLikes }: LikeIconToggleProps) {
     
     const [iconState, setIconState] = React.useState(liked ? "plus" : "minus")
-    const [ likes, setLikes ] = React.useState(numLikes)
+    const [ likes, setLikes ] = React.useState(numLikes ?? 0)
 
     const handleToggle = async () => {
         if (iconState === "plus") {
@@ -55,7 +55,7 @@ export function LikeIconToggle({ postId, liked, numLikes }: LikeIconToggleProps)
             /> */}
                 <span className="sr-only">Toggle icon</span>
             </Button>
-            <span className=" pr-8"> {likes}</span>
+            {numLikes && <span className=" pr-8"> {likes}</span>}
         </div>
     )
 

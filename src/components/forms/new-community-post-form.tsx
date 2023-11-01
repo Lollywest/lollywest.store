@@ -29,9 +29,16 @@ import { Zoom } from "@/components/zoom-image"
 import type { FileWithPreview } from "@/types"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { getUploadUrl } from "@/app/_actions/video"
+import { VideoDialog } from "../video-dialog"
 
 interface newPostProps {
     artistId: number
+}
+
+interface MuxInfo {
+    url: string,
+    id: string,
 }
 
 const formSchema = z.object({
@@ -47,6 +54,7 @@ const formSchema = z.object({
         .optional()
         .nullable()
         .default(null),
+    videoUploaded: z.boolean().default(false),
 })
 
 type Inputs = z.infer<typeof formSchema>
@@ -84,7 +92,9 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
                 artistId: artistId,
                 title: data.title,
                 message: data.message,
-                images: images
+                images: images,
+                videoUploaded: videoDone,
+                videoInfo: muxInfo
             })
 
             toast.success("Post sent")
@@ -92,6 +102,19 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
 
             router.refresh()
         })
+    }
+
+    const [ videoDone, setVideoDone ] = React.useState(false)
+
+    let muxInfo: MuxInfo | undefined
+
+    const getMuxInfo = async () => {
+        muxInfo = await getUploadUrl()
+        return muxInfo.url
+    }
+
+    const onMuxSuccess = () => {
+        setVideoDone(true)
     }
 
     return (
@@ -158,6 +181,12 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
                     <UncontrolledFormMessage
                         message={form.formState.errors.images?.message}
                     />
+                </FormItem>
+                <FormItem>
+                    <FormLabel>Video</FormLabel>
+                    <FormControl>
+                        <VideoDialog endpointCallback={getMuxInfo} successCallback={onMuxSuccess} />
+                    </FormControl>
                 </FormItem>
                 <Button className="w-fit" disabled={isPending}>
                     {isPending && (

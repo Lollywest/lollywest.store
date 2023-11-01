@@ -148,7 +148,6 @@ export default async function PostPage({ params }: PostPageProps) {
               <div className=" ">
                 <div className=" flex items-center">
                   <LikeIconToggle postId={CommunityPost!.id} liked={CommunityPost!.likedByUser} />
-                  <span className="  pr-8"> {CommunityPost?.numLikes}</span>
                 </div>
               </div>
               <div className="flex-1 ">

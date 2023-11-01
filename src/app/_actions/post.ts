@@ -13,6 +13,11 @@ const likesWeight = 1
 const postsWeight = 10
 const commentsWeight = 5
 
+interface MuxInfo {
+    url: string,
+    id: string,
+}
+
 // Adds an artist post
 // input: artistId of the page
 //        title - string of the title of the post
@@ -29,6 +34,8 @@ export async function addArtistPostAction(input: {
     isEvent: boolean,
     eventTime: Date | null,
     isPremium: boolean,
+    videoUploaded: boolean,
+    videoInfo: MuxInfo | undefined,
 }) {
     const user = await currentUser()
     if (!user) {
@@ -62,7 +69,8 @@ export async function addArtistPostAction(input: {
         artistId: input.artistId,
         title: input.title,
         message: input.message,
-        images: input.images,
+        images: input.videoUploaded ? null : input.images,
+        videoUpload: input.videoInfo?.id,
         likers: null,
         numComments: 0,
         isEvent: input.isEvent,
@@ -105,6 +113,8 @@ export async function addCommunityPostAction(input: {
     title: string,
     message: string,
     images: StoredFile[] | null,
+    videoUploaded: boolean,
+    videoInfo: MuxInfo | undefined,
 }) {
     const user = await currentUser()
     if (!user) {
@@ -121,7 +131,8 @@ export async function addCommunityPostAction(input: {
         artistId: input.artistId,
         title: input.title,
         message: input.message,
-        images: input.images,
+        images: input.videoUploaded ? null : input.images,
+        videoUpload: input.videoInfo?.id,
         likers: null,
         numComments: 0,
         isEvent: false,
@@ -347,6 +358,8 @@ export async function getArtistPostsAction(input: {
                 title: posts.title,
                 message: posts.message,
                 images: posts.images,
+                video: posts.video,
+                videoUpload: posts.videoUpload,
                 likers: posts.likers,
                 numLikes: posts.numLikes,
                 numComments: posts.numComments,
@@ -413,6 +426,8 @@ export async function getArtistPostsAction(input: {
             title: item.title,
             message: item.message,
             images: item.images,
+            video: item.video,
+            videoUpload: item.videoUpload,
             likers: item.likers,
             numLikes: item.numLikes,
             numComments: item.numComments,
@@ -460,6 +475,8 @@ export async function getCommunityPostsAction(input: {
                 title: posts.title,
                 message: posts.message,
                 images: posts.images,
+                video: posts.video,
+                videoUpload: posts.videoUpload,
                 likers: posts.likers,
                 numLikes: posts.numLikes,
                 numComments: posts.numComments,
@@ -526,6 +543,8 @@ export async function getCommunityPostsAction(input: {
             title: item.title,
             message: item.message,
             images: item.images,
+            video: item.video,
+            videoUpload: item.videoUpload,
             likers: item.likers,
             numLikes: item.numLikes,
             numComments: item.numComments,
@@ -568,6 +587,8 @@ export async function getCommunityPostAction(input: {
                 title: posts.title,
                 message: posts.message,
                 images: posts.images,
+                video: posts.video,
+                videoUpload: posts.videoUpload,
                 likers: posts.likers,
                 numLikes: posts.numLikes,
                 numComments: posts.numComments,
@@ -639,6 +660,8 @@ export async function getCommunityPostAction(input: {
             title: item.title,
             message: item.message,
             images: item.images,
+            video: item.video,
+            videoUpload: item.videoUpload,
             likers: item.likers,
             numLikes: item.numLikes,
             numComments: item.numComments,
@@ -759,6 +782,8 @@ export async function getTopPostsAction(input: {
                 title: posts.title,
                 message: posts.message,
                 images: posts.images,
+                video: posts.video,
+                videoUpload: posts.videoUpload,
                 likers: posts.likers,
                 numLikes: posts.numLikes,
                 numComments: posts.numComments,
@@ -825,6 +850,8 @@ export async function getTopPostsAction(input: {
             title: item.title,
             message: item.message,
             images: item.images,
+            video: item.video,
+            videoUpload: item.videoUpload,
             likers: item.likers,
             numLikes: item.numLikes,
             numComments: item.numComments,
@@ -935,6 +962,8 @@ export async function getActivePostsAction(input: {
                 title: posts.title,
                 message: posts.message,
                 images: posts.images,
+                video: posts.video,
+                videoUpload: posts.videoUpload,
                 likers: posts.likers,
                 numLikes: posts.numLikes,
                 numComments: posts.numComments,
@@ -1001,6 +1030,8 @@ export async function getActivePostsAction(input: {
             title: item.title,
             message: item.message,
             images: item.images,
+            video: item.video,
+            videoUpload: item.videoUpload,
             likers: item.likers,
             numLikes: item.numLikes,
             numComments: item.numComments,

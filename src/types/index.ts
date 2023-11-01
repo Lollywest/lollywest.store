@@ -4,7 +4,7 @@ import * as z from "zod"
 
 import { type userPrivateMetadataSchema } from "@/lib/validations/auth"
 import type { cartItemSchema, checkoutItemSchema, stripeItemSchema } from "@/lib/validations/cart"
-import { postSchema } from "@/lib/validations/post"
+import { type postSchema } from "@/lib/validations/post"
 import { type Icons } from "@/components/icons"
 
 export interface NavItem {
@@ -181,3 +181,10 @@ export const GetCommentReturnSchema = z.object({
 })
 
 export type GetCommentReturn = z.infer<typeof GetCommentReturnSchema>
+
+export const VideoFileSchema = z.object({
+  assetId: z.string(),
+  playbackId: z.string(),
+})
+
+export type VideoFile = z.infer<typeof VideoFileSchema>

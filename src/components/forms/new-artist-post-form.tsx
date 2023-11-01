@@ -38,9 +38,16 @@ import { Zoom } from "@/components/zoom-image"
 import type { FileWithPreview } from "@/types"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { getUploadUrl } from "@/app/_actions/video"
+import { VideoDialog } from "../video-dialog"
 
 interface newPostProps {
     artistId: number
+}
+
+interface MuxInfo {
+    url: string,
+    id: string,
 }
 
 const formSchema = z.object({
@@ -56,6 +63,7 @@ const formSchema = z.object({
         .optional()
         .nullable()
         .default(null),
+    videoUploaded: z.boolean().default(false),
     isEvent: z.boolean().default(false),
     isPremium: z.boolean().default(false),
     eventDate: z.date().optional(),
@@ -117,6 +125,8 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
                 isEvent: isEvent,
                 eventTime: data.eventDate ? data.eventDate : null,
                 isPremium: data.isPremium,
+                videoUploaded: videoDone,
+                videoInfo: muxInfo
             })
 
             toast.success("Post Sent")
@@ -124,6 +134,19 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
 
             router.refresh()
         })
+    }
+
+    const [ videoDone, setVideoDone ] = React.useState(false)
+
+    let muxInfo: MuxInfo | undefined
+
+    const getMuxInfo = async () => {
+        muxInfo = await getUploadUrl()
+        return muxInfo.url
+    }
+
+    const onMuxSuccess = () => {
+        setVideoDone(true)
     }
 
     return (
@@ -177,7 +200,6 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
                                     </label>
                                 </div>
                             </FormControl>
-
                         </FormItem>
                     )}
                 />
@@ -267,6 +289,12 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
                     <UncontrolledFormMessage
                         message={form.formState.errors.images?.message}
                     />
+                </FormItem>
+                <FormItem>
+                    <FormLabel>Video</FormLabel>
+                    <FormControl>
+                        <VideoDialog endpointCallback={getMuxInfo} successCallback={onMuxSuccess} />
+                    </FormControl>
                 </FormItem>
                 <FormField
                     control={form.control}
