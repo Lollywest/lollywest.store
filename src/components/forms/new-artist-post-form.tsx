@@ -142,6 +142,7 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
 
     const getMuxInfo = async () => {
         muxInfo = await getUploadUrl()
+        console.log("callback")
         return muxInfo.url
     }
 
