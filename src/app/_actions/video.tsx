@@ -1,9 +1,8 @@
 "use server"
 
-import { env } from "@/env.mjs"
 import Mux from "@mux/mux-node"
 
-const { Video } = new Mux(env.MUX_TOKEN_ID, env.MUX_TOKEN_SECRET)
+const { Video } = new Mux()
 
 export async function getUploadUrl() {
     console.log("getUploadUrl")
