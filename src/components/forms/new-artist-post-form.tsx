@@ -139,6 +139,7 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
 
     const getMuxInfo = async () => {
         muxInfo = await getUploadUrl()
+        console.log(muxInfo.id)
         return muxInfo.url
     }
 
@@ -146,6 +147,7 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
 
     const onMuxSuccess = () => {
         startTransition(async () => {
+            console.log(muxInfo?.id)
             assetId = await getUploadAsset({uploadId: muxInfo!.id})
         })
     }
