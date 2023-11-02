@@ -27,9 +27,7 @@ export function VideoDialog({endpointCallback, successCallback}: VideoDialogProp
         }
 
         void urlFetch()
-
-        console.log(url)
-    }, [endpointCallback])
+    }, [])
 
     return (
         <Dialog>
@@ -58,9 +56,12 @@ export function VideoDialog({endpointCallback, successCallback}: VideoDialogProp
                         />
                     </Shell>
                 :
-                    <MuxUploaderDrop mux-uploader="uploader" >
-                        <MuxUploader endpoint={url} onSuccess={success} id="uploader" />
-                    </MuxUploaderDrop>
+                    // <p>url: {url}</p>
+                    // <MuxUploaderDrop mux-uploader="uploader" >
+                    //     <p>url: {url}</p>
+                    //     <MuxUploader endpoint={"https://storage.googleapis.com/video-storage-gcp-us-east1-vop1-uploads/xvXpfLWVCvHxS7Hj6RQYWD?Expires=1698946064&GoogleAccessId=uploads-gcp-us-east1-vop1%40mux-video-production.iam.gserviceaccount.com&Signature=tTkRoXZ7oILsfyGM%2FKGDx0G0CL4vDYRibbUOaEMs6ijw6BEfY24dyEy7JESe46%2FKvzbwTr0WQKE0YDkAZ%2FCXkWxtVQPhla6njJ6jTRTHDVg%2ByY0334tnN9%2BNXEQ0JrtOdpJSl9H02FQmaP9w3PcOfIe9PvqZRAjvUSCR8eUiZWnsEAlhxZ9Fv6pgYW3Z21tMcbabEbZ87r81x0cTWK3DrEUayq5r4VV2TTRhafYffBQkkHy2QurW%2Fp8EzWKx4GGmJQTUMN2W%2BfrQ6uis2tXNWvnfTdO0kzuhqjAjdm%2FffKAbj88LghpErlHbxBIwJjbCPwTJc8SuygCUcru3pTxHTA%3D%3D&upload_id=ABPtcPrTTlUE-LMCTWlf3xaSJAfn-SaI2iVevWG685M33W3vRFNVaWa8j7TRe7jmMSkebGvtu80TXUy2oD2N384RegWHIS79403t7saeramJaTi-"} onSuccess={success} id="uploader" ></MuxUploader>
+                    // </MuxUploaderDrop>
+                    <MuxUploader endpoint={url} onSuccess={success} />
                 }
             </DialogContent>
         </Dialog>

@@ -29,7 +29,7 @@ import { Zoom } from "@/components/zoom-image"
 import type { FileWithPreview } from "@/types"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { getUploadUrl } from "@/app/_actions/video"
+import { getUploadUrl, getUploadAsset } from "@/app/_actions/video"
 import { VideoDialog } from "../video-dialog"
 
 interface newPostProps {
@@ -93,8 +93,7 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
                 title: data.title,
                 message: data.message,
                 images: images,
-                videoUploaded: videoDone,
-                videoInfo: muxInfo
+                videoAssetId: assetId,
             })
 
             toast.success("Post sent")
@@ -104,8 +103,6 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
         })
     }
 
-    const [ videoDone, setVideoDone ] = React.useState(false)
-
     let muxInfo: MuxInfo | undefined
 
     const getMuxInfo = async () => {
@@ -113,8 +110,12 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
         return muxInfo.url
     }
 
+    let assetId: string = ""
+
     const onMuxSuccess = () => {
-        setVideoDone(true)
+        startTransition(async () => {
+            assetId = await getUploadAsset({uploadId: muxInfo!.id})
+        })
     }
 
     return (
