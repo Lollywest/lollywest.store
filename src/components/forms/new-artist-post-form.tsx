@@ -144,11 +144,13 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
         return muxInfo.url
     }
 
-    let assetId: string = ""
+    let asset: string = ""
+    const [ assetId, setAssetId ] = React.useState("")
 
     const onMuxSuccess = () => {
         startTransition(async () => {
-            assetId = await getUploadAsset({uploadId: uploadId})
+            asset = await getUploadAsset({uploadId: uploadId})
+            setAssetId(asset)
         })
     }
 
