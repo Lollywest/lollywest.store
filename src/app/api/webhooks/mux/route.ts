@@ -55,7 +55,8 @@ export async function POST(req: Request) {
 
         if (asset.playback_ids && asset.playback_ids[0]) {
             post.videoPlaybackId = asset.playback_ids[0].id
-            void db.update(posts).set(post).where(eq(posts.id, post.id))
+            await db.update(posts).set(post).where(eq(posts.id, post.id))
+            return new Response(null, { status: 200 })
         } else {
             return new Response(
                 `Webhook Error: asset: ${event.object.id} has no playbackId
@@ -65,5 +66,5 @@ export async function POST(req: Request) {
         }
     }
 
-    return new Response(null, { status: 200 })
+    return new Response(event.type, { status: 200 })
 }
