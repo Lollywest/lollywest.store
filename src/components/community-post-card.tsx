@@ -1,3 +1,4 @@
+"use client"
 
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
@@ -39,6 +40,7 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
+import MuxPlayer from "@mux/mux-player-react"
 
 import { DeletePostHoverCard } from "@/components/delete-post-hovercard"
 
@@ -179,6 +181,20 @@ export async function CommunityPostCard({
                                 options={{
                                     loop: true,
                                 }}
+                            />
+                        </div>
+                    </div>
+                ) : post.videoPlaybackId ? (
+                    <div className=" grid grid-cols-3 gap-12">
+                        <div className="flex-1 flex flex-col col-span-2">
+                            <div className="flex-1 flex items-center pt-4 pb-4">
+                                <p >{post.message}</p>
+                            </div>
+                        </div>
+                        <div className="flex flex-col md:flex-row md:gap-16 p-2">
+                            <MuxPlayer 
+                                className="flex-1 w-full md:w-1/2"
+                                playbackId={post.videoPlaybackId}
                             />
                         </div>
                     </div>

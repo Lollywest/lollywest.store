@@ -9,9 +9,10 @@ import MuxUploaderDrop from "@mux/mux-uploader-react"
 interface VideoDialogProps {
     endpointCallback: () => Promise<string>,
     successCallback: () => void,
+    disabled?: boolean,
 }
 
-export function VideoDialog({endpointCallback, successCallback}: VideoDialogProps) {
+export function VideoDialog({endpointCallback, successCallback, disabled}: VideoDialogProps) {
     const [ uploaded, setUploaded ] = useState(false)
     const [ url, setUrl ] = useState("")
 
@@ -32,7 +33,7 @@ export function VideoDialog({endpointCallback, successCallback}: VideoDialogProp
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline" disabled={uploaded}>
+                <Button variant="outline" disabled={uploaded || disabled}>
                     {!uploaded &&
                         <div>
                             <p>Upload Video</p>

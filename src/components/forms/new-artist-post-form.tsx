@@ -288,7 +288,7 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
                             files={files}
                             setFiles={setFiles}
                             isUploading={isUploading}
-                            disabled={isPending}
+                            disabled={isPending || assetId.length > 0}
                         />
                     </FormControl>
                     <UncontrolledFormMessage
@@ -298,7 +298,7 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
                 <FormItem>
                     <FormLabel>Video</FormLabel>
                     <FormControl>
-                        <VideoDialog endpointCallback={getMuxInfo} successCallback={onMuxSuccess} />
+                        <VideoDialog endpointCallback={getMuxInfo} successCallback={onMuxSuccess} disabled={files?.length !== undefined && files?.length > 0} />
                     </FormControl>
                 </FormItem>
                 <FormField

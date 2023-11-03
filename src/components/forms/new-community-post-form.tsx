@@ -104,17 +104,21 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
     }
 
     let muxInfo: MuxInfo | undefined
+    const [ uploadId, setUploadId ] = React.useState("")
 
     const getMuxInfo = async () => {
         muxInfo = await getUploadUrl()
+        setUploadId(muxInfo.id)
         return muxInfo.url
     }
 
-    let assetId: string = ""
+    let asset: string = ""
+    const [ assetId, setAssetId ] = React.useState("")
 
     const onMuxSuccess = () => {
         startTransition(async () => {
-            assetId = await getUploadAsset({uploadId: muxInfo!.id})
+            asset = await getUploadAsset({uploadId: uploadId})
+            setAssetId(asset)
         })
     }
 
@@ -176,7 +180,7 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
                             files={files}
                             setFiles={setFiles}
                             isUploading={isUploading}
-                            disabled={isPending}
+                            disabled={isPending || assetId.length > 0}
                         />
                     </FormControl>
                     <UncontrolledFormMessage
@@ -186,7 +190,7 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
                 <FormItem>
                     <FormLabel>Video</FormLabel>
                     <FormControl>
-                        <VideoDialog endpointCallback={getMuxInfo} successCallback={onMuxSuccess} />
+                        <VideoDialog endpointCallback={getMuxInfo} successCallback={onMuxSuccess} disabled={files?.length !== undefined && files?.length > 0} />
                     </FormControl>
                 </FormItem>
                 <Button className="w-fit" disabled={isPending}>

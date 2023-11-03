@@ -13,11 +13,6 @@ const likesWeight = 1
 const postsWeight = 10
 const commentsWeight = 5
 
-interface MuxInfo {
-    url: string,
-    id: string,
-}
-
 // Adds an artist post
 // input: artistId of the page
 //        title - string of the title of the post

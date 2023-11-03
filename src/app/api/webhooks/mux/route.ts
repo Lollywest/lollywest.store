@@ -37,9 +37,13 @@ export async function POST(req: Request) {
         )
     }
 
+    if (!valid) {
+        return new Response("invalid mux signature", { status: 400 })
+    }
+
     const event: ReadyEvent = JSON.parse(body) as ReadyEvent
 
-    if (valid && event.type === "video.asset.ready") {
+    if (event.type === "video.asset.ready") {
         const post = await db.query.posts.findFirst({
             where: eq(posts.videoAssetId, event.object.id)
         })

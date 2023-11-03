@@ -132,6 +132,8 @@ export const GetPostReturnSchema = z.object({
     .optional()
     .nullable()
     .default(null),
+  videoAssetId: z.string().optional().nullable().default(""),
+  videoPlaybackId: z.string().optional().nullable().default(""),
   likers: z
     .unknown()
     .refine((val) => {
@@ -152,6 +154,8 @@ export const GetPostReturnSchema = z.object({
   username: z.string(),
   image: z.string(),
   likedByUser: z.boolean().default(false),
+  userIsPremium: z.boolean().default(false),
+  userJoined: z.boolean().default(false),
 })
 
 export type GetPostReturn = z.infer<typeof GetPostReturnSchema>
