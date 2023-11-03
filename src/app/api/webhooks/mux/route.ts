@@ -16,6 +16,7 @@ interface ReadyEvent {
     }
 }
 
+// TODO: double check this with charlie
 export async function POST(req: Request) {
     const body = await req.text()
     const signature = headers().get("mux-signature") ?? ""
