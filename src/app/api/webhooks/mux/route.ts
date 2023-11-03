@@ -21,11 +21,21 @@ export async function POST(req: Request) {
     const body = await req.text()
     const signature = headers().get("mux-signature") ?? ""
 
-    const valid = Webhooks.verifyHeader(
-        body,
-        signature,
-        env.MUX_WEBHOOK_SECRET
-    )
+    let valid: boolean
+
+    try {
+        valid = Webhooks.verifyHeader(
+            body,
+            signature,
+            env.MUX_WEBHOOK_SECRET
+        )
+    } catch (e) {
+        return new Response(
+            `Webhook Error: ${e instanceof Error ? e.message : "Unknown error"
+            }`,
+            { status: 400 }
+        )
+    }
 
     const event: ReadyEvent = JSON.parse(body) as ReadyEvent
 
@@ -33,19 +43,25 @@ export async function POST(req: Request) {
         const post = await db.query.posts.findFirst({
             where: eq(posts.videoAssetId, event.object.id)
         })
-        if(!post) {
+        if (!post) {
             return new Response(
                 `Webhook Error: could not find post with assetId ${event.object.id}
                 }`,
                 { status: 400 }
-              )
+            )
         }
 
         const asset = await Video.Assets.get(event.object.id)
 
-        if(asset.playback_ids && asset.playback_ids[0]) {
+        if (asset.playback_ids && asset.playback_ids[0]) {
             post.videoPlaybackId = asset.playback_ids[0].id
             void db.update(posts).set(post).where(eq(posts.id, post.id))
+        } else {
+            return new Response(
+                `Webhook Error: asset: ${event.object.id} has no playbackId
+                }`,
+                { status: 400 }
+            )
         }
     }
 
