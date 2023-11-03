@@ -19,6 +19,7 @@ export const env = createEnv({
     SLACK_WEBHOOK_URL: z.string().url(),
     MUX_TOKEN_ID: z.string(),
     MUX_TOKEN_SECRET: z.string(),
+    MUX_WEBHOOK_SECRET: z.string(),
   },
 
   /**
@@ -51,6 +52,7 @@ export const env = createEnv({
     SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL,
     MUX_TOKEN_ID: process.env.MUX_TOKEN_ID,
     MUX_TOKEN_SECRET: process.env.MUX_TOKEN_SECRET,
+    MUX_WEBHOOK_SECRET: process.env.MUX_WEBHOOK_SECRET
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
