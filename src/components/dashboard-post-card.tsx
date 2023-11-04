@@ -1,4 +1,4 @@
-"use client"
+// "use client"
 
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
@@ -23,7 +23,7 @@ import { getAllCommentsAction } from "@/app/_actions/comments"
 import { CommunityPostComment } from "@/components/community-post-comment"
 import { GetPostReturn } from "@/types"
 import { type StoredFile } from "@/types"
-import MuxPlayer from '@mux/mux-player-react'
+import VideoPlayer from "@/components/video-player"
 
 // interface DashboardPostProps {
 //     title: string;
@@ -57,6 +57,7 @@ export async function DashboardPostCard({
         postId,
         limit,
     })
+
     return (
         <Card className="grid rounded-xl my-4">
             <CardHeader className="pb-0 pt-2">
@@ -119,34 +120,33 @@ export async function DashboardPostCard({
                             />
                         </div>
                     </div>
-                ) : post.videoPlaybackId ? (
-                    <div className=" grid grid-cols-3 gap-12">
-                        <div className="flex-1 flex flex-col col-span-2">
-                            <div className="flex-1 flex items-center pt-4 pb-4">
-                                <p >{post.message}</p>
+                )
+                    : post.videoPlaybackId ? (
+                        <div className=" grid grid-cols-3 gap-12">
+                            <div className="flex-1 flex flex-col col-span-2">
+                                <div className="flex-1 flex items-center pt-4 pb-4">
+                                    <p >{post.message}</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col md:flex-row md:gap-16 p-2">
+                                <VideoPlayer playbackId={post.videoPlaybackId} />
                             </div>
                         </div>
-                        <div className="flex flex-col md:flex-row md:gap-16 p-2">
-                            <MuxPlayer 
-                                className="flex-1 w-full md:w-1/2"
-                                playbackId={post.videoPlaybackId}
-                            />
-                        </div>
-                    </div>
-                ) :
-                    // If no images in post
-                    <div className=" grid grid-cols-3 gap-12">
-                        <div className="flex-1 flex flex-col col-span-3">
-                            {/* <CardTitle className="text-xl ">{title}</CardTitle> */}
-                            {/* <div className="pt-2 ">
+                    )
+                        :
+                        // If no images in post
+                        <div className=" grid grid-cols-3 gap-12">
+                            <div className="flex-1 flex flex-col col-span-3">
+                                {/* <CardTitle className="text-xl ">{title}</CardTitle> */}
+                                {/* <div className="pt-2 ">
                                 <Badge> Badge </Badge>
                                 <Badge className=" ml-2" variant="secondary"> Trending Now </Badge>
                             </div> */}
-                            <div className="flex-1 flex items-center pt-4 pb-4">
-                                <p >{post.message}</p>
+                                <div className="flex-1 flex items-center pt-4 pb-4">
+                                    <p >{post.message}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
                 }
                 {/* <div className="flex items-center gap-4">
                     <div className="flex-1 ">
