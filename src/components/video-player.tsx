@@ -1,6 +1,6 @@
 "use client"
 
-import ReactHlsPlayer from "react-hls-player"
+import ReactHlsPlayer from "@/components/hls-player"
 
 interface videoPlayerProps {
     playbackId: string
