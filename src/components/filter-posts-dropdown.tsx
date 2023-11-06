@@ -30,7 +30,7 @@ type FilterDropdownMenuProps = {
 export function FilterDropdownMenu({ artistId, timeFrame, posts }: FilterDropdownMenuProps) {
 
     const [filterPosts, setPosts] = React.useTransition()
-
+    // ////////////////     Fix this later             ///////////////////////
     const fetchTopPosts = async (timeFrame: string) => {
         try {
             let mappedTimeFrame: number
@@ -61,7 +61,7 @@ export function FilterDropdownMenu({ artistId, timeFrame, posts }: FilterDropdow
             // return fetchedPosts
 
             setPosts(() => {
-                filterPosts = fetchedPosts  // Update state directly inside the callback
+                // filterPosts = fetchedPosts  // Update state directly inside the callback
                 return Promise.resolve()  // Return a promise resolving to void
             })
 
