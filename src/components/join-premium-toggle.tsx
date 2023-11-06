@@ -1,44 +1,50 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+
 import { Icons } from "@/components/icons"
 import * as React from "react"
 import Image from "next/image"
-import { joinArtistHubAction } from "src/app/_actions/store"
-import { Badge } from "@/components/ui/badge"
 
-interface JoinHubToggleProps {
+// change
+import { joinArtistHubAction } from "src/app/_actions/store"
+
+interface JoinPremiumToggleProps {
     artistId: number,
-    hubMember: boolean,
+    premiumMember: boolean,
 }
 
 
-export function JoinHubToggle({ artistId, hubMember }: JoinHubToggleProps) {
+export function JoinPremiumToggle({ artistId, premiumMember }: JoinPremiumToggleProps) {
 
-    const [iconState, setIconState] = React.useState(hubMember ? "plus" : "minus")
+    const [iconState, setIconState] = React.useState(premiumMember ? "plus" : "minus")
 
     const handleToggle = async () => {
-        await joinArtistHubAction({ artistId });
-        setIconState("plus");
+        // change
+        await joinArtistHubAction({ artistId })
+        setIconState("plus")
     }
 
     return (
         <Button
             variant="ghost"
             // size="icon"
-            className="rounded-xl "
+            className="rounded-xl p-1 m-2 "
             onClick={() => { void handleToggle() }}
         >
+            {/* <Icons.heart
+                className={`h-6 w-6 rotate-0 scale-0 transition-all ${iconState === "plus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}
+                aria-hidden="true"
+            /> */}
             <span className={`flex rounded-xl rotate-0 scale-0 transition-all ${iconState === "plus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}>
-                <Icons.users
+
+                <Icons.badgeCheck
                     // className={`mr-2 h-5 w-5  rotate-0 scale-0 transition-all ${iconState === "plus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}
                     className="mr-2 h-5 w-5"
                     aria-hidden="true"
-                /> Join
+                /> Access Pass
             </span>
-            {/* <Button variant="ghost" className={`rounded-xl rotate-0 scale-0 transition-all ${iconState === "plus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}>
-                Join Hub
-            </Button> */}
             {/* <Image
                 src="/images/avatar/heart-check.svg"
                 alt=""
@@ -46,12 +52,14 @@ export function JoinHubToggle({ artistId, hubMember }: JoinHubToggleProps) {
                 width={300}
                 height={300}
             /> */}
-            <span className={`flex absolute rounded-xl rotate-0 scale-0 transition-all ${iconState === "minus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}>
-                <Icons.userCheck
-                    // className={`mr-2 h-5 w-5  rotate-0 scale-0 transition-all ${iconState === "plus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}
-                    className="mr-2 h-5 w-5"
-                    aria-hidden="true"
-                />Joined
+            <span className={`flex items-center absolute rounded-xl rotate-0 scale-0 transition-all ${iconState === "minus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}>
+                <Image
+                    className="mr-2 h-6 w-6"
+                    src="/images/avatar/verified1.svg"
+                    alt=""
+                    height={800}
+                    width={800}
+                />Access Pass
 
             </span>
             {/* <Icons.add

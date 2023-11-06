@@ -74,30 +74,15 @@ export function MainNav({ items }: MainNavProps) {
             </NavigationMenuItem>
           ) : null}
 
-
           {items?.[0]?.items ? (
             <NavigationMenuItem>
               <Link
-                aria-label="Featured"
-                // href={`/your-hubs/${user?.id}`}
-                href="/my-hubs"
-                className="text-sm leading-tight text-muted-foreground"
-              >
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Hubs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </Link>
-            </NavigationMenuItem>
-          ) : null}
-
-
-          {items?.[0]?.items ? (
-            <NavigationMenuItem>
-              <Link
-                aria-label="Sponsor Artists"
-                href="/sponsor-artists"
+                aria-label="Discover Studios"
+                href="/featured"
                 // className="hidden items-center space-x-2 lg:flex"
                 className="text-sm leading-tight text-muted-foreground"
               >
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;About&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Discover&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 {/* <span className="hidden font-bold lg:inline-block">
                         Top Artists & Fans
                       </span> */}
@@ -105,6 +90,22 @@ export function MainNav({ items }: MainNavProps) {
               </Link>
             </NavigationMenuItem>
           ) : null}
+
+          {items?.[0]?.items ? (
+            <NavigationMenuItem>
+              <Link
+                aria-label="My Hubs"
+                // href={`/your-hubs/${user?.id}`}
+                href="/my-hubs"
+                className="text-sm leading-tight text-muted-foreground"
+              >
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;My Hubs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </Link>
+            </NavigationMenuItem>
+          ) : null}
+
+
+
 
           {/* {items?.[0]?.items ? (
             <NavigationMenuItem>

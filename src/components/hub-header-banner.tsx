@@ -18,9 +18,9 @@ interface HubHeaderBannerProps extends React.HTMLAttributes<HTMLDivElement> {
 export function HubHeaderBanner({ artist }: HubHeaderBannerProps) {
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center ">
 
-            <div className="">
+            <div className="shadow-lg shadow-[#8ea2f0]/25 m-1 rounded-xl">
                 {artist.images[1] !== null ? (
                     // <AspectRatio ratio={3 / 1}>
                     <Image
@@ -45,7 +45,7 @@ export function HubHeaderBanner({ artist }: HubHeaderBannerProps) {
 
 
                 {/* <div className="absolute -bottom-16 left-1/2 transform w-1/4 -translate-x-1/2 rounded-full overflow-hidden border-2 border-white"> */}
-                <div className="absolute bottom-0 left-0 transform w-2/12  rounded-full overflow-hidden border border-white ml-1 mb-1">
+                <div className="absolute bottom-0 left-0 transform w-[12%] rounded-full overflow-hidden border border-white ml-2 mb-2 shadow-md">
 
                     {artist.images[0] !== null ? (
                         <Image

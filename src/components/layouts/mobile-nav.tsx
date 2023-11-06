@@ -104,18 +104,18 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
                   href="/featured"
                   className="text-sm leading-tight text-muted-foreground"
                 >
-                  Featured
+                  Discover
                 </Link>
               </div>
 
               <div>
                 <Link
                   aria-label="Leaderboard"
-                  href="/leaderboard"
+                  href="/my-hubs"
                   // className="hidden items-center space-x-2 lg:flex"
                   className="text-sm leading-tight text-muted-foreground"
                 >
-                  Leaderboard
+                  My Hubs
                   {/* <span className="hidden font-bold lg:inline-block">
                                 Top Artists & Fans
                               </span> */}
@@ -123,20 +123,17 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
                 </Link>
               </div>
 
-              <div>
+              {/* <div>
                 <Link
                   aria-label="Sponsor Artists"
                   href="/sponsor-artists"
-                  // className="hidden items-center space-x-2 lg:flex"
                   className="text-sm leading-tight text-muted-foreground"
                 >
                   Sponsor Artists
-                  {/* <span className="hidden font-bold lg:inline-block">
-                          Top Artists & Fans
-                        </span> */}
+                  
 
                 </Link>
-              </div>
+              </div> */}
 
             </div>
           </div>

@@ -28,33 +28,31 @@ import {
 } from "@/components/ui/avatar"
 import { User } from "@clerk/nextjs/dist/types/server"
 import { GetCommentReturn } from "@/types"
+import { checkUserPremium } from "@/app/_actions/wallet"
 
-// add interface/params
 
 interface CommunityPostCommentReplyProps extends React.HTMLAttributes<HTMLDivElement> {
     reply: GetCommentReturn
     variant?: "default" | "switchable"
     onSwitch?: () => Promise<void>
-    // title: string;
-    // message: string;
-    // //date: string;
-    // createdAt: Date | null;
+    artistId: number
+
 }
 
-export function CommunityPostCommentReply({
+export async function CommunityPostCommentReply({
     reply,
     variant = "default",
     onSwitch,
     className,
-
+    artistId,
     ...props
 }: CommunityPostCommentReplyProps) {
 
 
-
     return (
         <section className="  flex-1 ">
-            <div className=" flex flex-1 space-x-4  p-1 pl-24">
+            {/* <div className=" flex flex-1 space-x-4  p-1 pl-24"> */}
+            <div className=" flex flex-1 space-x-4  p-1 pl-0 sm:pl-24">
                 {/* <UserAvatar postId={comment.id} /> */}
                 <Avatar>
                     <AvatarImage src={reply.image} />
@@ -65,23 +63,25 @@ export function CommunityPostCommentReply({
                         />
                     </AvatarFallback>
                 </Avatar>
-                {/* Update to link to comment database*/}
                 <div className="flex-1 space-y-1 pr-2">
-                    <div className="flex items-center gap-2 ">
-                        <span className="text-sm font-medium leading-none ">{reply.username}</span>
-                        <Image
-                            className="h-3 w-3"
-                            src="/images/avatar/verified1.svg"
-                            alt=""
-                            height={100}
-                            width={100}
-                        />
-                        <p className=" flex-1 text-sm text-muted-foreground ml-2">
-                            Lolly | {reply.points}
-                        </p>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            {/* <p>{formatDate(reply.createdAt!)}</p>
-                            <p> {formatTime(reply.createdAt!)}</p> */}
+                    <div className="sm:flex items-center gap-2 flex-col sm:flex-row">
+                        <span className=" flex text-sm font-medium leading-none ">
+                            {reply.username}
+                            {reply.userIsPremium !== false ?
+                                <Image
+                                    className="h-3 w-3 ml-2"
+                                    src="/images/avatar/verified1.svg"
+                                    alt=""
+                                    height={100}
+                                    width={100}
+                                />
+                                : null}
+                        </span>
+
+                        <div className="flex flex-1 items-center gap-4 text-sm text-muted-foreground ">
+                            <div className=" flex-1 text-sm text-muted-foreground ">
+                                Lollies | {reply.points}
+                            </div>
                             <p> {formatTimeSince(reply.createdAt!)}</p>
                         </div>
                     </div>

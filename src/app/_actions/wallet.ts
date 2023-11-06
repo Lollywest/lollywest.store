@@ -253,6 +253,33 @@ export async function getUserHubsAction() {
     return items
 }
 
+export async function getUserPremiumHubsAction() {
+    const user = await currentUser()
+    if (!user) {
+        throw new Error("user not found")
+    }
+
+    const items = await db.transaction(async (tx) => {
+        const userInfo = await tx.query.userStats.findFirst({
+            where: eq(userStats.userId, user.id)
+        })
+
+        if (!userInfo || !userInfo.premiumHubs) {
+            return null
+        }
+
+        const hubs = userInfo.premiumHubs.map(a => a.artistId)
+
+        const items = await tx.query.artists.findMany({
+            where: inArray(artists.id, hubs)
+        })
+
+        return items
+    })
+
+    return items
+}
+
 export async function checkUserJoined(input: {
     artistId: number
 }) {

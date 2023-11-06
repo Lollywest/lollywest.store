@@ -31,7 +31,9 @@ export function UpcomingEventCard({
     ...props
 }: UpcomingEventPostProps) {
     return (
-        <Card className="grid rounded-xl my-4 ">
+        // <Card className="grid rounded-xl my-4 ">
+        <Card className="group relative overflow-hidden rounded-xl flex-grow bg-black shadow-md shadow-[#617dea]/50 m-2 my-4">
+
             <Link
                 aria-label={`View Event Details`}
                 href={`/community-post/${post.id}`}
@@ -52,7 +54,7 @@ export function UpcomingEventCard({
 
                     <CardDescription className="">
                         <div className="flex items-center gap-4">
-                            <p>{formatDate(post.createdAt!)}</p>
+                            <p>Announced on {formatDate(post.createdAt!)}</p>
                         </div>
                     </CardDescription>
                 </CardHeader>

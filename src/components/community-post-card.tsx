@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/avatar"
 
 import { DeletePostHoverCard } from "@/components/delete-post-hovercard"
+import { UserProfileBadge } from "@/components/user-profile-badge"
 
 interface CommunityPostProps extends React.HTMLAttributes<HTMLDivElement> {
     post: GetPostReturn
@@ -68,6 +69,7 @@ export async function CommunityPostCard({
 
     const postId = post.id
     const limit = 3
+    const artistId = post.artistId
 
     const allCommunityPostComments = await getAllCommentsAction({
         postId,
@@ -114,20 +116,17 @@ export async function CommunityPostCard({
                     <div className="flex-1 ">
                         <CardTitle className="text-xl ">{post.title}</CardTitle>
                     </div>
-                    {/* <UserProfileBadge user={CommunityPostUserInfo} /> */}
+                    <UserProfileBadge userImage={post.image} userUsername={post.username} userPoints={post.points} isUserPremium={post.userIsPremium} />
                     {/* {CommunityPostUserInfo.points} */}
-                    <div className=" flex items-center space-x-4 rounded-xl border p-1 bg-neutral-950">
+                    {/* <div className=" flex items-center space-x-4 rounded-xl border p-1 bg-neutral-950">
 
-                        {/* <UserAvatar /> */}
                         <Avatar>
                             <AvatarImage src={post.image} alt="" />
                             <AvatarFallback>AN</AvatarFallback>
                         </Avatar>
-                        {/* Change to username */}
                         <div className="flex-1 space-y-1 pr-2">
 
                             <div className="flex items-center gap-2 ">
-                                {/* <span className="text-sm font-medium leading-none ">{"Moise"}</span> */}
                                 <span className="text-sm font-medium leading-none ">{post.username}</span>
                                 <Image
                                     className="h-3 w-3"
@@ -139,12 +138,12 @@ export async function CommunityPostCard({
                             </div>
 
                             <p className=" flex-1 text-sm text-muted-foreground">
-                                Lolly | {post.points}
+                                Lollies | {post.points}
                             </p>
 
                         </div>
 
-                    </div>
+                    </div> */}
                 </div>
 
             </CardHeader>
@@ -301,7 +300,7 @@ export async function CommunityPostCard({
                     {allCommunityPostComments.map((comment) => (
                         // <CommunityPostComment key={comment.id} comment={comment} />
                         comment.replyingTo === 0 ? (
-                            <CommunityPostComment key={comment.id} comment={comment} />
+                            <CommunityPostComment key={comment.id} comment={comment} artistId={artistId} />
                         ) : ("")
                     ))}
                 </div>

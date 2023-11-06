@@ -34,6 +34,7 @@ import { formatDate, toTitleCase } from "@/lib/utils"
 import { LobbyCommunityCard } from "@/components/lobby-community-card"
 import type { User } from "@clerk/nextjs/dist/types/server"
 import { getUserHubsAction } from "@/app/_actions/wallet"
+import { getUserPremiumHubsAction } from "@/app/_actions/wallet"
 // Running out of edge function execution units on vercel free plan
 // export const runtime = "edge"
 
@@ -67,6 +68,10 @@ export default async function YourHubsPage() {
     // const hubArtistIds = userInfo?.hubsJoined?.map(entry => entry.artistId) || []
 
     const hubArtistIds = await getUserHubsAction()
+    const premiumHubArtists = await getUserPremiumHubsAction()
+
+    const premiumHubArtistIds = premiumHubArtists?.map(artist => artist.id) || [];
+
 
     // const yourArtistCommunities = await db
     //     .select()
@@ -91,13 +96,15 @@ export default async function YourHubsPage() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-
                     {hubArtistIds?.map((artist) => (
-
-                        <LobbyCommunityCard key={artist.id} artist={artist} />
-
+                        <div className={
+                            premiumHubArtistIds?.includes(artist.id)
+                                ? "flex rounded-xl border border-[#FFB619] shadow-md shadow-[#FFB619]/50 hover:shadow-xl hover:shadow-[#FFB619]/70"
+                                : "flex rounded-xl border border-[#617DEA] shadow-md shadow-[#617DEA]/50 hover:shadow-xl hover:shadow-[#617DEA]/70"
+                        }>
+                            <LobbyCommunityCard key={artist.id} artist={artist} />
+                        </div>
                     ))}
-
                 </div>
 
             </section>
