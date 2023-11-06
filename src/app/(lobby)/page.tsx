@@ -62,16 +62,22 @@ export default async function IndexPage() {
     .orderBy(desc(artists.createdAt))
 
   return (
-    <Shell as="div" className="gap-12 xs:py-0 xs:py-0 md:py-0 ">
-
+    <Shell as="div" className="gap-0 xs:py-0 xs:py-0 md:py-0 ">
+      <div className="mx-auto w-full justify-center overflow-visible rounded-lg">
+        <div className="relative -z-10 mx-auto ">
+          <div className="absolute top-0 -z-20 flex w-full justify-center ">
+            <div className="h-[248px] w-[310px] max-w-full animate-pulse rounded-full bg-[#FFB619] opacity-40 blur-[100px] "></div>
+          </div>
+        </div>
+      </div>
       <section className="mx-auto w-full justify-center overflow-hidden rounded-lg">
         {/* <div >
           <SimpleSlider />
         </div> */}
         <div className="relative z-0 mx-auto ">
-          <div className="absolute -bottom-12 -z-10 flex w-full justify-center ">
+          {/* <div className="absolute -bottom-12 -z-10 flex w-full justify-center ">
             <div className="h-[248px] w-[310px] max-w-full animate-pulse rounded-full bg-[#FFB619] opacity-40 blur-[100px] "></div>
-          </div>
+          </div> */}
           <div className="flex items-center pb-2 pt-6">
             <div className="flex-1">
               <h2 className="text-2xl font-medium sm:text-3xl ">Discover Studios</h2>
@@ -80,7 +86,7 @@ export default async function IndexPage() {
               <Link href="/featured">View more...</Link>
             </Button>
           </div>
-          <div >
+          <div className="overflow-hidden" >
             <DiscoverHubsSlider discoverArtists={allArtistCommunities} />
           </div>
         </div>
@@ -107,9 +113,9 @@ export default async function IndexPage() {
           {/* <div className="absolute left-8 top-8 -z-10 flex w-full ">
             <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#923CA8] opacity-25 blur-[100px]"></div>
           </div> */}
-          <div className="absolute -bottom-12 -z-10 flex w-full justify-center  ">
+          {/* <div className="absolute -bottom-12 -z-10 flex w-full justify-center  ">
             <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#923CA8] opacity-30 blur-[100px]"></div>
-          </div>
+          </div> */}
           {/* <div className="absolute -bottom-12 -z-10 flex w-full justify-center ">
             <div className="h-[248px] w-[310px] max-w-full animate-pulse rounded-full bg-[#FFB619] opacity-40 blur-[100px] "></div>
           </div> */}
@@ -125,6 +131,13 @@ export default async function IndexPage() {
         </div>
       </section>
 
+      <div className="mx-auto w-full justify-center overflow-visible rounded-lg">
+        <div className="relative -z-30 mx-auto ">
+          <div className="absolute bottom-8 -z-40  w-full justify-center ">
+            <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#923CA8] opacity-30 blur-[100px]"></div>
+          </div>
+        </div>
+      </div>
       {/* <section
         id="featured-products"
         aria-labelledby="featured-products-heading"
