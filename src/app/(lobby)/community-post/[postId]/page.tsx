@@ -44,7 +44,7 @@ export const metadata: Metadata = {
 interface PostPageProps {
   params: {
     postId: string
-    // artistId: string
+    // artistId: number
   }
   // CommunityPost: GetPostReturn
 }
@@ -160,7 +160,7 @@ export default async function PostPage({ params }: PostPageProps) {
             {allCommunityPostComments.map((comment) => (
               // <CommunityPostComment key={comment.id} comment={comment} />
               comment.replyingTo === 0 ? (
-                <CommunityPostComment key={comment.id} comment={comment} artistId={0} />
+                <CommunityPostComment key={comment.id} comment={comment} artistId={CommunityPost!.artistId} />
               ) : ("")
             ))}
           </div>
