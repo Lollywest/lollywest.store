@@ -37,6 +37,21 @@ import { JoinPremiumToggle } from "@/components/join-premium-toggle"
 import { checkUserJoined } from "@/app/_actions/wallet"
 import { checkUserPremium } from "@/app/_actions/wallet"
 import { AccessPassSubscribeButton } from "@/components/cart/access-pass-button"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
+import { Separator } from "@/components/ui/separator"
 
 export const metadata: Metadata = {
     title: "Artist Community Page",
@@ -127,11 +142,65 @@ export default async function ArtistAboutPage({ params }: ArtistAboutPageProps) 
             </section>
             {/* //////////      End of Header Section      ////////// */}
 
-            <div className="space-y-8">
-                <div className="flex-1 space-y-4 p-8 pt-6">
+            {/* <div className="space-y-8"> */}
+            <div className=" grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 ">
+                {/* <div className="flex-1 space-y-4 p-8 pt-6"> */}
+                <div className="col-span-5 space-y-4 ">
                     <UpdateArtistAboutForm artist={artist} isArtist={isArtist} />
                 </div>
+                <div className="col-span-2 hidden md:block">
+                    <Card className="rounded-xl my-8">
+                        <CardHeader>
+                            <CardTitle>Artist Hub Rules</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+
+                            <Separator className="" />
+                            <Accordion type="single" collapsible className="w-full text-sm text-muted-foreground ">
+                                <AccordionItem value="description">
+                                    <AccordionTrigger>1. Be respectful at all times</AccordionTrigger>
+                                    <AccordionContent>
+                                        Do not make personal attacks, insult, or demean a specific group or person. Do not use slurs without relevant context and quotes.
+                                        No blatant statements of bigotry. No posts that &apos;bait&apos; users into breaking other rules. Zero tolerance for posts/comments that sexualize minors.
+                                        Zero tolerance for posts/comments that encourage suicide
+                                    </AccordionContent>
+                                </AccordionItem>
+                                <AccordionItem value="item-2">
+                                    <AccordionTrigger>2. No spam</AccordionTrigger>
+                                    <AccordionContent> Do not post spam or any machine generated content. Do not edit comments to mislead and/or advertise. Do not farm likes or shotgun comments</AccordionContent>
+                                </AccordionItem>
+                                <AccordionItem value="item-3">
+                                    <AccordionTrigger>
+                                        3. No personal info
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        Do not post or seek any real or fake personal information (examples include: full names, phone numbers, email addresses, or social media accounts).
+                                        Only link another user&apos;s comment when it is relevant and never when it is to launch a personal attack or encourage others to do so.
+                                        Do not ask questions designed to target specific usernames or links to social media.
+                                    </AccordionContent>
+                                </AccordionItem>
+                                <AccordionItem value="item-4">
+                                    <AccordionTrigger>
+                                        4. No loaded questions
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        Do not include an opinion, bias, or lead respondents towards expressing a specific opinion in your post title. Do not use this subreddit to promote a specific agenda or to gain positive or negative publicity for an entity or person
+                                    </AccordionContent>
+                                </AccordionItem>
+                                <AccordionItem value="item-5">
+                                    <AccordionTrigger>
+                                        5. No begging
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        Do not ask for any rewards, money, goods, services, or favors.
+                                        Do not form a brigade to draw positive or negative attention to posts or comments in the hub, even from other artist hubs/communities .                                                </AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
+                        </CardContent>
+                    </Card>
+                </div>
             </div>
+
         </Shell >
     )
 

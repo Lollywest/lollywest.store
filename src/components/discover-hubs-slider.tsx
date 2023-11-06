@@ -24,7 +24,7 @@ export function DiscoverHubsSlider({ discoverArtists }: DiscoverHubsSliderProps)
     const settings = {
         className: "center",
         centerMode: true,
-        centerPadding: "60px",
+        centerPadding: "1px",
         dots: false,
         infinite: true,
         speed: 1000,
@@ -55,7 +55,7 @@ export function DiscoverHubsSlider({ discoverArtists }: DiscoverHubsSliderProps)
                     // <div className={` p-2 ${index === currentSlide ? 'scale-120' : ''}`}>
                     <div
                         key={artist.id}
-                        className={` p-2 md:p-4 lg:p-6 transition-transform duration-500 delay-500 ${index === currentSlide ? 'scale-110 sm:scale-125 ' : ''}`}>
+                        className={` p-2 md:p-4 lg:p-8 transition-transform duration-500 delay-500 ${index === currentSlide ? 'scale-110 sm:scale-125 ' : ''}`}>
 
                         <DiscoverCommunityCard artist={artist} />
                     </div>

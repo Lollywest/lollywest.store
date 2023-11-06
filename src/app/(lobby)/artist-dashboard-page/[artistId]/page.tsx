@@ -69,6 +69,7 @@ import {
 import { NewCommunityPostDialog } from "@/components/new-community-post-dialog"
 // import { FilterDropdownMenu } from "@/components/filter-posts-dropdown"
 import { AccessPassSubscribeButton } from "@/components/cart/access-pass-button"
+import { RecentActivityCard } from "@/components/recent-activity-card"
 
 // export const metadata: Metadata = {
 //     title: "Artist Dashboard Page",
@@ -103,10 +104,11 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
     //     { title: "Upcoming Event", content: "Join me next week for ...",date: "10/31/2024", time: "4:24 AM" },
     // ]);
 
-    // const allArtistPosts = await getArtistPostsAction({
-    // artistId,
-    // limit,
-    // })
+    const limit = 6
+    const allArtistPosts = await getArtistPostsAction({
+        artistId,
+        limit,
+    })
 
     const allCommunityPosts = await getCommunityPostsAction({
         artistId,
@@ -207,25 +209,20 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
 
                         {/* Sidebar: add calendar later e.g. recent activity, upcoing events popular posts */}
                         <div className="col-span-2 hidden md:block">
-
+                            <h3 className="text-lg font-semibold leading-none tracking-tight text-center ">
+                                Upcoming Events
+                            </h3>
                             {allCommunityPosts.map(post =>
-                                post.isEvent !== false ? (
+                                post.isEvent !== false && post.isPremium !== true ? (
                                     <UpcomingEventCard key={post.id} post={post} />
                                 ) : null
                             )}
 
-                            <Card className="rounded-xl my-4">
+                            {/* <Card className="rounded-xl my-4">
                                 <CardHeader>
                                     <CardTitle>Artist Hub Rules</CardTitle>
-
                                 </CardHeader>
                                 <CardContent>
-                                    {/* Sample Activities */}
-                                    {/* <p>- Collaborated with XYZlakdshfjasldhfkj hasdf</p>
-                                            <p>- Released a new album</p>
-                                            <p>- Collaborated with XYZ</p>
-                                            <p>- Pooped pants</p>
-                                            <p>- Pooped pants (again) </p> */}
                                     <Separator className="" />
                                     <Accordion type="single" collapsible className="w-full text-sm text-muted-foreground ">
                                         <AccordionItem value="description">
@@ -268,21 +265,27 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
                                         </AccordionItem>
                                     </Accordion>
                                 </CardContent>
-                            </Card>
+                            </Card> */}
 
-                            <Card className="rounded-xl my-4">
-                                <CardHeader>
-                                    <CardTitle>Recent Activity</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    {/* Sample Activities */}
-                                    {/* <p>- Collaborated with XYZlakdshfjasldhfkj hasdf</p>
-                                            <p>- Released a new album</p>
-                                            <p>- Collaborated with XYZ</p>
-                                            <p>- Pooped pants</p>
-                                            <p>- Pooped pants (again) </p> */}
+                            <h3 className="text-lg font-semibold leading-none tracking-tight text-center pt-6">
+                                Recent Artist Activity
+                            </h3>
+                            {allArtistPosts.map(post =>
+
+                                post.isPremium !== true ? (
+                                    <RecentActivityCard key={post.id} post={post} />
+                                ) : null
+                            )}
+
+                            {/* <Card className="rounded-xl my-4">
+
+                                <CardContent className="pt-4 pb-4">
+                                    <CardTitle>Recent Artist Activity</CardTitle>
+                                    {allArtistPosts.map(post =>
+                                        <UpcomingEventCard key={post.id} post={post} />
+                                    )}
                                 </CardContent>
-                            </Card>
+                            </Card> */}
                         </div>
                     </div>
                 </div>

@@ -85,7 +85,7 @@ export default async function IndexPage() {
           </div>
         </div>
 
-        <div className="relative z-0 mx-auto  text-center space-y-6 mb-6">
+        {/* <div className="relative z-0 mx-auto  text-center space-y-6 mb-6">
           <div className="absolute left-8 top-8 -z-10 flex w-full ">
             <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#923CA8] opacity-25 blur-[100px]"></div>
           </div>
@@ -101,15 +101,18 @@ export default async function IndexPage() {
             ))}
 
           </div>
-        </div>
+        </div> */}
 
         <div className="relative z-0 mx-auto  text-center space-y-6 mb-6">
-          <div className="absolute left-8 top-8 -z-10 flex w-full ">
+          {/* <div className="absolute left-8 top-8 -z-10 flex w-full ">
             <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#923CA8] opacity-25 blur-[100px]"></div>
-          </div>
-          <div className="absolute right-4 bottom-4 -z-20   ">
+          </div> */}
+          <div className="absolute -bottom-12 -z-10 flex w-full justify-center  ">
             <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#923CA8] opacity-30 blur-[100px]"></div>
           </div>
+          {/* <div className="absolute -bottom-12 -z-10 flex w-full justify-center ">
+            <div className="h-[248px] w-[310px] max-w-full animate-pulse rounded-full bg-[#FFB619] opacity-40 blur-[100px] "></div>
+          </div> */}
           <div className="flex items-center pb-2 pt-4">
             <h2 className="text-2xl font-medium sm:text-3xl">Artist Communities</h2>
           </div>
