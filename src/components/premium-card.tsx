@@ -67,8 +67,6 @@ export function PremiumCard({
     //     limit,
     // })
 
-
-
     return (
         <Card className="group relative overflow-hidden rounded-xl bg-transparent flex-grow">
             <div className="absolute inset-0 z-10 bg-zinc-950/75" />
@@ -84,7 +82,8 @@ export function PremiumCard({
             {Array.isArray(post.images) && post.images.length > 0 ? (
                 <Image
                     // src="/images/demo-perk-ticket.png"
-                    src={post.images[0].url}
+                    // src={post.images?.[0].url}
+                    src={(post.images?.[0] as StoredFile).url}
                     alt={""}
                     className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
                     sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"

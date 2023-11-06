@@ -66,7 +66,7 @@ export async function DashboardPostCard({
     const buffer = 8  // adjust later based on expected distribution of comments/replies ?? prob a better way to do this
     const potentialLimit = displayLimit + buffer;
 
-    let allArtistPostComments = await getAllCommentsAction({
+    const allArtistPostComments = await getAllCommentsAction({
         postId,
         limit: potentialLimit,
     })

@@ -97,12 +97,14 @@ export default async function YourHubsPage() {
 
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {hubArtistIds?.map((artist) => (
-                        <div className={
-                            premiumHubArtistIds?.includes(artist.id)
-                                ? "flex rounded-xl border border-[#FFB619] shadow-md shadow-[#FFB619]/50 hover:shadow-xl hover:shadow-[#FFB619]/70"
-                                : "flex rounded-xl border border-[#617DEA] shadow-md shadow-[#617DEA]/50 hover:shadow-xl hover:shadow-[#617DEA]/70"
-                        }>
-                            <LobbyCommunityCard key={artist.id} artist={artist} />
+                        <div
+                            key={artist.id}
+                            className={
+                                premiumHubArtistIds?.includes(artist.id)
+                                    ? "flex rounded-xl border border-[#FFB619] shadow-md shadow-[#FFB619]/50 hover:shadow-xl hover:shadow-[#FFB619]/70"
+                                    : "flex rounded-xl border border-[#617DEA] shadow-md shadow-[#617DEA]/50 hover:shadow-xl hover:shadow-[#617DEA]/70"
+                            }>
+                            <LobbyCommunityCard artist={artist} />
                         </div>
                     ))}
                 </div>

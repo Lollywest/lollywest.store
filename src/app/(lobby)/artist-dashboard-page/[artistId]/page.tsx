@@ -67,7 +67,7 @@ import {
     AvatarImage,
 } from "@/components/ui/avatar"
 import { NewCommunityPostDialog } from "@/components/new-community-post-dialog"
-import { FilterDropdownMenu } from "@/components/filter-posts-dropdown"
+// import { FilterDropdownMenu } from "@/components/filter-posts-dropdown"
 import { AccessPassSubscribeButton } from "@/components/cart/access-pass-button"
 
 // export const metadata: Metadata = {

@@ -53,9 +53,11 @@ export function DiscoverHubsSlider({ discoverArtists }: DiscoverHubsSliderProps)
                 {discoverArtists.map((artist, index) => (
                     // <div className="flex flex-grow p-2">
                     // <div className={` p-2 ${index === currentSlide ? 'scale-120' : ''}`}>
-                    <div className={` p-2 md:p-4 lg:p-6 transition-transform duration-500 delay-500 ${index === currentSlide ? 'scale-110 sm:scale-125 ' : ''}`}>
+                    <div
+                        key={artist.id}
+                        className={` p-2 md:p-4 lg:p-6 transition-transform duration-500 delay-500 ${index === currentSlide ? 'scale-110 sm:scale-125 ' : ''}`}>
 
-                        <DiscoverCommunityCard key={artist.id} artist={artist} />
+                        <DiscoverCommunityCard artist={artist} />
                     </div>
                 ))}
 

@@ -39,7 +39,7 @@ interface CommunityPostCommentReplyProps extends React.HTMLAttributes<HTMLDivEle
 
 }
 
-export async function CommunityPostCommentReply({
+export function CommunityPostCommentReply({
     reply,
     variant = "default",
     onSwitch,
