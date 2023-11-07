@@ -21,12 +21,13 @@ import { PostBadge, postBadgeVariants } from "@/components/ui/post-badges"
 
 import Link from "next/link"
 import { Separator } from "@/components/ui/separator"
-import { getAllCommentsAction } from "@/app/_actions/comments"
+import { getAllCommentsAction, getFirstComments } from "@/app/_actions/comments"
 import { CommunityPostComment } from "@/components/community-post-comment"
 import { GetPostReturn } from "@/types"
 import { type StoredFile } from "@/types"
 import VideoPlayer from "@/components/video-player"
 import { UserProfileBadge } from "@/components/user-profile-badge"
+import { DashboardPostComment } from "@/components/dashboard-post-comment"
 
 // interface DashboardPostProps {
 //     title: string;
@@ -73,6 +74,12 @@ export async function DashboardPostCard({
         limit: potentialLimit,
     })
 
+    const commentLimit = 3
+    const cardFirstComments = await getFirstComments({
+        postId,
+        limit: commentLimit,
+    })
+
     const filteredComments = allArtistPostComments.filter(comment => comment.replyingTo === null).slice(0, displayLimit)
 
     return (
@@ -95,9 +102,15 @@ export async function DashboardPostCard({
 
                 </CardHeader>
                 <CardContent  >
-                    {post.isArtist !== false ?
-                        <PostBadge variant="artist"> Artist Post </PostBadge> : null}
-
+                    <div className="space-x-2">
+                        {post.isArtist !== false ?
+                            <PostBadge variant="artist"> Artist Post </PostBadge> : null}
+                        {post.isTrending !== false ?
+                            <PostBadge variant="trending"> Trending </PostBadge> : null}
+                        {/* post.isNew is backwards right now, change to false later */}
+                        {post.isNew !== true ?
+                            <PostBadge variant="new"> New </PostBadge> : null}
+                    </div>
                     {/* If post includes images */}
                     {Array.isArray(post.images) && post.images.length > 0 ? (
                         <div className=" grid sm:grid-cols-3 grid-cols-1 gap-2 sm:gap-12">
@@ -123,28 +136,39 @@ export async function DashboardPostCard({
                                 </div>
                             </div>
                         </div>
-                )
-                    : post.videoPlaybackId ? (
-                        <div className=" grid grid-cols-3 gap-12">
-                            <div className="flex-1 flex flex-col col-span-2">
-                                <div className="flex-1 flex items-center pt-4 pb-4">
-                                    <p >{post.message}</p>
-                                </div>
-                            </div>
-                            <div className="flex flex-col md:flex-row md:gap-16 p-2">
-                                <VideoPlayer playbackId={post.videoPlaybackId} />
-                            </div>
-                        </div>
                     )
-                        :
-                        // If no images in post
-                        <div className=" grid grid-cols-3 gap-12">
-                            <div className="flex-1 flex flex-col col-span-3">
-                                <div className="flex-1 flex items-center pt-4 pb-4">
-                                    <p >{post.message}</p>
+                        : post.videoPlaybackId ? (
+                            <div className=" grid sm:grid-cols-3 grid-cols-1 gap-2 sm:gap-12">
+                                <div className="flex flex-col pt-2 sm:flex-row sm:gap-16  sm:order-first">
+                                    <VideoPlayer playbackId={post.videoPlaybackId} />
+                                </div>
+                                <div className="flex flex-col p-2 sm:col-span-2">
+                                    <div className="flex-1 flex items-center pt-0 sm:pt-4 pb-4">
+                                        <p >{post.message}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
+                            // <div className=" grid grid-cols-3 gap-12">
+                            //     <div className="flex-1 flex flex-col col-span-2">
+                            //         <div className="flex-1 flex items-center pt-4 pb-4">
+                            //             <p >{post.message}</p>
+                            //         </div>
+                            //     </div>
+                            //     <div className="flex flex-col md:flex-row md:gap-16 p-2">
+                            //         <VideoPlayer playbackId={post.videoPlaybackId} />
+                            //     </div>
+                            // </div>
+                        )
+                            :
+                            // If no images in post
+                            <div className=" grid grid-cols-3 gap-12">
+                                <div className="flex-1 flex flex-col col-span-3">
+                                    <div className="flex-1 flex items-center pt-4 pb-4">
+                                        <p >{post.message}</p>
+                                    </div>
+                                </div>
+                            </div>
                     }
                     {/* <div className="flex items-center gap-4">
                     <div className="flex-1 ">
@@ -224,15 +248,16 @@ export async function DashboardPostCard({
                 <CardFooter>
 
                     <div className="flex-1">
-                        {filteredComments.map((comment) => (
+                        {cardFirstComments.map((comment) => (
                             // <CommunityPostComment key={comment.id} comment={comment} />
-                            <CommunityPostComment key={comment.id} comment={comment} artistId={post.artistId} />
+                            <DashboardPostComment key={comment.id} comment={comment} artistId={post.artistId} />
                             // comment.replyingTo === 0 ? (
                             //     <CommunityPostComment key={comment.id} comment={comment} artistId={post.artistId} />
                             // ) :
                             //     null // Make limit = limit + 1
                         ))}
                     </div>
+
                 </CardFooter>
             </Link>
         </Card>

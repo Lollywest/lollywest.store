@@ -42,12 +42,12 @@ export async function getStoresAction(input: {
         input.sort === "productCount.asc"
           ? asc(sql<number>`count(${products.id})`)
           : input.sort === "productCount.desc"
-          ? desc(sql<number>`count(${products.id})`)
-          : column && column in artists
-          ? order === "asc"
-            ? asc(artists[column])
-            : desc(artists[column])
-          : desc(artists.createdAt) //////not sure if needed =====================================
+            ? desc(sql<number>`count(${products.id})`)
+            : column && column in artists
+              ? order === "asc"
+                ? asc(artists[column])
+                : desc(artists[column])
+              : desc(artists.createdAt) //////not sure if needed =====================================
       )
 
     const total = await tx
@@ -153,7 +153,7 @@ export async function getArtistByNameAction(input: {
     where: eq(artists.name, input.name)
   })
 
-  if(!artist) {
+  if (!artist) {
     return
   }
 
@@ -201,7 +201,7 @@ export async function joinArtistHubAction(input: {
   artistId: number
 }) {
   const user = await currentUser()
-  if(!user) {
+  if (!user) {
     throw new Error("user not found")
   }
 
@@ -225,7 +225,7 @@ export async function joinArtistHubAction(input: {
   }
 
   if (!artist.hubMembers) {
-    artist.hubMembers = [ user.id ]
+    artist.hubMembers = [user.id]
   } else if (artist.hubMembers.indexOf(user.id) === -1) {
     artist.hubMembers.push(user.id)
   }
@@ -238,7 +238,7 @@ export async function joinArtistHubAction(input: {
   if (!userInfo) {
     const newUserInfo = {
       userId: user.id,
-      hubsJoined: [ hubJoinInfo ],
+      hubsJoined: [hubJoinInfo],
     }
 
     await db.transaction(async (tx) => {
@@ -252,7 +252,7 @@ export async function joinArtistHubAction(input: {
   if (userInfo.hubsJoined) {
     userInfo.hubsJoined.push(hubJoinInfo)
   } else {
-    userInfo.hubsJoined = [ hubJoinInfo ]
+    userInfo.hubsJoined = [hubJoinInfo]
   }
 
   await db.transaction(async (tx) => {
@@ -267,6 +267,23 @@ export async function getActiveUsersImages(input: {
 }) {
   const images = await db.transaction(async (tx) => {
     const userIds = await tx.selectDistinct({ id: comments.user }).from(comments).orderBy(desc(comments.createdAt)).limit(input.limit)
+
+    const ids = userIds.map(a => a.id)
+
+    const images = await tx.select({ image: userStats.image }).from(userStats).where(inArray(userStats.userId, ids))
+
+    return images.map(a => a.image)
+  })
+
+  return images
+}
+
+export async function getActiveUsersImages2(input: {
+  artistId: number,
+  limit: number,
+}) {
+  const images = await db.transaction(async (tx) => {
+    const userIds = await tx.selectDistinct({ id: comments.user }).from(comments).limit(input.limit)
 
     const ids = userIds.map(a => a.id)
 

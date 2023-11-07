@@ -103,7 +103,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
           {
             title: "Back to community",
-            href: `/artist-community-page/${CommunityPost?.artistId}`,
+            href: `/artist-dashboard-page/${CommunityPost?.artistId}`,
           }
           // {
           //   title: product.name,
