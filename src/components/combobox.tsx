@@ -18,6 +18,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { Icons } from "@/components/icons"
 import { filterProductsAction } from "@/app/_actions/product"
+import { filterArtistsAction } from "@/app/_actions/store"
 
 export function Combobox() {
   const router = useRouter()
@@ -26,8 +27,8 @@ export function Combobox() {
   const debouncedQuery = useDebounce(query, 300)
   const [data, setData] = React.useState<
     | {
-        category: Product["category"]
-        products: Pick<Product, "id" | "name" | "category">[]
+        id: number,
+        name: string,
       }[]
     | null
   >(null)
@@ -38,7 +39,7 @@ export function Combobox() {
 
     if (debouncedQuery.length > 0) {
       startTransition(async () => {
-        const data = await filterProductsAction(debouncedQuery)
+        const data = await filterArtistsAction(debouncedQuery)
         setData(data)
       })
     }
@@ -75,14 +76,14 @@ export function Combobox() {
       >
         <Icons.search className="h-4 w-4 xl:mr-2" aria-hidden="true" />
         <span className="hidden xl:inline-flex">Search artists...</span>
-        <span className="sr-only">Search products</span>
+        <span className="sr-only">Search artists</span>
         <kbd className="pointer-events-none absolute right-1.5 top-2 hidden h-6 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 xl:flex">
           <abbr title={isMacOs() ? 'Command' : 'Control'}>{isMacOs() ? '⌘' : 'Ctrl+'}</abbr>K
         </kbd>
       </Button>
       <CommandDialog position="top" open={isOpen} onOpenChange={setIsOpen}>
         <CommandInput
-          placeholder="Search products..."
+          placeholder="Search artists..."
           value={query}
           onValueChange={setQuery}
         />
@@ -90,7 +91,7 @@ export function Combobox() {
           <CommandEmpty
             className={cn(isPending ? "hidden" : "py-6 text-center text-sm")}
           >
-            No products found.
+            No artists found.
           </CommandEmpty>
           {isPending ? (
             <div className="space-y-1 overflow-hidden px-1 py-2">
@@ -99,23 +100,15 @@ export function Combobox() {
               <Skeleton className="h-8 rounded-sm" />
             </div>
           ) : (
-            data?.map((group) => (
-              <CommandGroup
-                key={group.category}
-                className="capitalize"
-                heading={group.category}
+            data?.map((item) => (
+              <CommandItem
+                key={item.id}
+                onSelect={() =>
+                  handleSelect(() => router.push(`/artist-dashboard-page/${item.id}`))
+                }
               >
-                {group.products.map((item) => (
-                  <CommandItem
-                    key={item.id}
-                    onSelect={() =>
-                      handleSelect(() => router.push(`/product/${item.id}`))
-                    }
-                  >
-                    {item.name}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
+                {item.name}
+              </CommandItem>
             ))
           )}
         </CommandList>

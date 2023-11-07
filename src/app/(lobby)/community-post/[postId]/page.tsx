@@ -34,6 +34,8 @@ import { LikeIconToggle } from "@/components/like-toggle"
 import { PostCommentToggleForm } from "@/components/post-comment-toggle"
 import { GetPostReturn } from "@/types"
 import { type StoredFile } from "@/types"
+import { PostBadge, postBadgeVariants } from "@/components/ui/post-badges"
+import VideoPlayer from "@/components/video-player"
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -125,6 +127,18 @@ export default async function PostPage({ params }: PostPageProps) {
             }}
           />
 
+          {CommunityPost?.videoPlaybackId ? (
+            // <div className=" grid sm:grid-cols-3 grid-cols-1 gap-2 sm:gap-12">
+            <div className="flex flex-col pt-2 sm:flex-row sm:gap-16  sm:order-first max-h-[80vh] w-3/4">
+              <VideoPlayer playbackId={CommunityPost?.videoPlaybackId} />
+            </div>
+            /* <div className="flex flex-col p-2 sm:col-span-2">
+                                  <div className="flex-1 flex items-center pt-0 sm:pt-4 pb-4">
+                                      <p >{CommunityPost.message}</p>
+                                  </div>
+                              </div> */
+            // </div>
+          ) : null}
 
           <div className=" flex w-3/4 flex-col gap-2 space-y-4">
 
@@ -134,11 +148,20 @@ export default async function PostPage({ params }: PostPageProps) {
                 {/* </div>p>{date}</p> */}
                 <p className="text-base text-muted-foreground" >{formatDate(CommunityPost?.createdAt ?? "")}</p>
               </div>
+              <div className="space-x-2">
+                {CommunityPost?.isArtist !== false ?
+                  <PostBadge variant="artist"> Artist Post </PostBadge> : null}
+                {CommunityPost?.isTrending !== false ?
+                  <PostBadge variant="trending"> Trending </PostBadge> : null}
+                {/* post.isNew is backwards right now, change to false later */}
+                {CommunityPost?.isNew !== true ?
+                  <PostBadge variant="new"> New </PostBadge> : null}
+              </div>
             </div>
 
             <p >{CommunityPost?.message}</p>
 
-            <div className="flex-1 flex ">
+            <div className="flex-1 flex items-center">
               <Button variant="ghost" className="rounded-xl  p-1">
                 <Icons.share
                   className=" h-6 w-6"
@@ -146,14 +169,15 @@ export default async function PostPage({ params }: PostPageProps) {
                 />
               </Button>
               <div className=" ">
-                <div className=" flex items-center">
+                <div className=" flex items-center pl-2 pr-2">
                   <LikeIconToggle postId={CommunityPost!.id} liked={CommunityPost!.likedByUser} numLikes={CommunityPost!.numLikes} />
-                  <span className="  pr-8"> {CommunityPost?.numLikes}</span>\
+                  {/* <span className="  pr-8"> {CommunityPost?.numLikes}</span>\ */}
                 </div>
               </div>
-              <div className="flex-1 ">
-                <PostCommentToggleForm postId={CommunityPost!.id} />
-              </div>
+              {/* <div className="flex-1 "> */}
+              <PostCommentToggleForm postId={CommunityPost!.id} />
+              <span className="pl-2">{CommunityPost?.numLikes}</span>
+              {/* </div> */}
             </div>
 
             <Separator className="mt-5 mb-5" />
@@ -163,11 +187,12 @@ export default async function PostPage({ params }: PostPageProps) {
                 <CommunityPostComment key={comment.id} comment={comment} artistId={CommunityPost!.artistId} />
               ) : ("")
             ))}
+
           </div>
 
         </div>
       </div>
 
-    </Shell>
+    </Shell >
   )
 }

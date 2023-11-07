@@ -40,6 +40,7 @@ import {
     AvatarImage,
 } from "@/components/ui/avatar"
 import { AccessPassSubscribeButton } from "@/components/cart/access-pass-button"
+import { getActiveUsersImages2 } from "@/app/_actions/store"
 
 export const metadata: Metadata = {
     title: "Artist Premium Page",
@@ -67,6 +68,10 @@ export default async function ArtistPremiumPage({ params }: ArtistPremiumPagePro
         // limit,
     })
     const isHubMember: boolean = await checkUserJoined({ artistId })
+    const recentActiveUsersImages = await getActiveUsersImages2({
+        artistId,
+        limit: 3
+    })
     return (
         <Shell className="md:pb-10">
             {/* //////////      Header Section      ////////// */}
@@ -86,27 +91,27 @@ export default async function ArtistPremiumPage({ params }: ArtistPremiumPagePro
                         </div>
                         {/* ////////    Update later with real pics     ////////// */}
                         <div className="flex">
-                            <div className="relative z-30 ">
-                                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#0686B3]">
-                                    <AvatarFallback>
-                                        <Icons.user className="h-6 w-6" aria-hidden="true" />
-                                    </AvatarFallback>
-                                </Avatar>
-                            </div>
-                            <div className="relative -ml-4 z-20 outline-[#0686B3]">
-                                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#0686B3]">
-                                    <AvatarFallback>
-                                        <Icons.user className="h-6 w-6" aria-hidden="true" />
-                                    </AvatarFallback>
-                                </Avatar>
-                            </div>
-                            <div className="relative -ml-4 z-10">
-                                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#0686B3]">
-                                    <AvatarFallback>
-                                        <Icons.user className="h-6 w-6" aria-hidden="true" />
-                                    </AvatarFallback>
-                                </Avatar>
-                            </div>
+
+                            {recentActiveUsersImages.map((image, index) => (
+                                <div
+                                    //   key={post.id}
+                                    key={image || index}
+                                    className={`relative ${index !== 0 ? '-ml-4' : ''} z-${30 - index * 10}`}
+                                    style={{ zIndex: 30 - index * 10 }}
+                                >
+                                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#788fed]/50">
+                                        {/* Assuming you have an AvatarImage component to handle the image rendering */}
+                                        {image ? (
+                                            <AvatarImage src={image} alt="" />
+                                        ) : (
+                                            <AvatarFallback>
+                                                <Icons.user className="h-6 w-6" aria-hidden="true" />
+                                            </AvatarFallback>
+                                        )}
+                                    </Avatar>
+                                </div>
+                            ))}
+
                             <div className="relative -ml-4 z-0">
                                 <Avatar className="h-8 w-8 sm:h-10 sm:w-10 ">
                                     <AvatarFallback>
@@ -233,8 +238,11 @@ export default async function ArtistPremiumPage({ params }: ArtistPremiumPagePro
                             )}
                         </div>
                         :
-                        <div className="">
-                            <JoinPremiumToggle artistId={artistId} premiumMember={isPremiumMember} />
+                        <div className="items-center">
+                            <div className="flex justify-center items-center ">
+                                <JoinPremiumToggle artistId={artistId} premiumMember={isPremiumMember} />
+                                <span className="text-muted-foreground"> Members Only</span>
+                            </div>
                             <div className=" blur-lg grid gap-8 md:grid-cols-1 lg:grid-cols-3 pt-4">
                                 {/* ///////////////////////////     DEMO ACTIVE PERK 1       /////////////////////////// */}
                                 <div className="flex col-span-1">
@@ -628,402 +636,6 @@ export default async function ArtistPremiumPage({ params }: ArtistPremiumPagePro
                             </div>
                         </div>
                     }
-
-
-                    <div>
-                        <div className=" grid gap-8 md:grid-cols-1 lg:grid-cols-3 pt-4">
-                            {/* ///////////////////////////     DEMO ACTIVE PERK 1       /////////////////////////// */}
-                            <div className="flex col-span-1">
-                                {/* <Link
-                            aria-label={category.title}
-                            key={category.title}
-                            href={`/categories/${category.title}`}
-                            > */}
-                                <Card className="group relative overflow-hidden rounded-xl bg-transparent flex-grow">
-                                    <div className="absolute inset-0 z-10 bg-zinc-950/75" />
-                                    <Image
-                                        src="/images/demo-perk-ticket.png"
-                                        alt={""}
-                                        className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                                        sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
-                                        fill
-                                        loading="lazy"
-                                    />
-                                    <CardHeader className="relative z-20">
-                                        <Badge
-                                            className={cn(
-                                                "pointer-events-none absolute right-2 top-2 rounded px-2 py-1 font-semibold border-green-600/20 bg-green-50 text-green-700",
-
-                                            )}
-                                        >
-                                            Active Now
-                                        </Badge>
-                                        <div
-                                            className={cn(
-                                                buttonVariants({
-                                                    size: "icon",
-                                                    className:
-                                                        "pointer-events-none h-8 w-8 rounded-full bg-zinc-100 text-zinc-950",
-                                                })
-                                            )}
-                                            aria-hidden="true"
-                                        >
-                                            <Icons.tags
-                                                className="h-5 w-5"
-                                                aria-hidden="true"
-                                            />
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="relative z-20">
-                                        <CardTitle className="text-xl capitalize text-zinc-200">
-                                            Pre-Sale Tickets
-                                        </CardTitle>
-                                        <CardDescription> Lock in tickets before they are released to the public! </CardDescription>
-                                    </CardContent>
-                                </Card>
-                                {/* </Link> */}
-                            </div>
-
-                            {/* ///////////////////////////     DEMO ACTIVE PERK 2       /////////////////////////// */}
-                            <div className="flex col-span-1">
-                                {/* <Link
-                            aria-label={category.title}
-                            key={category.title}
-                            href={`/categories/${category.title}`}
-                            > */}
-                                <Card className="group relative overflow-hidden rounded-xl bg-transparent flex-grow">
-                                    <div className="absolute inset-0 z-10 bg-zinc-950/75" />
-
-                                    <Image
-                                        src="/images/demo-perk-vip.png"
-                                        alt={""}
-                                        className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                                        sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
-                                        fill
-                                        loading="lazy"
-                                    />
-                                    <CardHeader className="relative z-20">
-                                        <Badge
-                                            className={cn(
-                                                "pointer-events-none absolute right-2 top-2 rounded px-2 py-1 font-semibold border-green-600/20 bg-green-50 text-green-700",
-
-                                            )}
-                                        >
-                                            Active Now
-                                        </Badge>
-                                        <div
-                                            className={cn(
-                                                buttonVariants({
-                                                    size: "icon",
-                                                    className:
-                                                        "pointer-events-none h-8 w-8 rounded-full bg-zinc-100 text-zinc-950",
-                                                })
-                                            )}
-                                            aria-hidden="true"
-                                        >
-                                            <Icons.ticket
-                                                className="h-5 w-5"
-                                                aria-hidden="true"
-                                            />
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="relative z-20">
-                                        <CardTitle className="text-xl capitalize text-zinc-200">
-                                            VIP & Early Entry
-                                        </CardTitle>
-                                        <CardDescription> Free VIP access and early entry at all of my shows  </CardDescription>
-                                    </CardContent>
-                                </Card>
-                                {/* </Link> */}
-                            </div>
-
-                            {/* ///////////////////////////     DEMO ACTIVE PERK 3       /////////////////////////// */}
-                            <div className="flex col-span-1">
-                                {/* <Link
-                            aria-label={category.title}
-                            key={category.title}
-                            href={`/categories/${category.title}`}
-                            > */}
-                                <Card className="group relative overflow-hidden rounded-xl bg-transparent flex-grow">
-                                    <div className="absolute inset-0 z-10 bg-zinc-950/75" />
-
-                                    <Image
-                                        src="/images/demo-perk-ama.png"
-                                        alt={""}
-                                        className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                                        sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
-                                        fill
-                                        loading="lazy"
-                                    />
-
-                                    <CardHeader className="relative z-20">
-                                        <Badge
-                                            className={cn(
-                                                "pointer-events-none absolute right-2 top-2 rounded px-2 py-1 font-semibold border-green-600/20 bg-green-50 text-green-700",
-
-                                            )}
-                                        >
-                                            Active Now
-                                        </Badge>
-                                        <div
-                                            className={cn(
-                                                buttonVariants({
-                                                    size: "icon",
-                                                    className:
-                                                        "pointer-events-none h-8 w-8 rounded-full bg-zinc-100 text-zinc-950",
-                                                })
-                                            )}
-                                            aria-hidden="true"
-                                        >
-                                            <Icons.shieldCheck
-                                                className="h-5 w-5"
-                                                aria-hidden="true"
-                                            />
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="relative z-20">
-                                        <CardTitle className="text-xl capitalize text-zinc-200">
-                                            Live AMA
-                                        </CardTitle>
-                                        <CardDescription> Exclusive monthly sessions Access Pass holders </CardDescription>
-                                    </CardContent>
-                                </Card>
-                                {/* </Link> */}
-
-                            </div>
-                        </div>
-
-                        <div className=" grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-4 pt-8">
-
-                            {/*//////////////////    INACTIVE PERK 1     ////////////////////////*/}
-                            <div className="flex col-span-1">
-                                {/* <div className="col-span-1"> */}
-                                {/* <Link
-                                    aria-label={category.title}
-                                    key={category.title}
-                                    href={`/categories/${category.title}`}
-                                    > */}
-                                <Card className="group relative overflow-hidden rounded-xl bg-transparent flex-grow">
-                                    <div className="absolute inset-0 z-10 bg-zinc-950/75" />
-
-                                    <Image
-                                        src="/images/demo-perk-ama.png"
-                                        alt={""}
-                                        className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                                        sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
-                                        fill
-                                        loading="lazy"
-                                    />
-
-                                    <CardHeader className="relative z-20">
-                                        <Badge
-                                            className={cn(
-                                                "pointer-events-none absolute right-2 top-2 rounded px-2 py-1 font-semibold border-red-600/10 bg-red-50 text-red-700",
-
-                                            )}
-                                        >
-                                            Expired
-                                        </Badge>
-                                        <div
-                                            className={cn(
-                                                buttonVariants({
-                                                    size: "icon",
-                                                    className:
-                                                        "pointer-events-none h-8 w-8 rounded-full bg-zinc-100 text-zinc-950",
-                                                })
-                                            )}
-                                            aria-hidden="true"
-                                        >
-                                            <Icons.volumne
-                                                className="h-5 w-5"
-                                                aria-hidden="true"
-                                            />
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="relative z-20">
-                                        <CardTitle className="text-xl capitalize text-zinc-200">
-                                            Exclusive first listen
-                                        </CardTitle>
-                                        <CardDescription> Get a live first taste of my album before its released </CardDescription>
-                                    </CardContent>
-                                </Card>
-                                {/* </Link> */}
-
-                                {/* </div> */}
-                            </div>
-
-                            {/*//////////////////    INACTIVE PERK 2     ////////////////////////*/}
-                            <div className="flex col-span-1">
-                                {/* <div className="col-span-1"> */}
-                                {/* <Link
-    aria-label={category.title}
-    key={category.title}
-    href={`/categories/${category.title}`}
-    > */}
-                                <Card className="group relative overflow-hidden rounded-xl bg-transparent flex-grow">
-                                    <div className="absolute inset-0 z-10 bg-zinc-950/75" />
-
-                                    <Image
-                                        src="/images/demo-perk-merch.png"
-                                        alt={""}
-                                        className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                                        sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
-                                        fill
-                                        loading="lazy"
-                                    />
-
-                                    <CardHeader className="relative z-20">
-                                        <Badge
-                                            className={cn(
-                                                "pointer-events-none absolute right-2 top-2 rounded px-2 py-1 font-semibold border-red-600/10 bg-red-50 text-red-700",
-
-                                            )}
-                                        >
-                                            Expired
-                                        </Badge>
-                                        <div
-                                            className={cn(
-                                                buttonVariants({
-                                                    size: "icon",
-                                                    className:
-                                                        "pointer-events-none h-8 w-8 rounded-full bg-zinc-100 text-zinc-950",
-                                                })
-                                            )}
-                                            aria-hidden="true"
-                                        >
-                                            <Icons.clothing
-                                                className="h-5 w-5"
-                                                aria-hidden="true"
-                                            />
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="relative z-20">
-                                        <CardTitle className="text-xl capitalize text-zinc-200">
-                                            Limited Edition Merch
-                                        </CardTitle>
-                                        <CardDescription> Only 50 available. Max 1 per Access Pass.  </CardDescription>
-                                    </CardContent>
-                                </Card>
-                                {/* </Link> */}
-
-                                {/* </div> */}
-                            </div>
-
-                            {/*//////////////////    INACTIVE PERK 3     ////////////////////////*/}
-                            <div className="flex col-span-1">
-                                {/* <div className=" col-span-1"> */}
-                                {/* <Link
-    aria-label={category.title}
-    key={category.title}
-    href={`/categories/${category.title}`}
-    > */}
-                                <Card className="group relative overflow-hidden rounded-xl bg-transparent flex-grow">
-                                    <div className="absolute inset-0 z-10 bg-zinc-950/75" />
-
-                                    <Image
-                                        src="/images/demo-perk-private-show.png"
-                                        alt={""}
-                                        className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                                        sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
-                                        fill
-                                        loading="lazy"
-                                    />
-
-                                    <CardHeader className="relative z-20">
-                                        <Badge
-                                            className={cn(
-                                                "pointer-events-none absolute right-2 top-2 rounded px-2 py-1 font-semibold border-red-600/10 bg-red-50 text-red-700",
-
-                                            )}
-                                        >
-                                            Expired
-                                        </Badge>
-                                        <div
-                                            className={cn(
-                                                buttonVariants({
-                                                    size: "icon",
-                                                    className:
-                                                        "pointer-events-none h-8 w-8 rounded-full bg-zinc-100 text-zinc-950",
-                                                })
-                                            )}
-                                            aria-hidden="true"
-                                        >
-                                            <Icons.ticket
-                                                className="h-5 w-5"
-                                                aria-hidden="true"
-                                            />
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="relative z-20">
-                                        <CardTitle className="text-xl capitalize text-zinc-200">
-                                            Private Show
-                                        </CardTitle>
-                                        <CardDescription> Free for Access Pass holders! </CardDescription>
-                                    </CardContent>
-                                </Card>
-                                {/* </Link> */}
-
-                                {/* </div> */}
-                            </div>
-
-                            {/*//////////////////    INACTIVE PERK 4     ////////////////////////*/}
-                            <div className=" flex col-span-1">
-                                {/* <div className="flex-col col-span-1"> */}
-                                {/* <Link
-                                    aria-label={category.title}
-                                    key={category.title}
-                                    href={`/categories/${category.title}`}
-                                    > */}
-                                <Card className="group relative overflow-hidden rounded-xl bg-transparent flex-grow">
-                                    <div className="absolute inset-0 z-10 bg-zinc-950/75" />
-
-                                    <Image
-                                        src="/images/demo-profile-pic.jpg"
-                                        alt={""}
-                                        className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                                        sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
-                                        fill
-                                        loading="lazy"
-                                    />
-
-                                    <CardHeader className="relative z-20">
-                                        <Badge
-                                            className={cn(
-                                                "pointer-events-none absolute right-2 top-2 rounded px-2 py-1 font-semibold border-red-600/10 bg-red-50 text-red-700",
-
-                                            )}
-                                        >
-                                            Expired
-                                        </Badge>
-                                        <div
-                                            className={cn(
-                                                buttonVariants({
-                                                    size: "icon",
-                                                    className:
-                                                        "pointer-events-none h-8 w-8 rounded-full bg-zinc-100 text-zinc-950",
-                                                })
-                                            )}
-                                            aria-hidden="true"
-                                        >
-                                            <Icons.shieldCheck
-                                                className="h-5 w-5"
-                                                aria-hidden="true"
-                                            />
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="relative z-20">
-                                        <CardTitle className="text-xl capitalize text-zinc-200">
-                                            Meet & Greet
-                                        </CardTitle>
-                                        <CardDescription> Come hangout after the show! </CardDescription>
-                                    </CardContent>
-                                </Card>
-                                {/* </Link> */}
-
-                                {/* </div> */}
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
             </div>

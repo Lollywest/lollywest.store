@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { db } from "@/db"
 import { products, comments, userStats, artists, type Artist } from "@/db/schema"
-import { and, asc, desc, eq, gt, lt, sql, inArray } from "drizzle-orm"
+import { and, asc, desc, eq, gt, lt, sql, inArray, like } from "drizzle-orm"
 import { type z } from "zod"
 import type { StoredFile } from "@/types"
 import { currentUser } from "@clerk/nextjs"
@@ -293,4 +293,19 @@ export async function getActiveUsersImages2(input: {
   })
 
   return images
+}
+
+export async function filterArtistsAction(query: string) {
+  if (query.length === 0) return null
+
+  const filteredArtists = await db
+    .select({
+      id: artists.id,
+      name: artists.name,
+    })
+    .from(artists)
+    .where(like(artists.name, `%${query}%`))
+    .limit(10)
+
+  return filteredArtists
 }

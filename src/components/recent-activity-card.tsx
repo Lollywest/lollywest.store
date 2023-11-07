@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card"
 import Link from "next/link"
 import { type Post } from "@/db/schema"
-import { cn, formatDate, toTitleCase } from "@/lib/utils"
+import { cn, formatTimeSince, toTitleCase } from "@/lib/utils"
 
 
 interface RecentActivityCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -45,16 +45,16 @@ export function RecentActivityCard({
                         <div className="flex-1 ">
                             <CardTitle className="text-xl">{post.title}</CardTitle>
                         </div>
-                        <Icons.chevronRight
+                        {/* <Icons.chevronRight
                             className="mr-2 h-10 w-10 "
                             aria-hidden="true"
-                        />
+                        /> */}
                     </div>
 
 
                     <CardDescription className="">
                         <div className="flex items-center gap-4">
-                            <p>Announced on {formatDate(post.createdAt!)}</p>
+                            <p> {formatTimeSince(post.createdAt!)}</p>
                         </div>
                     </CardDescription>
                 </CardHeader>

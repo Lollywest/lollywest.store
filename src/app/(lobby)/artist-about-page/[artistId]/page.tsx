@@ -52,6 +52,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Separator } from "@/components/ui/separator"
+import { getActiveUsersImages2 } from "@/app/_actions/store"
 
 export const metadata: Metadata = {
     title: "Artist Community Page",
@@ -78,7 +79,10 @@ export default async function ArtistAboutPage({ params }: ArtistAboutPageProps) 
     const isArtist: boolean = await checkUserArtist({ artistId })
     const isHubMember: boolean = await checkUserJoined({ artistId })
     const isPremiumMember: boolean = await checkUserPremium({ artistId })
-
+    const recentActiveUsersImages = await getActiveUsersImages2({
+        artistId,
+        limit: 3
+    })
     return (
         <Shell className="md:pb-10">
             {/* //////////      Header Section      ////////// */}
@@ -98,27 +102,27 @@ export default async function ArtistAboutPage({ params }: ArtistAboutPageProps) 
                         </div>
                         {/* ////////    Update later with real pics     ////////// */}
                         <div className="flex">
-                            <div className="relative z-30 ">
-                                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#0686B3]">
-                                    <AvatarFallback>
-                                        <Icons.user className="h-6 w-6" aria-hidden="true" />
-                                    </AvatarFallback>
-                                </Avatar>
-                            </div>
-                            <div className="relative -ml-4 z-20 outline-[#0686B3]">
-                                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#0686B3]">
-                                    <AvatarFallback>
-                                        <Icons.user className="h-6 w-6" aria-hidden="true" />
-                                    </AvatarFallback>
-                                </Avatar>
-                            </div>
-                            <div className="relative -ml-4 z-10">
-                                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#0686B3]">
-                                    <AvatarFallback>
-                                        <Icons.user className="h-6 w-6" aria-hidden="true" />
-                                    </AvatarFallback>
-                                </Avatar>
-                            </div>
+
+                            {recentActiveUsersImages.map((image, index) => (
+                                <div
+                                    //   key={post.id}
+                                    key={image || index}
+                                    className={`relative ${index !== 0 ? '-ml-4' : ''} z-${30 - index * 10}`}
+                                    style={{ zIndex: 30 - index * 10 }}
+                                >
+                                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#788fed]/50">
+                                        {/* Assuming you have an AvatarImage component to handle the image rendering */}
+                                        {image ? (
+                                            <AvatarImage src={image} alt="" />
+                                        ) : (
+                                            <AvatarFallback>
+                                                <Icons.user className="h-6 w-6" aria-hidden="true" />
+                                            </AvatarFallback>
+                                        )}
+                                    </Avatar>
+                                </div>
+                            ))}
+
                             <div className="relative -ml-4 z-0">
                                 <Avatar className="h-8 w-8 sm:h-10 sm:w-10 ">
                                     <AvatarFallback>
