@@ -114,6 +114,7 @@ export function NewArtistPremiumPostForm({ artistId }: newPremiumPostProps) {
                 title: data.title,
                 message: data.message,
                 images: images,
+                videoAssetId: "",
                 isEvent: isEvent,
                 eventTime: data.eventDate ? data.eventDate : null,
                 isPremium: data.isPremium,

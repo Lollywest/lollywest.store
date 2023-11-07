@@ -4,7 +4,7 @@ import * as z from "zod"
 
 import { type userPrivateMetadataSchema } from "@/lib/validations/auth"
 import type { cartItemSchema, checkoutItemSchema, stripeItemSchema } from "@/lib/validations/cart"
-import { postSchema } from "@/lib/validations/post"
+import { type postSchema } from "@/lib/validations/post"
 import { type Icons } from "@/components/icons"
 
 export interface NavItem {
@@ -132,6 +132,8 @@ export const GetPostReturnSchema = z.object({
     .optional()
     .nullable()
     .default(null),
+  videoAssetId: z.string().optional().nullable().default(""),
+  videoPlaybackId: z.string().optional().nullable().default(""),
   likers: z
     .unknown()
     .refine((val) => {
@@ -152,8 +154,10 @@ export const GetPostReturnSchema = z.object({
   username: z.string(),
   image: z.string(),
   likedByUser: z.boolean().default(false),
-  userIsPremium: z.boolean(),
-  userJoined: z.boolean(),
+  userIsPremium: z.boolean().default(false),
+  userJoined: z.boolean().default(false),
+  isNew: z.boolean().default(false),
+  isTrending: z.boolean().default(false),
 })
 
 export type GetPostReturn = z.infer<typeof GetPostReturnSchema>
@@ -185,3 +189,10 @@ export const GetCommentReturnSchema = z.object({
 })
 
 export type GetCommentReturn = z.infer<typeof GetCommentReturnSchema>
+
+export const VideoFileSchema = z.object({
+  assetId: z.string(),
+  playbackId: z.string(),
+})
+
+export type VideoFile = z.infer<typeof VideoFileSchema>

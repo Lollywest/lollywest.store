@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/db"
-import { eq, desc } from "drizzle-orm"
+import { eq, and, desc } from "drizzle-orm"
 import { posts, reports, comments, userStats, artists } from "@/db/schema"
 import { clerkClient, currentUser } from "@clerk/nextjs"
 import { revalidatePath } from "next/cache"
@@ -592,4 +592,100 @@ export async function reportCommentAction(input: {
         message: comment.message,
         artistId: post.artistId
     })
+}
+
+export async function getFirstComments(input: {
+    postId: number,
+    limit?: number,
+}) {
+    const curuser = await currentUser()
+    if (!curuser) {
+        throw new Error("user not found")
+    }
+
+    const { items, artist } = await db.transaction(async (tx) => {
+        const items = await tx
+            .select({
+                id: comments.id,
+                user: comments.user,
+                artistId: comments.artistId,
+                postId: comments.postId,
+                replyingTo: comments.replyingTo,
+                numReplies: comments.numReplies,
+                message: comments.message,
+                likers: comments.likers,
+                createdAt: comments.createdAt,
+                username: userStats.username,
+                image: userStats.image,
+                userHubsJoined: userStats.hubsJoined,
+                userPremiumHubs: userStats.premiumHubs,
+                userNumPosts: userStats.numPosts,
+                userNumComments: userStats.numComments,
+                userNumLikes: userStats.numComments,
+                updatedAt: userStats.updatedAt,
+            })
+            .from(comments)
+            .leftJoin(userStats, eq(userStats.userId, comments.user))
+            .where(and(eq(comments.postId, input.postId), eq(comments.replyingTo, 0)))
+            .orderBy(desc(comments.createdAt))
+            .limit(input.limit ? input.limit : 3)
+
+        if (items[0]) {
+            const artist = await tx.query.artists.findFirst({
+                where: eq(artists.id, items[0].artistId)
+            })
+
+            return {
+                items,
+                artist,
+            }
+        }
+        return {
+            items,
+            undefined,
+        }
+    })
+
+    const weekAgo = new Date()
+    weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
+    const now = new Date()
+
+    const result = []
+    for (const item of items) {
+        if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
+            const user = await clerkClient.users.getUser(item.user)
+
+            if (item.image != user?.imageUrl) {
+                await db.update(userStats).set({ image: user.imageUrl, updatedAt: now }).where(eq(userStats.userId, user.id))
+            } else {
+                await db.update(userStats).set({ updatedAt: now }).where(eq(userStats.userId, user.id))
+            }
+        }
+
+        item.userHubsJoined = item.userHubsJoined ?? []
+        item.userNumPosts = item.userNumPosts ?? 0
+        item.userNumComments = item.userNumComments ?? 0
+        item.userNumLikes = item.userNumLikes ?? 0
+
+        const info = {
+            id: item.id,
+            user: item.user,
+            postId: item.postId,
+            replyingTo: item.replyingTo,
+            numReplies: item.numReplies,
+            message: item.message,
+            likers: item.likers,
+            createdAt: item.createdAt,
+            points: item.userHubsJoined.length * joinsWeight + item.userNumPosts * postsWeight + item.userNumComments * commentsWeight + item.userNumLikes * likesWeight,
+            username: item.user === artist?.userId ? artist?.name : (item.username ? item.username : "[deleted]"),
+            image: item.user === artist?.userId ? artist?.images[0]?.url ?? "/images/product-placeholder.webp" : (item.image ? item.image : "/images/product-placeholder.webp"),
+            likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
+            userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1,
+            userJoined: item.userHubsJoined !== null && item.userHubsJoined.map(a => a.artistId).indexOf(item.artistId) > -1,
+        }
+
+        result.push(info)
+    }
+
+    return result
 }

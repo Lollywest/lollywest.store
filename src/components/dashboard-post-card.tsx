@@ -1,3 +1,4 @@
+// "use client"
 
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
@@ -24,6 +25,7 @@ import { getAllCommentsAction } from "@/app/_actions/comments"
 import { CommunityPostComment } from "@/components/community-post-comment"
 import { GetPostReturn } from "@/types"
 import { type StoredFile } from "@/types"
+import VideoPlayer from "@/components/video-player"
 import { UserProfileBadge } from "@/components/user-profile-badge"
 
 // interface DashboardPostProps {
@@ -73,7 +75,6 @@ export async function DashboardPostCard({
 
     const filteredComments = allArtistPostComments.filter(comment => comment.replyingTo === null).slice(0, displayLimit)
 
-
     return (
         // <Card className="grid rounded-xl my-4 ">
         <Card className="group relative overflow-hidden rounded-xl flex-grow bg-black shadow-md shadow-[#3457e5]/50 m-2">
@@ -122,7 +123,20 @@ export async function DashboardPostCard({
                                 </div>
                             </div>
                         </div>
-                    ) :
+                )
+                    : post.videoPlaybackId ? (
+                        <div className=" grid grid-cols-3 gap-12">
+                            <div className="flex-1 flex flex-col col-span-2">
+                                <div className="flex-1 flex items-center pt-4 pb-4">
+                                    <p >{post.message}</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col md:flex-row md:gap-16 p-2">
+                                <VideoPlayer playbackId={post.videoPlaybackId} />
+                            </div>
+                        </div>
+                    )
+                        :
                         // If no images in post
                         <div className=" grid grid-cols-3 gap-12">
                             <div className="flex-1 flex flex-col col-span-3">

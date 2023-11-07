@@ -29,9 +29,16 @@ import { Zoom } from "@/components/zoom-image"
 import type { FileWithPreview } from "@/types"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { getUploadUrl, getUploadAsset } from "@/app/_actions/video"
+import { VideoDialog } from "../video-dialog"
 
 interface newPostProps {
     artistId: number
+}
+
+interface MuxInfo {
+    url: string,
+    id: string,
 }
 
 const formSchema = z.object({
@@ -47,6 +54,7 @@ const formSchema = z.object({
         .optional()
         .nullable()
         .default(null),
+    videoUploaded: z.boolean().default(false),
 })
 
 type Inputs = z.infer<typeof formSchema>
@@ -84,13 +92,33 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
                 artistId: artistId,
                 title: data.title,
                 message: data.message,
-                images: images
+                images: images,
+                videoAssetId: assetId,
             })
 
             toast.success("Post sent")
             form.reset()
 
             router.refresh()
+        })
+    }
+
+    let muxInfo: MuxInfo | undefined
+    const [ uploadId, setUploadId ] = React.useState("")
+
+    const getMuxInfo = async () => {
+        muxInfo = await getUploadUrl()
+        setUploadId(muxInfo.id)
+        return muxInfo.url
+    }
+
+    let asset: string = ""
+    const [ assetId, setAssetId ] = React.useState("")
+
+    const onMuxSuccess = () => {
+        startTransition(async () => {
+            asset = await getUploadAsset({uploadId: uploadId})
+            setAssetId(asset)
         })
     }
 
@@ -152,12 +180,18 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
                             files={files}
                             setFiles={setFiles}
                             isUploading={isUploading}
-                            disabled={isPending}
+                            disabled={isPending || assetId.length > 0}
                         />
                     </FormControl>
                     <UncontrolledFormMessage
                         message={form.formState.errors.images?.message}
                     />
+                </FormItem>
+                <FormItem>
+                    <FormLabel>Video</FormLabel>
+                    <FormControl>
+                        <VideoDialog endpointCallback={getMuxInfo} successCallback={onMuxSuccess} disabled={files?.length !== undefined && files?.length > 0} />
+                    </FormControl>
                 </FormItem>
                 <Button className="w-fit" disabled={isPending}>
                     {isPending && (

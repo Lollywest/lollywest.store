@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache"
 import { db } from "@/db"
-import { products, userStats, artists, type Artist } from "@/db/schema"
-import { and, asc, desc, eq, gt, lt, sql } from "drizzle-orm"
+import { products, comments, userStats, artists, type Artist } from "@/db/schema"
+import { and, asc, desc, eq, gt, lt, sql, inArray } from "drizzle-orm"
 import { type z } from "zod"
 import type { StoredFile } from "@/types"
 import { currentUser } from "@clerk/nextjs"
@@ -259,4 +259,21 @@ export async function joinArtistHubAction(input: {
     await tx.update(artists).set(artist).where(eq(artists.id, input.artistId))
     await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
   })
+}
+
+export async function getActiveUsersImages(input: {
+  artistId: number,
+  limit: number,
+}) {
+  const images = await db.transaction(async (tx) => {
+    const userIds = await tx.selectDistinct({ id: comments.user }).from(comments).orderBy(desc(comments.createdAt)).limit(input.limit)
+
+    const ids = userIds.map(a => a.id)
+
+    const images = await tx.select({ image: userStats.image }).from(userStats).where(inArray(userStats.userId, ids))
+
+    return images.map(a => a.image)
+  })
+
+  return images
 }

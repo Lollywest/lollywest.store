@@ -1,3 +1,4 @@
+// "use client"
 
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
@@ -41,6 +42,7 @@ import {
 } from "@/components/ui/avatar"
 
 import { DeletePostHoverCard } from "@/components/delete-post-hovercard"
+import VideoPlayer from "@/components/video-player"
 import { UserProfileBadge } from "@/components/user-profile-badge"
 
 interface CommunityPostProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -181,7 +183,20 @@ export async function CommunityPostCard({
                             />
                         </div>
                     </div>
-                ) :
+                ) 
+                : post.videoPlaybackId ? (
+                    <div className=" grid grid-cols-3 gap-12">
+                        <div className="flex-1 flex flex-col col-span-2">
+                            <div className="flex-1 flex items-center pt-4 pb-4">
+                                <p >{post.message}</p>
+                            </div>
+                        </div>
+                        <div className="flex flex-col md:flex-row md:gap-16 p-2">
+                            <VideoPlayer playbackId={post.videoPlaybackId} />
+                        </div>
+                    </div>
+                )
+                :
                     // If no images in post
                     <div className=" grid grid-cols-3 gap-12">
                         <div className="flex-1 flex flex-col col-span-3">

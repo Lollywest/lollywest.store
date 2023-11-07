@@ -204,6 +204,8 @@ export const posts = mysqlTable("posts", {
   title: text("title").notNull(),
   message: text("message").notNull(),
   images: json("images").$type<StoredFile[] | null>().default(null),
+  videoAssetId: text("videoAssetId").default(""),
+  videoPlaybackId: text("videoPlaybackId").default(""),
   likers: json("likers").$type<string[] | null>().default(null),
   numLikes: int("numLikes").notNull().default(0),
   numComments: int("numComments").notNull().default(0),
@@ -255,7 +257,7 @@ export const reports = mysqlTable("reported", {
 export type Report = InferModel<typeof reports>
 
 export const userStats = mysqlTable("userStats", {
-  userId: varchar("user", { length: 191 }).notNull(),
+  userId: varchar("userId", { length: 191 }).notNull(),
   username: text("username"),
   firstName: text("firstName"),
   lastName: text("lastName"),

@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm"
 import { clerkClient } from "@clerk/nextjs"
 import { env } from "@/env.mjs"
 import { headers } from "next/headers"
-import { StripeItem } from "@/types"
+import { type StripeItem } from "@/types"
 
 export async function POST(req: Request) {
   const body = await req.text()
