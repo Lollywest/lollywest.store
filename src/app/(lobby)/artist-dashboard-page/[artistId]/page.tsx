@@ -144,6 +144,7 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
                             {recentActiveUsersImages.map((image, index) => (
                                 <div
                                     //   key={post.id}
+                                    key={image || index}
                                     className={`relative ${index !== 0 ? '-ml-4' : ''} z-${50 - index * 10}`}
                                     style={{ zIndex: 50 - index * 10 }}
                                 >
