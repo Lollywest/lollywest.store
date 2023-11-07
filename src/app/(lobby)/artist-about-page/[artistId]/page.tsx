@@ -2,21 +2,6 @@
 import * as React from "react"
 import { Metadata } from "next"
 import Image from "next/image"
-import { Button, buttonVariants } from "@/components/ui/button"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from "@/components/ui/tabs"
 import { Shell } from "@/components/shells/shell"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
 import { db } from "@/db"
@@ -46,6 +31,27 @@ import {
 } from "@/components/ui/avatar"
 import { AspectRatio } from "@radix-ui/react-aspect-ratio"
 import { Balancer } from "react-wrap-balancer"
+import { HubHeaderBanner } from "@/components/hub-header-banner"
+import { JoinHubToggle } from "@/components/join-hub-toggle"
+import { JoinPremiumToggle } from "@/components/join-premium-toggle"
+import { checkUserJoined } from "@/app/_actions/wallet"
+import { checkUserPremium } from "@/app/_actions/wallet"
+import { AccessPassSubscribeButton } from "@/components/cart/access-pass-button"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
+import { Separator } from "@/components/ui/separator"
 
 export const metadata: Metadata = {
     title: "Artist Community Page",
@@ -70,105 +76,131 @@ export default async function ArtistAboutPage({ params }: ArtistAboutPageProps) 
     }
 
     const isArtist: boolean = await checkUserArtist({ artistId })
+    const isHubMember: boolean = await checkUserJoined({ artistId })
+    const isPremiumMember: boolean = await checkUserPremium({ artistId })
 
     return (
         <Shell className="md:pb-10">
-            <div className="space-y-8">
-                <div className="flex-1 space-y-4 p-8 pt-6">
-
-                    {/*//////////////////    START OF HEADER      ////////////////////////*/}
-                    <div className="flex flex-col items-center">
-
-                        <div className="relative">
-                            {artist.images[1] !== null ? (
-                                // <AspectRatio ratio={3 / 1}>
-                                <Image
-                                    className="rounded-xl"
-                                    src={artist.images[1]!.url}
-                                    alt=""
-                                    height={500}
-                                    width={1500}
-                                />
-                                // </AspectRatio>
-                            ) :
-
-                                <Image
-                                    className="rounded-xl"
-                                    src="/images/DeleteLater-Example-Banner.png"
-                                    alt=""
-                                    height={500}
-                                    width={1500}
-                                />
-
-                            }
-
-
-                            <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-32 h-32 rounded-full overflow-hidden border-2 border-white">
-                                {artist.images[0] !== null ? (
-                                    <Image
-                                        className="rounded-xl"
-                                        src={artist.images[0]!.url}
-                                        alt=""
-                                        height={200}
-                                        width={200}
-                                    />
-                                ) :
-                                    <div
-                                        aria-label="Image Placeholder"
-                                        role="img"
-                                        aria-roledescription="placeholder"
-                                        className="flex aspect-square h-full w-full flex-1 items-center justify-center bg-secondary"
-                                    >
-                                        <Icons.placeholder
-                                            className="h-9 w-9 text-muted-foreground"
-                                            aria-hidden="true"
-                                        />
-                                    </div>
-                                }
-
-                            </div>
-                        </div>
+            {/* //////////      Header Section      ////////// */}
+            <section className="mx-auto w-full justify-center overflow-hidden rounded-lg">
+                <div className="flex flex-col items-center">
+                    <div className="relative">
+                        <HubHeaderBanner artist={artist} />
                     </div>
-
+                </div>
+                <div className="pt-1">
                     <div className="flex items-center gap-2">
-                        <div className="flex-1 ">
-                            <Button variant="outline" className="rounded-xl ">
-                                <Icons.send
-                                    className="mr-2 h-4 w-4"
-                                    aria-hidden="true"
-                                />Invite a Friend </Button>
-
+                        <JoinHubToggle artistId={artistId} hubMember={isHubMember} />
+                        <div className="flex-1 flex-row">
+                            {/* <JoinPremiumToggle artistId={artistId} premiumMember={isPremiumMember} /> */}
+                            {/* //////////  Update later w/ productId (or artistId ?) */}
+                            <AccessPassSubscribeButton productId={0} artistId={artistId} isPremiumMember={isPremiumMember} />
+                        </div>
+                        {/* ////////    Update later with real pics     ////////// */}
+                        <div className="flex">
+                            <div className="relative z-30 ">
+                                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#0686B3]">
+                                    <AvatarFallback>
+                                        <Icons.user className="h-6 w-6" aria-hidden="true" />
+                                    </AvatarFallback>
+                                </Avatar>
+                            </div>
+                            <div className="relative -ml-4 z-20 outline-[#0686B3]">
+                                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#0686B3]">
+                                    <AvatarFallback>
+                                        <Icons.user className="h-6 w-6" aria-hidden="true" />
+                                    </AvatarFallback>
+                                </Avatar>
+                            </div>
+                            <div className="relative -ml-4 z-10">
+                                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#0686B3]">
+                                    <AvatarFallback>
+                                        <Icons.user className="h-6 w-6" aria-hidden="true" />
+                                    </AvatarFallback>
+                                </Avatar>
+                            </div>
+                            <div className="relative -ml-4 z-0">
+                                <Avatar className="h-8 w-8 sm:h-10 sm:w-10 ">
+                                    <AvatarFallback>
+                                        <Icons.horizontalThreeDots className="h-4 w-4" aria-hidden="true" />
+                                    </AvatarFallback>
+                                </Avatar>
+                            </div>
+                            {/* <span className = "text-muted-foreground text-xs ">
+                            Members
+                        </span> */}
                         </div>
 
-
-                        <Button variant="secondary" className="rounded-xl ">
-                            <Image
-                                className="mr-2 h-6 w-6"
-                                src="/images/avatar/verified1.svg"
-                                alt=""
-                                height={800}
-                                width={800}
-                            />Join
-
-                        </Button>
-                        <Button variant="secondary" className="rounded-xl">...</Button>
                     </div>
-
                     <div className="flex flex-col items-center justify-center text-center space-y-4 ">
-
-                        <h2 className="mt-3 text-3xl font-bold tracking-tight">{artist.name}</h2>
+                        {/* <h2 className="mt-3 text-3xl font-bold tracking-tight">{artist.name}</h2>
                         <Balancer className="max-w-[42rem] leading-normal text-muted-foreground sm:text-md sm:leading-8">
-                            {artist.shortDescription}</Balancer>
+                            {artist.shortDescription}</Balancer> */}
                         <ArtistDashboardNav artistId={Number(params.artistId)} />
                     </div>
-                    {/*//////////////////    END OF HEADER      ////////////////////////*/}
+                </div>
+            </section>
+            {/* //////////      End of Header Section      ////////// */}
 
-
+            {/* <div className="space-y-8"> */}
+            <div className=" grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 ">
+                {/* <div className="flex-1 space-y-4 p-8 pt-6"> */}
+                <div className="col-span-5 space-y-4 ">
                     <UpdateArtistAboutForm artist={artist} isArtist={isArtist} />
+                </div>
+                <div className="col-span-2 hidden md:block">
+                    <Card className="rounded-xl my-8">
+                        <CardHeader>
+                            <CardTitle>Artist Hub Rules</CardTitle>
+                        </CardHeader>
+                        <CardContent>
 
-
+                            <Separator className="" />
+                            <Accordion type="single" collapsible className="w-full text-sm text-muted-foreground ">
+                                <AccordionItem value="description">
+                                    <AccordionTrigger>1. Be respectful at all times</AccordionTrigger>
+                                    <AccordionContent>
+                                        Do not make personal attacks, insult, or demean a specific group or person. Do not use slurs without relevant context and quotes.
+                                        No blatant statements of bigotry. No posts that &apos;bait&apos; users into breaking other rules. Zero tolerance for posts/comments that sexualize minors.
+                                        Zero tolerance for posts/comments that encourage suicide
+                                    </AccordionContent>
+                                </AccordionItem>
+                                <AccordionItem value="item-2">
+                                    <AccordionTrigger>2. No spam</AccordionTrigger>
+                                    <AccordionContent> Do not post spam or any machine generated content. Do not edit comments to mislead and/or advertise. Do not farm likes or shotgun comments</AccordionContent>
+                                </AccordionItem>
+                                <AccordionItem value="item-3">
+                                    <AccordionTrigger>
+                                        3. No personal info
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        Do not post or seek any real or fake personal information (examples include: full names, phone numbers, email addresses, or social media accounts).
+                                        Only link another user&apos;s comment when it is relevant and never when it is to launch a personal attack or encourage others to do so.
+                                        Do not ask questions designed to target specific usernames or links to social media.
+                                    </AccordionContent>
+                                </AccordionItem>
+                                <AccordionItem value="item-4">
+                                    <AccordionTrigger>
+                                        4. No loaded questions
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        Do not include an opinion, bias, or lead respondents towards expressing a specific opinion in your post title. Do not use this subreddit to promote a specific agenda or to gain positive or negative publicity for an entity or person
+                                    </AccordionContent>
+                                </AccordionItem>
+                                <AccordionItem value="item-5">
+                                    <AccordionTrigger>
+                                        5. No begging
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        Do not ask for any rewards, money, goods, services, or favors.
+                                        Do not form a brigade to draw positive or negative attention to posts or comments in the hub, even from other artist hubs/communities .                                                </AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
+
         </Shell >
     )
 

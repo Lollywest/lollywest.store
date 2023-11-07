@@ -33,7 +33,7 @@ import { AddPostPopover } from "@/components/add-post-popover"
 import ArtistDashboardNav from "@/components/layouts/artist-dashboard-nav"
 import { CommunityPostCard } from "@/components/community-post-card"
 // import { NewArtistPostDialog } from "@/components/new-artist-post-dialog"
-import NewCommunityPostDialog from "@/components/new-community-post-dialog"
+import { NewCommunityPostDialog } from "@/components/new-community-post-dialog"
 import { ViewUserPosts } from "@/components/view-user-posts"
 
 import { db } from "@/db"

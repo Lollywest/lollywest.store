@@ -71,6 +71,7 @@ import {
   ShieldCheck,
   Ticket,
   Tags,
+  UserCheck,
 
   type LucideIcon,
   type LucideProps,
@@ -151,6 +152,7 @@ export const Icons = {
   shieldCheck: ShieldCheck,
   ticket: Ticket,
   tags: Tags,
+  userCheck: UserCheck,
 
   logo: (props: LucideProps) => (
 

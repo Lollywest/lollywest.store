@@ -15,6 +15,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { Icons } from "@/components/icons"
+import type { User } from "@clerk/nextjs/dist/types/server"
 
 interface MainNavProps {
   items?: MainNavItem[]
@@ -73,63 +74,15 @@ export function MainNav({ items }: MainNavProps) {
             </NavigationMenuItem>
           ) : null}
 
-
           {items?.[0]?.items ? (
             <NavigationMenuItem>
               <Link
-                aria-label="Featured"
+                aria-label="Discover Studios"
                 href="/featured"
-                className="text-sm leading-tight text-muted-foreground"
-              >
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Hubs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </Link>
-            </NavigationMenuItem>
-          ) : null}
-          {items?.[0]?.items ? (
-            <NavigationMenuItem>
-              <Link
-                aria-label="Leaderboard"
-                href="/leaderboard"
                 // className="hidden items-center space-x-2 lg:flex"
                 className="text-sm leading-tight text-muted-foreground"
               >
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For Artists&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {/* <span className="hidden font-bold lg:inline-block">
-                        Top Artists & Fans
-                      </span> */}
-
-              </Link>
-
-            </NavigationMenuItem>
-          ) : null}
-          {items?.[0]?.items ? (
-            <NavigationMenuItem>
-              <Link
-                aria-label="Leaderboard"
-                href="/leaderboard"
-                // className="hidden items-center space-x-2 lg:flex"
-                className="text-sm leading-tight text-muted-foreground"
-              >
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For Fans&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {/* <span className="hidden font-bold lg:inline-block">
-                        Top Artists & Fans
-                      </span> */}
-
-              </Link>
-
-            </NavigationMenuItem>
-          ) : null}
-
-
-          {items?.[0]?.items ? (
-            <NavigationMenuItem>
-              <Link
-                aria-label="Sponsor Artists"
-                href="/sponsor-artists"
-                // className="hidden items-center space-x-2 lg:flex"
-                className="text-sm leading-tight text-muted-foreground"
-              >
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;About&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Discover&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 {/* <span className="hidden font-bold lg:inline-block">
                         Top Artists & Fans
                       </span> */}
@@ -137,6 +90,22 @@ export function MainNav({ items }: MainNavProps) {
               </Link>
             </NavigationMenuItem>
           ) : null}
+
+          {items?.[0]?.items ? (
+            <NavigationMenuItem>
+              <Link
+                aria-label="My Hubs"
+                // href={`/your-hubs/${user?.id}`}
+                href="/my-hubs"
+                className="text-sm leading-tight text-muted-foreground"
+              >
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;My Hubs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </Link>
+            </NavigationMenuItem>
+          ) : null}
+
+
+
 
           {/* {items?.[0]?.items ? (
             <NavigationMenuItem>

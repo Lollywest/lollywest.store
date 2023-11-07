@@ -7,7 +7,7 @@ import { desc } from "drizzle-orm"
 //import Balance from "react-wrap-balancer"
 
 import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { ProductCard } from "@/components/product-card"
 
 import { SponsorProductCard } from "@/components/sponsor-product-card"
@@ -20,6 +20,8 @@ import { UpcomingDeckCard } from "@/components/upcoming-deck-card"
 import { Shell } from "@/components/shells/shell"
 
 import SimpleSlider from "@/components/HomePageCarousel"
+import { DiscoverHubsSlider } from "@/components/discover-hubs-slider"
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {
@@ -60,14 +62,82 @@ export default async function IndexPage() {
     .orderBy(desc(artists.createdAt))
 
   return (
-    <Shell as="div" className="gap-12">
-
+    <Shell as="div" className="gap-0 xs:py-0 xs:py-0 md:py-0 ">
+      <div className="mx-auto w-full justify-center overflow-visible rounded-lg">
+        <div className="relative -z-10 mx-auto ">
+          <div className="absolute top-0 -z-20 flex w-full justify-center ">
+            <div className="h-[248px] w-[310px] max-w-full animate-pulse rounded-full bg-[#FFB619] opacity-40 blur-[100px] "></div>
+          </div>
+        </div>
+      </div>
       <section className="mx-auto w-full justify-center overflow-hidden rounded-lg">
-        <div >
+        {/* <div >
           <SimpleSlider />
+        </div> */}
+        <div className="relative z-0 mx-auto ">
+          {/* <div className="absolute -bottom-12 -z-10 flex w-full justify-center ">
+            <div className="h-[248px] w-[310px] max-w-full animate-pulse rounded-full bg-[#FFB619] opacity-40 blur-[100px] "></div>
+          </div> */}
+          <div className="flex items-center pb-2 pt-6">
+            <div className="flex-1">
+              <h2 className="text-2xl font-medium sm:text-3xl ">Discover Studios</h2>
+            </div>
+            <Button asChild variant="link" className="text-sm text-muted-foreground ">
+              <Link href="/featured">View more...</Link>
+            </Button>
+          </div>
+          <div className="overflow-hidden" >
+            <DiscoverHubsSlider discoverArtists={allArtistCommunities} />
+          </div>
+        </div>
+
+        {/* <div className="relative z-0 mx-auto  text-center space-y-6 mb-6">
+          <div className="absolute left-8 top-8 -z-10 flex w-full ">
+            <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#923CA8] opacity-25 blur-[100px]"></div>
+          </div>
+          <div className="absolute right-4 bottom-4 -z-20   ">
+            <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#923CA8] opacity-30 blur-[100px]"></div>
+          </div>
+          <div className="flex items-center pb-2 pt-4">
+            <h2 className="text-2xl font-medium sm:text-3xl">Trending Conversations</h2>
+          </div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
+            {allArtistCommunities.map((artist) => (
+              <LobbyCommunityCard key={artist.id} artist={artist} />
+            ))}
+
+          </div>
+        </div> */}
+
+        <div className="relative z-0 mx-auto  text-center space-y-6 mb-6">
+          {/* <div className="absolute left-8 top-8 -z-10 flex w-full ">
+            <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#923CA8] opacity-25 blur-[100px]"></div>
+          </div> */}
+          {/* <div className="absolute -bottom-12 -z-10 flex w-full justify-center  ">
+            <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#923CA8] opacity-30 blur-[100px]"></div>
+          </div> */}
+          {/* <div className="absolute -bottom-12 -z-10 flex w-full justify-center ">
+            <div className="h-[248px] w-[310px] max-w-full animate-pulse rounded-full bg-[#FFB619] opacity-40 blur-[100px] "></div>
+          </div> */}
+          <div className="flex items-center pb-2 pt-4">
+            <h2 className="text-2xl font-medium sm:text-3xl">Artist Communities</h2>
+          </div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
+            {allArtistCommunities.map((artist) => (
+              <LobbyCommunityCard key={artist.id} artist={artist} />
+            ))}
+
+          </div>
         </div>
       </section>
 
+      <div className="mx-auto w-full justify-center overflow-visible rounded-lg">
+        <div className="relative -z-30 mx-auto ">
+          <div className="absolute bottom-8 -z-40  w-full justify-center ">
+            <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#923CA8] opacity-30 blur-[100px]"></div>
+          </div>
+        </div>
+      </div>
       {/* <section
         id="featured-products"
         aria-labelledby="featured-products-heading"
@@ -107,52 +177,31 @@ export default async function IndexPage() {
         </div>
       </section> */}
 
-      <section
+      {/* <section
         id="artist-communities"
         aria-labelledby="upcoming-stores-heading"
         className="space-y-6"
       >
-        <div className="flex items-center">
-          <h2 className="text-2xl font-medium sm:text-3xl">Artist Communities</h2>
+        <div className="relative z-0 mx-auto  text-center">
+          <div className="absolute -top-4 -z-10 flex w-full justify-center">
+            <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#8678F9] opacity-20 blur-[100px]"></div>
+          </div>
+          <div className="flex items-center pb-4">
+            <h2 className="text-2xl font-medium sm:text-3xl">Artist Communities</h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+
+            {allArtistCommunities.map((artist) => (
+              <LobbyCommunityCard key={artist.id} artist={artist} />
+            ))}
+
+          </div>
         </div>
+      </section> */}
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {/* {allArtistCommunities.map((artist) => (
-            <Card key={artist.id} className="grid rounded-xl my-4 ">
-              <Link
-                aria-label={`View details`}
-                //   href={`//${artist.id}`}
-                href={`/artist-dashboard-page/${artist.id}`}
-              >
-                <CardHeader>
-                  <div className="flex items-center gap-4">
-                    <div className="flex-1 ">
-                      <CardTitle className="text-xl">{artist.name}</CardTitle>
-                    </div>
-                   
-                  </div>
-
-
-                  <CardDescription className="">
-                    <div className="flex items-center gap-4">
-                      <p> Created on {formatDate(artist.createdAt!)}</p>
-                    </div>
-                  </CardDescription>
-                </CardHeader>
-               
-              </Link>
-            </Card>
-          ))} */}
-
-          {allArtistCommunities.map((artist) => (
-            <LobbyCommunityCard key={artist.id} artist={artist} />
-          ))}
-
-        </div>
-
-      </section>
-
-      <section
+      {/* <section
         id="upcoming-stores"
         aria-labelledby="upcoming-stores-heading"
         className="space-y-6"
@@ -177,8 +226,8 @@ export default async function IndexPage() {
           ))}
         </div>
 
-      </section>
+      </section> */}
 
-    </Shell>
+    </Shell >
   )
 }

@@ -10,38 +10,39 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { NewCommunityPostForm } from "@/components/forms/new-community-post-form"
+import { NewArtistPremiumPostForm } from "@/components/forms/new-artist-premium-post-form"
 import { Icons } from "@/components/icons"
+import { type Post } from "@/db/schema"
 
-interface NewCommunityPostDialogProps extends React.HTMLAttributes<HTMLDivElement> {
-
+interface NewArtistPremiumPostDialogProps extends React.HTMLAttributes<HTMLDivElement> {
     artistId: number
 }
 
-export function NewCommunityPostDialog({ artistId }: NewCommunityPostDialogProps) {
+
+export default function NewArtistPremiumPostDialog({ artistId }: NewArtistPremiumPostDialogProps) {
+    // const artistId = Number(params.artistId)
 
     return (
         <Dialog >
             <DialogTrigger asChild>
-                <Button variant="outline" className="rounded-full">
+                <Button variant="outline">
                     <Icons.addCircle
-                        className="mr-2 h-5 w-5 "
+                        className="mr-2 h-5 w-5"
                         aria-hidden="true"
-                    />New Community Post</Button>
+                    />Add Access Pass Perk</Button>
             </DialogTrigger>
             <DialogContent className=" max-w-2xl ">
 
                 <DialogHeader>
-                    <DialogTitle>Create New Post </DialogTitle>
+                    <DialogTitle>Add Access Pass Perk </DialogTitle>
                     <DialogDescription>
-                        Click post when finished to post to artist community.
+                        Add a new Access Pass perk for your fans here.
                     </DialogDescription>
                 </DialogHeader>
+                <div className="h-[50vh] overflow-auto">
 
-                {/* //////////////////    change artist ids     ////////////////// */}
-                <NewCommunityPostForm artistId={artistId} />
-
-
+                    <NewArtistPremiumPostForm artistId={artistId} />
+                </div>
             </DialogContent>
         </Dialog>
     )

@@ -75,11 +75,11 @@ export type CheckoutItem = z.infer<typeof checkoutItemSchema>
 export interface CartLineItem
   extends Pick<
     Product,
-    "id" | 
-    "name" | 
-    "price" | 
+    "id" |
+    "name" |
+    "price" |
     "artistID" |
-    "images" | 
+    "images" |
     "category" |
     "stripePriceId"
   > {
@@ -184,6 +184,8 @@ export const GetCommentReturnSchema = z.object({
   username: z.string(),
   image: z.string(),
   likedByUser: z.boolean().default(false),
+  userIsPremium: z.boolean(),
+  userJoined: z.boolean(),
 })
 
 export type GetCommentReturn = z.infer<typeof GetCommentReturnSchema>

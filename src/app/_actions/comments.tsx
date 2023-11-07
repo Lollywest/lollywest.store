@@ -398,7 +398,7 @@ export async function getCommentRepliesAction(input: {
         throw new Error("user not found")
     }
 
-    const {items, artist} = await db.transaction(async (tx) => {
+    const { items, artist } = await db.transaction(async (tx) => {
         const items = await tx
             .select({
                 id: comments.id,
@@ -422,7 +422,7 @@ export async function getCommentRepliesAction(input: {
             .from(comments)
             .leftJoin(userStats, eq(userStats.userId, comments.user))
             .where(eq(comments.replyingTo, input.commentId))
-            .orderBy((comments.createdAt))
+            .orderBy(desc(comments.createdAt))
             .limit(input.limit ? input.limit : 999999)
             .offset(input.page ? input.page * (input.limit ? input.limit : 0) : 0)
 

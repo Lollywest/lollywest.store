@@ -16,20 +16,20 @@ import { type Post } from "@/db/schema"
 import { cn, formatDate, toTitleCase } from "@/lib/utils"
 
 
-interface UpcomingEventPostProps extends React.HTMLAttributes<HTMLDivElement> {
+interface RecentActivityCardProps extends React.HTMLAttributes<HTMLDivElement> {
     post: Post
     variant?: "default" | "switchable"
     onSwitch?: () => Promise<void>
 }
 
-export function UpcomingEventCard({
+export function RecentActivityCard({
     post,
     variant = "default",
     onSwitch,
     className,
 
     ...props
-}: UpcomingEventPostProps) {
+}: RecentActivityCardProps) {
     return (
         // <Card className="grid rounded-xl my-4 ">
         <Card className="group relative overflow-hidden rounded-xl flex-grow bg-black shadow-md shadow-[#617dea]/50 m-2 my-4">

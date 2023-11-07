@@ -15,7 +15,7 @@ export async function getProductsAction(input?: { category?: string }) {
 
     const user = await currentUser()
 
-    if(!user) {
+    if (!user) {
         throw new Error("Could not find user")
     }
 
@@ -24,15 +24,15 @@ export async function getProductsAction(input?: { category?: string }) {
     })
 
     const arr = []
-    for(const order of userOrders) {
-        if(order.products) {
-            for(const row of order.products!) {
+    for (const order of userOrders) {
+        if (order.products) {
+            for (const row of order.products!) {
                 arr.push(row.id)
             }
         }
     }
 
-    if(!arr.length) {
+    if (!arr.length) {
         return []
     }
 
@@ -40,7 +40,7 @@ export async function getProductsAction(input?: { category?: string }) {
         where: inArray(products.id, arr)
     })
 
-    if(!items) {
+    if (!items) {
         return []
     }
 
@@ -185,7 +185,7 @@ export async function updateUsernameAction(input: {
         where: eq(userStats.userId, curuser.id)
     })
 
-    if(!userInfo) {
+    if (!userInfo) {
         const newUserInfo = {
             userId: curuser.id,
             username: input.username,
@@ -211,19 +211,19 @@ export async function updateUsernameAction(input: {
 export async function checkUsernameAction() {
     const user = await currentUser()
 
-    if(!user) {
-        return(false)
+    if (!user) {
+        return (false)
     }
 
     const userInfo = await db.query.userStats.findFirst({
         where: eq(userStats.userId, user.id)
     })
 
-    if(!userInfo || !userInfo.username) {
-        return(false)
+    if (!userInfo || !userInfo.username) {
+        return (false)
     }
 
-    return(true)
+    return (true)
 }
 
 export async function getUserHubsAction() {
@@ -253,18 +253,45 @@ export async function getUserHubsAction() {
     return items
 }
 
+export async function getUserPremiumHubsAction() {
+    const user = await currentUser()
+    if (!user) {
+        throw new Error("user not found")
+    }
+
+    const items = await db.transaction(async (tx) => {
+        const userInfo = await tx.query.userStats.findFirst({
+            where: eq(userStats.userId, user.id)
+        })
+
+        if (!userInfo || !userInfo.premiumHubs) {
+            return null
+        }
+
+        const hubs = userInfo.premiumHubs.map(a => a.artistId)
+
+        const items = await tx.query.artists.findMany({
+            where: inArray(artists.id, hubs)
+        })
+
+        return items
+    })
+
+    return items
+}
+
 export async function checkUserJoined(input: {
     artistId: number
 }) {
     const user = await currentUser()
-    if(!user) {
+    if (!user) {
         throw new Error("user not found")
     }
 
     const artist = await db.query.artists.findFirst({
         where: eq(artists.id, input.artistId)
     })
-    if(!artist) {
+    if (!artist) {
         throw new Error("artist not found")
     }
 
@@ -275,14 +302,14 @@ export async function checkUserPremium(input: {
     artistId: number
 }) {
     const user = await currentUser()
-    if(!user) {
+    if (!user) {
         throw new Error("user not found")
     }
 
     const artist = await db.query.artists.findFirst({
         where: eq(artists.id, input.artistId)
     })
-    if(!artist) {
+    if (!artist) {
         throw new Error("artist not found")
     }
 
@@ -293,14 +320,14 @@ export async function checkUserArtist(input: {
     artistId: number
 }) {
     const user = await currentUser()
-    if(!user) {
+    if (!user) {
         throw new Error("user not found")
     }
 
     const artist = await db.query.artists.findFirst({
         where: eq(artists.id, input.artistId)
     })
-    if(!artist) {
+    if (!artist) {
         throw new Error("artist not found")
     }
 
@@ -312,14 +339,14 @@ export async function checkUserPrivileges(input: {
     artistId: number
 }) {
     const user = await currentUser()
-    if(!user) {
+    if (!user) {
         throw new Error("user not found")
     }
 
     const artist = await db.query.artists.findFirst({
         where: eq(artists.id, input.artistId)
     })
-    if(!artist) {
+    if (!artist) {
         throw new Error("artist not found")
     }
 

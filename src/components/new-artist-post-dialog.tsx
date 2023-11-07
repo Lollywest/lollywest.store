@@ -26,23 +26,23 @@ export default function NewArtistPostDialog({ artistId }: NewArtistPostDialogPro
   return (
     <Dialog >
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" className="rounded-full mr-2">
           <Icons.addCircle
             className="mr-2 h-5 w-5"
             aria-hidden="true"
-          />Create New</Button>
+          />New Artist Post</Button>
       </DialogTrigger>
       <DialogContent className=" max-w-2xl ">
 
         <DialogHeader>
-          <DialogTitle>Create New </DialogTitle>
+          <DialogTitle>Create New Artist Post</DialogTitle>
           <DialogDescription>
             Add a new post or event here. Click post when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-
-        <NewArtistPostForm artistId={artistId} />
-
+        <div className="h-[50vh] overflow-auto pr-4">
+          <NewArtistPostForm artistId={artistId} />
+        </div>
         {/* <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
