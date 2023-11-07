@@ -14,9 +14,9 @@ interface LikeIconToggleProps {
 
 
 export function LikeIconToggle({ postId, liked, numLikes }: LikeIconToggleProps) {
-    
+
     const [iconState, setIconState] = React.useState(liked ? "plus" : "minus")
-    const [ likes, setLikes ] = React.useState(numLikes ?? 0)
+    const [likes, setLikes] = React.useState(numLikes ?? 0)
 
     const handleToggle = async () => {
         if (iconState === "plus") {
@@ -55,7 +55,7 @@ export function LikeIconToggle({ postId, liked, numLikes }: LikeIconToggleProps)
             /> */}
                 <span className="sr-only">Toggle icon</span>
             </Button>
-            {numLikes && <span className=" pr-8"> {likes}</span>}
+            {/* {numLikes && <span className=" pr-8"> {likes}</span>} */}
         </div>
     )
 

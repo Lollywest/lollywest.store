@@ -11,7 +11,7 @@ const links = {
   githubAccount: "https://github.com/",
   discord: "https://discord.com/users/",
   calDotCom: "https://cal.com/",
-  instagram: "https://www.instagram.com/lollywest.drops/",
+  instagram: "https://www.instagram.com/lollywest.fans/",
 }
 
 export const siteConfig = {
@@ -69,7 +69,7 @@ export const siteConfig = {
     })),
   ] satisfies MainNavItem[],
   links,
-  
+
 
   footerNav: [
     // {

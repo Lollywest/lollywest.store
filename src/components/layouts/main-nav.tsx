@@ -36,7 +36,10 @@ export function MainNav({ items }: MainNavProps) {
       </Link>
       <NavigationMenu>
         <NavigationMenuList>
-          {items?.[0]?.items ? (
+
+          {/* ////////////     Old Lobby Dropdown Menu     /////////////// */}
+
+          {/* {items?.[0]?.items ? (
             <NavigationMenuItem>
               <NavigationMenuTrigger className="h-auto">
                 {items[0].title}
@@ -72,7 +75,7 @@ export function MainNav({ items }: MainNavProps) {
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
-          ) : null}
+          ) : null} */}
 
           {items?.[0]?.items ? (
             <NavigationMenuItem>
