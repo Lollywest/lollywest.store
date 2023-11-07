@@ -156,6 +156,8 @@ export const GetPostReturnSchema = z.object({
   likedByUser: z.boolean().default(false),
   userIsPremium: z.boolean().default(false),
   userJoined: z.boolean().default(false),
+  isNew: z.boolean().default(false),
+  isTrending: z.boolean().default(false),
 })
 
 export type GetPostReturn = z.infer<typeof GetPostReturnSchema>

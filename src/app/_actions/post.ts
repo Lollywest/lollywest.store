@@ -394,6 +394,15 @@ export async function getArtistPostsAction(input: {
     weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
     const now = new Date()
 
+    const dayAgo = new Date()
+    dayAgo.setTime(dayAgo.getTime() - 86400000)
+
+    const trending = await getTopPostsAction({
+        artistId: input.artistId,
+        timeFrame: TimeFrame["w"],
+    })
+    const trendingIds = trending.map(a => a.id)
+
     const result = []
     for (const item of items) {
         if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
@@ -434,6 +443,8 @@ export async function getArtistPostsAction(input: {
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
             userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1,
             userJoined: item.userHubsJoined !== null && item.userHubsJoined.map(a => a.artistId).indexOf(item.artistId) > -1,
+            isNew: item.createdAt!.getTime() < dayAgo.getTime(),
+            isTrending: trendingIds.indexOf(item.id) > -1,
         }
 
         result.push(info)
@@ -511,6 +522,15 @@ export async function getCommunityPostsAction(input: {
     weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
     const now = new Date()
 
+    const dayAgo = new Date()
+    dayAgo.setTime(dayAgo.getTime() - 86400000)
+
+    const trending = await getTopPostsAction({
+        artistId: input.artistId,
+        timeFrame: TimeFrame["w"],
+    })
+    const trendingIds = trending.map(a => a.id)
+
     const result = []
     for (const item of items) {
         if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
@@ -551,6 +571,8 @@ export async function getCommunityPostsAction(input: {
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
             userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1,
             userJoined: item.userHubsJoined !== null && item.userHubsJoined.map(a => a.artistId).indexOf(item.artistId) > -1,
+            isNew: item.createdAt!.getTime() < dayAgo.getTime(),
+            isTrending: trendingIds.indexOf(item.id) > -1,
         }
 
         result.push(info)
@@ -628,6 +650,15 @@ export async function getCommunityPostAction(input: {
     weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
     const now = new Date()
 
+    const dayAgo = new Date()
+    dayAgo.setTime(dayAgo.getTime() - 86400000)
+
+    const trending = await getTopPostsAction({
+        artistId: artist.id,
+        timeFrame: TimeFrame["w"],
+    })
+    const trendingIds = trending.map(a => a.id)
+
     const result = []
     for (const item of items) {
         if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
@@ -668,6 +699,8 @@ export async function getCommunityPostAction(input: {
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
             userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1,
             userJoined: item.userHubsJoined !== null && item.userHubsJoined.map(a => a.artistId).indexOf(item.artistId) > -1,
+            isNew: item.createdAt!.getTime() < dayAgo.getTime(),
+            isTrending: trendingIds.indexOf(item.id) > -1,
         }
 
         result.push(info)
@@ -818,6 +851,9 @@ export async function getTopPostsAction(input: {
     weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
     const now = new Date()
 
+    const dayAgo = new Date()
+    dayAgo.setTime(dayAgo.getTime() - 86400000)
+
     const result = []
     for (const item of items) {
         if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
@@ -858,6 +894,8 @@ export async function getTopPostsAction(input: {
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
             userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1,
             userJoined: item.userHubsJoined !== null && item.userHubsJoined.map(a => a.artistId).indexOf(item.artistId) > -1,
+            isNew: item.createdAt!.getTime() < dayAgo.getTime(),
+            isTrending: true,
         }
 
         result.push(info)
@@ -998,6 +1036,9 @@ export async function getActivePostsAction(input: {
     weekAgo.setTime(weekAgo.getTime() - (86400000 * 7))
     const now = new Date()
 
+    const dayAgo = new Date()
+    dayAgo.setTime(dayAgo.getTime() - 86400000)
+
     const result = []
     for (const item of items) {
         if (item.updatedAt && item.updatedAt.getTime() < weekAgo.getTime()) {
@@ -1038,6 +1079,8 @@ export async function getActivePostsAction(input: {
             likedByUser: item.likers !== null && item.likers.indexOf(curuser.id) > -1,
             userIsPremium: item.userPremiumHubs !== null && item.userPremiumHubs.map(a => a.artistId).indexOf(item.artistId) > -1,
             userJoined: item.userHubsJoined !== null && item.userHubsJoined.map(a => a.artistId).indexOf(item.artistId) > -1,
+            isNew: item.createdAt!.getTime() < dayAgo.getTime(),
+            isTrending: true,
         }
 
         result.push(info)

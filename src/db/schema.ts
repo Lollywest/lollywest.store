@@ -1,4 +1,4 @@
-import type { StoredFile, VideoFile, CartItem, StripeItem } from "@/types"
+import type { StoredFile, CartItem, StripeItem } from "@/types"
 import { relations, type InferModel } from "drizzle-orm"
 import {
   boolean,
@@ -257,7 +257,7 @@ export const reports = mysqlTable("reported", {
 export type Report = InferModel<typeof reports>
 
 export const userStats = mysqlTable("userStats", {
-  userId: varchar("user", { length: 191 }).notNull(),
+  userId: varchar("userId", { length: 191 }).notNull(),
   username: text("username"),
   firstName: text("firstName"),
   lastName: text("lastName"),
