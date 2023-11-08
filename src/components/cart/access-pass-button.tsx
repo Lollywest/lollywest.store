@@ -4,18 +4,17 @@ import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { catchError } from "@/lib/utils"
-import { subscribeToWrapAction } from "@/app/_actions/stripe"
+import { subscribeToAccessPassAction } from "@/app/_actions/stripe"
 import { useRouter } from "next/navigation"
 import { JoinPremiumToggle } from "@/components/join-premium-toggle"
 import Image from "next/image"
 
 interface AccessPassSubscribeButtonProps {
-    productId: number
     artistId: number
     isPremiumMember: boolean
 }
 
-export function AccessPassSubscribeButton({ productId, artistId, isPremiumMember }: AccessPassSubscribeButtonProps) {
+export function AccessPassSubscribeButton({artistId, isPremiumMember }: AccessPassSubscribeButtonProps) {
     const [isPending, startTransition] = React.useTransition()
     const router = useRouter()
     const [iconState, setIconState] = React.useState(isPremiumMember ? "plus" : "minus")
@@ -25,7 +24,7 @@ export function AccessPassSubscribeButton({ productId, artistId, isPremiumMember
 
         startTransition(async () => {
             try {
-                const result = await subscribeToWrapAction(productId)
+                const result = await subscribeToAccessPassAction(artistId)
 
                 if (result === "signin") {
                     router.push("/signin")
@@ -33,7 +32,7 @@ export function AccessPassSubscribeButton({ productId, artistId, isPremiumMember
                 }
 
                 if (result) {
-                    window.location.href = result.url ?? "/wrap/" + productId
+                    window.location.href = result.url ?? "/artist-premium/" + artistId
                 }
             } catch (err) {
                 catchError(err)

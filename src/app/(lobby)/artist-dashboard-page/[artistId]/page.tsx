@@ -136,7 +136,7 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
                         <div className="flex-1 flex-row">
                             {/* <JoinPremiumToggle artistId={artistId} premiumMember={isPremiumMember} /> */}
                             {/* //////////  Update later w/ productId (or artistId ?) */}
-                            <AccessPassSubscribeButton productId={0} artistId={artistId} isPremiumMember={isPremiumMember} />
+                            <AccessPassSubscribeButton artistId={artistId} isPremiumMember={isPremiumMember} />
                         </div>
                         {/* ////////    Update later with real pics     ////////// */}
                         <div className="flex">

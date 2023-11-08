@@ -99,7 +99,7 @@ export default function UsernamePage() {
                                 </FormItem>
                             )}
                         />
-                        <p className="text-slate-400">Your name will only be shown to musicians who you&apos;ve made a purchase from</p>
+                        <p className="text-slate-400">Your name will only be shown to musicians whose access pass you&apos;ve purchased</p>
                         <Button disabled={isPending}>
                             {isPending && (
                                 <Icons.spinner
