@@ -5,7 +5,7 @@ import { eq, and, desc, between, gte } from "drizzle-orm"
 import { posts, artists, reports, userStats } from "@/db/schema"
 import { clerkClient, currentUser } from "@clerk/nextjs"
 import { revalidatePath } from "next/cache"
-import type { StoredFile } from "@/types"
+import { type StoredFile, TimeFrame } from "@/types"
 
 // how to weigh various things when calculating a users points
 const joinsWeight = 100
@@ -751,15 +751,6 @@ export async function getEventsOnDayAction(input: {
     })
 
     return items
-}
-
-// for the get top post action
-enum TimeFrame {
-    "d",
-    "w",
-    "m",
-    "y",
-    "a"
 }
 
 // get the top posts from a certain time frame

@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers"
 import { db } from "@/db"
-import { artists, payments, products, type Product } from "@/db/schema"
+import { artists, payments, products } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs"
 import { eq, and } from "drizzle-orm"
 import { type z } from "zod"
