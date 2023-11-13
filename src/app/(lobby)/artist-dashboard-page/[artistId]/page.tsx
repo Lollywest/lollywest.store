@@ -206,7 +206,7 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
                             {allCommunityPosts.map((post) => (
                                 //<SamplePost key={index} {...post} />
                                 post.isPremium !== true ? (
-                                    <DashboardPostCard key={post.id} post={post} />
+                                    <DashboardPostCard key={post.id} post={post} isArtist={isArtist} />
                                 ) : null
 
                             ))}

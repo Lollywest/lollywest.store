@@ -62,7 +62,7 @@ export function UserProfileBadge({
                 </div>
 
                 <p className=" flex-1 text-sm text-muted-foreground">
-                    Lollies | {userPoints}
+                    FanXP | {userPoints}
                 </p>
 
             </div>
