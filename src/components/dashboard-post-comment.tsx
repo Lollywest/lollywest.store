@@ -104,7 +104,7 @@ export async function DashboardPostComment({
                         </p> */}
                         <div className="flex flex-1 items-center gap-4 text-sm text-muted-foreground ">
                             <div className=" flex-1 text-sm text-muted-foreground ">
-                                Lollies | {comment.points}
+                                FanXP | {comment.points}
                             </div>
                             {/* </div>p>{date}</p> */}
                             {/* <p>{formatDate(comment.createdAt!)}</p>

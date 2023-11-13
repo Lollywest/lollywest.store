@@ -38,8 +38,8 @@ export default function DeletePostDialog({ postId }: DeletePostDialogProps) {
     // }
     const DeletePostHandle = () => {
         void (async () => {
-            await deletePostAction({ postId });
-        })();
+            await deletePostAction({ postId })
+        })()
     }
 
 
@@ -47,13 +47,15 @@ export default function DeletePostDialog({ postId }: DeletePostDialogProps) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant="ghost">
+                {/* <Button variant="ghost"> */}
+                <p>
                     <Icons.close
                         className="mr-2 h-5 w-5"
                         aria-hidden="true"
                     />
                     Delete Post
-                </Button>
+                </p>
+                {/* </Button> */}
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

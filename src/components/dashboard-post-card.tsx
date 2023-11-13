@@ -29,6 +29,7 @@ import VideoPlayer from "@/components/video-player"
 import { UserProfileBadge } from "@/components/user-profile-badge"
 import { DashboardPostComment } from "@/components/dashboard-post-comment"
 import { PostCommentToggleForm } from "@/components/post-comment-toggle"
+import { DeletePostHoverCard } from "@/components/delete-post-hovercard"
 
 // interface DashboardPostProps {
 //     title: string;
@@ -40,6 +41,7 @@ interface DashboardPostProps extends React.HTMLAttributes<HTMLDivElement> {
     post: GetPostReturn
     variant?: "default" | "switchable"
     onSwitch?: () => Promise<void>
+    isArtist: boolean,
     // title: string;
     // message: string;
     // //date: string;
@@ -52,6 +54,7 @@ export async function DashboardPostCard({
     variant = "default",
     onSwitch,
     className,
+    isArtist,
     ...props
 }: DashboardPostProps) {
 
@@ -214,7 +217,7 @@ export async function DashboardPostCard({
                                 />
                             </Button>
                         </Link>
-                        <span className=" pr-8"> {post.numComments}</span>
+                        <span className=" pr-2"> {post.numComments}</span>
                         {/* <div className="flex-1 ">
                             <CommentToggleForm postId={post.id} />
                         </div> */}
@@ -224,6 +227,8 @@ export async function DashboardPostCard({
                                 aria-hidden="true"
                             />
                         </Button>
+                        {isArtist !== false ?
+                            <DeletePostHoverCard postId={post.id} className="p-1" /> : null}
                     </div>
 
 
