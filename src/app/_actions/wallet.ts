@@ -191,6 +191,7 @@ export async function updateUsernameAction(input: {
             username: input.username,
             firstName: input.firstName,
             lastName: input.lastName,
+            email: curuser.emailAddresses[0]?.emailAddress ?? null,
             image: curuser.imageUrl,
         }
 
@@ -202,6 +203,7 @@ export async function updateUsernameAction(input: {
     userInfo.username = input.username
     userInfo.firstName = input.firstName
     userInfo.lastName = input.lastName
+    userInfo.email =  curuser.emailAddresses[0]?.emailAddress ?? null
     userInfo.image = curuser.imageUrl
     userInfo.updatedAt = new Date()
 
