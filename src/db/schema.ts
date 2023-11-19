@@ -258,9 +258,11 @@ export type Report = InferModel<typeof reports>
 
 export const userStats = mysqlTable("userStats", {
   userId: varchar("userId", { length: 191 }).notNull(),
+  stripeCustomerId: varchar("stripeCustomerId", { length: 191 }).default(""),
   username: text("username"),
   firstName: text("firstName"),
   lastName: text("lastName"),
+  email: text("email"),
   image: text("image"),
   hubsJoined: json("hubsJoined").$type<HubJoinInfo[] | null>().default(null),
   premiumHubs: json("premiumHubs").$type<HubJoinInfo[] | null>().default(null),

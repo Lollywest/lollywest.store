@@ -5,7 +5,6 @@ import { db } from "@/db"
 import { products, comments, userStats, artists, type Artist } from "@/db/schema"
 import { and, asc, desc, eq, gt, lt, sql, inArray, like } from "drizzle-orm"
 import { type z } from "zod"
-import type { StoredFile } from "@/types"
 import { currentUser } from "@clerk/nextjs"
 
 import { slugify } from "@/lib/utils"
@@ -308,4 +307,51 @@ export async function filterArtistsAction(query: string) {
     .limit(10)
 
   return filteredArtists
+}
+
+export async function leaveHubAction(input: {
+  artistId: number
+}) {
+  const user = await currentUser()
+  if (!user) {
+    throw new Error("user not found")
+  }
+
+  const { artist, userInfo } = await db.transaction(async (tx) => {
+    const artist = await tx.query.artists.findFirst({
+      where: eq(artists.id, input.artistId)
+    })
+
+    const userInfo = await tx.query.userStats.findFirst({
+      where: eq(userStats.userId, user.id)
+    })
+
+    return {
+      artist,
+      userInfo,
+    }
+  })
+
+  if (!artist || !userInfo) {
+    throw new Error("artist or user not found")
+  }
+
+  if (artist.hubMembers) {
+    const idx = artist.hubMembers.indexOf(user.id)
+    if(idx > -1) {
+      artist.hubMembers.splice(idx, 1)
+    }
+  }
+
+  if(userInfo.hubsJoined) {
+    const idx = userInfo.hubsJoined.map(a => a.artistId).indexOf(input.artistId)
+    if(idx > -1) {
+      userInfo.hubsJoined.splice(idx, 1)
+    }
+  }
+
+  await db.transaction(async (tx) => {
+    await tx.update(artists).set(artist).where(eq(artists.id, artist.id))
+    await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
+  })
 }

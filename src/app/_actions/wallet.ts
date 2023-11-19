@@ -191,6 +191,7 @@ export async function updateUsernameAction(input: {
             username: input.username,
             firstName: input.firstName,
             lastName: input.lastName,
+            email: curuser.emailAddresses[0]?.emailAddress ?? null,
             image: curuser.imageUrl,
         }
 
@@ -202,6 +203,7 @@ export async function updateUsernameAction(input: {
     userInfo.username = input.username
     userInfo.firstName = input.firstName
     userInfo.lastName = input.lastName
+    userInfo.email =  curuser.emailAddresses[0]?.emailAddress ?? null
     userInfo.image = curuser.imageUrl
     userInfo.updatedAt = new Date()
 
@@ -306,12 +308,45 @@ export async function checkUserPremium(input: {
         throw new Error("user not found")
     }
 
-    const artist = await db.query.artists.findFirst({
-        where: eq(artists.id, input.artistId)
+    const { artist, userInfo } = await db.transaction(async (tx) => {
+        const artist = await tx.query.artists.findFirst({
+            where: eq(artists.id, input.artistId)
+        })
+
+        const userInfo = await tx.query.userStats.findFirst({
+            where: eq(userStats.userId, user.id)
+        })
+
+        return {
+            artist,
+            userInfo
+        }
     })
+
     if (!artist) {
         throw new Error("artist not found")
     }
+    if (!userInfo) {
+        throw new Error("user not found")
+    }
+
+    const monthAndALittle = new Date()
+    monthAndALittle.setMonth(monthAndALittle.getMonth() - 1)
+    monthAndALittle.setDate(monthAndALittle.getDate() - 3)
+
+    const idx = userInfo.premiumHubs?.map(a => a.artistId).indexOf(input.artistId) ?? -1
+
+    if (idx > -1) {
+        if (monthAndALittle > userInfo.premiumHubs![idx]!.date) {
+            userInfo.premiumHubs!.splice(idx, 1)
+            artist.premiumHubMembers?.splice(artist.premiumHubMembers.indexOf(user.id), 1)
+        }
+    }
+
+    await db.transaction(async (tx) => {
+        await tx.update(artists).set(artist).where(eq(artists.id, artist.id))
+        await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
+    })
 
     return (artist.premiumHubMembers !== null && artist.premiumHubMembers.indexOf(user.id) > -1)
 }
@@ -343,12 +378,45 @@ export async function checkUserPrivileges(input: {
         throw new Error("user not found")
     }
 
-    const artist = await db.query.artists.findFirst({
-        where: eq(artists.id, input.artistId)
+    const { artist, userInfo } = await db.transaction(async (tx) => {
+        const artist = await tx.query.artists.findFirst({
+            where: eq(artists.id, input.artistId)
+        })
+
+        const userInfo = await tx.query.userStats.findFirst({
+            where: eq(userStats.userId, user.id)
+        })
+
+        return {
+            artist,
+            userInfo
+        }
     })
+
     if (!artist) {
         throw new Error("artist not found")
     }
+    if (!userInfo) {
+        throw new Error("user not found")
+    }
+
+    const monthAndALittle = new Date()
+    monthAndALittle.setMonth(monthAndALittle.getMonth() - 1)
+    monthAndALittle.setDate(monthAndALittle.getDate() - 3)
+
+    const idx = userInfo.premiumHubs?.map(a => a.artistId).indexOf(input.artistId) ?? -1
+
+    if (idx > -1) {
+        if (monthAndALittle > userInfo.premiumHubs![idx]!.date) {
+            userInfo.premiumHubs!.splice(idx, 1)
+            artist.premiumHubMembers?.splice(artist.premiumHubMembers.indexOf(user.id), 1)
+        }
+    }
+
+    await db.transaction(async (tx) => {
+        await tx.update(artists).set(artist).where(eq(artists.id, artist.id))
+        await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
+    })
 
     return ({
         joined: (artist.hubMembers !== null && artist.hubMembers.indexOf(user.id) > -1),

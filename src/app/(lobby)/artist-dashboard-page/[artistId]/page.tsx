@@ -58,7 +58,7 @@ import NewArtistPremiumPostDialog from "@/components/new-artist-premium-post-dia
 import { Balancer } from "react-wrap-balancer"
 import { checkUserArtist } from "@/app/_actions/wallet"
 import { checkUserJoined } from "@/app/_actions/wallet"
-import { checkUserPremium } from "@/app/_actions/wallet"
+import { checkUserPremium, checkUserPrivileges } from "@/app/_actions/wallet"
 import { HubHeaderBanner } from "@/components/hub-header-banner"
 import { HubHeaderProfilePic } from "@/components/hub-header-profile-pic"
 import {
@@ -93,9 +93,10 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
         throw new Error("artist not found")
     }
 
-    const isArtist: boolean = await checkUserArtist({ artistId })
-    const isHubMember: boolean = await checkUserJoined({ artistId })
-    const isPremiumMember: boolean = await checkUserPremium({ artistId })
+    const privileges = await checkUserPrivileges({ artistId})
+    const isArtist: boolean = privileges.artist
+    const isHubMember: boolean = privileges.joined
+    const isPremiumMember: boolean = privileges.premium
 
 
     // const [posts, setPosts] = useState([
