@@ -35,8 +35,6 @@ export async function POST(req: Request) {
     return new Response(null, { status: 200 })
   }
 
-
-
   if (event.type === "checkout.session.completed") {
 
     const user = await clerkClient.users.getUser(session.metadata.userId)
@@ -70,7 +68,7 @@ export async function POST(req: Request) {
             if (!artist) { throw new Error("artist not found") }
 
             if (!artist.premiumHubMembers) {
-              artist.premiumHubMembers = [ user.id ]
+              artist.premiumHubMembers = [user.id]
             } else {
               artist.premiumHubMembers.push(user.id)
             }
@@ -85,10 +83,12 @@ export async function POST(req: Request) {
             }
 
             if (!userInfo.premiumHubs) {
-              userInfo.premiumHubs = [ { date: new Date(), artistId: prod.artistID } ]
+              userInfo.premiumHubs = [{ date: new Date(), artistId: prod.artistID }]
             } else {
-              userInfo.premiumHubs.push( { date: new Date(), artistId: prod.artistID } )
+              userInfo.premiumHubs.push({ date: new Date(), artistId: prod.artistID })
             }
+
+            userInfo.stripeCustomerId = typeof session.customer !== 'string' ? session.customer?.id ?? "" : session.customer
 
             await tx.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
           })
@@ -129,6 +129,62 @@ export async function POST(req: Request) {
     const email = session.metadata.email;
     const message = `Checkout session completed! Customer ID: ${customerId}, User ID: ${userId}, Email: ${email}`;
     await sendSlackNotification(message);
+
+    return new Response(null, { status: 200 })
+  } else if (event.type === "invoice.paid") {
+
+    // ========================== Invoice Paid ==========================
+
+    const session = event.data.object as Stripe.Invoice
+
+    const stripeCustomerId = typeof session.customer !== 'string' ? session.customer?.id : session.customer
+    const priceId = session.lines.data[0]?.price?.id
+
+    if (!stripeCustomerId || !priceId) {
+      return new Response("stripeCustomerId / priceId null or undefined", { status: 400 })
+    }
+
+    const { product, userInfo } = await db.transaction(async (tx) => {
+      const product = await tx.query.products.findFirst({
+        where: eq(products.stripePriceId, priceId)
+      })
+      const userInfo = await tx.query.userStats.findFirst({
+        where: eq(userStats.stripeCustomerId, stripeCustomerId)
+      })
+
+      return ({
+        product,
+        userInfo,
+      })
+    })
+
+    if (!product || !userInfo) {
+      return new Response("could not find product or customer", { status: 400 })
+    }
+
+    if (product.category === "wrap") {
+      if (!userInfo.premiumHubs) {
+        userInfo.premiumHubs = [{
+          artistId: product.artistID,
+          date: new Date(),
+        }]
+      } else {
+        const idx = userInfo.premiumHubs?.map(a => a.artistId).indexOf(product.artistID)
+        if (idx > -1) {
+          userInfo.premiumHubs[idx] = {
+            artistId: product.artistID,
+            date: new Date(),
+          }
+        } else {
+          userInfo.premiumHubs.push({
+            artistId: product.artistID,
+            date: new Date(),
+          })
+        }
+      }
+
+      await db.update(userStats).set(userInfo).where(eq(userStats.userId, userInfo.userId))
+    }
 
     return new Response(null, { status: 200 })
   }

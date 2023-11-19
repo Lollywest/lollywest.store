@@ -196,3 +196,11 @@ export const VideoFileSchema = z.object({
 })
 
 export type VideoFile = z.infer<typeof VideoFileSchema>
+
+export enum TimeFrame {
+  "d",
+  "w",
+  "m",
+  "y",
+  "a"
+}
