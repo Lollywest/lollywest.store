@@ -283,8 +283,8 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
                         <FileDialog
                             setValue={form.setValue}
                             name="images"
-                            maxFiles={3}
-                            maxSize={1024 * 1024 * 4}
+                            maxFiles={10}
+                            // maxSize={1024 * 1024 * 10}
                             files={files}
                             setFiles={setFiles}
                             isUploading={isUploading}
