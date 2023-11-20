@@ -58,7 +58,7 @@ export function PostFileDialog<TFieldValues extends FieldValues>({
     (acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
       setValue(
         name,
-        acceptedFiles as PathValue<TFieldValues, Path<TFieldValues>>,
+        (files ? (files as FileWithPath[]).concat(acceptedFiles) : acceptedFiles) as PathValue<TFieldValues, Path<TFieldValues>>,
         {
           shouldValidate: true,
         }
