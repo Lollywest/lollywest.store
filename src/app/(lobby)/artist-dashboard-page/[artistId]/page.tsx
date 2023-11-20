@@ -192,7 +192,7 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
                     <div className="flex items-center ">
                         <div className="flex-1 p-2">
 
-                            {isArtist !== true ?
+                            {isArtist !== false ?
                                 <NewArtistPostDialog artistId={artistId} />
                                 : null}
 
