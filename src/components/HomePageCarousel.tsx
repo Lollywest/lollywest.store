@@ -8,9 +8,9 @@ import "slick-carousel/slick/slick-theme.css"
 
 import Image from "next/image"
 
-export default function SimpleSlider(){
-  
-    const settings = {
+export default function SimpleSlider() {
+
+  const settings = {
     dots: false,
     infinite: true,
     speed: 1000,
@@ -21,40 +21,40 @@ export default function SimpleSlider(){
     autoplay: true,
     autoplaySpeed: 5000,
     cssEase: "linear"
-    }
-  
+  }
+
   return (
-      // <div>
-      //   <h2>Single Item </h2>
-      <Slider  {...settings}>
-       
-        
+    // <div>
+    //   <h2>Single Item </h2>
+    <Slider  {...settings}>
 
-        {/* <div  style={{ width: '100px', height: '100px' }}> */}
-        {/* <div style={{ width: '500px', height: '300px' }}> */}
-          {/* <div className = "overflow-hidden "> */}
-          <div >
-            {/* <AspectRatio ratio={1}> */}
-              <Image
-                
-                //role="group"
-                //key={index}
-                //aria-roledescription="slide"
-                // src="/images/mvp-slide-1.webp"
-                src="/images/first-pic.png"
-                alt=""
-                //fill
-                // width={1500}
-                // height={500}
-                width={2000}
-                height={500}
 
-                //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="rounded-lg"
-              />
-          </div>
-        <div>
-            {/* <Image
+
+      {/* <div  style={{ width: '100px', height: '100px' }}> */}
+      {/* <div style={{ width: '500px', height: '300px' }}> */}
+      {/* <div className = "overflow-hidden "> */}
+      <div >
+        {/* <AspectRatio ratio={1}> */}
+        <Image
+
+          //role="group"
+          //key={index}
+          //aria-roledescription="slide"
+          // src="/images/mvp-slide-1.webp"
+          src="/images/new-1.png"
+          alt=""
+          //fill
+          // width={1500}
+          // height={500}
+          width={2000}
+          height={500}
+
+          //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="rounded-lg"
+        />
+      </div>
+      <div>
+        {/* <Image
 
               src="/images/space.webp"
               alt=""
@@ -64,39 +64,39 @@ export default function SimpleSlider(){
               //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 
             /> */}
-            {/* <AspectRatio ratio={3/1}>  */}
-              <Image
+        {/* <AspectRatio ratio={3/1}>  */}
+        <Image
 
-                // src="/images/mvp-slide-2.webp"
-                src="/images/1.png"
+          // src="/images/mvp-slide-2.webp"
+          src="/images/new-2.png"
 
-                alt=""
-                width={2000}
-                height={500}
-                // fill
-                className="rounded-lg"
-                //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-            {/* </AspectRatio>  */}
-        </div>
-        
-        <div>
+          alt=""
+          width={2000}
+          height={500}
+          // fill
+          className="rounded-lg"
+        //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+        {/* </AspectRatio>  */}
+      </div>
+
+      <div>
         {/* <div className = "overflow-hidden"> */}
-            <Image
+        <Image
 
-              src="/images/3.png"
-              alt=""
-              //fill
-              width={2000}
-              height={500}
-              className="rounded-lg"
-              //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              //overflow-hidden
-              
-            />
-          
-        </div>
-        <div>
+          src="/images/new-3.png"
+          alt=""
+          //fill
+          width={2000}
+          height={500}
+          className="rounded-lg"
+        //sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        //overflow-hidden
+
+        />
+
+      </div>
+      {/* <div>
             <Image
               src="/images/4.png"
               alt=""
@@ -105,8 +105,8 @@ export default function SimpleSlider(){
               className="rounded-lg"
             />
           
-        </div>
-        {/* <div>
+        </div> */}
+      {/* <div>
             <Image
               src="/images/mvpSlide-five.webp"
               alt=""
@@ -116,7 +116,7 @@ export default function SimpleSlider(){
             />
           
         </div> */}
-        {/* <div>
+      {/* <div>
             <Image
               src="/images/mvpSlide-six.webp"
               alt=""
@@ -128,7 +128,7 @@ export default function SimpleSlider(){
             />
           
         </div> */}
-        {/* <div>
+      {/* <div>
             <Image
               src="/images/background-6.webp"
               alt=""
@@ -138,7 +138,7 @@ export default function SimpleSlider(){
             />
           
         </div> */}
-        {/* <div>
+      {/* <div>
             <Image
               src="/images/slide-seven.png"
               alt=""
@@ -148,8 +148,8 @@ export default function SimpleSlider(){
             />
           
         </div> */}
-      </Slider>
-   
-      )
-  
+    </Slider>
+
+  )
+
 }

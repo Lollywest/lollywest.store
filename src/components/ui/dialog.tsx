@@ -15,10 +15,12 @@ const Dialog = DialogPrimitive.Root
 const DialogTrigger = DialogPrimitive.Trigger
 
 const DialogPortal = ({
-  className,
+  // className,
   ...props
 }: DialogPrimitive.DialogPortalProps) => (
-  <DialogPrimitive.Portal className={cn(className)} {...props} />
+  // from updating dependecies
+  // <DialogPrimitive.Portal className={cn(className)} {...props} />
+  <DialogPrimitive.Portal {...props} />
 )
 DialogPortal.displayName = DialogPrimitive.Portal.displayName
 
@@ -40,7 +42,7 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> &
-    DialogPosition
+  DialogPosition
 >(({ className, children, position, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
@@ -119,6 +121,9 @@ const DialogDescription = React.forwardRef<
 ))
 DialogDescription.displayName = DialogPrimitive.Description.displayName
 
+const DialogClose = DialogPrimitive.Close
+
+
 export {
   Dialog,
   DialogTrigger,
@@ -127,4 +132,5 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  DialogClose,
 }

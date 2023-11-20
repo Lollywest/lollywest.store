@@ -2,9 +2,9 @@
 
 import { revalidatePath } from "next/cache"
 import { db } from "@/db"
-import { products, type Product } from "@/db/schema"
+import { products, artists, type Product } from "@/db/schema"
 import type { StoredFile } from "@/types"
-import { clerkClient } from "@clerk/nextjs"
+import { clerkClient, currentUser } from "@clerk/nextjs"
 import {
   and,
   asc,
@@ -290,4 +290,31 @@ export async function getAllOwnersAction( input: { id: number } ) {
   }
 
   return owners
+}
+
+export async function isTheArtistAction(productId: number) {
+
+  const prod = await db.query.products.findFirst({
+    where: eq(products.id, productId)
+  })
+
+  if(!prod) {
+    throw new Error("product not found")
+  }
+
+  const user = await currentUser()
+
+  if(!user) {
+    throw new Error("user not found")
+  }
+
+  const artist = await db.query.artists.findFirst({
+    where: eq(artists.id, prod.artistID)
+  })
+
+  if(!artist) {
+    throw new Error("artist not found")
+  }
+
+  return user.id == artist.userId
 }

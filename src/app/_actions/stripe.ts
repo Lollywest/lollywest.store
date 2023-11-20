@@ -4,7 +4,7 @@ import { cookies } from "next/headers"
 import { db } from "@/db"
 import { artists, payments, products } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs"
-import { eq } from "drizzle-orm"
+import { eq, and } from "drizzle-orm"
 import { type z } from "zod"
 
 import { stripe } from "@/lib/stripe"
@@ -231,6 +231,48 @@ export async function subscribeToWrapAction(productId: number) {
         ? user.emailAddresses[0].emailAddress
         : null,
       items: productId + ".1"
+    },
+    mode: "subscription",
+    customer: stripeCustomerId ? stripeCustomerId : undefined,
+    billing_address_collection: "auto",
+  })
+  return session
+}
+
+export async function subscribeToAccessPassAction(artistId: number) {
+  const user = await currentUser()
+  if(!user) {
+    return "signin"
+  }
+
+  const userPrivateMetadata = userPrivateMetadataSchema.parse(
+    user.privateMetadata
+  )
+  const stripeCustomerId = userPrivateMetadata.stripeCustomerId || undefined
+
+  const item = await db.query.products.findFirst({
+    where: and(eq(products.category, "wrap"), eq(products.artistID, artistId))
+  })
+  if(!item) {
+    throw new Error("Artist Access Pass not found")
+  }
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: [{
+      price: item.stripePriceId ? item.stripePriceId : undefined,
+      quantity: 1,
+    }],
+    success_url: absoluteUrl("/artist-premium/" + artistId),
+    cancel_url: absoluteUrl("/artist-premium/" + artistId),
+    metadata: {
+      userId: user.id,
+      username: user.username,
+      cartId: null,
+      email: user.emailAddresses[0]
+        ? user.emailAddresses[0].emailAddress
+        : null,
+      items: item.id + ".1"
     },
     mode: "subscription",
     customer: stripeCustomerId ? stripeCustomerId : undefined,

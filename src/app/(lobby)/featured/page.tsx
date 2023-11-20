@@ -9,13 +9,14 @@ import { Shell } from "@/components/shells/shell"
 
 import { db } from "@/db"
 //import { products, stores } from "@/db/schema"
-import { products } from "@/db/schema"
+import { products, artists } from "@/db/schema"
 import { desc } from "drizzle-orm"
 //mport Balance from "react-wrap-balancer"
 
 import { ProductCard } from "@/components/product-card"
 import { SponsorProductCard } from "@/components/sponsor-product-card"
 import { WrapProductCard } from "@/components/wrap-product-card"
+import { LobbyCommunityCard } from "@/components/lobby-community-card"
 
 
 export const dynamic = "force-dynamic"
@@ -28,17 +29,23 @@ export const metadata: Metadata = {
 
 export default async function FeaturedPage() {
 
-  const allProducts = await db
-  .select()
-  .from(products)
-  .limit(8)
-  .orderBy(desc(products.createdAt))
+  // const allProducts = await db
+  //   .select()
+  //   .from(products)
+  //   .limit(8)
+  //   .orderBy(desc(products.createdAt))
+
+  const allArtistCommunities = await db
+    .select()
+    .from(artists)
+    .limit(12)
+    .orderBy(desc(artists.createdAt))
 
   return (
     <Shell className="md:pb-10">
       <Header
-        title="Featured"
-        description="Featured Artists, Decks, and Wraps"
+        title="Discover"
+        description="Discover new artists and Studios"
       />
       <Separator className="mb-2.5" />
 
@@ -49,7 +56,7 @@ export default async function FeaturedPage() {
       >
         <div className="flex items-center">
           <h2 className="flex-1 text-2xl font-medium sm:text-3xl">
-            Our Favorites Right Now
+            Trending Now
           </h2>
           {/* <Link href="/products">
             <div
@@ -70,22 +77,23 @@ export default async function FeaturedPage() {
           ))}
         </div> */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {allProducts.map((product) => (
+          {allArtistCommunities.map((artist) => (
+            <LobbyCommunityCard key={artist.id} artist={artist} />
             //<ProductCard key={product.id} product={product} />
-            product.category === "deck" ? (
-              <ProductCard key={product.id} product={product} />
-            ) : product.category === "wrap" ? (
-              <WrapProductCard key={product.id} product={product} />
-            ) : product.category === "sponsorship" ? (
-              <SponsorProductCard key={product.id} product={product} />
-            ) : (
-              <ProductCard key={product.id} product={product} />
-            )
+            // product.category === "deck" ? (
+            //   <ProductCard key={product.id} product={product} />
+            // ) : product.category === "wrap" ? (
+            //   <WrapProductCard key={product.id} product={product} />
+            // ) : product.category === "sponsorship" ? (
+            //   <SponsorProductCard key={product.id} product={product} />
+            // ) : (
+            //   <ProductCard key={product.id} product={product} />
+            // )
 
           ))}
         </div>
       </section>
-      
+
     </Shell>
   )
 }

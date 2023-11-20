@@ -73,15 +73,15 @@ export function ProductImageCarousel({
   if (images.length === 0) {
     return (
       <div
-        aria-label="Product Placeholder"
-        role="img"
-        aria-roledescription="placeholder"
-        className="flex aspect-square h-full w-full flex-1 items-center justify-center bg-secondary"
+      // aria-label="Product Placeholder"
+      // role="img"
+      // aria-roledescription="placeholder"
+      // className="flex aspect-square h-full w-full flex-1 items-center justify-center bg-secondary"
       >
-        <Icons.placeholder
+        {/* <Icons.placeholder
           className="h-9 w-9 text-muted-foreground"
           aria-hidden="true"
-        />
+        /> */}
       </div>
     )
   }
@@ -122,7 +122,7 @@ export function ProductImageCarousel({
       {images.length > 1 ? (
         <div className="flex w-full items-center justify-center gap-2 ">
           <Button
-            variant="outline"
+            variant="ghost"
             size="icon"
             className="mr-0.5 aspect-square h-7 w-7 rounded-none sm:mr-2 sm:h-8 sm:w-8"
             disabled={prevBtnDisabled}
@@ -140,7 +140,7 @@ export function ProductImageCarousel({
               variant="outline"
               size="icon"
               className={cn(
-                "group relative aspect-square h-full w-full max-w-[100px] rounded-none shadow-sm hover:bg-transparent focus-visible:ring-foreground",
+                "group relative aspect-square h-8 w-8 max-w-[100px] rounded-none shadow-sm hover:bg-transparent focus-visible:ring-foreground",
                 i === selectedIndex && "ring-1 ring-foreground"
               )}
               onClick={() => scrollTo(i)}
@@ -159,7 +159,7 @@ export function ProductImageCarousel({
             </Button>
           ))}
           <Button
-            variant="outline"
+            variant="ghost"
             size="icon"
             className="ml-0.5 aspect-square h-7 w-7 rounded-none sm:ml-2 sm:h-8 sm:w-8"
             disabled={nextBtnDisabled}
