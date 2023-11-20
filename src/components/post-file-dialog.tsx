@@ -89,7 +89,7 @@ export function PostFileDialog<TFieldValues extends FieldValues>({
       }
     },
 
-    [maxSize, name, setFiles, setValue]
+    [maxSize, name, setFiles, setValue, files]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
