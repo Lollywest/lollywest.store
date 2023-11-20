@@ -110,7 +110,7 @@ export default async function ArtistAboutPage({ params }: ArtistAboutPageProps) 
                                     className={`relative ${index !== 0 ? '-ml-4' : ''} z-${30 - index * 10}`}
                                     style={{ zIndex: 30 - index * 10 }}
                                 >
-                                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#788fed]/50">
+                                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10 ">
                                         {/* Assuming you have an AvatarImage component to handle the image rendering */}
                                         {image ? (
                                             <AvatarImage src={image} alt="" />

@@ -211,7 +211,7 @@ export async function DashboardPostCard({
                             href={`/community-post/${post.id}`}
                         >
                             <Button variant="link" className="rounded-xl p-2">
-                                <Icons.message
+                                <Icons.feather
                                     className=" h-6 w-6"
                                     aria-hidden="true"
                                 />
@@ -221,12 +221,12 @@ export async function DashboardPostCard({
                         {/* <div className="flex-1 ">
                             <CommentToggleForm postId={post.id} />
                         </div> */}
-                        <Button variant="ghost" className="rounded-xl  p-1">
+                        {/* <Button variant="ghost" className="rounded-xl  p-1">
                             <Icons.share
                                 className=" h-6 w-6"
                                 aria-hidden="true"
                             />
-                        </Button>
+                        </Button> */}
                         {isArtist !== false ?
                             <DeletePostHoverCard postId={post.id} className="p-1" /> : null}
                     </div>

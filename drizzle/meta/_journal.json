@@ -176,6 +176,13 @@
       "when": 1699320065258,
       "tag": "0024_spotty_ultron",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "5",
+      "when": 1700448605815,
+      "tag": "0025_salty_strong_guy",
+      "breakpoints": true
     }
   ]
 }

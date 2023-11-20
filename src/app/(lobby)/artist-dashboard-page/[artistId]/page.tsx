@@ -93,7 +93,7 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
         throw new Error("artist not found")
     }
 
-    const privileges = await checkUserPrivileges({ artistId})
+    const privileges = await checkUserPrivileges({ artistId })
     const isArtist: boolean = privileges.artist
     const isHubMember: boolean = privileges.joined
     const isPremiumMember: boolean = privileges.premium
@@ -149,7 +149,7 @@ export default async function ArtistDashboardPage({ params }: ArtistDashboardPag
                                     className={`relative ${index !== 0 ? '-ml-4' : ''} z-${30 - index * 10}`}
                                     style={{ zIndex: 30 - index * 10 }}
                                 >
-                                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#788fed]/50">
+                                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
                                         {image ? (
                                             <AvatarImage src={image} alt="" />
                                         ) : (
