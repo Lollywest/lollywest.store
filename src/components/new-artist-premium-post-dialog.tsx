@@ -29,14 +29,14 @@ export default function NewArtistPremiumPostDialog({ artistId }: NewArtistPremiu
                     <Icons.addCircle
                         className="mr-2 h-5 w-5"
                         aria-hidden="true"
-                    />Add Access Pass Perk</Button>
+                    />Post to Access Pass</Button>
             </DialogTrigger>
             <DialogContent className=" max-w-2xl ">
 
                 <DialogHeader>
-                    <DialogTitle>Add Access Pass Perk </DialogTitle>
+                    <DialogTitle>Add Access Pass Post or Perk </DialogTitle>
                     <DialogDescription>
-                        Add a new Access Pass perk for your fans here.
+                        Add a new Access Pass post/perk for your fans here.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="h-[50vh] overflow-auto">

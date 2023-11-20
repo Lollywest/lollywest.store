@@ -37,10 +37,10 @@ export function NewCommunityPostDialog({ artistId }: NewCommunityPostDialogProps
                         Click post when finished to post to artist community.
                     </DialogDescription>
                 </DialogHeader>
+                <div className="h-[50vh] overflow-auto pr-4">
 
-                {/* //////////////////    change artist ids     ////////////////// */}
-                <NewCommunityPostForm artistId={artistId} />
-
+                    <NewCommunityPostForm artistId={artistId} />
+                </div>
 
             </DialogContent>
         </Dialog>

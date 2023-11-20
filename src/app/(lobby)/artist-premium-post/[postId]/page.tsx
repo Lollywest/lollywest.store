@@ -136,12 +136,12 @@ export default async function PremiumPostPage({ params }: PremiumPostPageProps) 
                         <p >{PremiumPost?.message}</p>
 
                         <div className="flex-1 flex items-center">
-                            <Button variant="ghost" className="rounded-xl  p-1">
+                            {/* <Button variant="ghost" className="rounded-xl  p-1">
                                 <Icons.share
                                     className=" h-6 w-6"
                                     aria-hidden="true"
                                 />
-                            </Button>
+                            </Button> */}
                             <div className="  pl-2 pr-2">
                                 <LikeIconToggle postId={PremiumPost!.id} liked={PremiumPost!.likedByUser} numLikes={PremiumPost!.numLikes} />
                                 {/* <span className="  pr-8"> {CommunityPost?.numLikes}</span>\ */}
@@ -149,7 +149,7 @@ export default async function PremiumPostPage({ params }: PremiumPostPageProps) 
                             {/* <div className="flex-1 items-center"> */}
                             {/* <PostCommentToggleForm postId={CommunityPost!.id} /> */}
                             <Button variant="link" className="rounded-xl p-2">
-                                <Icons.message
+                                <Icons.feather
                                     className=" h-6 w-6"
                                     aria-hidden="true"
                                 />

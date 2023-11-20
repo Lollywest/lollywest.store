@@ -45,12 +45,17 @@ export default function ArtistDashboardNav({ artistId }: ArtistDashboardNavProps
                     <Link href={`/artist-premium/${artistId}`} legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Access Pass
-                            <Image
+                            {/* <Image
                                 className="ml-1 h-4 w-4"
                                 src="/images/avatar/verified1.svg"
                                 alt=""
                                 height={800}
                                 width={800}
+                            /> */}
+                            <Icons.accessPassGold
+                                // className={`mr-2 h-5 w-5  rotate-0 scale-0 transition-all ${iconState === "plus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}
+                                className="ml-1 h-5 w-5"
+                                aria-hidden="true"
                             />
                         </NavigationMenuLink>
                     </Link>

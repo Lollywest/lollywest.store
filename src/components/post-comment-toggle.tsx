@@ -15,10 +15,10 @@ export const PostCommentToggleForm: React.FC<PostCommentToggleFormProps> = ({ po
     return (
         <div>
             <Button variant="ghost" className="rounded-xl p-1" onClick={() => setShowForm(!showForm)}>
-                {showForm ? <Icons.message
+                {showForm ? <Icons.feather
                     className=" h-6 w-6"
                     aria-hidden="true"
-                /> : <Icons.message
+                /> : <Icons.feather
                     className=" h-6 w-6"
                     aria-hidden="true"
                 />}

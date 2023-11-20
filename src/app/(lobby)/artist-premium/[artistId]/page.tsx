@@ -238,7 +238,7 @@ export default async function ArtistPremiumPage({ params }: ArtistPremiumPagePro
                         :
                         <div className="items-center">
                             <div className="flex justify-center items-center ">
-                                <span className="text-muted-foreground"> Become a Member: </span>
+                                <span className="text-muted-foreground"> Become a Member Now: </span>
                                 <JoinPremiumToggle artistId={artistId} premiumMember={isPremiumMember} />
                             </div>
                             <div className=" blur-lg grid gap-8 md:grid-cols-1 lg:grid-cols-3 pt-4">

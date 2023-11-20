@@ -14,7 +14,7 @@ interface AccessPassSubscribeButtonProps {
     isPremiumMember: boolean
 }
 
-export function AccessPassSubscribeButton({artistId, isPremiumMember }: AccessPassSubscribeButtonProps) {
+export function AccessPassSubscribeButton({ artistId, isPremiumMember }: AccessPassSubscribeButtonProps) {
     const [isPending, startTransition] = React.useTransition()
     const router = useRouter()
     const [iconState, setIconState] = React.useState(isPremiumMember ? "plus" : "minus")
@@ -44,7 +44,7 @@ export function AccessPassSubscribeButton({artistId, isPremiumMember }: AccessPa
 
     return (
         // <form className="w-full flex items-center justify-center" onSubmit={(e) => onSubmit(e)}>
-        <form className="items-center justify-center" onSubmit={(e) => onSubmit(e)}>
+        <form className="items-center justify-center " onSubmit={(e) => onSubmit(e)}>
             <Button
                 aria-label="Subscribe"
                 size="sm"
@@ -61,24 +61,29 @@ export function AccessPassSubscribeButton({artistId, isPremiumMember }: AccessPa
                 )}
                 {/* Become a Member Now */}
                 {!isPending && (
-                    <span className={`flex rounded-xl rotate-0 scale-0 transition-all ${iconState === "plus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}>
+                    <span className={`text-sm font-medium flex items-center rounded-xl rotate-0 scale-0 transition-all ${iconState === "plus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}>
 
                         <Icons.badgeCheck
                             // className={`mr-2 h-5 w-5  rotate-0 scale-0 transition-all ${iconState === "plus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}
-                            className="mr-2 h-5 w-5"
+                            className="mr-2 h-6 w-6"
                             aria-hidden="true"
                         /> Access Pass
                     </span>
                 )}
                 {!isPending && (
-                    <span className={`flex items-center absolute rounded-xl rotate-0 scale-0 transition-all ${iconState === "minus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}>
-                        <Image
+                    <span className={`text-sm font-medium flex items-center absolute rounded-xl rotate-0 scale-0 transition-all ${iconState === "minus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}>
+                        {/* <Image
                             className="mr-2 h-6 w-6"
                             src="/images/avatar/verified1.svg"
                             alt=""
                             height={800}
                             width={800}
-                        />Access Pass
+                        />Access Pass */}
+                        <Icons.accessPassGold
+                            // className={`mr-2 h-5 w-5  rotate-0 scale-0 transition-all ${iconState === "plus" ? "-rotate-90 scale-0" : "rotate-0 scale-100"}`}
+                            className="mr-2 h-6 w-6"
+                            aria-hidden="true"
+                        /> Access Pass
 
                     </span>
                 )}
