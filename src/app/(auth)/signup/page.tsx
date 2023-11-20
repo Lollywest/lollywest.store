@@ -31,13 +31,15 @@ export default async function SignUpPage() {
       <Card>
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Sign up</CardTitle>
-          <CardDescription>
+          <CardDescription className=" hidden md:block">
             Choose your preferred sign up method
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
-          <OAuthSignIn />
-          <div className="relative">
+          <div className=" hidden md:block">
+            <OAuthSignIn />
+          </div>
+          <div className="relative hidden md:block">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>

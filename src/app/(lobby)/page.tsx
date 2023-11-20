@@ -21,6 +21,7 @@ import { Shell } from "@/components/shells/shell"
 
 import SimpleSlider from "@/components/HomePageCarousel"
 import { DiscoverHubsSlider } from "@/components/discover-hubs-slider"
+import { DiscoverCommunityCard } from "@/components/discover-communities-card"
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -58,7 +59,7 @@ export default async function IndexPage() {
   const allArtistCommunities = await db
     .select()
     .from(artists)
-    .limit(12)
+    .limit(1)
     .orderBy(desc(artists.createdAt))
 
   return (
@@ -78,16 +79,24 @@ export default async function IndexPage() {
           {/* <div className="absolute -bottom-12 -z-10 flex w-full justify-center ">
             <div className="h-[248px] w-[310px] max-w-full animate-pulse rounded-full bg-[#FFB619] opacity-40 blur-[100px] "></div>
           </div> */}
-          <div className="flex items-center pb-2 pt-6">
+
+          {/*   CHANGE IF/WHEN WE ADD MORE ARTISTS */}
+          <div className="flex items-center pb-6 pt-6">
             <div className="flex-1">
-              <h2 className="text-2xl font-medium sm:text-3xl ">Discover Studios</h2>
+              {/* <h2 className="text-2xl font-medium sm:text-3xl ">Discover Studios</h2> */}
+              <h2 className="text-2xl font-medium sm:text-3xl ">Obi Original&apos;s Studio</h2>
             </div>
-            <Button asChild variant="link" className="text-sm text-muted-foreground ">
+            {/* <Button asChild variant="link" className="text-sm text-muted-foreground ">
               <Link href="/featured">View more...</Link>
-            </Button>
+            </Button> */}
           </div>
-          <div className="overflow-hidden" >
-            <DiscoverHubsSlider discoverArtists={allArtistCommunities} />
+          <div className="flex justify-center">
+            <div className="overflow-hidden sm:w-1/3 w-full " >
+              {/* <DiscoverHubsSlider discoverArtists={allArtistCommunities} /> */}
+
+              <DiscoverCommunityCard artist={allArtistCommunities[0]!} />
+
+            </div>
           </div>
         </div>
 
@@ -109,26 +118,26 @@ export default async function IndexPage() {
           </div>
         </div> */}
 
-        <div className="relative z-0 mx-auto  text-center space-y-6 mb-6">
-          {/* <div className="absolute left-8 top-8 -z-10 flex w-full ">
+        {/* <div className="relative z-0 mx-auto  text-center space-y-6 mb-6"> */}
+        {/* <div className="absolute left-8 top-8 -z-10 flex w-full ">
             <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#923CA8] opacity-25 blur-[100px]"></div>
           </div> */}
-          {/* <div className="absolute -bottom-12 -z-10 flex w-full justify-center  ">
+        {/* <div className="absolute -bottom-12 -z-10 flex w-full justify-center  ">
             <div className="h-[310px] w-[310px] max-w-full animate-pulse-slow rounded-full bg-[#923CA8] opacity-30 blur-[100px]"></div>
           </div> */}
-          {/* <div className="absolute -bottom-12 -z-10 flex w-full justify-center ">
+        {/* <div className="absolute -bottom-12 -z-10 flex w-full justify-center ">
             <div className="h-[248px] w-[310px] max-w-full animate-pulse rounded-full bg-[#FFB619] opacity-40 blur-[100px] "></div>
           </div> */}
-          <div className="flex items-center pb-2 pt-4">
+        {/* <div className="flex items-center pb-2 pt-4">
             <h2 className="text-2xl font-medium sm:text-3xl">Artist Communities</h2>
-          </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
+          </div> */}
+        {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
             {allArtistCommunities.map((artist) => (
               <LobbyCommunityCard key={artist.id} artist={artist} />
             ))}
 
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
       </section>
 
       <div className="mx-auto w-full justify-center overflow-visible rounded-lg">

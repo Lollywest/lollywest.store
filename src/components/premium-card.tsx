@@ -111,22 +111,23 @@ export function PremiumCard({
                             buttonVariants({
                                 size: "icon",
                                 className:
-                                    "pointer-events-none h-8 w-8 rounded-full bg-zinc-100 text-zinc-950",
+                                    // "pointer-events-none h-8 w-8 rounded-full bg-zinc-100 text-zinc-950",
+                                    "pointer-events-none h-8 w-8 rounded-full bg-transparent text-zinc-950",
                             })
                         )}
                         aria-hidden="true"
                     >
-                        <Icons.tags
-                            className="h-5 w-5"
+                        <Icons.accessPassGold
+                            className="h-8 w-8"
                             aria-hidden="true"
                         />
                     </div>
                 </CardHeader>
                 <CardContent className="relative z-20">
-                    <CardTitle className="text-xl capitalize text-zinc-200">
+                    <CardTitle className="text-xl capitalize text-zinc-200 line-clamp-1">
                         {post.title}
                     </CardTitle>
-                    <CardDescription> {post.message}</CardDescription>
+                    <CardDescription className="line-clamp-3"> {post.message}</CardDescription>
                 </CardContent>
             </Card>
         </Link>

@@ -73,10 +73,10 @@ export async function DashboardPostCard({
     const buffer = 8  // adjust later based on expected distribution of comments/replies ?? prob a better way to do this
     const potentialLimit = displayLimit + buffer;
 
-    const allArtistPostComments = await getAllCommentsAction({
-        postId,
-        limit: potentialLimit,
-    })
+    // const allArtistPostComments = await getAllCommentsAction({
+    //     postId,
+    //     limit: potentialLimit,
+    // })
 
     const commentLimit = 3
     const cardFirstComments = await getFirstComments({
@@ -84,7 +84,7 @@ export async function DashboardPostCard({
         limit: commentLimit,
     })
 
-    const filteredComments = allArtistPostComments.filter(comment => comment.replyingTo === null).slice(0, displayLimit)
+    // const filteredComments = allArtistPostComments.filter(comment => comment.replyingTo === null).slice(0, displayLimit)
 
     return (
         // <Card className="grid rounded-xl my-4 ">
@@ -239,17 +239,28 @@ export async function DashboardPostCard({
                 </div>
                 <Separator className="mt-2" />
                 <CardDescription className="">
-                    <div className="flex items-center gap-4">
-                        {/* <p>See all comments</p> */}
+                    {post.numComments !== 0 ?
+                        <div className="flex items-center gap-4">
+                            {/* <p>See all comments</p> */}
+                            <Link
+                                aria-label={`View all comments`}
+                                href={`/community-post/${post.id}`}
+                            >
+                                <Button variant="link" className="rounded-xl p-2 text-sm text-muted-foreground">
+                                    ... See all Comments
+                                </Button>
+                            </Link>
+                        </div>
+                        :
                         <Link
                             aria-label={`View all comments`}
                             href={`/community-post/${post.id}`}
                         >
                             <Button variant="link" className="rounded-xl p-2 text-sm text-muted-foreground">
-                                ... See all Comments
+                                See Full Post
                             </Button>
-                        </Link>
-                    </div>
+                        </Link>}
+
 
                 </CardDescription>
             </CardContent>
@@ -263,14 +274,14 @@ export async function DashboardPostCard({
                         </div>
                     </div>
 
-                    {cardFirstComments.map((comment) => (
+                    {/* {cardFirstComments.map((comment) => (
                         // <CommunityPostComment key={comment.id} comment={comment} />
-                        <DashboardPostComment key={comment.id} comment={comment} artistId={post.artistId} />
+                        // <DashboardPostComment key={comment.id} comment={comment} artistId={post.artistId} />
                         // comment.replyingTo === 0 ? (
                         //     <CommunityPostComment key={comment.id} comment={comment} artistId={post.artistId} />
                         // ) :
                         //     null // Make limit = limit + 1
-                    ))}
+                    ))} */}
                 </div>
 
             </CardFooter>

@@ -57,7 +57,10 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
 
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="pl-1 pr-7">
-            <Accordion type="single" collapsible className="w-full">
+
+            {/*   LOBBY ACCORDION DROPDOWN MENU    */}
+
+            {/* <Accordion type="single" collapsible className="w-full">
               {mainNavItems?.slice(0, 1).map((item, index) => (
                 <AccordionItem value={item.title} key={index}>
                   <AccordionTrigger className="text-sm capitalize">
@@ -96,9 +99,19 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
               ))}
 
 
-            </Accordion>
+            </Accordion> */}
             <div className=" grid gap-6">
               <div className=" pt-8">
+                <Link
+                  aria-label="Featured"
+                  href="/dashboard/account"
+                  className="text-sm leading-tight text-muted-foreground"
+                >
+                  My Account
+                </Link>
+              </div>
+
+              {/* <div className=" pt-8">
                 <Link
                   aria-label="Featured"
                   href="/featured"
@@ -106,22 +119,22 @@ export function MobileNav({ mainNavItems }: MobileNavProps) {
                 >
                   Discover
                 </Link>
-              </div>
+              </div> */}
 
-              <div>
-                <Link
+              {/* <div> */}
+              {/* <Link
                   aria-label="Leaderboard"
                   href="/my-hubs"
                   // className="hidden items-center space-x-2 lg:flex"
                   className="text-sm leading-tight text-muted-foreground"
                 >
                   My Hubs
-                  {/* <span className="hidden font-bold lg:inline-block">
+                  { <span className="hidden font-bold lg:inline-block">
                                 Top Artists & Fans
-                              </span> */}
+                              </span> }
 
-                </Link>
-              </div>
+                </Link> */}
+              {/* </div> */}
 
               {/* <div>
                 <Link

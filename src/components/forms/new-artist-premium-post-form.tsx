@@ -33,14 +33,21 @@ import { addArtistPostAction } from "@/app/_actions/post"
 import { isArrayOfFile } from "@/lib/utils"
 import { generateReactHelpers } from "@uploadthing/react/hooks"
 import type { OurFileRouter } from "@/app/api/uploadthing/core"
-import { FileDialog } from "@/components/file-dialog"
+import { PostFileDialog } from "@/components/post-file-dialog"
 import { Zoom } from "@/components/zoom-image"
 import type { FileWithPreview } from "@/types"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { getUploadUrl, getUploadAsset } from "@/app/_actions/video"
+import { VideoDialog } from "../video-dialog"
 
 interface newPremiumPostProps {
     artistId: number
+}
+
+interface MuxInfo {
+    url: string,
+    id: string,
 }
 
 const formSchema = z.object({
@@ -56,6 +63,7 @@ const formSchema = z.object({
         .optional()
         .nullable()
         .default(null),
+    videoUploaded: z.boolean().default(false),
     isEvent: z.boolean().default(false),
     isPremium: z.boolean().default(true),
     eventDate: z.date().optional(),
@@ -114,16 +122,35 @@ export function NewArtistPremiumPostForm({ artistId }: newPremiumPostProps) {
                 title: data.title,
                 message: data.message,
                 images: images,
-                videoAssetId: "",
                 isEvent: isEvent,
                 eventTime: data.eventDate ? data.eventDate : null,
                 isPremium: data.isPremium,
+                videoAssetId: assetId,
             })
 
             toast.success("Post Sent")
             form.reset()
 
             router.refresh()
+        })
+    }
+
+    let muxInfo: MuxInfo | undefined
+    const [uploadId, setUploadId] = React.useState("")
+
+    const getMuxInfo = async () => {
+        muxInfo = await getUploadUrl()
+        setUploadId(muxInfo.id)
+        return muxInfo.url
+    }
+
+    let asset: string = ""
+    const [assetId, setAssetId] = React.useState("")
+
+    const onMuxSuccess = () => {
+        startTransition(async () => {
+            asset = await getUploadAsset({ uploadId: uploadId })
+            setAssetId(asset)
         })
     }
 
@@ -138,7 +165,7 @@ export function NewArtistPremiumPostForm({ artistId }: newPremiumPostProps) {
                     name="title"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Access Pass Perk Title</FormLabel>
+                            <FormLabel>Access Pass Post/Perk Title</FormLabel>
                             <FormControl>
                                 <Input placeholder="Pre-sale available now!" {...field} />
                             </FormControl>
@@ -151,7 +178,7 @@ export function NewArtistPremiumPostForm({ artistId }: newPremiumPostProps) {
                     name="message"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Short Perk Description</FormLabel>
+                            <FormLabel> Post/Perk Description</FormLabel>
                             <FormControl>
                                 <Textarea className="resize" placeholder="Exclusive pre-sale tickets for my upcoming 2024 tour..." {...field} />
                             </FormControl>
@@ -174,11 +201,10 @@ export function NewArtistPremiumPostForm({ artistId }: newPremiumPostProps) {
                                         htmlFor="event"
                                         className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                        Does this perk expire?
+                                        Event?
                                     </label>
                                 </div>
                             </FormControl>
-
                         </FormItem>
                     )}
                 />
@@ -187,7 +213,7 @@ export function NewArtistPremiumPostForm({ artistId }: newPremiumPostProps) {
                     name="eventDate"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Date of Experation</FormLabel>
+                            <FormLabel>Date of Event</FormLabel>
                             <Popover>
                                 <PopoverTrigger asChild>
                                     <FormControl>
@@ -227,7 +253,7 @@ export function NewArtistPremiumPostForm({ artistId }: newPremiumPostProps) {
                     render={({ field }) => (
                         <FormItem>
                             <div className="flex items-center space-x-4">
-                                <FormLabel>Time of Experation</FormLabel>
+                                <FormLabel>Event Start Time</FormLabel>
                                 <FormControl className="ml-4 w-[120px] pl-3 text-center font-normal">
                                     <Input placeholder="" type="time" {...field} />
                                 </FormControl>
@@ -254,11 +280,11 @@ export function NewArtistPremiumPostForm({ artistId }: newPremiumPostProps) {
                         </div>
                     ) : null}
                     <FormControl>
-                        <FileDialog
+                        <PostFileDialog
                             setValue={form.setValue}
                             name="images"
-                            maxFiles={3}
-                            maxSize={1024 * 1024 * 4}
+                            maxFiles={10}
+                            maxSize={1024 * 1024 * 10}
                             files={files}
                             setFiles={setFiles}
                             isUploading={isUploading}
@@ -268,6 +294,12 @@ export function NewArtistPremiumPostForm({ artistId }: newPremiumPostProps) {
                     <UncontrolledFormMessage
                         message={form.formState.errors.images?.message}
                     />
+                </FormItem>
+                <FormItem className="flex w-full flex-col gap-1.5">
+                    <FormLabel className="mr-2" >Add Video</FormLabel>
+                    <FormControl>
+                        <VideoDialog endpointCallback={getMuxInfo} successCallback={onMuxSuccess} disabled={files?.length !== undefined && files?.length > 0} />
+                    </FormControl>
                 </FormItem>
                 {/* <FormField
                     control={form.control}

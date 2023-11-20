@@ -24,7 +24,7 @@ import { addCommunityPostAction } from "@/app/_actions/post"
 import { isArrayOfFile } from "@/lib/utils"
 import { generateReactHelpers } from "@uploadthing/react/hooks"
 import type { OurFileRouter } from "@/app/api/uploadthing/core"
-import { FileDialog } from "@/components/file-dialog"
+import { PostFileDialog } from "@/components/post-file-dialog"
 import { Zoom } from "@/components/zoom-image"
 import type { FileWithPreview } from "@/types"
 import Image from "next/image"
@@ -87,7 +87,7 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
                     return formattedImages ?? null
                 })
                 : null
-            
+
             await addCommunityPostAction({
                 artistId: artistId,
                 title: data.title,
@@ -104,7 +104,7 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
     }
 
     let muxInfo: MuxInfo | undefined
-    const [ uploadId, setUploadId ] = React.useState("")
+    const [uploadId, setUploadId] = React.useState("")
 
     const getMuxInfo = async () => {
         muxInfo = await getUploadUrl()
@@ -113,11 +113,11 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
     }
 
     let asset: string = ""
-    const [ assetId, setAssetId ] = React.useState("")
+    const [assetId, setAssetId] = React.useState("")
 
     const onMuxSuccess = () => {
         startTransition(async () => {
-            asset = await getUploadAsset({uploadId: uploadId})
+            asset = await getUploadAsset({ uploadId: uploadId })
             setAssetId(asset)
         })
     }
@@ -172,11 +172,11 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
                         </div>
                     ) : null}
                     <FormControl>
-                        <FileDialog
+                        <PostFileDialog
                             setValue={form.setValue}
                             name="images"
-                            maxFiles={3}
-                            maxSize={1024 * 1024 * 4}
+                            maxFiles={10}
+                            maxSize={1024 * 1024 * 10}
                             files={files}
                             setFiles={setFiles}
                             isUploading={isUploading}
@@ -187,8 +187,8 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
                         message={form.formState.errors.images?.message}
                     />
                 </FormItem>
-                <FormItem>
-                    <FormLabel>Video</FormLabel>
+                <FormItem className="flex w-full flex-col gap-1.5">
+                    <FormLabel className="mr-2">Video</FormLabel>
                     <FormControl>
                         <VideoDialog endpointCallback={getMuxInfo} successCallback={onMuxSuccess} disabled={files?.length !== undefined && files?.length > 0} />
                     </FormControl>
