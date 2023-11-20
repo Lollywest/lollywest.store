@@ -179,7 +179,7 @@ export default async function ArtistAboutPage({ params }: ArtistAboutPageProps) 
                                     </AccordionTrigger>
                                     <AccordionContent>
                                         Do not post or seek any real or fake personal information (examples include: full names, phone numbers, email addresses, or social media accounts).
-                                        Only link another user&apos;s comment when it is relevant and never when it is to launch a personal attack or encourage others to do so.
+                                        Only reply to another user&apos;s comment when it is relevant and never when it is to launch a personal attack or encourage others to do so.
                                         Do not ask questions designed to target specific usernames or links to social media.
                                     </AccordionContent>
                                 </AccordionItem>
@@ -188,7 +188,7 @@ export default async function ArtistAboutPage({ params }: ArtistAboutPageProps) 
                                         4. No loaded questions
                                     </AccordionTrigger>
                                     <AccordionContent>
-                                        Do not include an opinion, bias, or lead respondents towards expressing a specific opinion in your post title. Do not use this subreddit to promote a specific agenda or to gain positive or negative publicity for an entity or person
+                                        Do not include an opinion, bias, or lead respondents towards expressing a specific opinion in your post title. Do not use this studio to promote a specific agenda or to gain positive or negative publicity for an entity or person
                                     </AccordionContent>
                                 </AccordionItem>
                                 <AccordionItem value="item-5">
@@ -197,7 +197,7 @@ export default async function ArtistAboutPage({ params }: ArtistAboutPageProps) 
                                     </AccordionTrigger>
                                     <AccordionContent>
                                         Do not ask for any rewards, money, goods, services, or favors.
-                                        Do not form a brigade to draw positive or negative attention to posts or comments in the hub, even from other artist hubs/communities .                                                </AccordionContent>
+                                        Do not form a brigade to draw positive or negative attention to posts or comments in the studio, even from other artist studios/communities .                                                </AccordionContent>
                                 </AccordionItem>
                             </Accordion>
                         </CardContent>

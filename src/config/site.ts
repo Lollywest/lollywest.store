@@ -6,12 +6,13 @@ import { slugify } from "@/lib/utils"
 export type SiteConfig = typeof siteConfig
 
 const links = {
-  twitter: "https://twitter.com/",
+  twitter: "https://twitter.com/lollywestdotcom",
   github: "https://github.com/",
   githubAccount: "https://github.com/",
   discord: "https://discord.com/users/",
   calDotCom: "https://cal.com/",
-  instagram: "https://www.instagram.com/lollywest.fans/",
+  instagram: "https://www.instagram.com/lollywestdotcom/",
+  tiktok: "https://www.tiktok.com/@lollywestdotcom",
 }
 
 export const siteConfig = {
@@ -136,12 +137,12 @@ export const siteConfig = {
           external: true,
         },
         {
-          title: "Discord (Coming Soon)",
-          href: links.discord,
+          title: "TikTok",
+          href: links.tiktok,
           external: true,
         },
         {
-          title: "X/Twitter (Coming Soon)",
+          title: "X/Twitter",
           href: links.twitter,
           external: true,
         },

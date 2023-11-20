@@ -24,7 +24,7 @@ import { addCommunityPostAction } from "@/app/_actions/post"
 import { isArrayOfFile } from "@/lib/utils"
 import { generateReactHelpers } from "@uploadthing/react/hooks"
 import type { OurFileRouter } from "@/app/api/uploadthing/core"
-import { FileDialog } from "@/components/file-dialog"
+import { PostFileDialog } from "@/components/post-file-dialog"
 import { Zoom } from "@/components/zoom-image"
 import type { FileWithPreview } from "@/types"
 import Image from "next/image"
@@ -172,11 +172,11 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
                         </div>
                     ) : null}
                     <FormControl>
-                        <FileDialog
+                        <PostFileDialog
                             setValue={form.setValue}
                             name="images"
-                            maxFiles={3}
-                            maxSize={1024 * 1024 * 4}
+                            maxFiles={10}
+                            maxSize={1024 * 1024 * 10}
                             files={files}
                             setFiles={setFiles}
                             isUploading={isUploading}
@@ -187,7 +187,7 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
                         message={form.formState.errors.images?.message}
                     />
                 </FormItem>
-                <FormItem>
+                <FormItem className="flex w-full flex-col gap-1.5">
                     <FormLabel className="mr-2">Video</FormLabel>
                     <FormControl>
                         <VideoDialog endpointCallback={getMuxInfo} successCallback={onMuxSuccess} disabled={files?.length !== undefined && files?.length > 0} />
