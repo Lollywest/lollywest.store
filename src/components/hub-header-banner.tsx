@@ -45,7 +45,7 @@ export function HubHeaderBanner({ artist }: HubHeaderBannerProps) {
 
 
                 {/* <div className="absolute -bottom-16 left-1/2 transform w-1/4 -translate-x-1/2 rounded-full overflow-hidden border-2 border-white"> */}
-                <div className="absolute bottom-0 left-0 transform w-[12%] rounded-full overflow-hidden border border-white ml-2 mb-2 shadow-md">
+                <div className="absolute bottom-0 left-1/2 transform w-[12%] sm:w-[10%] -translate-x-1/2 rounded-xl overflow-hidden border border-white mb-2 shadow-md">
 
                     {artist.images[0] !== null ? (
                         <Image

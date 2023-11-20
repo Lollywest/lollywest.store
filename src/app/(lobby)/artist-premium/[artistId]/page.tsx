@@ -86,12 +86,10 @@ export default async function ArtistPremiumPage({ params }: ArtistPremiumPagePro
                         <JoinHubToggle artistId={artistId} hubMember={isHubMember} />
                         <div className="flex-1 flex-row">
                             {/* <JoinPremiumToggle artistId={artistId} premiumMember={isPremiumMember} /> */}
-                            {/* //////////  Update later w/ productId (or artistId ?) */}
+
                             <AccessPassSubscribeButton artistId={artistId} isPremiumMember={isPremiumMember} />
                         </div>
-                        {/* ////////    Update later with real pics     ////////// */}
                         <div className="flex">
-
                             {recentActiveUsersImages.map((image, index) => (
                                 <div
                                     //   key={post.id}
@@ -99,8 +97,8 @@ export default async function ArtistPremiumPage({ params }: ArtistPremiumPagePro
                                     className={`relative ${index !== 0 ? '-ml-4' : ''} z-${30 - index * 10}`}
                                     style={{ zIndex: 30 - index * 10 }}
                                 >
-                                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#788fed]/50">
-                                        {/* Assuming you have an AvatarImage component to handle the image rendering */}
+                                    {/* <Avatar className="h-8 w-8 sm:h-10 sm:w-10 outline outline-[#788fed]/50"> */}
+                                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10 ">
                                         {image ? (
                                             <AvatarImage src={image} alt="" />
                                         ) : (
@@ -137,7 +135,7 @@ export default async function ArtistPremiumPage({ params }: ArtistPremiumPagePro
 
 
             <div className="space-y-8">
-                <div className="flex-1 space-y-4 p-8 pt-6">
+                <div className="flex-1 space-y-4 p-8 pt-0">
 
                     {/*//////////////////    START OF HEADER (old)      ////////////////////////*/}
                     {/* <div className="flex flex-col items-center">
@@ -240,8 +238,8 @@ export default async function ArtistPremiumPage({ params }: ArtistPremiumPagePro
                         :
                         <div className="items-center">
                             <div className="flex justify-center items-center ">
+                                <span className="text-muted-foreground"> Become a Member Now: </span>
                                 <JoinPremiumToggle artistId={artistId} premiumMember={isPremiumMember} />
-                                <span className="text-muted-foreground"> Members Only</span>
                             </div>
                             <div className=" blur-lg grid gap-8 md:grid-cols-1 lg:grid-cols-3 pt-4">
                                 {/* ///////////////////////////     DEMO ACTIVE PERK 1       /////////////////////////// */}

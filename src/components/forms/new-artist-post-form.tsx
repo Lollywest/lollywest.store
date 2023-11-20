@@ -136,7 +136,7 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
     }
 
     let muxInfo: MuxInfo | undefined
-    const [ uploadId, setUploadId ] = React.useState("")
+    const [uploadId, setUploadId] = React.useState("")
 
     const getMuxInfo = async () => {
         muxInfo = await getUploadUrl()
@@ -145,11 +145,11 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
     }
 
     let asset: string = ""
-    const [ assetId, setAssetId ] = React.useState("")
+    const [assetId, setAssetId] = React.useState("")
 
     const onMuxSuccess = () => {
         startTransition(async () => {
-            asset = await getUploadAsset({uploadId: uploadId})
+            asset = await getUploadAsset({ uploadId: uploadId })
             setAssetId(asset)
         })
     }
@@ -296,12 +296,12 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
                     />
                 </FormItem>
                 <FormItem>
-                    <FormLabel>Video</FormLabel>
+                    <FormLabel className="mr-2">Video</FormLabel>
                     <FormControl>
                         <VideoDialog endpointCallback={getMuxInfo} successCallback={onMuxSuccess} disabled={files?.length !== undefined && files?.length > 0} />
                     </FormControl>
                 </FormItem>
-                <FormField
+                {/* <FormField
                     control={form.control}
                     name="isPremium"
                     render={({ field }) => (
@@ -323,7 +323,7 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
 
                         </FormItem>
                     )}
-                />
+                /> */}
                 <Button className="w-fit" disabled={isPending}>
                     {isPending && (
                         <Icons.spinner

@@ -26,7 +26,7 @@ export default function NewArtistPostDialog({ artistId }: NewArtistPostDialogPro
   return (
     <Dialog >
       <DialogTrigger asChild>
-        <Button variant="outline" className="rounded-full mr-2">
+        <Button variant="outline" className="rounded-full mr-2 mb-2 sm:mb-0">
           <Icons.addCircle
             className="mr-2 h-5 w-5"
             aria-hidden="true"

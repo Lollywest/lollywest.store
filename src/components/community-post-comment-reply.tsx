@@ -80,7 +80,7 @@ export function CommunityPostCommentReply({
 
                         <div className="flex flex-1 items-center gap-4 text-sm text-muted-foreground ">
                             <div className=" flex-1 text-sm text-muted-foreground ">
-                                FanXP | {reply.points}
+                                Lolly | {reply.points}
                             </div>
                             <p> {formatTimeSince(reply.createdAt!)}</p>
                         </div>
