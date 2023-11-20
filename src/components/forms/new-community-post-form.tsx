@@ -176,7 +176,7 @@ export function NewCommunityPostForm({ artistId }: newPostProps) {
                             setValue={form.setValue}
                             name="images"
                             maxFiles={10}
-                            // maxSize={1024 * 1024 * 4}
+                            maxSize={1024 * 1024 * 10}
                             files={files}
                             setFiles={setFiles}
                             isUploading={isUploading}
