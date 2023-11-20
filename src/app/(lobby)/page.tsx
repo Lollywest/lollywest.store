@@ -21,6 +21,7 @@ import { Shell } from "@/components/shells/shell"
 
 import SimpleSlider from "@/components/HomePageCarousel"
 import { DiscoverHubsSlider } from "@/components/discover-hubs-slider"
+import { DiscoverCommunityCard } from "@/components/discover-communities-card"
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -58,7 +59,7 @@ export default async function IndexPage() {
   const allArtistCommunities = await db
     .select()
     .from(artists)
-    .limit(12)
+    .limit(1)
     .orderBy(desc(artists.createdAt))
 
   return (
@@ -80,7 +81,7 @@ export default async function IndexPage() {
           </div> */}
 
           {/*   CHANGE IF/WHEN WE ADD MORE ARTISTS */}
-          <div className="flex items-center pb-2 pt-6">
+          <div className="flex items-center pb-6 pt-6">
             <div className="flex-1">
               {/* <h2 className="text-2xl font-medium sm:text-3xl ">Discover Studios</h2> */}
               <h2 className="text-2xl font-medium sm:text-3xl ">Obi Original&apos;s Studio</h2>
@@ -89,8 +90,13 @@ export default async function IndexPage() {
               <Link href="/featured">View more...</Link>
             </Button> */}
           </div>
-          <div className="overflow-hidden" >
-            <DiscoverHubsSlider discoverArtists={allArtistCommunities} />
+          <div className="flex justify-center">
+            <div className="overflow-hidden sm:w-1/3 w-full " >
+              {/* <DiscoverHubsSlider discoverArtists={allArtistCommunities} /> */}
+
+              <DiscoverCommunityCard artist={allArtistCommunities[0]!} />
+
+            </div>
           </div>
         </div>
 
