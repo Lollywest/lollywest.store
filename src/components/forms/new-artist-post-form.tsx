@@ -33,7 +33,7 @@ import { addArtistPostAction } from "@/app/_actions/post"
 import { isArrayOfFile } from "@/lib/utils"
 import { generateReactHelpers } from "@uploadthing/react/hooks"
 import type { OurFileRouter } from "@/app/api/uploadthing/core"
-import { FileDialog } from "@/components/file-dialog"
+import { PostFileDialog } from "@/components/post-file-dialog"
 import { Zoom } from "@/components/zoom-image"
 import type { FileWithPreview } from "@/types"
 import Image from "next/image"
@@ -280,7 +280,7 @@ export function NewArtistPostForm({ artistId }: newPostProps) {
                         </div>
                     ) : null}
                     <FormControl>
-                        <FileDialog
+                        <PostFileDialog
                             setValue={form.setValue}
                             name="images"
                             maxFiles={10}
