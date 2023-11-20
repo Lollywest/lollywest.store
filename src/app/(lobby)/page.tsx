@@ -83,7 +83,7 @@ export default async function IndexPage() {
           <div className="flex items-center pb-2 pt-6">
             <div className="flex-1">
               {/* <h2 className="text-2xl font-medium sm:text-3xl ">Discover Studios</h2> */}
-              <h2 className="text-2xl font-medium sm:text-3xl ">Obi Original's Studio</h2>
+              <h2 className="text-2xl font-medium sm:text-3xl ">Obi Original&apos;s Studio</h2>
             </div>
             {/* <Button asChild variant="link" className="text-sm text-muted-foreground ">
               <Link href="/featured">View more...</Link>
