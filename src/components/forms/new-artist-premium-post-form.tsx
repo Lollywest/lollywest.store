@@ -295,7 +295,7 @@ export function NewArtistPremiumPostForm({ artistId }: newPremiumPostProps) {
                         message={form.formState.errors.images?.message}
                     />
                 </FormItem>
-                <FormItem>
+                <FormItem className="flex w-full flex-col gap-1.5">
                     <FormLabel className="mr-2" >Add Video</FormLabel>
                     <FormControl>
                         <VideoDialog endpointCallback={getMuxInfo} successCallback={onMuxSuccess} disabled={files?.length !== undefined && files?.length > 0} />

@@ -39,7 +39,7 @@ export default function NewArtistPremiumPostDialog({ artistId }: NewArtistPremiu
                         Add a new Access Pass post/perk for your fans here.
                     </DialogDescription>
                 </DialogHeader>
-                <div className="h-[50vh] overflow-auto">
+                <div className="h-[50vh] overflow-auto pr-4">
 
                     <NewArtistPremiumPostForm artistId={artistId} />
                 </div>
