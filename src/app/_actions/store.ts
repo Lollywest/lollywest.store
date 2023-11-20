@@ -249,7 +249,10 @@ export async function joinArtistHubAction(input: {
   }
 
   if (userInfo.hubsJoined) {
-    userInfo.hubsJoined.push(hubJoinInfo)
+    const idx = userInfo.hubsJoined.map(a => a.artistId).indexOf(artist.id)
+    if(idx === -1) {
+      userInfo.hubsJoined.push(hubJoinInfo)
+    }
   } else {
     userInfo.hubsJoined = [hubJoinInfo]
   }
