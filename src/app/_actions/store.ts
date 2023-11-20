@@ -269,6 +269,10 @@ export async function getActiveUsersImages(input: {
 
     const ids = userIds.map(a => a.id)
 
+    if(!ids.length) {
+      return []
+    }
+
     const images = await tx.select({ image: userStats.image }).from(userStats).where(inArray(userStats.userId, ids))
 
     return images.map(a => a.image)
@@ -285,6 +289,10 @@ export async function getActiveUsersImages2(input: {
     const userIds = await tx.selectDistinct({ id: comments.user }).from(comments).limit(input.limit)
 
     const ids = userIds.map(a => a.id)
+
+    if(!ids.length) {
+      return []
+    }
 
     const images = await tx.select({ image: userStats.image }).from(userStats).where(inArray(userStats.userId, ids))
 
