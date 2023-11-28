@@ -50,14 +50,14 @@ export function SignUpForm() {
         })
 
         // Send email verification code
-        await signUp.prepareEmailAddressVerification({
-          strategy: "email_code",
-        })
+        // await signUp.prepareEmailAddressVerification({
+        //   strategy: "email_code",
+        // })
 
-        router.push("/signup/verify-email")
-        toast.message("Check your email", {
-          description: "We sent you a 6-digit verification code.",
-        })
+        router.push("/verify")
+        // toast.message("Check your email", {
+        //   description: "We sent you a 6-digit verification code.",
+        // })
       } catch (err) {
         catchClerkError(err)
       }
@@ -104,7 +104,7 @@ export function SignUpForm() {
             />
           )}
           Continue
-          <span className="sr-only">Continue to email verification page</span>
+          <span className="sr-only">Create Account</span>
         </Button>
       </form>
     </Form>

@@ -31,12 +31,12 @@ export default async function SignUpPage() {
       <Card>
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Sign up</CardTitle>
-          <CardDescription className=" hidden md:block">
+          {/* <CardDescription className=" hidden md:block">
             Choose your preferred sign up method
-          </CardDescription>
+          </CardDescription> */}
         </CardHeader>
         <CardContent className="grid gap-4">
-          <div className=" hidden md:block">
+          {/* <div className=" hidden md:block">
             <OAuthSignIn />
           </div>
           <div className="relative hidden md:block">
@@ -48,7 +48,7 @@ export default async function SignUpPage() {
                 Or continue with
               </span>
             </div>
-          </div>
+          </div> */}
           <SignUpForm />
         </CardContent>
         <CardFooter>

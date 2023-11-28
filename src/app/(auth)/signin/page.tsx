@@ -31,12 +31,12 @@ export default async function SignInPage() {
       <Card>
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl ">Sign in</CardTitle>
-          <CardDescription className=" hidden md:block">
+          {/* <CardDescription className=" hidden md:block">
             Choose your preferred sign in method
-          </CardDescription>
+          </CardDescription> */}
         </CardHeader>
         <CardContent className="grid gap-4">
-          <div className=" hidden md:block">
+          {/* <div className=" hidden md:block">
             <OAuthSignIn />
           </div>
           <div className="relative hidden md:block">
@@ -48,7 +48,7 @@ export default async function SignInPage() {
                 Or continue with
               </span>
             </div>
-          </div>
+          </div> */}
           <SignInForm />
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-between gap-2">
